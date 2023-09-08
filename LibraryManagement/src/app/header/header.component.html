@@ -1,0 +1,104 @@
+<!-- Header -->
+<div class="header">
+
+    <!-- Logo -->
+    <div class="header-left">
+        <a routerLink="/layout/dashboard/admin" class="logo">
+            <img src="assets/img/logo.png" width="40" height="40" alt="">
+        </a>
+    </div>
+    <!-- /Logo -->
+
+    <div class="header-center">
+        <h1>Smarthr</h1>
+    </div>
+
+    <a id="toggle_btn" href="javascript:void(0);">
+        <span class="bar-icon" (click)="sidebarToggle()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+    </a>
+
+    <ul class="header-new-menu">
+        <li>
+            <a data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Clients</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/layout/clients/clientspage">Clients</a>
+            </div>
+        </li>
+        <li>
+            <a data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/layout/projects/projectpage">Projects</a>
+                <a class="dropdown-item" routerLink="/layout/projects/tasks">Tasks</a>
+                <a class="dropdown-item" routerLink="/layout/projects/taskboard">Task Board</a>
+            </div>
+        </li>
+        <li>
+            <a data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Leads</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/layout/leads/leadscontent">Leads</a>
+            </div>
+        </li>
+        <li>
+            <a data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tickets</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/layout/tickets/ticketscontent">Tickets</a>
+            </div>
+        </li>
+    </ul>
+
+    <a id="mobile_btn" class="mobile_btn" href="javascript:"><i class="fa fa-bars"></i></a>
+
+    <!-- Header Menu -->
+    <ul class="nav user-menu">
+
+        <li>
+            <a class="report-btn">
+                <span class="material-icons-outlined">
+                    text_snippet
+                </span>
+            </a>
+        </li>
+
+        <li class="nav-item dropdown has-arrow main-drop">
+            <a href="javascript:" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                <span class="user-img"><img src="assets/img/profiles/avatar-21.jpg" alt=""></span>
+                <span>Admin</span>
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/layout/employees/employeeprofile">My Profile</a>
+                <a class="dropdown-item" routerLink="/layout/settings/company-settings">Settings</a>
+                <a class="dropdown-item" routerLink="/login">Logout</a>
+            </div>
+        </li>
+        
+    </ul>
+    <!-- /Header Menu -->
+
+    <!-- Mobile Menu -->
+    <div class="dropdown mobile-user-menu">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" routerLink="/layout/employees/employeeprofile">My Profile</a>
+            <a class="dropdown-item" routerLink="/layout/settings/company-settings">Settings</a>
+            <a class="dropdown-item">Logout</a>
+        </div>
+    </div>
+    <!-- /Mobile Menu -->
+
+</div>
+<!-- /Header -->
+
+
+<p-sidebar [(visible)]="sidebarVisible">
+    <p-listbox [options]="cities" optionLabel="name" [style]="{'width':'15rem'}">
+        <ng-template let-item pTemplate="item">
+            <div class="flex align-items-center gap-2">
+                <div>{{ item.name }} <i [class]="item.icon"></i></div>
+            </div>
+        </ng-template>
+    </p-listbox>
+</p-sidebar>
