@@ -51,7 +51,7 @@ namespace LibraryAPI.Controllers
 
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("save/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> PutBook(Guid id, Book book)
         {
             if (id != book.Id)
@@ -82,7 +82,7 @@ namespace LibraryAPI.Controllers
 
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
           if (_context.Books == null)

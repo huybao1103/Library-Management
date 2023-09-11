@@ -1,0 +1,22 @@
+<input class="form-control input-control"
+  [ngClass]="formCls"
+  pInputText
+  [id]="uniqueId"
+  [type]="type"
+  [(ngModel)]="value"
+  [autocomplete]="autocomplete ? 'on' : 'off'"
+  [attr.readonly]="readonly ? '' : null"
+  [attr.tabindex]="readonly || disabled ? '-1' : 1"
+  [placeholder]="placeholder"
+  [attr.minlength]="minlength"
+  [attr.maxlength]="maxlength"
+  [attr.min]="min"
+  [attr.max]="max"
+  [attr.step]="step"
+  [attr.data-test]="testId"
+  [disabled]="disabled"
+  (change)="change()"
+  (keyup)="onKeyUp($event)"
+  (blur)="touched($event)"
+  [required]="required">
+<ng-content></ng-content>

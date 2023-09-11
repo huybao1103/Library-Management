@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { HttpService } from '../services/http-service.service';
 import { ISidebarItem } from '../models/sidebar-item.model';
+import { IAuthor } from '../models/author.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MessageType } from '../enums/toast-message.enum';
+import { ToastService } from '../services/toast.service';
+import { ListboxClickEvent } from 'primeng/listbox';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +23,9 @@ export class HeaderComponent implements OnInit {
     
     // httpService: HttpService | undefined;
     constructor(
-        private httpService: HttpService
+        private httpService: HttpService,
+        private toastService: ToastService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -146,20 +154,43 @@ export class HeaderComponent implements OnInit {
         ];
 
         this.cities = [
-            { name: 'Books', code: 'book', icon: 'fa fa-book' }
+            { name: 'Dashboard', code: 'dashboard', icon: 'fa fa-book' },
+            { name: 'Books Management', code: 'book', icon: 'fa fa-book' },
         ];
 
-        let temp;
-        this.httpService.send().subscribe({
-            next: (resp) => {
-                temp = resp;
-                console.log(temp);
-            }
-        });
+        // let temp;
+        // this.httpService.getAll({ controller: 'Authors' }).subscribe({
+        //     next: (resp) => {
+        //         temp = resp;
+        //         console.log(temp);
+        //     }
+        // });
+        
+        // const tempAuthor: IAuthor = {
+        //     name: 'Huy A',
+        //     phone: '0911021122',
+        //     mail: 'ccc'
+        // } 
+        // this.httpService.save({ controller: 'Authors', data: tempAuthor })
+        // .subscribe({
+        //     next: (resp) => {
+        //         if(tempAuthor.id)
+        //             this.toastService.show(MessageType.success, "Update author successfully");
+        //         else
+        //         this.toastService.show(MessageType.success, "Add new author successfully");
+        //     },
+        //     error: (err: HttpErrorResponse) => {
+        //         this.toastService.show(MessageType.error, err.error.detail);
+        //     }
+        // });
     }
 
   sidebarToggle() {
     this.sidebarVisible = !this.sidebarVisible;
-    console.log(this.sidebarVisible)
+  }
+
+  sidebarClick(event: ListboxClickEvent) {
+    this.router.navigate([`${event.option.code}`]);
+    this.sidebarToggle();
   }
 }

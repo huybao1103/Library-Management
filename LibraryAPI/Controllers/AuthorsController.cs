@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using LibraryAPI.CustomException;
+using LibraryAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LibraryAPI.Models;
 
 namespace LibraryAPI.Controllers
 {
@@ -50,16 +46,8 @@ namespace LibraryAPI.Controllers
             return author;
         }
 
-        // PUT: api/Authors/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("save/{id}")]
-        public async Task<IActionResult> PutAuthor(Guid id, Author author)
+        private async Task<IActionResult> UpdateAuthor(Author author)
         {
-            if (id != author.Id)
-            {
-                return BadRequest();
-            }
-
             _context.Entry(author).State = EntityState.Modified;
 
             try
@@ -68,7 +56,7 @@ namespace LibraryAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AuthorExists(id))
+                if (!AuthorExists(author.Id))
                 {
                     return NotFound();
                 }
@@ -83,15 +71,25 @@ namespace LibraryAPI.Controllers
 
         // POST: api/Authors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("save")]
         public async Task<ActionResult<Author>> PostAuthor(Author author)
         {
-          if (_context.Authors == null)
-          {
-              return Problem("Entity set 'LibraryManagementContext.Authors'  is null.");
-          }
-            _context.Authors.Add(author);
-            await _context.SaveChangesAsync();
+            if (_context.Authors == null)
+            {
+                return Problem("Entity set 'LibraryManagementContext.Authors'  is null.");
+            }
+            RequestSaveAuthorValidate(author);
+
+            if (author.Id == Guid.Empty)
+            {
+                _context.Authors.Add(author);
+                await _context.SaveChangesAsync();
+
+            }
+            else
+            {
+                await UpdateAuthor(author);
+            }
 
             return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
         }
@@ -119,6 +117,18 @@ namespace LibraryAPI.Controllers
         private bool AuthorExists(Guid id)
         {
             return (_context.Authors?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private void RequestSaveAuthorValidate(Author author)
+        {
+            if (_context.Authors.Any(a => a.Name == author.Name && a.Id != author.Id))
+            {
+                throw new CustomApiException(500, "This author name is existed.", "This author name is existed.");
+            }
+            if (_context.Authors.Any(a => ((a.Mail != null && a.Mail == author.Mail) || (a.Phone != null & a.Phone == author.Phone)) && a.Id != author.Id))
+            {
+                throw new CustomApiException(500, "The author with this email or phone number is existed.", "The author with this email or phone number is existed.");
+            }
         }
     }
 }

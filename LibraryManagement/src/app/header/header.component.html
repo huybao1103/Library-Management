@@ -21,7 +21,7 @@
         </span>
     </a>
 
-    <ul class="header-new-menu">
+    <!-- <ul class="header-new-menu">
         <li>
             <a data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Clients</a>
             <div class="dropdown-menu">
@@ -48,7 +48,7 @@
                 <a class="dropdown-item" routerLink="/layout/tickets/ticketscontent">Tickets</a>
             </div>
         </li>
-    </ul>
+    </ul> -->
 
     <a id="mobile_btn" class="mobile_btn" href="javascript:"><i class="fa fa-bars"></i></a>
 
@@ -89,15 +89,15 @@
     </div>
     <!-- /Mobile Menu -->
 
+    <p-toast></p-toast>
 </div>
 <!-- /Header -->
 
-
-<p-sidebar [(visible)]="sidebarVisible">
-    <p-listbox [options]="cities" optionLabel="name" [style]="{'width':'15rem'}">
+<p-sidebar [(visible)]="sidebarVisible" id="sidebar">
+    <p-listbox [options]="cities" optionLabel="name" [style]="{'width':'15rem'}" (onClick)="sidebarClick($event)" id="sidebar-list-box">
         <ng-template let-item pTemplate="item">
-            <div class="flex align-items-center gap-2">
-                <div>{{ item.name }} <i [class]="item.icon"></i></div>
+            <div class="flex align-items-center gap-2 sidebar-item">
+                <i class="{{item.icon}} sidebar-icon"></i> {{ item.name }}
             </div>
         </ng-template>
     </p-listbox>

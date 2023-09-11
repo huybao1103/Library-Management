@@ -1,6 +1,7 @@
 using LibraryAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using LibraryAPI.Controllers;
+using LibraryAPI.CustomException;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,11 @@ builder.Services.AddCors(options =>
                             .AllowAnyHeader()
                             .AllowAnyMethod();
     });
+});
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<CustomExceptionFilter>();
 });
 
 var app = builder.Build();

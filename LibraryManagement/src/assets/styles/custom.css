@@ -1,0 +1,37 @@
+/* General */
+
+/* Modal */
+.form-label > span {
+    color: red !important;
+}
+
+/* Side bar */
+#sidebar {
+    .p-sidebar,
+    .p-listbox {
+        background-color: #000000;
+    }
+
+    .p-sidebar-left {
+        width: auto;
+    }
+
+    #sidebar-list-box {
+        .sidebar-icon {
+            margin-right: 0.5rem;
+        }
+        .p-listbox {
+            border: none;
+            
+            .p-element {
+                font-size: 18px;
+                color: white;
+            }
+
+            .p-element:hover {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        }
+    }
+}
