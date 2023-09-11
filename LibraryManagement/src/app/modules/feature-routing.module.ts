@@ -5,6 +5,8 @@ import { MainPageComponent } from '../main-page/main-page.component';
 import { BooksManagementComponent } from './books-management/books-management.component';
 import { ModalbaseComponent } from '../layout/modalbase/modalbase.component';
 import { BookInfoEditComponent } from './books-management/book-info-edit/book-info.edit.component';
+import { AuthorsManagementComponent } from './authors-management/authors-management.component';
+import { AuthorInfoEditComponent } from './authors-management/author-info-edit/author-info-edit.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,16 @@ const routes: Routes = [
         component: ModalbaseComponent,
         outlet: 'modal',
         data: { component: BookInfoEditComponent }
+      },
+      {
+        path: 'author',
+        component: AuthorsManagementComponent
+      },
+      {
+        path: 'author/edit/:id',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: AuthorInfoEditComponent }
       }
     ]
   },

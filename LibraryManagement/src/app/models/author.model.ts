@@ -3,4 +3,5 @@ export interface IAuthor {
     name: string;
     mail?: string;
     phone?: string;
+    bookAuthorId?: string;
 }

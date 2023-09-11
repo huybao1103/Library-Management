@@ -1,0 +1,13 @@
+<p>authors-management works!</p>
+
+<div class="pl-1" style="margin-left: 1rem;">
+    <button type="button" class="col-1" (click)="edit('')">Add new</button>
+
+    <div class="row" *ngFor="let author of authorData">
+        <p class="col-3">{{ author.id }}</p>
+        <p class="col-3">{{ author.name }}</p>
+        <p class="col-3">{{ author.mail }}</p>
+        <p class="col-2">{{ author.phone }}</p>
+        <button type="button" class="col-1" (click)="edit(author.id)">Edit</button>
+    </div>
+</div>

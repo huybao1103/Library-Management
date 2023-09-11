@@ -14,6 +14,7 @@ export class HttpService {
   ) { }
 
   getAll<T>(query: IQueryData): Observable<HttpResponse<T>> {
+    // api/Authors
     return this.http.get<T>(
       `api/${query.controller}`,
       { observe: 'response'}
@@ -27,13 +28,13 @@ export class HttpService {
     );
   }
 
-  update<T>(query: IQueryData, id: string): Observable<HttpResponse<T>> {
-    return this.http.put<T>(
-      `api/${query.controller}/update/${id}`,
-      query.data,
-      { observe: 'response'}
-    );
-  }
+  // update<T>(query: IQueryData, id: string): Observable<HttpResponse<T>> {
+  //   return this.http.put<T>(
+  //     `api/${query.controller}/update/${id}`,
+  //     query.data,
+  //     { observe: 'response'}
+  //   );
+  // }
 
   delete<T>(query: IQueryData, id: string): Observable<HttpResponse<T>> {
     return this.http.delete<T>(

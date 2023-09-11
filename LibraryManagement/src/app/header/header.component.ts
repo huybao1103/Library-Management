@@ -156,13 +156,13 @@ export class HeaderComponent implements OnInit {
         this.cities = [
             { name: 'Dashboard', code: 'dashboard', icon: 'fa fa-book' },
             { name: 'Books Management', code: 'book', icon: 'fa fa-book' },
+            { name: 'Authors Management', code: 'author', icon: 'fa fa-user' },
         ];
 
         let temp;
         this.httpService.getAll({ controller: 'Authors' }).subscribe({
             next: (resp) => {
                 temp = resp;
-                console.log(temp);
             }
         });
         

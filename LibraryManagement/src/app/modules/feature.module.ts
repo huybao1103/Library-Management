@@ -15,6 +15,8 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyModule as AppFormlyModule } from '../formly/formly.module';
 import { ModalbaseComponent } from '../layout/modalbase/modalbase.component';
 import { RouterModule } from '@angular/router';
+import { AuthorsManagementComponent } from './authors-management/authors-management.component';
+import { AuthorInfoEditComponent } from './authors-management/author-info-edit/author-info-edit.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { RouterModule } from '@angular/router';
     BooksManagementComponent,
     DashboardComponent,
     BookInfoEditComponent,
+    AuthorsManagementComponent,
+    AuthorInfoEditComponent
   ],
   imports: [
     CommonModule,
