@@ -158,13 +158,13 @@ export class HeaderComponent implements OnInit {
             { name: 'Books Management', code: 'book', icon: 'fa fa-book' },
         ];
 
-        // let temp;
-        // this.httpService.getAll({ controller: 'Authors' }).subscribe({
-        //     next: (resp) => {
-        //         temp = resp;
-        //         console.log(temp);
-        //     }
-        // });
+        let temp;
+        this.httpService.getAll({ controller: 'Authors' }).subscribe({
+            next: (resp) => {
+                temp = resp;
+                console.log(temp);
+            }
+        });
         
         // const tempAuthor: IAuthor = {
         //     name: 'Huy A',
