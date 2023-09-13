@@ -55,7 +55,7 @@ export class AuthorInfoEditComponent implements IDialogType {
       this.title = "Edit Author Information";
       this.getAuthorById(para.id);
     } else {
-      this.fields = ExampleDetailFields();
+      this.fields = AuthorDetailFields();
     }
   }
   
@@ -65,7 +65,7 @@ export class AuthorInfoEditComponent implements IDialogType {
         if(res)
           this.data = res;
 
-        this.fields = ExampleDetailFields();
+        this.fields = AuthorDetailFields();
       }
     })
   }
