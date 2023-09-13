@@ -1,5 +1,6 @@
 ﻿using LibraryAPI.CustomException;
 using LibraryAPI.Models;
+using LibraryAPI.PubSub;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -112,6 +113,20 @@ namespace LibraryAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Books
+        [HttpGet("option")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
+        public async Task<ActionResult<IEnumerable<Option>>> GetAuthorsOption()
+        {
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+            var authorList = await _context.Authors.ToListAsync(); // Get author list
+
+            return authorList.Select(author => new Option { Value = author.Id, Label = author.Name }).ToList(); // Get author option list
         }
 
         private bool AuthorExists(Guid id)

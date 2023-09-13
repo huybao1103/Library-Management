@@ -1,0 +1,43 @@
+<p-dropdown
+  *ngIf="!multiple else multiSelect;"
+  [(ngModel)]="value"
+  [options]="(datas$ | async) || undefined"
+  [optionLabel]="labelProp || 'label'"
+  [optionValue]="valueProp || 'value'"
+  [filter]="searchable"
+  [filterPlaceholder]="typeToSearchText"
+  [filterBy]="labelProp || 'label'"
+  [placeholder]="placeholder"
+  [inputId]="uniqueId"
+  [readonly]="readonly"
+  [showClear]="clearable"
+  (onChange)="selectedChange($event)"
+  (onHide)="onTouched($event)"
+  [autoDisplayFirst]="false"
+  [disabled]="disabled"
+  appendTo="body"
+  styleClass="w-100"
+  [panelStyleClass]="panelStyleClass"
+  [overlayOptions]="{baseZIndex: 900}"></p-dropdown>
+
+<ng-template #multiSelect>
+  <p-multiSelect
+    [(ngModel)]="value"
+    [options]="(datas$ | async) || undefined"
+    [optionLabel]="labelProp || 'label'"
+    [optionValue]="valueProp || 'value'"
+    [placeholder]="placeholder"
+    [inputId]="uniqueId"
+    [filter]="searchable"
+    [filterBy]="labelProp || 'label'"
+    [showClear]="clearable"
+    [readonly]="readonly"
+    [disabled]="disabled"
+    [selectionLimit]="maxSelectedItems"
+    (onChange)="selectedChange($event)"
+    (onPanelHide)="onTouched($event)"
+    appendTo="body"
+    styleClass="w-100"
+    [panelStyleClass]="panelStyleClass"
+    [overlayOptions]="{baseZIndex: 900}"></p-multiSelect>
+</ng-template>

@@ -1,4 +1,4 @@
-export interface IComboboxOption<T> {
+export interface IComboboxOption {
     label: string;
-    value: T;
+    value: any;
   }

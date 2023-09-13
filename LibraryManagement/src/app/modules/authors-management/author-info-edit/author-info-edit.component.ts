@@ -11,6 +11,9 @@ import { HttpService } from 'src/app/services/http-service.service';
 import { AuthorDetailFields } from './autho-info.form';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthorService } from '../service/author.service';
+import { ExampleDetailFields } from '../../EXAMPLE-FORM';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-author-info-edit',
@@ -24,7 +27,11 @@ export class AuthorInfoEditComponent implements IDialogType {
   fields: FormlyFieldConfig[] = []; // abcxyz
   form = new FormGroup({});
   options: FormlyFormOptions = {
-    formState: {}
+    formState: {
+      optionList: {
+        author: this.getBookOption()
+      }
+    }
   };
   
   data: IAuthor = {
@@ -35,9 +42,10 @@ export class AuthorInfoEditComponent implements IDialogType {
   
   constructor(
     private modal: NgbActiveModal,
-    private _toastService: ToastService,
+    private toastService: ToastService,
     private httpService: HttpService,
-    private toastSerivce: ToastService
+    private toastSerivce: ToastService,
+    private authorSerive: AuthorService
   ) {
   }
   
@@ -47,35 +55,37 @@ export class AuthorInfoEditComponent implements IDialogType {
       this.title = "Edit Author Information";
       this.getAuthorById(para.id);
     } else {
-      this.fields = AuthorDetailFields();
+      this.fields = ExampleDetailFields();
     }
   }
   
   getAuthorById(id: string) {
-    this.httpService.getById<IAuthor>({controller: 'Authors'}, id).subscribe({
-      next: (resp) => {
-        
-        if(resp.body)
-        this.data = resp.body;
-      
-        console.log(this.data);
+    this.authorSerive.getAuthorById(id).subscribe({
+      next: (res) => {
+        if(res)
+          this.data = res;
+
+        this.fields = ExampleDetailFields();
       }
     })
-    this.fields = AuthorDetailFields();
+  }
+
+  getBookOption() {
+    return this.authorSerive.getBookOption().pipe(map(res => res))
   }
 
   submit() {
-    console.log(this.form.invalid)
-    this.httpService.save({ controller: 'Authors', data: this.data}).subscribe({
-      next: (resp) => {
-        console.log(resp.body)
-        this.toastSerivce.show(MessageType.success, 'Author info save success');
-        this.close();
-      },
-      error: (err: HttpErrorResponse) => {
-        this.toastSerivce.show(MessageType.error, err.error.detail);
-      }
-    })
+    console.log(this.data)
+    // this.authorSerive.save(this.data).subscribe({
+    //   next: (resp) => {
+    //     this.toastService.show(MessageType.success, 'Author info save success');
+    //     this.close();
+    //   },
+    //   error: (err: HttpErrorResponse) => {
+    //     console.log(err)
+    //     this.toastService.show(MessageType.error, err.error?.detail);
+    //   }
+    // })
   }
 
   close() { this.modal.close() }

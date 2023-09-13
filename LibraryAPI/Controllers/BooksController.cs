@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LibraryAPI.Models;
+using LibraryAPI.PubSub;
 
 namespace LibraryAPI.Controllers
 {
@@ -22,6 +19,7 @@ namespace LibraryAPI.Controllers
 
         // GET: api/Books
         [HttpGet]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
           if (_context.Books == null)
@@ -52,6 +50,7 @@ namespace LibraryAPI.Controllers
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("update/{id}")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
         public async Task<IActionResult> PutBook(Guid id, Book book)
         {
             if (id != book.Id)
@@ -83,6 +82,7 @@ namespace LibraryAPI.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("add")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
           if (_context.Books == null)
@@ -97,6 +97,7 @@ namespace LibraryAPI.Controllers
 
         // DELETE: api/Books/5
         [HttpDelete("delete/{id}")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
         public async Task<IActionResult> DeleteBook(Guid id)
         {
             if (_context.Books == null)
@@ -113,6 +114,20 @@ namespace LibraryAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/Books
+        [HttpGet("option")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
+        public async Task<ActionResult<IEnumerable<Option>>> GetBooksOption()
+        {
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+            var bookList = await _context.Books.ToListAsync(); // Get book list
+
+            return bookList.Select(book => new Option { Value = book.Id, Label = book.Name }).ToList(); // Get book option list
         }
 
         private bool BookExists(Guid id)

@@ -3,19 +3,15 @@ using System.Collections.Generic;
 
 namespace LibraryAPI.Models;
 
-public partial class BookVersion
+public partial class BookCategory
 {
     public Guid Id { get; set; }
 
-    public int? IdentifyId { get; set; }
-
-    public byte? Status { get; set; }
-
-    public string? Description { get; set; }
+    public Guid CategoryId { get; set; }
 
     public Guid BookId { get; set; }
 
-    public int? Version { get; set; }
-
     public virtual Book Book { get; set; } = null!;
+
+    public virtual Category Category { get; set; } = null!;
 }

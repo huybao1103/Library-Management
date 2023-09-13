@@ -9,9 +9,7 @@ public partial class UploadFile
 
     public string? FileName { get; set; }
 
-    public string? FilePath { get; set; }
+    public virtual ICollection<BookImage> BookImages { get; set; } = new List<BookImage>();
 
-    public Guid BookId { get; set; }
-
-    public virtual Book Book { get; set; } = null!;
+    public virtual ICollection<StudentImage> StudentImages { get; set; } = new List<StudentImage>();
 }

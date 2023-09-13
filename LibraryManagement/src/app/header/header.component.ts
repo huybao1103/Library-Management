@@ -165,24 +165,6 @@ export class HeaderComponent implements OnInit {
                 temp = resp;
             }
         });
-        
-        // const tempAuthor: IAuthor = {
-        //     name: 'Huy A',
-        //     phone: '0911021122',
-        //     mail: 'ccc'
-        // } 
-        // this.httpService.save({ controller: 'Authors', data: tempAuthor })
-        // .subscribe({
-        //     next: (resp) => {
-        //         if(tempAuthor.id)
-        //             this.toastService.show(MessageType.success, "Update author successfully");
-        //         else
-        //         this.toastService.show(MessageType.success, "Add new author successfully");
-        //     },
-        //     error: (err: HttpErrorResponse) => {
-        //         this.toastService.show(MessageType.error, err.error.detail);
-        //     }
-        // });
     }
 
   sidebarToggle() {

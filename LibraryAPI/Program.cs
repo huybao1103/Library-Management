@@ -2,6 +2,7 @@ using LibraryAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using LibraryAPI.Controllers;
 using LibraryAPI.CustomException;
+using LibraryAPI.PubSub;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<CustomExceptionFilter>();
 });
 
+builder.AddPubSub((config) => { });
+
 var app = builder.Build();
 app.UseCors("AllowAngularOrigins");
 
@@ -50,5 +53,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapPubSub();
 
 app.Run();

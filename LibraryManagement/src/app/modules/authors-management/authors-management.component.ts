@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IAuthor } from 'src/app/models/author.model';
 import { HttpService } from 'src/app/services/http-service.service';
+import { AuthorService } from './service/author.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-authors-management',
@@ -10,11 +12,12 @@ import { HttpService } from 'src/app/services/http-service.service';
 })
 export class AuthorsManagementComponent implements OnInit {
   authorData: IAuthor[] = [];
-  authorById: IAuthor | undefined;
+  author$?: Observable<IAuthor[] | null>;
 
   constructor(
     private httpService: HttpService,
-    private route: Router
+    private route: Router,
+    private authorService: AuthorService
   ) {
   }
 
@@ -24,15 +27,16 @@ export class AuthorsManagementComponent implements OnInit {
 
   getData() {
     // /api/Authors
-    this.httpService.getAll<IAuthor[]>({ controller: 'Authors' }).subscribe({
-      next: (resp) => {
-        
-        if(resp.body)
-          this.authorData = resp.body;
+    // this.authorService.getAll().subscribe({
+    //   next: (resp) => {
+    //     if(resp)
+    //       this.authorData = resp;
 
-        console.log(this.authorData);
-      }
-    })
+    //     console.log(this.authorData);
+    //   }
+    // })
+
+    this.author$ = this.authorService.getAll();
   }
 
   edit(id?: string) {
