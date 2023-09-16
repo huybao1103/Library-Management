@@ -1,37 +1,61 @@
 /* General */
 
+/* Header */
+.header {
+    background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
+}
+
 /* Modal */
 .form-label > span {
     color: red !important;
 }
 
 /* Side bar */
-#sidebar {
-    .p-sidebar,
-    .p-listbox {
-        background-color: #000000;
+.sidebar {
+	color: #fff;
+    background: #1f1f1f;
+    
+    .subdrop {
+        background: #1f1f1f;
     }
+}
 
-    .p-sidebar-left {
-        width: auto;
-    }
+.sidebar-menu li a {
+    text-transform: none;
+}
 
-    #sidebar-list-box {
-        .sidebar-icon {
-            margin-right: 0.5rem;
-        }
-        .p-listbox {
-            border: none;
-            
-            .p-element {
-                font-size: 18px;
-                color: white;
-            }
+.sidebar-menu > ul > li.submenu ul li a {
+	color: #fff;
+	background: #1f1f1f;
+	display: flex;
+}
 
-            .p-element:hover {
-                background-color: #ffffff;
-                color: #000000;
-            }
-        }
-    }
+.sidebar-menu > ul > li.submenu ul li:hover a {
+	color: #FF7849;
+	background: #1f1f1f;
+    cursor: pointer;
+}
+
+.file-wrap .file-sidebar {
+    height: 100%;
+}
+
+.file-wrap .file-scroll {
+    max-height: 50rem;
+
+}
+
+.file-wrap .file-content,
+.file-body .file-content-inner {
+    padding-bottom: 0px !important;
+}
+
+/* PrimeNG Table */
+.p-datatable-thead th {
+    padding: .5rem 1rem !important;
+}
+
+.confirmDialog {
+    width: 40vw;
+    z-index: 9999 !important;
 }

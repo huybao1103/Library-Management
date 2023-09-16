@@ -26,6 +26,7 @@
             ],
             "styles": [
               "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/line-awesome/dist/line-awesome/css/line-awesome.min.css",
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -35,7 +36,6 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-
             ]
           },
           "configurations": {

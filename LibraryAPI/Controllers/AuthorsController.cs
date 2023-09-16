@@ -140,7 +140,7 @@ namespace LibraryAPI.Controllers
             {
                 throw new CustomApiException(500, "This author name is existed.", "This author name is existed.");
             }
-            if (_context.Authors.Any(a => ((a.Mail != null && a.Mail == author.Mail) || (a.Phone != null & a.Phone == author.Phone)) && a.Id != author.Id))
+            if (_context.Authors.Any(a => ((a.Mail != null && a.Mail == author.Mail) || (a.Phone != null && a.Phone == author.Phone)) && a.Id != author.Id))
             {
                 throw new CustomApiException(500, "The author with this email or phone number is existed.", "The author with this email or phone number is existed.");
             }

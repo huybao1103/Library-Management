@@ -9,11 +9,14 @@ import { FORMLY_CONFIG } from "./formly.config";
 import { FormlyFieldNgSelect } from "./type/ng-select.type";
 import { NgSelectItemModule} from "./form/ng-select/ng-select.module";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { FormlyFieldCheckbox } from "./type/checkbox.type";
+import { CheckBoxModule } from "./form/checkbox/checkbox.module";
 
 @NgModule({
     declarations: [
       FormlyFieldInput,
-      FormlyFieldNgSelect
+      FormlyFieldNgSelect,
+      FormlyFieldCheckbox
     ],
     imports: [
       CommonModule,
@@ -23,7 +26,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
       InputTextModule,
       FormlyModule.forChild(FORMLY_CONFIG),
       NgSelectItemModule,
-      NgSelectModule
+      NgSelectModule,
+      CheckBoxModule
     ]
   })
   

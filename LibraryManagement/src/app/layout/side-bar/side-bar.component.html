@@ -1,0 +1,31 @@
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            <ul class="sidebar-vertical">
+              <li
+                *ngFor="let item of menus"
+                [class.submenu]="item.subMenus && item.subMenus.length > 0"
+                [ngClass]="{ active: urlComplete.mainUrl === 'dashboard' }"
+              >
+                <ng-content *ngIf="item.subMenus && item.subMenus.length > 0; then thenBlock else elseBlock"></ng-content>
+                <ng-template #thenBlock>
+                  <a class="icon-arrow-container" href="#"><i [class]="item.icon"></i> 
+                    <span> {{item.name}}</span> 
+                    <span class="icon-arrow la la-angle-down"></span>
+                  </a>
+                  <ul style="display: none;" class="subdrop" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li *ngFor="let subItem of item.subMenus" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                      <a [routerLink]="subItem.route"><i class="subdrop-icon" [class]="subItem.icon"></i>{{subItem.name}}</a>
+                    </li>
+                  </ul>
+                </ng-template>
+                <ng-template #elseBlock>
+                  <a [routerLink]="item.route">
+                    <i [class]="item.icon"></i><span>{{item.name}}</span>
+                  </a>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+    </div>
+  </div>

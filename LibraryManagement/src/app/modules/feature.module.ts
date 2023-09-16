@@ -1,22 +1,25 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { FeatureRoutingModule } from './feature-routing.module';
-import { BooksManagementComponent } from './books-management/books-management.component';
-import { HeaderComponent } from '../header/header.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { MainPageComponent } from '../main-page/main-page.component';
-import { ToastModule } from 'primeng/toast';
-import { SidebarModule } from 'primeng/sidebar';
-import { ListboxModule } from 'primeng/listbox';
-import { BookInfoEditComponent } from './books-management/book-info-edit/book-info.edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
-import { FormlyModule as AppFormlyModule } from '../formly/formly.module';
-import { ModalbaseComponent } from '../layout/modalbase/modalbase.component';
 import { RouterModule } from '@angular/router';
-import { AuthorsManagementComponent } from './authors-management/authors-management.component';
+import { FormlyModule } from '@ngx-formly/core';
+import { ListboxModule } from 'primeng/listbox';
+import { SidebarModule } from 'primeng/sidebar';
+import { ToastModule } from 'primeng/toast';
+import { FormlyModule as AppFormlyModule } from '../formly/formly.module';
+import { HeaderComponent } from '../header/header.component';
+import { MainPageComponent } from '../main-page/main-page.component';
 import { AuthorInfoEditComponent } from './authors-management/author-info-edit/author-info-edit.component';
+import { AuthorsManagementComponent } from './authors-management/authors-management.component';
+import { BookInfoEditComponent } from './books-management/book-info-edit/book-info.edit.component';
+import { BooksManagementComponent } from './books-management/books-management.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { FeatureRoutingModule } from './feature-routing.module';
+import { TableModule } from 'primeng/table';
+import { TabViewModule } from 'primeng/tabview';
+import { SideBarComponent } from '../layout/side-bar/side-bar.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,8 @@ import { AuthorInfoEditComponent } from './authors-management/author-info-edit/a
     DashboardComponent,
     BookInfoEditComponent,
     AuthorsManagementComponent,
-    AuthorInfoEditComponent
+    AuthorInfoEditComponent,
+    SideBarComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +42,10 @@ import { AuthorInfoEditComponent } from './authors-management/author-info-edit/a
     FormlyModule.forChild({}),
     AppFormlyModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    TableModule,
+    TabViewModule,
+    ConfirmDialogModule
   ]
 })
 export class FeatureModule { }

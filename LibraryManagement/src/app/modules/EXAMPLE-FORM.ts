@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
-import { FORMLY_INPUT, FORMLY_SELECT } from "src/app/formly/formly.config";
+import { FORMLY_CHECKBOX, FORMLY_INPUT, FORMLY_SELECT } from "src/app/formly/formly.config";
 
 export function ExampleDetailFields(): FormlyFieldConfig[] {
     return [
@@ -11,39 +11,38 @@ export function ExampleDetailFields(): FormlyFieldConfig[] {
             key: 'name',
             type: FORMLY_INPUT.name,
             templateOptions: {
-              label: 'Author Name',
+              label: 'Book Name',
               required: true
             }
           },
           {
             className: 'col-6',
-            key: 'phone',
-            type: FORMLY_INPUT.name,
-            templateOptions: {
-              label: 'Author Phone',
-              required: true
-            },
-            expressionProperties: {
-            }
-          },
-          {
-            className: 'col-6',
-            key: 'mail',
-            type: FORMLY_INPUT.name,
-            templateOptions: {
-              label: 'Author Mail',
-              disabled: true
-            },
-            expressionProperties: {
-            }
-          },
-          {
-            className: 'col-6',
-            key: 'mail',
+            key: 'category',
             type: FORMLY_SELECT.name,
             templateOptions: {
-              label: 'Author Mail',
-              searchable: true,
+              label: 'Category',
+              required: true
+            },
+            expressionProperties: {
+            }
+          },
+          {
+            className: 'col-6',
+            key: 'mail',
+            type: FORMLY_INPUT.name,
+            templateOptions: {
+              label: 'Input Year',
+            },
+            expressions: {
+              'props.options': "formState.optionList.author"
+            }
+          },
+          {
+            className: 'col-6',
+            key: 'mail',
+            type: FORMLY_INPUT.name,
+            templateOptions: {
+              label: 'Publish Year',
             },
             expressions: {
               'props.options': "formState.optionList.author"

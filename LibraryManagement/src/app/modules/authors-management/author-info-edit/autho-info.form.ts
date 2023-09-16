@@ -21,7 +21,6 @@ export function AuthorDetailFields(): FormlyFieldConfig[] {
             type: FORMLY_INPUT.name,
             templateOptions: {
               label: 'Author Phone',
-              required: true
             },
             expressionProperties: {
             }
@@ -31,8 +30,7 @@ export function AuthorDetailFields(): FormlyFieldConfig[] {
             key: 'mail',
             type: FORMLY_INPUT.name,
             templateOptions: {
-              label: 'Author Mail',
-              disabled: true
+              label: 'Author Mail'
             },
             expressionProperties: {
             }

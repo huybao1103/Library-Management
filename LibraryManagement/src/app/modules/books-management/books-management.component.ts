@@ -18,4 +18,8 @@ export class BooksManagementComponent implements OnInit {
   editItem(item: string) {
     this.router.navigate([{ outlets: { modal: ['book', 'edit', item] } }]);
   }
+
+  addBook() {
+    
+  }
 }

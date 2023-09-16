@@ -170,7 +170,7 @@ export class HeaderComponent implements OnInit {
   sidebarToggle() {
     this.sidebarVisible = !this.sidebarVisible;
   }
-
+  
   sidebarClick(event: ListboxClickEvent) {
     this.router.navigate([`${event.option.code}`]);
     this.sidebarToggle();

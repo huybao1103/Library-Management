@@ -28,9 +28,7 @@ export class AuthorService {
   }
 
   save(data: IAuthor) {
-    return this.httpService.save<IAuthor>({ controller: 'Authors', data, op: 'author-info'}).pipe(
-      switchMap((res) => res ? this.updateAuthorState(res) : of(null))
-    );
+    return this.httpService.save<IAuthor>({ controller: 'Authors', data, op: 'author-info'});
   }
 
   getBookOption() {

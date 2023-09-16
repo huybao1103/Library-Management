@@ -1,6 +1,9 @@
 <app-header></app-header>
+<p-toast></p-toast>
+<app-side-bar></app-side-bar>
+<p-confirmDialog [styleClass]="'confirmDialog'" key="positionDialog" position="top" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
 
-<div id="feature-module" style="margin-top: 70px;">
+<div id="feature-module" style="margin-top: 70px; margin-left: 65px;">
     <router-outlet></router-outlet>
 </div>
 <router-outlet name="modal"></router-outlet>

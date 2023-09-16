@@ -76,7 +76,9 @@ export class HttpService {
   getDataFromResponse<T>(result$: Observable<HttpResponse<T>>, needReLoad?: boolean, query?: IQueryData) {
     return result$.pipe(
       tap(() => {needReLoad ? this.getAll<T>(query!) : ''}),
-      map(res => res.body)
+      map(res => {
+        return res.body
+      })
     );
   }
 }

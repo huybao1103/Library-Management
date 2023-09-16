@@ -8,6 +8,7 @@
     <form [formGroup]="form">
       <formly-form [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
     </form>
+    
     <div class="submit-section">
         <button class="btn btn-primary submit-btn"[disabled]="form.invalid" (click)="submit()">Submit</button>
     </div>

@@ -2017,7 +2017,6 @@ label {
 	text-align: left;
 	vertical-align: middle;
 	width: 0;
-	display: none;
 	transition: all 0.2s ease-in-out 0s;
 }
 .sidebar-menu ul li.menu-title a i {
@@ -2034,16 +2033,17 @@ label {
     color: #fff;
 }
 .sidebar-menu > ul > li.submenu ul li a {
-	color: #004BE2;
+	color: #fff;
+	background: #1f1f1f;
 	display: flex;
 }
 .sidebar-menu > ul > li.submenu ul li a.active {
 	color: #FE612C;
 }
-.sidebar-menu ul a.active.subdrop {
+/* .sidebar-menu ul a.active.subdrop {
 	color: #004BE2;
 	background-color: #fff;
-}
+} */
 .sidebar-menu .submenu li a i {
 	display: block;
 	margin-right: 15px;
@@ -2792,7 +2792,7 @@ label {
 }
 .submit-section {
 	text-align: center;
-	margin-top: 40px;
+	margin-top: 20px;
 }
 .submit-btn {
     border-radius: 50px;
@@ -9311,8 +9311,8 @@ ul.comment-list li ul.children {
 }
 .file-wrap {
     border: 1px solid #e0e3e4;
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex;
+    flex-wrap: wrap; */
     position: relative;
 }
 .file-wrap .file-sidebar {
@@ -9368,8 +9368,7 @@ ul.comment-list li ul.children {
     z-index: 4;
 }
 .file-wrap .file-scroll {
-    max-height: calc(100vh - 259px);
-    min-height: 497px;
+    max-height: 50rem;
     overflow-y: auto;
 }
 .file-wrap .file-sidebar .file-pro-list {
@@ -9879,7 +9878,7 @@ span.userrole-info {
 		padding: 20px 10px;
 	}
 	.mini-sidebar.expand-menu .sidebar {
-		width: 230px;
+		width: 250px;
 	}
 	.mini-sidebar .menu-title {
 		visibility: hidden;
@@ -9952,7 +9951,7 @@ span.userrole-info {
 		margin-left: 10px;
 	}
 	.mini-sidebar .header-center {
-		display: none;
+		/* display: none; */
 	}
 	.mini-sidebar .sidebar-right {
 		display: none;
