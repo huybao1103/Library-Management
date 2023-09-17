@@ -63,8 +63,8 @@
                                 <div class="file-scroll">
                                     <div class="file-content-inner">
                                         <div class="row row-sm">
-                                            <div class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
-                                                <div class="card card-file">
+                                            <div *ngIf="books.length" class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                                <div *ngFor="let book of books" class="card card-file">
                                                     <div class="dropdown-file">
                                                         <a href="" class="dropdown-link" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
@@ -79,7 +79,7 @@
                                                         <i class="fa fa-file-word-o"></i>
                                                     </div>
                                                     <div class="card-body">
-                                                        <h6><a href="">Updates.docx</a></h6>
+                                                        <h6><a href="">{{book.name}}</a></h6>
                                                         <span>12mb</span>
                                                     </div>
                                                     <div class="card-footer">9 Aug 1:17 PM</div>

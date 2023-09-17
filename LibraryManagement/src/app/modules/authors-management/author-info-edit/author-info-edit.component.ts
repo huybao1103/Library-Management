@@ -39,8 +39,6 @@ export class AuthorInfoEditComponent implements IDialogType, OnInit {
   
   data: IAuthor = {
     name: '',
-    mail: '',
-    phone: ''
   }
   
   product: IAuthor[] = [

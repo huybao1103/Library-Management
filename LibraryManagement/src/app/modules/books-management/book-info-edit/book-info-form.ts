@@ -24,22 +24,20 @@ export function BookDetailFields(): FormlyFieldConfig[] {
               required: true
             },
             expressionProperties: {
+              'props.options': "formState.optionList.categories"
             }
           },
           {
             className: 'col-6',
-            key: 'mail',
+            key: 'inputDay',
             type: FORMLY_INPUT.name,
             templateOptions: {
-              label: 'Input Year',
+              label: 'Input Day',
             },
-            expressions: {
-              'props.options': "formState.optionList.author"
-            }
           },
           {
             className: 'col-6',
-            key: 'mail',
+            key: 'publishYear',
             type: FORMLY_INPUT.name,
             templateOptions: {
               label: 'Publish Year',

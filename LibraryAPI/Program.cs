@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using LibraryAPI.Controllers;
 using LibraryAPI.CustomException;
 using LibraryAPI.PubSub;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,7 @@ builder.Services.AddControllers(options =>
 
 builder.AddPubSub((config) => { });
 
+builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 var app = builder.Build();
 app.UseCors("AllowAngularOrigins");
 

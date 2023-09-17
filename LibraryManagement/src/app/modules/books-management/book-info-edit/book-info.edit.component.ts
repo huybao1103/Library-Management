@@ -10,6 +10,11 @@ import { IAuthor } from 'src/app/models/author.model';
 import { AuthorInfoEditComponent } from '../../authors-management/author-info-edit/author-info-edit.component';
 import { of } from 'rxjs';
 import { AuthorDetailFields } from '../../authors-management/author-info-edit/autho-info.form';
+import { IBook, IBookSave } from 'src/app/models/book.model';
+import { HttpService } from 'src/app/services/http-service.service';
+import { BookService } from '../service/book.service';
+import { MessageType } from 'src/app/enums/toast-message.enum';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-book-info',
@@ -25,22 +30,26 @@ export class BookInfoEditComponent implements IDialogType {
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-        author: of()
+        author: of(),
+        categories: this.bookService.getCategoriesOption()
       }
     }
   };
   
-  data: IAuthor = {
-    name: 'H'
+  data: IBook = {
+    name: '',
+    publishYear: '',
+    category: ''
   };
-  
+
   authors: IAuthor[] = [];
   publishers: any[] = [];
 
   constructor(
     private modalService: NgbModal,
     private modal: NgbActiveModal,
-    private _toastService: ToastService
+    private _toastService: ToastService,
+    private bookService: BookService
   ) {
     this.fields = BookDetailFields();
   }
@@ -65,8 +74,21 @@ export class BookInfoEditComponent implements IDialogType {
   }
 
   submit() {
-    console.log(this.data)
-    console.log(this.form.invalid)
+    if(this.data) {
+      var bookModel: IBookSave = this.data;
+      bookModel = {
+        ...bookModel,
+        authors: this.authors.map(a => a.id ? a.id : '')
+      }
+      this.bookService.save(bookModel).subscribe({
+        next: (res) => {
+          this._toastService.show(MessageType.success, 'Add Book successfully');
+        },
+        error: (err: HttpErrorResponse) => {
+          this._toastService.show(MessageType.success, err.error?.detail);
+        }
+      })
+    }
   }
 
   close() { this.modal.close() }
