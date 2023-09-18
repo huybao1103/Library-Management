@@ -1,4 +1,6 @@
-﻿namespace LibraryAPI.RequestModels
+﻿using LibraryAPI.ViewModels.Book;
+
+namespace LibraryAPI.RequestModels
 {
     public class BookRequest
     {
@@ -10,5 +12,6 @@
         public List<Guid>? Authors { get; set; }
         public List<Guid>? Publishers { get; set; }
         public List<Guid>? Categories { get; set; }
+        public virtual ICollection<BookImageModel> BookImages { get; set; } = new List<BookImageModel>();
     }
 }

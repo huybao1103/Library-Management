@@ -59,30 +59,37 @@
                                     <input type="text" class="form-control rounded-pill" placeholder="Search">
                                 </div>
                             </form>
-                            <div class="file-body">
+                            <div *ngIf="books.length" class="file-body">
                                 <div class="file-scroll">
                                     <div class="file-content-inner">
                                         <div class="row row-sm">
-                                            <div *ngIf="books.length" class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
-                                                <div *ngFor="let book of books" class="card card-file">
+                                            <div *ngFor="let book of books" class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                                <div class="card card-file">
                                                     <div class="dropdown-file">
                                                         <a href="" class="dropdown-link" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
-                                                            <a href="#" class="dropdown-item">View Details</a>
+                                                            <a href="javascript:" class="dropdown-item" (click)="editItem(book.id || '')">View Details</a>
                                                             <a href="#" class="dropdown-item">Share</a>
                                                             <a href="#" class="dropdown-item">Download</a>
                                                             <a href="#" class="dropdown-item">Rename</a>
                                                             <a href="#" class="dropdown-item">Delete</a>
                                                         </div>
                                                     </div>
-                                                    <div class="card-file-thumb">
-                                                        <i class="fa fa-file-word-o"></i>
+                                                    <div *ngIf="book.bookImages?.length">
+                                                        <span *ngFor="let bookImage of book.bookImages">
+                                                            <img [src]="bookImage.base64" class="img-fluid" alt="Responsive image">
+                                                        </span>
                                                     </div>
+
+                                                    <div *ngIf="!book.bookImages?.length" class="card-file-thumb">
+                                                        <i class="fa fa-image"></i>
+                                                    </div>
+
                                                     <div class="card-body">
                                                         <h6><a href="">{{book.name}}</a></h6>
                                                         <span>12mb</span>
                                                     </div>
-                                                    <div class="card-footer">9 Aug 1:17 PM</div>
+                                                    <div class="card-footer">{{book.authorName}}</div>
                                                 </div>
                                             </div>
                                         </div>

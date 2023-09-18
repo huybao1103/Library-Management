@@ -10,6 +10,7 @@ import { IBook } from 'src/app/models/book.model';
 })
 export class BooksManagementComponent implements OnInit {
   books: IBook[] = [];
+  image: string = '';
 
   constructor(
     private router: Router,
@@ -24,8 +25,11 @@ export class BooksManagementComponent implements OnInit {
   loadData() {
     this.bookService.getAll().subscribe({
       next: (res) => {
-        if(res?.length)
+        if(res?.length) {
           this.books = res;
+
+          this.books.map(b => b.authorName = b.bookAuthors?.map(ba => ba.author.name).join(', '))
+        }
       }
     })
   }

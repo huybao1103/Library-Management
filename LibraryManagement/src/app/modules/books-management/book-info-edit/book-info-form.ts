@@ -23,7 +23,7 @@ export function BookDetailFields(): FormlyFieldConfig[] {
               label: 'Category',
               required: true
             },
-            expressionProperties: {
+            expressions: {
               'props.options': "formState.optionList.categories"
             }
           },

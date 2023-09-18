@@ -16,6 +16,10 @@ export class BookService {
     return this.httpService.getAll<IBook[]>({ controller: 'Books' });
   }
 
+  getBookById(id: string) {
+    return this.httpService.getById<IBook>({controller: 'Books'}, id);
+  }
+
   getCategoriesOption() {
     return this.httpService.getOption<IComboboxOption>({ controller: 'Categories' });
   }

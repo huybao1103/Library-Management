@@ -142,6 +142,9 @@ public partial class LibraryManagementContext : DbContext
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("id");
+            entity.Property(e => e.Base64)
+                .IsUnicode(false)
+                .HasColumnName("base64");
             entity.Property(e => e.BookId).HasColumnName("bookId");
             entity.Property(e => e.FileId).HasColumnName("fileId");
             entity.Property(e => e.FilePath)

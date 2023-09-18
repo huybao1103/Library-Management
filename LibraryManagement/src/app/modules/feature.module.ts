@@ -20,6 +20,7 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { SideBarComponent } from '../layout/side-bar/side-bar.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     RouterModule,
     TableModule,
     TabViewModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    FileUploadModule
   ]
 })
 export class FeatureModule { }

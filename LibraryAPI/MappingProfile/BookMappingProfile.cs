@@ -16,6 +16,8 @@ namespace LibraryAPI.MappingProfile
 
             CreateMap<BookAuthor, BookAuthorModel>();
 
+            CreateMap<BookImage, BookImageModel>();
+            CreateMap<BookImageModel, BookImage>();
         }
     }
 }
