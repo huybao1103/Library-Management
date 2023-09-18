@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_Search"
+        android:orderInCategory="100"
+        android:title="Tìm Kiếm Sách"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_Log"
+        android:orderInCategory="100"
+        android:title="Sách Đã Đăng Ký Mượn"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_UpdateBook"
+        android:orderInCategory="100"
+        android:title="Update Book"
+        app:showAsAction="never" />
+</menu>
