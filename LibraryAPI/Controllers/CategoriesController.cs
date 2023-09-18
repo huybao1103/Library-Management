@@ -34,7 +34,7 @@ namespace LibraryAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategories()
         {
-            return Ok(await _context.Categories.ToListAsync());
+            return Ok(_mapper.Map<List<CategoryModel>>(_context.Categories.ToListAsync()));
         }
 
         // GET: api/Categories/5
