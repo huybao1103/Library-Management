@@ -16,6 +16,7 @@ import { BookService } from '../service/book.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileUpload } from 'primeng/fileupload';
+import { BookAuthorEditComponent } from './book-author-edit/book-author-edit.component';
 
 @Component({
   selector: 'app-book-info',
@@ -37,10 +38,9 @@ export class BookInfoEditComponent implements IDialogType {
     }
   };
   
-  data: IBook = {
+  data: IBookSave = {
     name: '',
     publishYear: '',
-    category: ''
   };
 
   authors: IBookAuthor[] = [];
@@ -69,7 +69,10 @@ export class BookInfoEditComponent implements IDialogType {
     this.bookService.getBookById(bookId).subscribe({
       next: (res) => {
         if(res) {
-          this.data = res;
+          this.data = {
+            ...res,
+            categories: res.bookCategories?.map(cate => cate.categoryId)
+          };
           
           if(this.data.bookAuthors?.length) {
             this.authors = [...this.data.bookAuthors]
@@ -86,20 +89,26 @@ export class BookInfoEditComponent implements IDialogType {
   }
 
   addAccount() {
-    const modalRef = this.modalService.open(AuthorInfoEditComponent, {
-      size: 'md',
+    const modalRef = this.modalService.open(BookAuthorEditComponent, {
+      size: 'xl',
       centered: true,
       backdrop: 'static'
     })
 
-    modalRef.componentInstance.fields = AuthorDetailFields();
-    modalRef.componentInstance.addAuthorToBook = true;
-    modalRef.result.then((res: IAuthor) => this.authors.push(
+    modalRef.result.then((res) => this.authors.push(
       { 
         authorId: res.id,
         author: {...res} 
       }
     ));
+    modalRef.result.then((res: IAuthor[]) => {
+      this.authors = res.map(i => {
+        return {
+          authorId: i.id,
+          author: {...i}
+        }
+      })
+    });
   }
 
   uploadFile(event: {files: File[]}, uploader: FileUpload) {
@@ -109,8 +118,6 @@ export class BookInfoEditComponent implements IDialogType {
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
         // Will print the base64 here.
-        console.log(fileReader.result);
-        
         this.bookImage.push({
           base64: fileReader.result as string,
           file: { fileName: file.name }
@@ -121,7 +128,8 @@ export class BookInfoEditComponent implements IDialogType {
   }
 
   removeFile(fileId: string) {
-
+    console.log(fileId)
+    this.bookImage = this.bookImage.filter(file => file.id !== fileId);
   }
 
   submit() {
@@ -136,9 +144,10 @@ export class BookInfoEditComponent implements IDialogType {
       this.bookService.save(bookModel).subscribe({
         next: (res) => {
           this._toastService.show(MessageType.success, 'Add Book successfully');
+          this.close();
         },
         error: (err: HttpErrorResponse) => {
-          this._toastService.show(MessageType.success, err.error?.detail);
+          this._toastService.show(MessageType.error, err.error?.detail);
         }
       })
     }

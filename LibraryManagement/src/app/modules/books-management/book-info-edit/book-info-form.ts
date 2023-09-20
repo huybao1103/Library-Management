@@ -17,10 +17,11 @@ export function BookDetailFields(): FormlyFieldConfig[] {
           },
           {
             className: 'col-6',
-            key: 'category',
+            key: 'categories',
             type: FORMLY_SELECT.name,
             templateOptions: {
-              label: 'Category',
+              label: 'Categories',
+              multiple: true,
               required: true
             },
             expressions: {

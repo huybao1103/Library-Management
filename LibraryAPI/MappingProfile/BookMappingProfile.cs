@@ -10,14 +10,20 @@ namespace LibraryAPI.MappingProfile
         public BookMappingProfile()
         {
             CreateMap<BookRequest, Book>();
+            CreateMap<Book, BookRequest>()
+                .ForMember(request => request.Categories, opt => opt.MapFrom(src => src.BookCategories.Select(item => item.CategoryId)));
 
             CreateMap<Book, BookModel>();
             CreateMap<Book, BookBasicInfoModel>();
 
             CreateMap<BookAuthor, BookAuthorModel>();
+            CreateMap<BookAuthorModel, BookAuthor>();
 
             CreateMap<BookImage, BookImageModel>();
             CreateMap<BookImageModel, BookImage>();
+
+            CreateMap<BookCategory, BookCategoryModel>();
+            CreateMap<BookCategoryModel, BookCategory>();
         }
     }
 }

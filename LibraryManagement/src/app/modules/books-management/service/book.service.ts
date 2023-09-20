@@ -27,4 +27,8 @@ export class BookService {
   save(data: IBookSave) {
     return this.httpService.save<IBookSave>({ controller: 'Books', data, op: 'author-info'});
   }
+
+  delete(id: string) {
+    return this.httpService.delete({ controller: 'Books' }, id);
+  }
 }

@@ -11,8 +11,6 @@ public partial class Book
 
     public string? PublishYear { get; set; }
 
-    public Guid Category { get; set; }
-
     public DateTime? InputDay { get; set; }
 
     public virtual ICollection<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();

@@ -11,7 +11,7 @@ export function AuthorDetailFields(): FormlyFieldConfig[] {
             key: 'name',
             type: FORMLY_INPUT.name,
             templateOptions: {
-              label: 'Category Name',
+              label: 'Author Name',
               required: true
             }
           },
@@ -20,7 +20,17 @@ export function AuthorDetailFields(): FormlyFieldConfig[] {
             key: 'phone',
             type: FORMLY_INPUT.name,
             templateOptions: {
-              label: 'Description',
+              label: 'Author Phone',
+            },
+            expressionProperties: {
+            }
+          },
+          {
+            className: 'col-12',
+            key: 'mail',
+            type: FORMLY_INPUT.name,
+            templateOptions: {
+              label: 'Author Mail',
             },
             expressionProperties: {
             }

@@ -69,10 +69,7 @@
                                                         <a href="" class="dropdown-link" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a href="javascript:" class="dropdown-item" (click)="editItem(book.id || '')">View Details</a>
-                                                            <a href="#" class="dropdown-item">Share</a>
-                                                            <a href="#" class="dropdown-item">Download</a>
-                                                            <a href="#" class="dropdown-item">Rename</a>
-                                                            <a href="#" class="dropdown-item">Delete</a>
+                                                            <a href="javascript:" class="dropdown-item" (click)="deleteItem(book.id || '')">Delete</a>
                                                         </div>
                                                     </div>
                                                     <div *ngIf="book.bookImages?.length">
@@ -87,9 +84,11 @@
 
                                                     <div class="card-body">
                                                         <h6><a href="">{{book.name}}</a></h6>
-                                                        <span>12mb</span>
+                                                        <span>{{book.authorName}} </span>
                                                     </div>
-                                                    <div class="card-footer">{{book.authorName}}</div>
+                                                    <div class="card-footer">
+                                                        <span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
