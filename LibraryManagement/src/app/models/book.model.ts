@@ -1,4 +1,5 @@
 import { IAuthor } from "./author.model";
+import { ICategories } from "./categories.model";
 import { UploadFile } from "./uploadFile.model";
 
 export interface IBook {
@@ -6,10 +7,10 @@ export interface IBook {
     name: string;
     publishYear: string;
     inputDay?: string;
-    category: string;
     bookAuthors?: IBookAuthor[];
     authorName?: string;
     bookImages?: IBookImage[];
+    bookCategories?: IBookCategories[];
 }
 
 export interface IBookAuthor {
@@ -22,6 +23,7 @@ export interface IBookAuthor {
 export interface IBookSave extends IBook {
     authors?: string[];
     publishers?: string[];
+    categories?: string[];
 }
 
 export interface IBookImage {
@@ -31,4 +33,11 @@ export interface IBookImage {
     bookId?: string;
     base64: string;
     file: UploadFile;
+}
+
+export interface IBookCategories {
+    id: string;
+    categoryId: string;
+    bookId: string;
+    category: ICategories;
 }
