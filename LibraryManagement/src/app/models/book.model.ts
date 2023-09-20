@@ -9,6 +9,7 @@ export interface IBook {
     inputDay?: string;
     bookAuthors?: IBookAuthor[];
     authorName?: string;
+    category?: string;
     bookImages?: IBookImage[];
     bookCategories?: IBookCategories[];
 }

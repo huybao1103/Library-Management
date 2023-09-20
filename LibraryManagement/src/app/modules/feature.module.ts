@@ -21,6 +21,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { SideBarComponent } from '../layout/side-bar/side-bar.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CategoryListComponent } from './books-management/category-list/category-list.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     BookInfoEditComponent,
     AuthorsManagementComponent,
     AuthorInfoEditComponent,
-    SideBarComponent
+    SideBarComponent,
+    CategoryListComponent
   ],
   imports: [
     CommonModule,
