@@ -22,6 +22,7 @@ import { SideBarComponent } from '../layout/side-bar/side-bar.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
+import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CategoryListComponent } from './books-management/category-list/category
     AuthorsManagementComponent,
     AuthorInfoEditComponent,
     SideBarComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    CategoryInfoEditComponent
   ],
   imports: [
     CommonModule,
