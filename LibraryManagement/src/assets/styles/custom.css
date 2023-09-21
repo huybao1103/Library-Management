@@ -1,4 +1,7 @@
 /* General */
+.bg-global {
+    background-color: #FF7849;
+}
 
 /* Header */
 .header {
@@ -58,4 +61,10 @@
 .confirmDialog {
     width: 40vw;
     z-index: 9999 !important;
+}
+
+/* PrimeNG DateTime Picker */
+.p-datepicker .p-datepicker-buttonbar, 
+.p-datepicker .p-datepicker-header {
+    padding: 0;
 }

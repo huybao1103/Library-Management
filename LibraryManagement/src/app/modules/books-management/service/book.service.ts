@@ -21,10 +21,14 @@ export class BookService {
   }
 
   getCategoriesOption() {
-    return this.httpService.getOption<IComboboxOption>({ controller: 'Categories' });
+    return this.httpService.getOption<IComboboxOption[]>({ controller: 'Categories' });
   }
   
   save(data: IBookSave) {
     return this.httpService.save<IBookSave>({ controller: 'Books', data, op: 'author-info'});
+  }
+
+  delete(id: string) {
+    return this.httpService.delete({ controller: 'Books' }, id);
   }
 }

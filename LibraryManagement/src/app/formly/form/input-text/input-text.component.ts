@@ -2,6 +2,7 @@ import { Component, EventEmitter, HostBinding, Input, Output, forwardRef } from 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { uniqueId } from 'lodash';
 import { INPUT_TEXT_TYPE } from 'src/app/enums/input-text.type';
+import { KeyFilterType } from 'src/app/enums/p-key-filter.type';
 
 @Component({
   selector: 'input-text',
@@ -36,10 +37,11 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() numberFormat!: string;
   @Input() calculated = false;
   @Input() showIcon = true;
+  @Input() keyFilter: KeyFilterType = KeyFilterType.text_number
 
   @Output() keyup: EventEmitter<any> = new EventEmitter<any>();
 
-  value: string = "";
+  value: any = "";
 
   @Input() disabled = false;
   formCls: string = "";

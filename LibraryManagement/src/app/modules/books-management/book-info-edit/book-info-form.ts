@@ -1,5 +1,6 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
-import { FORMLY_CHECKBOX, FORMLY_INPUT, FORMLY_SELECT } from "src/app/formly/formly.config";
+import { KeyFilterType } from "src/app/enums/p-key-filter.type";
+import { FORMLY_CHECKBOX, FORMLY_DATETIME_PICKER, FORMLY_INPUT, FORMLY_SELECT } from "src/app/formly/formly.config";
 
 export function BookDetailFields(): FormlyFieldConfig[] {
     return [
@@ -12,15 +13,16 @@ export function BookDetailFields(): FormlyFieldConfig[] {
             type: FORMLY_INPUT.name,
             templateOptions: {
               label: 'Book Name',
-              required: true
+              required: true,
             }
           },
           {
             className: 'col-6',
-            key: 'category',
+            key: 'categories',
             type: FORMLY_SELECT.name,
             templateOptions: {
-              label: 'Category',
+              label: 'Categories',
+              multiple: true,
               required: true
             },
             expressions: {
@@ -30,9 +32,11 @@ export function BookDetailFields(): FormlyFieldConfig[] {
           {
             className: 'col-6',
             key: 'inputDay',
-            type: FORMLY_INPUT.name,
+            type: FORMLY_DATETIME_PICKER.name,
             templateOptions: {
               label: 'Input Day',
+              showIcon: true,
+              showButtonBar: true
             },
           },
           {
@@ -41,6 +45,7 @@ export function BookDetailFields(): FormlyFieldConfig[] {
             type: FORMLY_INPUT.name,
             templateOptions: {
               label: 'Publish Year',
+              keyFilter: KeyFilterType.int
             },
             expressions: {
               'props.options': "formState.optionList.author"

@@ -34,11 +34,13 @@ namespace LibraryAPI.Controllers
         {
             return Ok(_mapper.Map<List<BookModel>>
                 (
-                    _context.Books
+                     _context.Books
                     .Include(a => a.BookAuthors)
                         .ThenInclude(a => a.Author)
                     .Include(a => a.BookImages)
                         .ThenInclude(a => a.File)
+                    .Include(a => a.BookCategories)
+                        .ThenInclude(a => a.Category)
                 ));
         }
 
@@ -50,12 +52,7 @@ namespace LibraryAPI.Controllers
           {
               return NotFound();
           }
-            var book = await _context.Books
-                .Include(a => a.BookAuthors)
-                    .ThenInclude(a => a.Author)
-                .Include(a => a.BookImages)
-                    .ThenInclude(a => a.File)
-            .FirstOrDefaultAsync(book => book.Id == id);
+            var book = GetBookByIdAsync(id);
 
             if (book == null)
             {
@@ -69,7 +66,7 @@ namespace LibraryAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("save")]
         [PubSub(PubSubConstas.AUTHOR_INFO)]
-        public async Task<ActionResult<Book>> PostBook(BookRequest bookModel)
+        public async Task<ActionResult<BookModel>> PostBook(BookRequest bookModel)
         {
             if (_context.Books == null)
             {
@@ -77,20 +74,30 @@ namespace LibraryAPI.Controllers
             }
             RequestSaveBookValidate(bookModel);
 
-            Book book = _mapper.Map<Book>(bookModel);
-
+            Book? book;
             if (bookModel.Id == Guid.Empty)
             {
-                book.BookAuthors = await UpdateBookAuthorAsync(book, bookModel);
-                book.BookCategories = await UpdateBookCategoriesAsync(book, bookModel);
-                book.BookPublishers = await UpdateBookPublishersAsync(book, bookModel);
+                book = _mapper.Map<Book>(bookModel);
+
+                book.BookAuthors = await AddBookAuthorAsync(book, bookModel);
+                book.BookCategories = await AddBookCategoriesAsync(book, bookModel);
+                book.BookPublishers = await AddBookPublishersAsync(book, bookModel);
                 //book.BookImages = await UpdateBookImagesAsync(book, bookModel);
 
                 _context.Books.Add(book);
+                //book = newBook;
             }   
+            else
+            {
+                book = GetBookByIdAsync(bookModel.Id);
+
+                await UpdateBookRequest(book, bookModel);
+                book = _mapper.Map(bookModel, book);
+                //book = existingBook;
+            }
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            return CreatedAtAction("GetBook", new { id = book.Id }, _mapper.Map<BookModel>(book));
         }
 
         // DELETE: api/Books/5
@@ -102,11 +109,18 @@ namespace LibraryAPI.Controllers
             {
                 return NotFound();
             }
-            var book = await _context.Books.FindAsync(id);
+            var book = GetBookByIdAsync(id);
             if (book == null)
             {
                 return NotFound();
             }
+
+            // Refactor later
+            book.BookPublishers.Clear();
+            book.BookAuthors.Clear();
+            book.BookImages.Clear();
+            book.BookCategories.Clear();
+            book.BookVersions.Clear();
 
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
@@ -141,52 +155,85 @@ namespace LibraryAPI.Controllers
             }
         }
 
-        private async Task<ICollection<BookAuthor>> UpdateBookAuthorAsync(Book book, BookRequest bookModel)
+        private Task<ICollection<BookAuthor>> AddBookAuthorAsync(Book book, BookRequest bookModel)
         {
             var bookAuthors = bookModel.Authors?.Select(authorId => new BookAuthor
             {
                 AuthorId = authorId,
                 BookId = book.Id
             }).ToList();
-            return bookAuthors;
+            return Task.FromResult<ICollection<BookAuthor>>(bookAuthors);
         }
 
-        private async Task<ICollection<BookPublisher>> UpdateBookPublishersAsync(Book book, BookRequest bookModel)
+        private Task<ICollection<BookPublisher>> AddBookPublishersAsync(Book book, BookRequest bookModel)
         {
             var bookPublishers = bookModel.Publishers?.Select(publisherId => new BookPublisher
             {
                 PublisherId = publisherId,
                 BookId = book.Id
             }).ToList();
-            return bookPublishers;
+            return Task.FromResult<ICollection<BookPublisher>>(bookPublishers);
         }
 
-        private async Task<ICollection<BookCategory>> UpdateBookCategoriesAsync(Book book, BookRequest bookModel)
+        private Task<ICollection<BookCategory>> AddBookCategoriesAsync(Book book, BookRequest bookModel)
         {
             var bookCategories = bookModel.Categories?.Select(categoryId => new BookCategory
             {
                 CategoryId = categoryId,
                 BookId = book.Id
             }).ToList();
-            return bookCategories;
+            return Task.FromResult<ICollection<BookCategory>>(bookCategories);
         }
 
-        private async Task<ICollection<BookImage>> UpdateBookImagesAsync(Book book, BookRequest bookModel)
-        {
-            ICollection<BookImage>? bookImages = null;
-            foreach(BookImageModel fileModel in bookModel.BookImages)
-            {
-                UploadFile file = _mapper.Map<UploadFileModel, UploadFile>(fileModel.File);
-                _context.UploadFiles.Add(file);
+        //private async Task<ICollection<BookImage>> UpdateBookImagesAsync(Book book, BookRequest bookModel)
+        //{
+        //    ICollection<BookImage>? bookImages = null;
+        //    foreach (BookImageModel fileModel in bookModel.BookImages)
+        //    {
+        //        UploadFile file = _mapper.Map<UploadFileModel, UploadFile>(fileModel.File);
+        //        _context.UploadFiles.Add(file);
+        //    }
+        //    return bookImages;
+        //}
 
-                bookImages.Add(new BookImage
-                {
-                    FileId = file.Id,
-                    BookId = book.Id,
-                    Base64 = fileModel.Base64
-                });
+        private async Task<Book> UpdateBookRequest(Book book, BookRequest bookModel)
+        {
+            if(book.BookCategories.Count > 0)
+            {
+                book.BookCategories.Clear();
             }
-            return bookImages;
+            book.BookCategories = await AddBookCategoriesAsync(book, bookModel);
+
+            if(book.BookAuthors.Count > 0)
+            {
+                book.BookAuthors.Clear();
+            }
+            book.BookAuthors = await AddBookAuthorAsync(book, bookModel);
+
+            if(book.BookPublishers.Count > 0)
+            {
+                book.BookPublishers.Clear();
+            }
+            book.BookPublishers = await AddBookPublishersAsync(book, bookModel);
+
+            if(book.BookImages.Count > 0)
+            {
+                book.BookImages.Clear();
+            }
+
+            return book;
+        }
+
+        private Book? GetBookByIdAsync(Guid bookId)
+        {
+            return _context.Books
+                .Include(a => a.BookAuthors)
+                    .ThenInclude(a => a.Author)
+                .Include(a => a.BookImages)
+                    .ThenInclude(a => a.File)
+                .Include(a => a.BookCategories)
+                    .ThenInclude(a => a.Category)
+            .FirstOrDefault(book => book.Id == bookId);
         }
     }
 }

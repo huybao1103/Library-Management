@@ -7,11 +7,11 @@ public partial class BookCategory
 {
     public Guid Id { get; set; }
 
-    public Guid CategoryId { get; set; }
+    public Guid? CategoryId { get; set; }
 
-    public Guid BookId { get; set; }
+    public Guid? BookId { get; set; }
 
-    public virtual Book Book { get; set; } = null!;
+    public virtual Book? Book { get; set; }
 
-    public virtual Category Category { get; set; } = null!;
+    public virtual Category? Category { get; set; }
 }

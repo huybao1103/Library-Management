@@ -13,11 +13,11 @@ public partial class BorrowHistory
 
     public byte? Status { get; set; }
 
-    public Guid BookId { get; set; }
+    public Guid? BookId { get; set; }
 
-    public Guid StudentCardId { get; set; }
+    public Guid? StudentCardId { get; set; }
 
-    public virtual Book Book { get; set; } = null!;
+    public virtual Book? Book { get; set; }
 
-    public virtual StudentCard StudentCard { get; set; } = null!;
+    public virtual StudentCard? StudentCard { get; set; }
 }
