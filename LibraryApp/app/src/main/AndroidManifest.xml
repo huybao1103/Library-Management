@@ -2,38 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.librarydemo">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login"></activity>
-        <activity android:name=".NewPassword" />
         <activity
-            android:name=".CodeForgotPassword"
-           />
+            android:name=".Sample.SampleActivity"
+            android:exported="false" />
+        <activity android:name=".Login" />
+        <activity android:name=".NewPassword" />
+        <activity android:name=".CodeForgotPassword" />
         <activity
             android:name=".ForgotPassword"
             android:parentActivityName=".Login" />
-        <activity
-            android:name=".UpdateBook"
-            />
-        <activity
-            android:name=".ArrayLog"
-             />
-        <activity
-            android:name=".ChangPass"
-             />
-        <activity
-            android:name=".UserInformation" />
-        <activity
-            android:name=".LogInformation"
-            />
-        <activity
-            android:name=".BookInformation"
-             />
+        <activity android:name=".UpdateBook" />
+        <activity android:name=".ArrayLog" />
+        <activity android:name=".ChangPass" />
+        <activity android:name=".UserInformation" />
+        <activity android:name=".LogInformation" />
+        <activity android:name=".BookInformation" />
         <activity
             android:name=".LayOutAndLisView"
             android:theme="@style/AppTheme.NoActionBar" />
