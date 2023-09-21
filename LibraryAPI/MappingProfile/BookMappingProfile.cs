@@ -20,7 +20,8 @@ namespace LibraryAPI.MappingProfile
             CreateMap<BookAuthorModel, BookAuthor>();
 
             CreateMap<BookImage, BookImageModel>();
-            CreateMap<BookImageModel, BookImage>();
+            CreateMap<BookImageModel, BookImage>()
+                .ForMember(x => x.Id, opt => opt.Ignore());
 
             CreateMap<BookCategory, BookCategoryModel>();
             CreateMap<BookCategoryModel, BookCategory>();

@@ -9,7 +9,8 @@ namespace LibraryAPI.MappingProfile
         public UploadFileMappingProfile() 
         {
             CreateMap<UploadFile, UploadFileModel>();
-            CreateMap<UploadFileModel, UploadFile>();
+            CreateMap<UploadFileModel, UploadFile>()
+                .ForMember(x => x.Id, opt => opt.Ignore());
         }
     }
 }
