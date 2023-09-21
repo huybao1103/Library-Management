@@ -41,6 +41,7 @@ export class BookInfoEditComponent implements IDialogType {
   data: IBookSave = {
     name: '',
     publishYear: '',
+    inputDay: new Date().toISOString()
   };
 
   authors: IBookAuthor[] = [];
@@ -133,15 +134,16 @@ export class BookInfoEditComponent implements IDialogType {
   }
 
   submit() {
+    console.log(this.form.value)
     if(this.data) {
-      var bookModel: IBookSave = this.data;
-      bookModel = {
-        ...bookModel,
+      this.data = {
+        ...this.data,
         authors: this.authors.map(a => a.authorId ? a.authorId : ''),
         bookImages: this.bookImage
-      };
+
+      }
       
-      this.bookService.save(bookModel).subscribe({
+      this.bookService.save(this.data).subscribe({
         next: (res) => {
           this._toastService.show(MessageType.success, 'Add Book successfully');
           this.close();

@@ -59,3 +59,9 @@
     width: 40vw;
     z-index: 9999 !important;
 }
+
+/* PrimeNG DateTime Picker */
+.p-datepicker .p-datepicker-buttonbar, 
+.p-datepicker .p-datepicker-header {
+    padding: 0;
+}

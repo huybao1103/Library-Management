@@ -1,5 +1,5 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
-import { FORMLY_CHECKBOX, FORMLY_INPUT, FORMLY_SELECT } from "src/app/formly/formly.config";
+import { FORMLY_CHECKBOX, FORMLY_DATETIME_PICKER, FORMLY_INPUT, FORMLY_SELECT } from "src/app/formly/formly.config";
 
 export function BookDetailFields(): FormlyFieldConfig[] {
     return [
@@ -31,9 +31,11 @@ export function BookDetailFields(): FormlyFieldConfig[] {
           {
             className: 'col-6',
             key: 'inputDay',
-            type: FORMLY_INPUT.name,
+            type: FORMLY_DATETIME_PICKER.name,
             templateOptions: {
               label: 'Input Day',
+              showIcon: true,
+              showButtonBar: true
             },
           },
           {
