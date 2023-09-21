@@ -1,4 +1,7 @@
 /* General */
+.bg-global {
+    background-color: #FF7849;
+}
 
 /* Header */
 .header {

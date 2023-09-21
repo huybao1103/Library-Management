@@ -21,7 +21,7 @@ export class BookService {
   }
 
   getCategoriesOption() {
-    return this.httpService.getOption<IComboboxOption>({ controller: 'Categories' });
+    return this.httpService.getOption<IComboboxOption[]>({ controller: 'Categories' });
   }
   
   save(data: IBookSave) {

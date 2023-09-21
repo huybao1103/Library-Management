@@ -73,8 +73,6 @@ export class BookAuthorEditComponent implements IDialogType, OnInit {
   }
 
   applyFilterGlobal($event: any, stringVal: string) {
-    console.log($event, stringVal)
-    console.log(this.dt)
     this.dt?.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
