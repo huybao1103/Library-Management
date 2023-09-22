@@ -10,6 +10,8 @@ import { AuthorInfoEditComponent } from './authors-management/author-info-edit/a
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
 
+
+
 const routes: Routes = [
   {
     path: '',
@@ -35,10 +37,6 @@ const routes: Routes = [
         data: { component: BookInfoEditComponent }
       },
       {
-        path: 'category',
-        component: CategoryListComponent
-      },
-      {
         path: 'author',
         component: AuthorsManagementComponent
       },
@@ -49,10 +47,14 @@ const routes: Routes = [
         data: { component: AuthorInfoEditComponent }
       },
       {
+        path: 'category',
+        component: CategoryListComponent
+      },
+      {
         path: 'category/edit/:id',
         component: ModalbaseComponent,
         outlet: 'modal',
-        data: { component: CategoryInfoEditComponent}
+        data: { component: CategoryInfoEditComponent }
       },
     ]
   },

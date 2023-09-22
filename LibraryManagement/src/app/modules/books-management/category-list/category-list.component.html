@@ -1,35 +1,57 @@
-
-<h4 class="m-3"style="font-size: 25px;"><strong>Categories</strong></h4>
-<div class="m-3"style="background-color: #F3F4F6;">
-    <div class="p-3 row" style="background-color: white;">
-        <input type="text" class="rounded-2 col-8 border" placeholder="Name">
-        <button class="btn-primary text-white rounded-2 p-3 col-2" style="margin-left: 20px;">
-            <i class="fa fa-search"></i>
-            Search
-        </button>
-        <button class="btn-primary text-white rounded-2 p-3 w-auto col-2" (click)="edit('')" style="margin-left: auto;">
-            <i class="fa fa-plus"></i>
-            Add Category
-        </button>
-    </div>   
-    <div>
-        <p-table [customSort]="true" [tableStyle]="{'min-width': '60rem'}">
+<div *ngIf="category$ | async as Categories"> 
+        <p-table
+            #dt
+            [value]="Categories"
+            [rows]="8"
+            [paginator]="true"
+            [globalFilterFields]="['name']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true"
+        >
+            <ng-template pTemplate="caption">
+                <div class="justify-content-between align-items-center">
+                    <h3 class=>Categories List</h3>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="p-input-icon-left">
+                            <i class="la la-search"></i>
+                            <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search..." style="width: 30rem;"/>
+                        </div>
+                        <div>
+                            <button pButton pRipple label="New Category" icon="la la-plus" class="btn-primary" (click)="edit('')"></button>
+                            <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
             <ng-template pTemplate="header">
-                <tr style="color: aliceblue;">
-                    <th pSortableColumn="#" style="width:15%">#</th>
-                    <th pSortableColumn="name" style="width:20%"><p-sortIcon field="name" style="margin-right: 20px; color: red"></p-sortIcon>Name</th>
-                    <th pSortableColumn="description" style="width:45%"><p-sortIcon field="description" style="margin-right: 20px;"></p-sortIcon>Description</th>
-                    <th pSortableColumn="action" style="width:10%; text-align: center">Action <p-sortIcon field="action"></p-sortIcon></th>
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+                    <th pSortableColumn="action" style="min-width:10rem; text-align: center;">Action<p-sortIcon field="action"></p-sortIcon></th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-product >
+            <ng-template pTemplate="body" let-category of categories>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>
+                        <p-tableCheckbox [value]="category"></p-tableCheckbox>
+                    </td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                    <td style="text-align: center;">
+                        <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(category.id)"></button>
+                        <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteCategory(category)"></button>
+                    </td>
+                    <!-- deleteCategory(category) -->
                 </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">In total there are {{ Categories ? Categories.length : 0 }} Categories.</div>
             </ng-template>
         </p-table>
     </div>
-</div>

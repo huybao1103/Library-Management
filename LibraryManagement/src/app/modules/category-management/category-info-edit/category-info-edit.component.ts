@@ -17,6 +17,10 @@ import { CategoryService } from '../service/category.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CategoryDetailFields } from './category-info-form';
+import { map, tap } from 'rxjs';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { HttpService } from 'src/app/services/http-service.service';
+import { CategorysDetailFields } from '../../books-management/category-list/category-info-edit/category-info-form';
 
 @Component({
   selector: 'app-category-info-edit',
@@ -27,13 +31,15 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
   uniqueId: string = uniqueId('category-info');
   title: string = '';
 
+  addCategory: boolean = false;
+
   fields: FormlyFieldConfig[] = [];
   form = new FormGroup({});
   options: FormlyFormOptions = {
     formState: {
       optionList: {
         categories: of(),
-        books: this.categoryService.getBookOption()
+        category: this.getCategoryOption(),
       }
     }
   };
@@ -43,26 +49,49 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
     description: '',
   };
 
-  books: IBook[] = [];
+  category: ICategory[] = [];
 
   constructor(
     private modalService: NgbModal,
     private modal: NgbActiveModal,
     private _toastService: ToastService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private confirmDialogService: ConfirmDialogService,
+    private httpService: HttpService,
   ) {
     this.fields = CategoryDetailFields();
   }
   ngOnInit(): void {
-    
+      // this.submit()
   }
   
   dialogInit(para: {id: string}): void {
     this.title = "Add Category";
     if (para.id) {
       this.title = "Edit Category Information";
+      this.getCategoryById(para.id);
+    } else {
+      this.fields = CategoryDetailFields();
     }
   }
+
+  getCategoryOption() {
+    return this.categoryService.getCategoryOption().pipe(map(res => res))
+  }
+
+  
+  getCategoryById(id: string) {
+    this.httpService.getById<ICategory>({controller: 'Categories'}, id).subscribe({
+      next: (res) => {
+         if(res != undefined)
+          this.data = res;
+
+          console.log(this.data);
+          this.fields = CategorysDetailFields();
+      }
+    })
+  }
+
 
   addAccount() {
     const modalRef = this.modalService.open(CategoryInfoEditComponent, {
@@ -72,28 +101,38 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
     })
 
     modalRef.componentInstance.fields = BookDetailFields();
-    modalRef.componentInstance.addBookToCategory = true;
-    modalRef.result.then((res) => this.books.push(res));
+    modalRef.componentInstance.addAuthorToBook = true;
+    modalRef.result.then((res) => this.category.push(res));
   }
 
   submit() {
-    if(this.data) {
-      var categoryModel: ICategorySave = this.data;
-      categoryModel = {
-        ...categoryModel,
-        bookCategory: this.books.map(a => a.id ? a.id : '')
+    this.httpService.save({ controller: 'Categories', data: this.data}).subscribe({
+      next: (resp) => {
+        console.log(resp);
+        this._toastService.show(MessageType.success, 'Category info save success');
+        this.close();
+      },
+      error: (err: HttpErrorResponse) => {
+        this._toastService.show(MessageType.error, err.error?.detail);
       }
-      this.categoryService.save(categoryModel).subscribe({
-        next: (res) => {
-          this._toastService.show(MessageType.success, 'Add Category successfully');
-        },
-        error: (err: HttpErrorResponse) => {
-          this._toastService.show(MessageType.error, err.error?.detail);
-        }
-      })
-    }
+    })
+    console.log(this.data.id);
   }
 
   close() { this.modal.close() }
+
+  private addCategoryConfirmed() {
+    this.categoryService.save(this.data).subscribe({
+      next: (resp) => {
+        console.log(resp);
+        this._toastService.show(MessageType.success, 'Category info save success');
+
+        this._toastService ? this.modal.close(resp) : this.close();
+      },
+      error: (err: HttpErrorResponse) => {
+        this._toastService.show(MessageType.error, err.error?.detail);
+      }
+    })    
+  }
 }
 

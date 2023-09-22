@@ -2,9 +2,11 @@ export interface ICategory{
     id?: string;
     name: string;
     description: string;
+    // categories?: string[];
+   
+    // bookCategoryID?: string[];
 }
 
 export interface ICategorySave extends ICategory{
-    bookCategory?: string[];
-    bookCategoryID?: string[];
+    Category?: string[];
 }
