@@ -8,13 +8,37 @@
     <form [formGroup]="form">
       <formly-form [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
     </form>
-    <div class="form-group row  position-relative">
-        <label class="col-lg-12 control-label mb-2">Attach Book Image(s)</label>
-        <div class="col-lg-12">
-            
-            <input type="file" class="form-control" data-buttontext="Choose File" data-icon="false" data-classbutton="btn btn-default" data-classinput="form-control inline input-s" name="receipt">
-        </div>
-    </div>
+    <div>
+        <label class="form-label">Upload Files</label>
+        <p-fileUpload
+          #fileUpload
+          (uploadHandler)="uploadFile($event, fileUpload)"
+          [customUpload]="true"
+          [auto]="true"
+          [multiple]="true"
+          [showCancelButton]="false"
+          accept=".jpeg,.png,.jpg,"
+          [maxFileSize]="2000000"
+          chooseLabel="Choose File"
+          chooseIcon=" "
+          styleClass="custom-upload"
+        >
+          <ng-template pTemplate="content">
+            <ul *ngIf="bookImage.length">
+              <li *ngFor="let file of bookImage">
+                <a [href]="file.base64" [download]="file.file.fileName">
+                  <i class="fa fa-download me-2"></i>
+                  <span class="text-black">{{ file.file.fileName }}</span>
+                </a>
+                <i class="fa fa-trash text-danger ms-2" style="cursor: pointer;" (click)="removeFile(file.id || '')"></i>
+              </li>
+            </ul>
+          </ng-template>
+          <!-- <ng-template let-file pTemplate="file">
+            <p>{{ file.name }} <i class="fa fa-spinner ms-2"></i></p>
+          </ng-template> -->
+        </p-fileUpload>
+      </div>
 
     <p-tabView>
         <p-tabPanel header="Author(s)">
@@ -25,7 +49,12 @@
                         Add author
                     </button>
                 </div>
-                <p-table [value]="authors">
+                <p-table 
+                    [value]="authors"
+                    [paginator]="true"
+                    [rows]="5"
+                    [rowsPerPageOptions]="[5, 10, 25, 50]"
+                >
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Name</th>
@@ -34,11 +63,11 @@
                             <th></th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-author>
+                    <ng-template pTemplate="body" let-bookAuthor>
                         <tr>
-                            <td>{{author.name}}</td>
-                            <td>{{author.mail}}</td>
-                            <td>{{author.phone}}</td>
+                            <td>{{bookAuthor.author.name}}</td>
+                            <td>{{bookAuthor.author.mail}}</td>
+                            <td>{{bookAuthor.author.phone}}</td>
                             <td><i class="fa fa-trash"></i></td>
                         </tr>
                     </ng-template>
@@ -53,7 +82,12 @@
                         Add publisher
                     </button>
                 </div>
-                <p-table [value]="publishers">
+                <p-table 
+                    [value]="publishers" 
+                    [paginator]="true"
+                    [rows]="5"
+                    [rowsPerPageOptions]="[5, 10, 25, 50]"
+                >
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Name</th>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d6edfb"
+    tools:context=".BookInformation">
+    <ImageView
+        android:id="@+id/tt_img_Anh"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="15dp"/>
+    <TextView
+        android:id="@+id/tt_TenSach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tên Sách"
+        android:textSize="40dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/tt_img_Anh"/>
+
+    <TextView
+        android:id="@+id/tt_TheLoai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="210dp"
+        android:text="Thể Loại:"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tt_TacGia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tt_TheLoai"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="30dp"
+        android:text="Tác Giả:"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tt_NamXB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tt_TacGia"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="30dp"
+        android:text="Năm XB:"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tt_SoLuong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tt_NamXB"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="30dp"
+        android:text="Số Lượng:"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <Button
+            android:id="@+id/tt_btMuon"
+            android:layout_marginTop="430dp"
+            android:layout_marginLeft="200dp"
+            android:background="#FFEB3B"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:text="Mượn"
+            android:textStyle="bold"
+            android:textSize="35dp"
+            android:textColor="#1D43E7" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tt_MoTa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mô Tả"
+        android:textSize="20dp"
+        android:layout_below="@id/rl"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"/>
+</RelativeLayout>
