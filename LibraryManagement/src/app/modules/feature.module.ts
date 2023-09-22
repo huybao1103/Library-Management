@@ -32,10 +32,11 @@ import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DockModule } from 'primeng/dock';
 import { CategoryManagementComponent } from './category-management/category-management.component';
+import { ConfirmDialogService } from '../services/confirm-dialog.service';
 
 
 @NgModule({
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, ConfirmDialogService],
   declarations: [
     MainPageComponent,
     HeaderComponent,
@@ -70,7 +71,6 @@ import { CategoryManagementComponent } from './category-management/category-mana
     FileUploadModule,
     ToolbarModule,
     InputTextModule,
-    ConfirmDialogModule
   ]
 })
 export class FeatureModule { }
