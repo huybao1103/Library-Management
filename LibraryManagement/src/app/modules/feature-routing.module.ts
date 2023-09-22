@@ -7,6 +7,8 @@ import { ModalbaseComponent } from '../layout/modalbase/modalbase.component';
 import { BookInfoEditComponent } from './books-management/book-info-edit/book-info.edit.component';
 import { AuthorsManagementComponent } from './authors-management/authors-management.component';
 import { AuthorInfoEditComponent } from './authors-management/author-info-edit/author-info-edit.component';
+import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
+import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
 
@@ -56,6 +58,16 @@ const routes: Routes = [
         outlet: 'modal',
         data: { component: CategoryInfoEditComponent }
       },
+      {
+        path: 'publisher',
+        component: PublishersManagementComponent
+      },
+      {
+        path: 'publisher/edit/:id',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: PublisherInfoEditComponent }
+      }
     ]
   },
 ];
