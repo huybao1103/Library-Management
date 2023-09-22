@@ -7,9 +7,9 @@
             <i class="fa fa-search"></i>
             Search
         </button>
-        <button class="btn-primary text-white rounded-2 p-3 w-auto col-2" style="margin-left: auto;">
+        <button class="btn-primary text-white rounded-2 p-3 w-auto col-2" (click)="edit('')" style="margin-left: auto;">
             <i class="fa fa-plus"></i>
-            Add author
+            Add Category
         </button>
     </div>   
     <div>
@@ -22,7 +22,7 @@
                     <th pSortableColumn="action" style="width:10%; text-align: center">Action <p-sortIcon field="action"></p-sortIcon></th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-product>
+            <ng-template pTemplate="body" let-product >
                 <tr>
                     <td></td>
                     <td></td>

@@ -71,7 +71,7 @@ namespace LibraryAPI.Controllers
             RequestSaveCategoryValidate(categoryRequestModel);
 
             CategoryModel? categoryModel;
-            if(categoryRequestModel.Id == Guid.Empty)
+            if(!categoryRequestModel.Id.HasValue)
             {
                 var newCategory = _mapper.Map<Category>(categoryRequestModel);
                 _context.Categories.Add(newCategory);

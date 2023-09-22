@@ -1,24 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpService } from 'src/app/services/http-service.service';
-import { AuthorService } from '../../authors-management/service/author.service';
-import { TableModule } from 'primeng/table';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ICategory } from 'src/app/models/category.model';
+import { HttpService } from 'src/app/services/http-service.service';
+import { Observable } from 'rxjs';
 import { CategoryService } from './service/category.service';
+
 @Component({
-  selector: 'app-category-list',
-  templateUrl: './category-list.component.html',
-  styleUrls: ['./category-list.component.css']
+  selector: 'app-category-management',
+  templateUrl: './category-management.component.html',
+  styleUrls: ['./category-management.component.css']
 })
-export class CategoryListComponent implements OnInit{
-  searchName = "";
+export class CategoryManagementComponent implements OnInit {
   categoryData: ICategory[] = [];
+  category$?: Observable<ICategory[] | null>;
+  categoryById: ICategory | undefined;
+
   constructor(
     private httpService: HttpService,
     private route: Router,
     private categoryService: CategoryService
   ) {
   }
+
   ngOnInit(): void {
     this.getData();
   }
@@ -59,5 +62,5 @@ export class CategoryListComponent implements OnInit{
     console.log('selected category id ' + id);
     this.route.navigate([{ outlets: { modal: ['category', 'edit', id] } }]);
   }
-  
+
 }

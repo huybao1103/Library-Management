@@ -1,0 +1,29 @@
+
+     <div class="row">
+        <div class="col-sm-12">
+            <div class="file-wrap">
+                <div class="file-sidebar">
+                    <div class="file-header justify-content-center">
+                        <span>Categories</span>
+                        <a href="javascript:void(0);" class="file-side-close"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="file-cont-wrap">
+                    <div class="file-cont-inner">
+                        <div class="file-cont-header">
+                            <span>Category Management</span>
+                            <div class="file-options">
+                                <a href="javascript:void(0);" class="btn-file" (click)="edit('')"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-left:15px" *ngFor="let category of categoryData">
+                <p class="col">{{category.id}}</p>
+                <p class="col">{{category.name}}</p>
+                <p class="col">{{category.description}}</p>
+            </div>
+        </div>
+    </div>
