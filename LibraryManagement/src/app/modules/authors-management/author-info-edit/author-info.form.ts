@@ -30,7 +30,7 @@ export function AuthorDetailFields(): FormlyFieldConfig[] {
             key: 'mail',
             type: FORMLY_INPUT.name,
             templateOptions: {
-              label: 'Author Mail'
+              label: 'Author Mail',
             },
             expressionProperties: {
             }

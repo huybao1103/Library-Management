@@ -36,6 +36,12 @@ export class SideBarComponent implements OnInit {
           code: 'book',
           icon: 'fa fa-book',
           route: 'book'
+        },
+        {
+          name: 'Categories',
+          code: 'book',
+          icon: 'la la-border-all',
+          route: 'category'
         }
       ]
     },

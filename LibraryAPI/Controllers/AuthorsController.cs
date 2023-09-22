@@ -1,6 +1,8 @@
-﻿using LibraryAPI.CustomException;
+﻿using AutoMapper;
+using LibraryAPI.CustomException;
 using LibraryAPI.Models;
 using LibraryAPI.PubSub;
+using LibraryAPI.ViewModels.Author;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,22 +13,23 @@ namespace LibraryAPI.Controllers
     public class AuthorsController : ControllerBase
     {
         private readonly LibraryManagementContext _context;
+        private readonly IMapper _mapper;
 
-        public AuthorsController(LibraryManagementContext context)
+        public AuthorsController(
+            LibraryManagementContext context,
+            IMapper mapper
+            )
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Authors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        public async Task<ActionResult<IEnumerable<AuthorModel>>> GetAuthors()
         {
-            if (_context.Authors == null)
-            {
-                return NotFound();
-            }
-            var temp = _context.Authors.ToList();
-            return await _context.Authors.ToListAsync();
+            var temp = await _context.Authors.ToListAsync();
+            return Ok(_mapper.Map<List<AuthorModel>>(temp));
         }
 
         // GET: api/Authors/5

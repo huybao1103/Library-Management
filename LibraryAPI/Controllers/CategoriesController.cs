@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LibraryAPI.Models;
 using LibraryAPI.PubSub;
+using LibraryAPI.CustomException;
+using LibraryAPI.RequestModels;
+using LibraryAPI.ViewModels.Book;
+using AutoMapper;
 
 namespace LibraryAPI.Controllers
 {
@@ -15,31 +19,36 @@ namespace LibraryAPI.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly LibraryManagementContext _context;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(LibraryManagementContext context)
+        public CategoriesController(
+            LibraryManagementContext context,
+            IMapper mapper
+            )
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategories()
         {
-          if (_context.Categories == null)
-          {
-              return NotFound();
-          }
-            return await _context.Categories.ToListAsync();
+            var result = await _context.Categories.ToListAsync();
+            return Ok( _mapper.Map<List<CategoryModel>>
+                (
+                    result
+                ));
         }
 
         // GET: api/Categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(Guid id)
+        [HttpGet("get-by-id/{id}")]
+        public async Task<ActionResult<CategoryModel>> GetCategory(Guid id)
         {
-          if (_context.Categories == null)
-          {
-              return NotFound();
-          }
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
             var category = await _context.Categories.FindAsync(id);
 
             if (category == null)
@@ -47,26 +56,40 @@ namespace LibraryAPI.Controllers
                 return NotFound();
             }
 
-            return category;
+            return  _mapper.Map<CategoryModel>(category);
         }
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        [HttpPost("save")]
+        public async Task<ActionResult<CategoryModel>> PostCategory(CategoryRequest categoryRequestModel)
         {
           if (_context.Categories == null)
           {
               return Problem("Entity set 'LibraryManagementContext.Categories'  is null.");
           }
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            RequestSaveCategoryValidate(categoryRequestModel);
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            CategoryModel? categoryModel;
+            if(!categoryRequestModel.Id.HasValue)
+            {
+                var newCategory = _mapper.Map<Category>(categoryRequestModel);
+                _context.Categories.Add(newCategory);
+                categoryModel = _mapper.Map<CategoryModel>(newCategory);
+            }
+            else
+            {
+                var category = await _context.Categories.FindAsync(categoryRequestModel.Id);
+                category = _mapper.Map(categoryRequestModel, category);
+                categoryModel = _mapper.Map<CategoryModel>(category);
+            }
+
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetCategory", new { id = categoryModel.Id }, categoryModel);
         }
 
         // DELETE: api/Categories/5
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
             if (_context.Categories == null)
@@ -100,6 +123,14 @@ namespace LibraryAPI.Controllers
         private bool CategoryExists(Guid id)
         {
             return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private void RequestSaveCategoryValidate(CategoryRequest categoryRequestModel)
+        {
+            if (_context.Categories.Any(a => a.Name == categoryRequestModel.Name && a.Id != categoryRequestModel.Id))
+            {
+                throw new CustomApiException(500, "This category name is existed.", "This book name is existed.");
+            }
         }
     }
 }

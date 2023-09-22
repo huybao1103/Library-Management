@@ -58,4 +58,6 @@ app.MapControllers();
 
 app.MapPubSub();
 
+app.UseStaticFiles();
+
 app.Run();

@@ -14,14 +14,14 @@ namespace LibraryAPI.ViewModels.Book
 
         public virtual ICollection<BookAuthorModel> BookAuthors { get; set; } = new List<BookAuthorModel>();
 
-        public virtual ICollection<BookCategory> BookCategories { get; set; } = new List<BookCategory>();
+        public virtual ICollection<BookCategoryModel> BookCategories { get; set; } = new List<BookCategoryModel>();
 
-        public virtual ICollection<BookImage> BookImages { get; set; } = new List<BookImage>();
+        public virtual ICollection<BookImageModel> BookImages { get; set; } = new List<BookImageModel>();
 
-        public virtual ICollection<BookPublisher> BookPublishers { get; set; } = new List<BookPublisher>();
+        //public virtual ICollection<BookPublisher> BookPublishers { get; set; } = new List<BookPublisher>();
 
-        public virtual ICollection<BookVersion> BookVersions { get; set; } = new List<BookVersion>();
+        //public virtual ICollection<BookVersion> BookVersions { get; set; } = new List<BookVersion>();
 
-        public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
+        //public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
     }
 }
