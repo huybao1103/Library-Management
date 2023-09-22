@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http-service.service';
-import { AuthorService } from '../../authors-management/service/author.service';
-import { TableModule } from 'primeng/table';
 import { ICategory } from 'src/app/models/category.model';
 import { CategoryService } from './service/category.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
@@ -13,6 +12,9 @@ import { CategoryService } from './service/category.service';
 export class CategoryListComponent implements OnInit{
   searchName = "";
   categoryData: ICategory[] = [];
+  category$?: Observable<ICategory[] | null>;
+  categoryById: ICategory[] | undefined;
+
   constructor(
     private httpService: HttpService,
     private route: Router,
@@ -24,36 +26,27 @@ export class CategoryListComponent implements OnInit{
   }
 
   getData() {
-    // /api/Categories
-    // this.categoryService.getAll().subscribe({
-    //   next: (resp) => {
-    //     if(resp)
-    //       this.categoryData = resp;
-
-    //     console.log(this.categoryById);
-    //   }
-    // })
-
-    // this.category$ = this.categoryService.getAll();
-    // const id = '173265c1-05d1-4c24-a686-c3c866b27a1a';
-    // this.httpService.getById<ICategory[]>({controller: 'Categories'},id).subscribe({
-    //   next: (resp) => {
-    //     if(resp)//check có dữ liệu hay không
-    //     {
-    //       this.categoryData = resp;
-    //       console.log(this.categoryById)
-    //     }
-    //   }
-    // });
-
-    this.categoryService.getAll().subscribe({
+    ///api/Categories
+    this.httpService.getAll<ICategory[]>({ controller: 'Categories' }).subscribe({
       next: (res) => {
-        if(res?.length)
+         if(res != undefined)
           this.categoryData = res;
           console.log(this.categoryData);
       }
     })
+
+
+    const id = 'ef923ad9-7bbe-411c-a46c-4ddc86285f1a';
+    this.httpService.getById<ICategory[]>({controller: 'Categories'}, id).subscribe({
+      next: (res) => {
+         if(res != undefined)
+          this.categoryById = res;
+          console.log(this.categoryById);
+      }
+    })
   }
+
+  
 
   edit(id?: string) {
     console.log('selected category id ' + id);

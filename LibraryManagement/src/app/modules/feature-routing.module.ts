@@ -8,7 +8,10 @@ import { BookInfoEditComponent } from './books-management/book-info-edit/book-in
 import { AuthorsManagementComponent } from './authors-management/authors-management.component';
 import { AuthorInfoEditComponent } from './authors-management/author-info-edit/author-info-edit.component';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
+
+import { CategoryManagementComponent } from './category-management/category-management.component';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
+
 
 const routes: Routes = [
   {
@@ -35,10 +38,6 @@ const routes: Routes = [
         data: { component: BookInfoEditComponent }
       },
       {
-        path: 'category',
-        component: CategoryListComponent
-      },
-      {
         path: 'author',
         component: AuthorsManagementComponent
       },
@@ -49,10 +48,14 @@ const routes: Routes = [
         data: { component: AuthorInfoEditComponent }
       },
       {
+        path: 'category',
+        component: CategoryListComponent
+      },
+      {
         path: 'category/edit/:id',
         component: ModalbaseComponent,
         outlet: 'modal',
-        data: { component: CategoryInfoEditComponent}
+        data: { component: CategoryInfoEditComponent }
       },
     ]
   },

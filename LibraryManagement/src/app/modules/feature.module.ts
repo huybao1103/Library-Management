@@ -24,6 +24,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
 import { BookAuthorEditComponent } from './books-management/book-info-edit/book-author-edit/book-author-edit.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { CategoryManagementComponent } from './category-management/category-management.component';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
 
 @NgModule({
