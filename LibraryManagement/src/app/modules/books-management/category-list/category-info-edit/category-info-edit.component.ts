@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { uniqueId } from 'lodash';
-import { map, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { IAuthor } from 'src/app/models/author.model';
 import { IBook, IBookSave } from 'src/app/models/book.model';
 import { IDialogType } from 'src/app/models/modal/dialog';
@@ -16,6 +16,7 @@ import { CategoryService } from '../service/category.service';
 import { BookDetailFields } from '../../book-info-edit/book-info-form';
 import { HttpService } from 'src/app/services/http-service.service';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { CategoryListComponent } from '../category-list.component';
 
 @Component({
   selector: 'app-category-info-edit',
@@ -25,7 +26,7 @@ import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 export class CategoryInfoEditComponent implements IDialogType ,OnInit{
   uniqueId: string = uniqueId('category-info');
   title: string = '';
-
+  category$?: Observable<ICategory[] | null>;
   addCategory: boolean = false;
 
 
@@ -118,7 +119,6 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
     modalRef.componentInstance.addBookToCategory = true;
     modalRef.result.then((res) => this.categorys.push(res));
   }
-
   submit() {
     // if(this.data) {
     //   var categoryModel: ICategorySave = this.data;

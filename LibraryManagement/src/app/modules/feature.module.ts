@@ -32,7 +32,6 @@ import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DockModule } from 'primeng/dock';
 import { CategoryManagementComponent } from './category-management/category-management.component';
-import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
 
 
 @NgModule({
@@ -46,7 +45,6 @@ import { CategoryInfoEditComponent } from './books-management/category-list/cate
     AuthorsManagementComponent,
     AuthorInfoEditComponent,
     SideBarComponent,
-    CategoryInfoEditComponent,
     CategoryListComponent,
     CategoryInfoEditComponent,
     BookAuthorEditComponent

@@ -25,13 +25,15 @@ export class CategoryListComponent implements OnInit{
   @ViewChild('dt') dt: Table | undefined;
   messageService: any;
 
-  category$?: Observable<ICategory[] | null>;
+
   categoryById: ICategory[] | undefined;
 
   constructor(
     private httpService: HttpService,
     private route: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private confirmDialogService: ConfirmDialogService,
+    private toastService: ToastService,
   ) {
   }
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class CategoryListComponent implements OnInit{
   }
   getData() {
     ///api/Categories
+    this.category$ = this.categoryService.getAll();
     this.httpService.getAll<ICategory[]>({ controller: 'Categories' }).subscribe({
       next: (res) => {
          if(res != undefined)
@@ -61,75 +64,30 @@ export class CategoryListComponent implements OnInit{
     })
   }
 
-  
-
   edit(id?: string) {
     console.log('selected category id ' + id);
-    this.route.navigate([{ outlets: { modal: ['category', 'edit', id] } }]);
-  }
-  // deleteCategory(id?: string) {
-  //   console.log('selected category id ' + id);
-  //   this.route.navigate([{ outlets: { modal: ['category', 'delete', id] } }]);
-  //   this.categoryService.delete;
-  // }
-  // deleteCategory(category: ICategory) {
-  //   const categoryId = category?.id; 
-  //   if (categoryId !== undefined) {
-  //     this.confirmationService
-  //       .showConfirmDialog('Are you sure you want to delete ' + category.name + '?')
-  //       .subscribe((result) => {
-  //         if (result) {
-  //           this.categoryService.delete(categoryId).subscribe({
-  //             next: () => {
-  //               this.categoryData = this.categoryData.filter((val) => val.id !== categoryId);
-  //               this.messageService.add({
-  //                 severity: 'success',
-  //                 summary: 'Successful',
-  //                 detail: 'Category Deleted',
-  //                 life: 3000,
-  //               });
-  //             },
-  //             error: (err: any) => {
-  //               console.error('Error deleting category:', err);
-  //             },
-  //           });
-  //         }
-  //       });
-  //   } else {
-  //     console.error('category.id is undefined');
-  //   }
-  // }
-
-  click() {
-    this.confirmDialogService
-      .showConfirmDialog('Are you sure you want to proceed?')
-      .subscribe({
-        next: (confirm) => {
-          if(confirm){
-            
-          }
-        }
-      })
+      this.route.navigate([{ outlets: { modal: ['category', 'edit', id] } }]);
   }
 
   deleteCategory(category: ICategory) {
     const categoryId = category?.id; 
     if (categoryId !== undefined) {
-      this.confirmDialogService.showConfirmDialog('Are you sure you want to delete ' + category.name + '?')
-        .subscribe((result) => {
-          if (result) {
+      // this.confirmDialogService.showConfirmDialog('Are you sure you want to delete ' + category.name + '?')
+      //   .subscribe((result) => {
+      //     if (result) {
             this.categoryService.delete(categoryId).subscribe({
               next: () => {
                 this.categoryData = this.categoryData.filter((val) => val.id !== categoryId);
                 this.toastService.show(MessageType.success, 'Delete Sategory Successfully');
+                this.getData();
               },
               error: (err: any) => {
                 console.error('Error deleting category:', err);
                 this.toastService.show(MessageType.error, 'Error deleting category');
               },
             });
-          }
-        });
+        //   }
+        // });
     } else {
       console.error('category.id is undefined');
     }

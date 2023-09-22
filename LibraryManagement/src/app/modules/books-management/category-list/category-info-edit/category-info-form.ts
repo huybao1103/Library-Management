@@ -1,7 +1,7 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { FORMLY_INPUT } from "src/app/formly/formly.config";
 
-export function CategoryDetailFields(): FormlyFieldConfig[] {
+export function CategorysDetailFields(): FormlyFieldConfig[] {
     return [
       {
         fieldGroupClassName: 'row',
@@ -20,7 +20,7 @@ export function CategoryDetailFields(): FormlyFieldConfig[] {
             key: 'description',
             type: FORMLY_INPUT.name,
             templateOptions: {
-              label: 'Description',
+            label: 'Description',
             },
             expressionProperties: {
             }
