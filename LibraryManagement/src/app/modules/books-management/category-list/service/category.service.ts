@@ -37,5 +37,10 @@ import { ICategory } from "src/app/models/category.model";
       console.log(this._category$?.value)
       return of(null);
     }
+
+    delete(id: string){
+      return this.httpService.delete<ICategory>({controller: 'Categories'}, id);
+    }
+
   }
   
