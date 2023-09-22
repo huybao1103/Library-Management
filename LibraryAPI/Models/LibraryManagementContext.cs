@@ -49,9 +49,9 @@ public partial class LibraryManagementContext : DbContext
     {
         modelBuilder.Entity<Author>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Authors__3213E83FFFAC2E3E");
+            entity.HasKey(e => e.Id).HasName("PK__Authors__3213E83FACC062F5");
 
-            entity.HasIndex(e => e.Name, "UQ__Authors__72E12F1B8A885A38").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Authors__72E12F1BBBBD314B").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -71,12 +71,11 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Books__3213E83FCC71B9EA");
+            entity.HasKey(e => e.Id).HasName("PK__Books__3213E83FA61FA405");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("id");
-            entity.Property(e => e.Category).HasColumnName("category");
             entity.Property(e => e.InputDay)
                 .HasColumnType("date")
                 .HasColumnName("inputDay");
@@ -91,7 +90,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<BookAuthor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookAuth__3213E83F37E6515E");
+            entity.HasKey(e => e.Id).HasName("PK__BookAuth__3213E83FF3A4F60B");
 
             entity.ToTable("BookAuthor");
 
@@ -103,18 +102,16 @@ public partial class LibraryManagementContext : DbContext
 
             entity.HasOne(d => d.Author).WithMany(p => p.BookAuthors)
                 .HasForeignKey(d => d.AuthorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookAutho__autho__60A75C0F");
 
             entity.HasOne(d => d.Book).WithMany(p => p.BookAuthors)
                 .HasForeignKey(d => d.BookId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookAutho__bookI__5FB337D6");
         });
 
         modelBuilder.Entity<BookCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookCate__3213E83FB175A6B4");
+            entity.HasKey(e => e.Id).HasName("PK__BookCate__3213E83FCCBA7B5B");
 
             entity.ToTable("BookCategory");
 
@@ -126,18 +123,16 @@ public partial class LibraryManagementContext : DbContext
 
             entity.HasOne(d => d.Book).WithMany(p => p.BookCategories)
                 .HasForeignKey(d => d.BookId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookCateg__bookI__693CA210");
 
             entity.HasOne(d => d.Category).WithMany(p => p.BookCategories)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookCateg__categ__6A30C649");
         });
 
         modelBuilder.Entity<BookImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookImag__3213E83FF50D8079");
+            entity.HasKey(e => e.Id).HasName("PK__BookImag__3213E83FCB2B3B04");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -154,18 +149,16 @@ public partial class LibraryManagementContext : DbContext
 
             entity.HasOne(d => d.Book).WithMany(p => p.BookImages)
                 .HasForeignKey(d => d.BookId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookImage__bookI__6383C8BA");
 
             entity.HasOne(d => d.File).WithMany(p => p.BookImages)
                 .HasForeignKey(d => d.FileId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookImage__fileI__6477ECF3");
         });
 
         modelBuilder.Entity<BookPublisher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookPubl__3213E83F15B38C25");
+            entity.HasKey(e => e.Id).HasName("PK__BookPubl__3213E83F62F14B8E");
 
             entity.ToTable("BookPublisher");
 
@@ -177,18 +170,16 @@ public partial class LibraryManagementContext : DbContext
 
             entity.HasOne(d => d.Book).WithMany(p => p.BookPublishers)
                 .HasForeignKey(d => d.BookId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookPubli__bookI__619B8048");
 
             entity.HasOne(d => d.Publisher).WithMany(p => p.BookPublishers)
                 .HasForeignKey(d => d.PublisherId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BookPubli__publi__628FA481");
         });
 
         modelBuilder.Entity<BookVersion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookVers__3213E83FD0B0B35D");
+            entity.HasKey(e => e.Id).HasName("PK__BookVers__3213E83F1D0EA383");
 
             entity.ToTable("BookVersion");
 
@@ -211,7 +202,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<BorrowHistory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BorrowHi__3213E83F545D47C6");
+            entity.HasKey(e => e.Id).HasName("PK__BorrowHi__3213E83F491E3FB9");
 
             entity.ToTable("BorrowHistory");
 
@@ -230,20 +221,18 @@ public partial class LibraryManagementContext : DbContext
 
             entity.HasOne(d => d.Book).WithMany(p => p.BorrowHistories)
                 .HasForeignKey(d => d.BookId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BorrowHis__bookI__6754599E");
 
             entity.HasOne(d => d.StudentCard).WithMany(p => p.BorrowHistories)
                 .HasForeignKey(d => d.StudentCardId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__BorrowHis__stude__68487DD7");
         });
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Categori__3213E83F4ACE132C");
+            entity.HasKey(e => e.Id).HasName("PK__Categori__3213E83F819EFE45");
 
-            entity.HasIndex(e => e.Name, "UQ__Categori__72E12F1BB2537A10").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Categori__72E12F1B10884DD0").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -258,9 +247,9 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<Publisher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Publishe__3213E83FC8D4C4AB");
+            entity.HasKey(e => e.Id).HasName("PK__Publishe__3213E83FE6AC1813");
 
-            entity.HasIndex(e => e.Name, "UQ__Publishe__72E12F1BA5671558").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Publishe__72E12F1BE04E06C4").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -283,9 +272,9 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<StudentCard>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__StudentC__3213E83FEABBF66A");
+            entity.HasKey(e => e.Id).HasName("PK__StudentC__3213E83F234885F2");
 
-            entity.HasIndex(e => e.Name, "UQ__StudentC__72E12F1B1C02C59F").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__StudentC__72E12F1B362AF90E").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -310,11 +299,14 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<StudentImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__StudentI__3213E83F1DF096F3");
+            entity.HasKey(e => e.Id).HasName("PK__StudentI__3213E83FF6AEC9C5");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("id");
+            entity.Property(e => e.Base64)
+                .IsUnicode(false)
+                .HasColumnName("base64");
             entity.Property(e => e.FileId).HasColumnName("fileId");
             entity.Property(e => e.FilePath)
                 .HasMaxLength(50)
@@ -324,18 +316,16 @@ public partial class LibraryManagementContext : DbContext
 
             entity.HasOne(d => d.File).WithMany(p => p.StudentImages)
                 .HasForeignKey(d => d.FileId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__StudentIm__fileI__66603565");
 
             entity.HasOne(d => d.StudentCard).WithMany(p => p.StudentImages)
                 .HasForeignKey(d => d.StudentCardId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__StudentIm__stude__656C112C");
         });
 
         modelBuilder.Entity<UploadFile>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UploadFi__3213E83FF67E6CC9");
+            entity.HasKey(e => e.Id).HasName("PK__UploadFi__3213E83F61DA0912");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")

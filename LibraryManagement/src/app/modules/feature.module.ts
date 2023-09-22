@@ -22,6 +22,8 @@ import { SideBarComponent } from '../layout/side-bar/side-bar.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
+import { BookAuthorEditComponent } from './books-management/book-info-edit/book-author-edit/book-author-edit.component';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
 
 @NgModule({
@@ -35,7 +37,8 @@ import { CategoryInfoEditComponent } from './books-management/category-list/cate
     AuthorInfoEditComponent,
     SideBarComponent,
     CategoryListComponent,
-    CategoryInfoEditComponent
+    CategoryInfoEditComponent,
+    BookAuthorEditComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +54,8 @@ import { CategoryInfoEditComponent } from './books-management/category-list/cate
     TableModule,
     TabViewModule,
     ConfirmDialogModule,
-    FileUploadModule
+    FileUploadModule,
+    ToggleButtonModule
   ]
 })
 export class FeatureModule { }

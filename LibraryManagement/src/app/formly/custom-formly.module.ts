@@ -11,12 +11,15 @@ import { NgSelectItemModule} from "./form/ng-select/ng-select.module";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { FormlyFieldCheckbox } from "./type/checkbox.type";
 import { CheckBoxModule } from "./form/checkbox/checkbox.module";
+import { FormlyFieldDateTime } from "./type/datetime-picker.type";
+import { DatatimePickerModule } from "./form/datetime-picker/datatime-picker.module";
 
 @NgModule({
     declarations: [
       FormlyFieldInput,
       FormlyFieldNgSelect,
-      FormlyFieldCheckbox
+      FormlyFieldCheckbox,
+      FormlyFieldDateTime
     ],
     imports: [
       CommonModule,
@@ -27,7 +30,8 @@ import { CheckBoxModule } from "./form/checkbox/checkbox.module";
       FormlyModule.forChild(FORMLY_CONFIG),
       NgSelectItemModule,
       NgSelectModule,
-      CheckBoxModule
+      CheckBoxModule,
+      DatatimePickerModule
     ]
   })
   
