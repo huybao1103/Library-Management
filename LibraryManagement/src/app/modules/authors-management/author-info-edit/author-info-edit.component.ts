@@ -8,7 +8,7 @@ import { IDialogType } from 'src/app/models/modal/dialog';
 import { ToastService } from 'src/app/services/toast.service';
 import { BookDetailFields } from '../../books-management/book-info-edit/book-info-form';
 import { HttpService } from 'src/app/services/http-service.service';
-import { AuthorDetailFields } from './autho-info.form';
+import { AuthorDetailFields } from './author-info.form';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthorService } from '../service/author.service';

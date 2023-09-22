@@ -58,6 +58,19 @@ export class SideBarComponent implements OnInit {
         }
       ]
     },
+    {
+      name: 'Publisher Managements',
+      code: 'publisher',
+      icon: 'fa fa-address-book',
+      subMenus: [
+        {
+          name: 'Publishers',
+          code: 'publisher',
+          icon: 'fa fa-address-book',
+          route: 'publisher'
+        }
+      ]
+    },
   ];
 
   subscriptions = new Subscription();
