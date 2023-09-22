@@ -36,5 +36,10 @@ import { ToastService } from "src/app/services/toast.service";
       console.log(this._category$?.value)
       return of(null);
     }
+
+    delete(id: string){
+      return this.httpService.delete<ICategory>({controller: 'Categories'}, id);
+    }
+
   }
   
