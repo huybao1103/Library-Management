@@ -34,7 +34,9 @@ namespace LibraryAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PublisherModel>>> GetPublishers()
         {
-            return Ok(_mapper.Map<List<PublisherModel>>(_context.Publishers.ToListAsync()));
+            var result = await _context.Publishers.ToListAsync();
+
+            return Ok(_mapper.Map<List<PublisherModel>>(result));
         }
 
         // GET: api/Publishers/5

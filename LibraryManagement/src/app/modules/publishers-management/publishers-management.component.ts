@@ -15,7 +15,6 @@ export class PublishersManagementComponent implements OnInit{
   publisher$?: Observable<IPublisher[] | null>;
 
   constructor(
-    private httpService: HttpService,
     private route: Router,
     private publisherService: PublisherService
   ) {
@@ -26,8 +25,14 @@ export class PublishersManagementComponent implements OnInit{
   }
 
   getData() {
-    
-    this.publisher$ = this.publisherService.getAll();
+    console.log('here')
+    this.publisherService.getAll().subscribe({
+      next: (res) => {
+        if(res) {
+          console.log( res );
+        } 
+      }
+    });
   }
 
   edit(id?: string) {

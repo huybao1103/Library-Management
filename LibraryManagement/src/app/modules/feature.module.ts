@@ -32,12 +32,13 @@ import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DockModule } from 'primeng/dock';
 import { CategoryManagementComponent } from './category-management/category-management.component';
-import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
+import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
+import { ConfirmDialogService } from '../services/confirm-dialog.service';
 
 
 @NgModule({
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, ConfirmDialogService],
   declarations: [
     MainPageComponent,
     HeaderComponent,

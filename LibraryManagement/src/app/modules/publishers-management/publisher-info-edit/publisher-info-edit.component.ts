@@ -24,8 +24,6 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
   uniqueId: string = uniqueId('publisher-info');
   title: string = '';
 
-  addPublisher: boolean = false;
-
   fields: FormlyFieldConfig[] = []; // abcxyz
   form = new FormGroup({});
   options: FormlyFormOptions = {
@@ -86,18 +84,16 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
   }
 
   submit() {
-    this.addPublisher
-    ? this.confirmDialogService.showConfirmDialog(
-        'New publisher will be added to system and will be referenced to this book, do you want to continue ?',
-        'Add publisher to new Book confirmation'
-      ).subscribe({
-        next: (confirmed) => {
-          if(confirmed) {
-            this.addPublisherConfirmed();
-          }
+    this.confirmDialogService.showConfirmDialog(
+      'New publisher will be added to system, do you want to continue ?',
+      'Add new publisher confirmation'
+    ).subscribe({
+      next: (confirmed) => {
+        if(confirmed) {
+          this.addPublisherConfirmed();
         }
-      })
-    : this.addPublisherConfirmed();
+      }
+    })
   }
 
   close() { this.modal.close() }
@@ -108,7 +104,7 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
         console.log(resp);
         this.toastService.show(MessageType.success, 'Publisher info save success');
 
-        this.addPublisher ? this.modal.close(resp) : this.close();
+       this.close();
       },
       error: (err: HttpErrorResponse) => {
         this.toastService.show(MessageType.error, err.error?.detail);
