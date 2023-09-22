@@ -20,6 +20,8 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { SideBarComponent } from '../layout/side-bar/side-bar.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
+import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     BookInfoEditComponent,
     AuthorsManagementComponent,
     AuthorInfoEditComponent,
-    SideBarComponent
+    SideBarComponent,
+    PublishersManagementComponent,
+    PublisherInfoEditComponent
   ],
   imports: [
     CommonModule,

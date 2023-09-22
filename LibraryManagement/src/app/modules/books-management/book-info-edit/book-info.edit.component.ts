@@ -9,7 +9,7 @@ import { BookDetailFields } from './book-info-form';
 import { IAuthor } from 'src/app/models/author.model';
 import { AuthorInfoEditComponent } from '../../authors-management/author-info-edit/author-info-edit.component';
 import { of } from 'rxjs';
-import { AuthorDetailFields } from '../../authors-management/author-info-edit/autho-info.form';
+import { AuthorDetailFields } from '../../authors-management/author-info-edit/author-info.form';
 import { IBook, IBookSave } from 'src/app/models/book.model';
 import { HttpService } from 'src/app/services/http-service.service';
 import { BookService } from '../service/book.service';
