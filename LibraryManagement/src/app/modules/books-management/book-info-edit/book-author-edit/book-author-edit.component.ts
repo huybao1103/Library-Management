@@ -8,13 +8,13 @@ import { IAuthor } from 'src/app/models/author.model';
 import { IDialogType } from 'src/app/models/modal/dialog';
 import { ToastService } from 'src/app/services/toast.service';
 import { BookService } from '../../service/book.service';
-import { AuthorDetailFields } from 'src/app/modules/authors-management/author-info-edit/autho-info.form';
 import { Table } from 'primeng/table';
 import { ToggleButtonChangeEvent } from 'primeng/togglebutton';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { AuthorService } from 'src/app/modules/authors-management/service/author.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageType } from 'src/app/enums/toast-message.enum';
+import { AuthorDetailFields } from 'src/app/modules/authors-management/author-info-edit/author-info.form';
 
 @Component({
   selector: 'app-book-author-edit',
