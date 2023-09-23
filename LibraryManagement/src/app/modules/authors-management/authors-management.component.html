@@ -1,16 +1,37 @@
-<p>authors-management works!</p>
-
-<div class="pl-1" style="margin-left: 1rem;">
-    <button type="button" class="col-1" (click)="edit('')">Add new</button>
-
-    <div *ngIf="author$ | async as authors">
-
-        <div class="row" *ngFor="let author of authors">
-            <p class="col-3">{{ author.id }}</p>
-            <p class="col-3">{{ author.name }}</p>
-            <p class="col-3">{{ author.mail }}</p>
-            <p class="col-2">{{ author.phone }}</p>
-            <button type="button" class="col-1" (click)="edit(author.id)">Edit</button>
+<div class="container">
+  <div class="row mb-3">
+    <div class="col-md-4 d-flex justify-content-between">
+      <form>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchQuery">
         </div>
+      </form>
+
+      <button type="button" class="col-1">Add new</button>
     </div>
+  </div>
+
+  <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let author of filteredAuthors; let i = index">
+        <td>{{ author.id }}</td>
+        <td>{{ author.name }}</td>
+        <td>{{ author.email }}</td>
+        <td>{{ author.phone }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="editAuthor(i)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteAuthor(i)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
