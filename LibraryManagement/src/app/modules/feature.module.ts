@@ -19,10 +19,26 @@ import { FeatureRoutingModule } from './feature-routing.module';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { SideBarComponent } from '../layout/side-bar/side-bar.component';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CategoryListComponent } from './books-management/category-list/category-list.component';
+import { BookAuthorEditComponent } from './books-management/book-info-edit/book-author-edit/book-author-edit.component';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
+import { ToolbarModule } from 'primeng/toolbar';
+import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
+import { DockModule } from 'primeng/dock';
+import { CategoryManagementComponent } from './category-management/category-management.component';
+import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
+import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
+import { ConfirmDialogService } from '../services/confirm-dialog.service';
+
 
 @NgModule({
+  providers: [ConfirmationService, ConfirmDialogService],
   declarations: [
     MainPageComponent,
     HeaderComponent,
@@ -31,9 +47,18 @@ import { FileUploadModule } from 'primeng/fileupload';
     BookInfoEditComponent,
     AuthorsManagementComponent,
     AuthorInfoEditComponent,
-    SideBarComponent
+    SideBarComponent,
+    CategoryListComponent,
+    CategoryInfoEditComponent,
+    BookAuthorEditComponent,
+    PublishersManagementComponent,
+    PublisherInfoEditComponent
   ],
   imports: [
+    DialogModule,
+    ToggleButtonModule,
+    DockModule,
+    DividerModule,
     CommonModule,
     FeatureRoutingModule,
     ToastModule,
@@ -47,7 +72,9 @@ import { FileUploadModule } from 'primeng/fileupload';
     TableModule,
     TabViewModule,
     ConfirmDialogModule,
-    FileUploadModule
+    FileUploadModule,
+    ToolbarModule,
+    InputTextModule,
   ]
 })
 export class FeatureModule { }

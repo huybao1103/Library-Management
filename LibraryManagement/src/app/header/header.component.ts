@@ -157,10 +157,11 @@ export class HeaderComponent implements OnInit {
             { name: 'Dashboard', code: 'dashboard', icon: 'fa fa-book' },
             { name: 'Books Management', code: 'book', icon: 'fa fa-book' },
             { name: 'Authors Management', code: 'author', icon: 'fa fa-user' },
+            { name: 'Publishers Management', code: 'publisher', icon: 'fa fa-address-book' },
         ];
 
         let temp;
-        this.httpService.getAll({ controller: 'Authors' }).subscribe({
+        this.httpService.getAll({ controller: 'Categories' }).subscribe({
             next: (resp) => {
                 temp = resp;
             }

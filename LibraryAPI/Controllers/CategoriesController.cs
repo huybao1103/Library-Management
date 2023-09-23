@@ -34,7 +34,11 @@ namespace LibraryAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategories()
         {
-            return Ok(_mapper.Map<List<CategoryModel>>(_context.Categories.ToListAsync()));
+            var result = await _context.Categories.ToListAsync();
+            return Ok( _mapper.Map<List<CategoryModel>>
+                (
+                    result
+                ));
         }
 
         // GET: api/Categories/5
@@ -67,7 +71,7 @@ namespace LibraryAPI.Controllers
             RequestSaveCategoryValidate(categoryRequestModel);
 
             CategoryModel? categoryModel;
-            if(categoryRequestModel.Id == Guid.Empty)
+            if(!categoryRequestModel.Id.HasValue)
             {
                 var newCategory = _mapper.Map<Category>(categoryRequestModel);
                 _context.Categories.Add(newCategory);

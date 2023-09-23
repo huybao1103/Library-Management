@@ -15,7 +15,8 @@ import { INPUT_TEXT_TYPE } from "src/app/enums/input-text.type";
         [type]="type"
         [updateOnBlur]="to['updateOnBlur']"
         [readonly]="props.readonly || false"
-        [placeholder]="to.placeholder || ''">
+        [placeholder]="to.placeholder || ''"
+        [keyFilter]="props['keyFilter']">
       </input-text>
     `,
 })

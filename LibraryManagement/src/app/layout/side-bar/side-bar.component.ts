@@ -36,6 +36,12 @@ export class SideBarComponent implements OnInit {
           code: 'book',
           icon: 'fa fa-book',
           route: 'book'
+        },
+        {
+          name: 'Categories',
+          code: 'book',
+          icon: 'la la-border-all',
+          route: 'category'
         }
       ]
     },
@@ -49,6 +55,19 @@ export class SideBarComponent implements OnInit {
           code: 'author',
           icon: 'fa fa-user',
           route: 'author'
+        }
+      ]
+    },
+    {
+      name: 'Publisher Managements',
+      code: 'publisher',
+      icon: 'fa fa-address-book',
+      subMenus: [
+        {
+          name: 'Publishers',
+          code: 'publisher',
+          icon: 'fa fa-address-book',
+          route: 'publisher'
         }
       ]
     },

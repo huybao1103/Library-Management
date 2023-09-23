@@ -1,0 +1,21 @@
+<p-calendar
+  (onSelect)="onDateChanged($event)"
+  [(ngModel)]="value"
+  (ngModelChange)="onDateChanged($event)"
+  (onClose)="onTouched($event)"
+  [inputId]="uniqueId"
+  styleClass="w-100"
+  [showWeek]="showWeekNumbers"
+  [placeholder]="dateFormat || 'MM/DD/YY'"
+  [dateFormat]="dateFormat || datepickerFormat"
+  [disabled]="disabled"
+  [view]="view || 'date'"
+  [minDate]="minDate!"
+  [maxDate]="maxDate!"
+  [defaultDate]="defaultDate"
+  [showTime]="showTime"
+  [showIcon]="showIcon"
+  [showButtonBar]="showButtonBar"
+  inputStyleClass="form-control"
+  >
+</p-calendar>

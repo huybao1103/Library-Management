@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left" id="my-modal-title">{{title}}</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="form">
+      <formly-form [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
+    </form>
+      <div class="submit-section">
+        <button class="btn btn-primary submit-btn"[disabled]="form.invalid" (click)="submit()">Submit</button>
+    </div>
+</div>
