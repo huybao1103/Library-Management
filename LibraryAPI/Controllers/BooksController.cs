@@ -37,6 +37,8 @@ namespace LibraryAPI.Controllers
                      _context.Books
                     .Include(a => a.BookAuthors)
                         .ThenInclude(a => a.Author)
+                    .Include(a => a.BookPublishers)
+                        .ThenInclude(a => a.Publisher)
                     .Include(a => a.BookImages)
                         .ThenInclude(a => a.File)
                     .Include(a => a.BookCategories)
@@ -229,6 +231,8 @@ namespace LibraryAPI.Controllers
             return _context.Books
                 .Include(a => a.BookAuthors)
                     .ThenInclude(a => a.Author)
+                .Include(a => a.BookPublishers)
+                    .ThenInclude(a => a.Publisher)
                 .Include(a => a.BookImages)
                     .ThenInclude(a => a.File)
                 .Include(a => a.BookCategories)
