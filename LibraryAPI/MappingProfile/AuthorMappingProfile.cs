@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LibraryAPI.Models;
+using LibraryAPI.RequestModels;
 using LibraryAPI.ViewModels.Author;
 using LibraryAPI.ViewModels.Book;
 
@@ -9,7 +10,10 @@ namespace LibraryAPI.MappingProfile
     {
         public AuthorMappingProfile() 
         {
+            CreateMap<AuthorRequest, Author>();
+
             CreateMap<Author, AuthorModel>();
+            CreateMap<AuthorModel, Author>();
         }
     }
 }
