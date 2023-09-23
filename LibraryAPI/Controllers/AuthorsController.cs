@@ -2,6 +2,7 @@
 using LibraryAPI.CustomException;
 using LibraryAPI.Models;
 using LibraryAPI.PubSub;
+using LibraryAPI.RequestModels;
 using LibraryAPI.ViewModels.Author;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,7 @@ namespace LibraryAPI.Controllers
 
         // GET: api/Authors/5
         [HttpGet("get-by-id/{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(Guid id)
+        public async Task<ActionResult<AuthorModel>> GetAuthor(Guid id)
         {
           if (_context.Authors == null)
           {
@@ -47,55 +48,37 @@ namespace LibraryAPI.Controllers
                 return NotFound();
             }
 
-            return author;
-        }
-
-        private async Task<IActionResult> UpdateAuthor(Author author)
-        {
-            _context.Entry(author).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AuthorExists(author.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return _mapper.Map<AuthorModel>(author);
         }
 
         // POST: api/Authors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("save")]
-        public async Task<ActionResult<Author>> PostAuthor(Author author)
+        public async Task<ActionResult<AuthorModel>> PostAuthor(AuthorRequest authorRequestModel)
         {
             if (_context.Authors == null)
             {
                 return Problem("Entity set 'LibraryManagementContext.Authors'  is null.");
             }
-            RequestSaveAuthorValidate(author);
+            RequestSaveAuthorValidate(authorRequestModel);
 
-            if (author.Id == Guid.Empty)
+            Author author = new Author();
+
+            if (!authorRequestModel.Id.HasValue)
             {
-                _context.Authors.Add(author);
-                await _context.SaveChangesAsync();
+                author = _mapper.Map<Author>(authorRequestModel);
 
+                _context.Authors.Add(author);
             }
             else
             {
-                await UpdateAuthor(author);
+                author = await _context.Authors.FindAsync(authorRequestModel.Id);
+                author = _mapper.Map(authorRequestModel, author);
             }
 
-            return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetAuthor", new { id = author.Id }, _mapper.Map<AuthorModel>(author));
         }
 
         // DELETE: api/Authors/5
@@ -137,7 +120,7 @@ namespace LibraryAPI.Controllers
             return (_context.Authors?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        private void RequestSaveAuthorValidate(Author author)
+        private void RequestSaveAuthorValidate(AuthorRequest author)
         {
             if (_context.Authors.Any(a => a.Name == author.Name && a.Id != author.Id))
             {
