@@ -1,4 +1,5 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
+import { KeyFilterType } from "src/app/enums/p-key-filter.type";
 import { FORMLY_INPUT } from "src/app/formly/formly.config";
 
 export function CategorysDetailFields(): FormlyFieldConfig[] {
@@ -12,7 +13,8 @@ export function CategorysDetailFields(): FormlyFieldConfig[] {
             type: FORMLY_INPUT.name,
             templateOptions: {
               label: 'Category Name',
-              required: true
+              required: true,
+              keyFilter: KeyFilterType.text
             }
           },
           {

@@ -35,7 +35,7 @@ import { CategoryManagementComponent } from './category-management/category-mana
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
 import { ConfirmDialogService } from '../services/confirm-dialog.service';
-
+import { GalleriaModule } from 'primeng/galleria';
 
 @NgModule({
   providers: [ConfirmationService, ConfirmDialogService],
@@ -75,6 +75,7 @@ import { ConfirmDialogService } from '../services/confirm-dialog.service';
     FileUploadModule,
     ToolbarModule,
     InputTextModule,
+    GalleriaModule
   ]
 })
 export class FeatureModule { }

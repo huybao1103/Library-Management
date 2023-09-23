@@ -42,21 +42,7 @@ export class AuthorInfoEditComponent implements IDialogType, OnInit {
   }
   
   product: IAuthor[] = [
-    {
-      name: 'Huy Bao',
-      mail: 'l.q.h.bao@gmail.com',
-      phone: '0911721026'
-    },
-    {
-      name: 'Huy Bao',
-      mail: 'l.q.h.bao@gmail.com',
-      phone: '0911721026'
-    },
-    {
-      name: 'Huy Bao',
-      mail: 'l.q.h.bao@gmail.com',
-      phone: '0911721026'
-    },
+
   ];
 
   constructor(
