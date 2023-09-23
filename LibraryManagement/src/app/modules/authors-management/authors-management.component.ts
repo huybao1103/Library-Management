@@ -1,17 +1,17 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-
+import { DataTablesModule } from 'angular-datatables';
+import { Subject } from 'rxjs';
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-authors-management',
+  templateUrl: './authors-management.component.html',
+  styleUrls: ['./authors-management.component.css']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AuthorsManagementComponent implements OnInit {
+  dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
   private datatableElement!: DataTableDirective;
 
-  title = 'AuthorManager';
-  dtOptions: DataTables.Settings = {};
   authors = [
     {
       id: 1,
@@ -51,9 +51,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
   addAuthor(): void {
-    // Add your logic for adding an author here
+
   }
 
   deleteAuthor(index: number): void {
