@@ -35,6 +35,7 @@ import { CategoryManagementComponent } from './category-management/category-mana
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
 import { ConfirmDialogService } from '../services/confirm-dialog.service';
+import { BookPublisherEditComponent } from './books-management/book-info-edit/book-publisher-edit/book-publisher-edit.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { ConfirmDialogService } from '../services/confirm-dialog.service';
     CategoryInfoEditComponent,
     BookAuthorEditComponent,
     PublishersManagementComponent,
-    PublisherInfoEditComponent
+    PublisherInfoEditComponent,
+    BookPublisherEditComponent
   ],
   imports: [
     DialogModule,

@@ -9,13 +9,15 @@ import { BookDetailFields } from './book-info-form';
 import { IAuthor } from 'src/app/models/author.model';
 import { AuthorInfoEditComponent } from '../../authors-management/author-info-edit/author-info-edit.component';
 import { of } from 'rxjs';
-import { IBook, IBookAuthor, IBookImage, IBookSave } from 'src/app/models/book.model';
+import { IBook, IBookAuthor, IBookImage, IBookPublisher, IBookSave } from 'src/app/models/book.model';
 import { HttpService } from 'src/app/services/http-service.service';
 import { BookService } from '../service/book.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileUpload } from 'primeng/fileupload';
 import { BookAuthorEditComponent } from './book-author-edit/book-author-edit.component';
+import { BookPublisherEditComponent } from './book-publisher-edit/book-publisher-edit.component';
+import { IPublisher } from 'src/app/models/publisher.model';
 
 @Component({
   selector: 'app-book-info',
@@ -44,7 +46,7 @@ export class BookInfoEditComponent implements IDialogType {
   };
 
   authors: IBookAuthor[] = [];
-  publishers: any[] = [];
+  publishers: IBookPublisher[] = [];
   bookImage: IBookImage[] = [];
 
   constructor(
@@ -81,6 +83,10 @@ export class BookInfoEditComponent implements IDialogType {
           if(this.data.bookImages?.length) {
             this.bookImage = [...this.data.bookImages]
           }
+
+          if(this.data.bookPublishers?.length) {
+            this.publishers = [...this.data.bookPublishers]
+          }
           
           this.fields = BookDetailFields();
         }
@@ -88,19 +94,15 @@ export class BookInfoEditComponent implements IDialogType {
     })
   }
 
-  addAccount() {
+  addAuthor() {
     const modalRef = this.modalService.open(BookAuthorEditComponent, {
       size: 'xl',
       centered: true,
       backdrop: 'static'
     })
 
-    modalRef.result.then((res) => this.authors.push(
-      { 
-        authorId: res.id,
-        author: {...res} 
-      }
-    ));
+    modalRef.componentInstance.selectedAuthors = [...this.authors.map(x => x.author)];
+
     modalRef.result.then((res: IAuthor[]) => {
       this.authors = res.map(i => {
         return {
@@ -108,6 +110,26 @@ export class BookInfoEditComponent implements IDialogType {
           author: {...i}
         }
       })
+    });
+  }
+
+  addPublisher() {
+    const modalRef = this.modalService.open(BookPublisherEditComponent, {
+      size: 'xl',
+      centered: true,
+      backdrop: 'static'
+    })
+    
+    modalRef.componentInstance.selectedPublishers = [...this.publishers.map(x => x.publisher)];
+
+    modalRef.result.then((res: IPublisher[]) => {
+      this.publishers = res.map(i => {
+        return {
+          publisherId: i.id,
+          publisher: {...i}
+        }
+      })
+      console.log(this.publishers)
     });
   }
 
@@ -138,8 +160,8 @@ export class BookInfoEditComponent implements IDialogType {
       this.data = {
         ...this.data,
         authors: this.authors.map(a => a.authorId ? a.authorId : ''),
+        publishers: this.publishers.map(p => p.publisherId ? p.publisherId : ''),
         bookImages: this.bookImage
-
       }
       
       this.bookService.save(this.data).subscribe({
