@@ -23,7 +23,8 @@ export function BookDetailFields(): FormlyFieldConfig[] {
             templateOptions: {
               label: 'Categories',
               multiple: true,
-              required: true
+              required: true,
+              searchable: true
             },
             expressions: {
               'props.options': "formState.optionList.categories"

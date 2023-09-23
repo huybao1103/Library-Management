@@ -29,15 +29,15 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-        
+
       }
     }
   };
-  
+
   data: IPublisher = {
     name: '',
   }
-  
+
   product: IPublisher[] = [
     {
       name: 'Kim Đồng',
@@ -45,7 +45,7 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
       phone: '01900571595',
       address: '55 Quang Trung, Nguyễn Du, Hai Bà Trưng, Hà Nội'
     },
-    
+
   ];
 
   constructor(
@@ -57,8 +57,8 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
     private confirmDialogService: ConfirmDialogService
   ) {
   }
-  
-  dialogInit(para: {id: string}): void {
+
+  dialogInit(para: { id: string }): void {
     this.title = "Add Publisher";
     if (para.id) {
       this.title = "Edit Publisher Information";
@@ -67,7 +67,7 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
       this.fields = PublisherDetailFields();
     }
   }
-  
+
   ngOnInit(): void {
 
   }
@@ -75,7 +75,7 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
   getPublisherById(id: string) {
     this.publisherSerive.getPublisherById(id).subscribe({
       next: (res) => {
-        if(res)
+        if (res)
           this.data = res;
 
         this.fields = PublisherDetailFields();
@@ -84,17 +84,11 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
   }
 
   submit() {
-    this.confirmDialogService.showConfirmDialog(
-      'New publisher will be added to system, do you want to continue ?',
-      'Add new publisher confirmation'
-    ).subscribe({
-      next: (confirmed) => {
-        if(confirmed) {
-          this.addPublisherConfirmed();
-        }
-      }
-    })
+
+    this.addPublisherConfirmed();
   }
+
+
 
   close() { this.modal.close() }
 
@@ -104,12 +98,12 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
         console.log(resp);
         this.toastService.show(MessageType.success, 'Publisher info save success');
 
-       this.close();
+        this.close();
       },
       error: (err: HttpErrorResponse) => {
         this.toastService.show(MessageType.error, err.error?.detail);
       }
-    })    
+    })
   }
 }
 
