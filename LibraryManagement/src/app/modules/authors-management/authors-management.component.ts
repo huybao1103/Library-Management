@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { DataTablesModule } from 'angular-datatables';
 import { Observable, Subject } from 'rxjs';
 import { IAuthor } from 'src/app/models/author.model';
 import { HttpService } from 'src/app/services/http-service.service';
