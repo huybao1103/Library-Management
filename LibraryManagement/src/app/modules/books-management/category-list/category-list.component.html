@@ -2,7 +2,7 @@
         <p-table
             #dt
             [value]="Categories"
-            [rows]="8"
+            [rows]="5"
             [paginator]="true"
             [globalFilterFields]="['name']"
             [tableStyle]="{ 'min-width': '75rem' }"
@@ -33,7 +33,7 @@
                     </th>
                     <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
                     <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
-                    <th pSortableColumn="action" style="min-width:10rem; text-align: center;">Action<p-sortIcon field="action"></p-sortIcon></th>
+                    <th pSortableColumn="action" style="min-width:10rem; text-align: center;">Action</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-category of categories>

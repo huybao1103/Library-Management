@@ -18,7 +18,7 @@ namespace LibraryAPI.ViewModels.Book
 
         public virtual ICollection<BookImageModel> BookImages { get; set; } = new List<BookImageModel>();
 
-        //public virtual ICollection<BookPublisher> BookPublishers { get; set; } = new List<BookPublisher>();
+        public virtual ICollection<BookPublisherModel> BookPublishers { get; set; } = new List<BookPublisherModel>();
 
         //public virtual ICollection<BookVersion> BookVersions { get; set; } = new List<BookVersion>();
 

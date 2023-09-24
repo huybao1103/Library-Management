@@ -3,6 +3,10 @@
     background-color: #FF7849;
 }
 
+.bg-light-gray {
+    background-color: #f8f9fa;
+}
+
 /* Header */
 .header {
     background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
@@ -67,4 +71,11 @@
 .p-datepicker .p-datepicker-buttonbar, 
 .p-datepicker .p-datepicker-header {
     padding: 0;
+}
+
+/* Books Modal */
+.form-child-title {
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 22.3px;
 }

@@ -40,4 +40,8 @@ export class AuthorService {
     console.log(this._author$?.value)
     return of(null);
   }
+
+  delete(id: string) {
+    return this.httpService.delete<IAuthor>({controller: 'Authors'}, id);
+  }
 }

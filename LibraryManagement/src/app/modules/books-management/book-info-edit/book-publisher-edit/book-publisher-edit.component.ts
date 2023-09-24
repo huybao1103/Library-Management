@@ -1,33 +1,34 @@
+import { PublisherService } from './../../../publishers-management/service/publisher.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Route } from '@angular/router';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { of } from 'rxjs';
-import { IAuthor } from 'src/app/models/author.model';
-import { IDialogType } from 'src/app/models/modal/dialog';
-import { ToastService } from 'src/app/services/toast.service';
-import { BookService } from '../../service/book.service';
-import { AuthorDetailFields } from 'src/app/modules/authors-management/author-info-edit/author-info.form';
 import { Table } from 'primeng/table';
 import { ToggleButtonChangeEvent } from 'primeng/togglebutton';
-import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
-import { AuthorService } from 'src/app/modules/authors-management/service/author.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MessageType } from 'src/app/enums/toast-message.enum';
+import { of } from 'rxjs';
+import { IDialogType } from 'src/app/models/modal/dialog';
 import { AuthorDetailFields } from 'src/app/modules/authors-management/author-info-edit/author-info.form';
+import { AuthorService } from 'src/app/modules/authors-management/service/author.service';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { ToastService } from 'src/app/services/toast.service';
+import { BookService } from '../../service/book.service';
+import { IPublisher } from 'src/app/models/publisher.model';
+import { MessageType } from 'src/app/enums/toast-message.enum';
+import { PublisherDetailFields } from 'src/app/modules/publishers-management/publisher-info-edit/publisher-info.form';
 
 @Component({
-  selector: 'app-book-author-edit',
-  templateUrl: './book-author-edit.component.html',
-  styleUrls: ['./book-author-edit.component.css']
+  selector: 'app-book-publisher-edit',
+  templateUrl: './book-publisher-edit.component.html',
+  styleUrls: ['./book-publisher-edit.component.css']
 })
-export class BookAuthorEditComponent implements IDialogType, OnInit {
+export class BookPublisherEditComponent  implements IDialogType, OnInit {
   @ViewChild('dt1') dt?: Table;
 
-  allAuthors: IAuthor[] = [];
-  selectedAuthors: IAuthor[] = [];
-  newAuthor: IAuthor = {
+  allPublishers: IPublisher[] = [];
+  selectedPublishers: IPublisher[] = [];
+  newPublisher: IPublisher = {
     name: '',
   }
   
@@ -50,7 +51,7 @@ export class BookAuthorEditComponent implements IDialogType, OnInit {
     private modal: NgbActiveModal,
     private toastService: ToastService,
     private bookService: BookService,
-    private authorService: AuthorService,
+    private publisherService: PublisherService,
     private confirmDialogService: ConfirmDialogService
   ) {}
 
@@ -60,14 +61,14 @@ export class BookAuthorEditComponent implements IDialogType, OnInit {
   
   ngOnInit(): void {
     this.getAuthors();
-    this.fields = AuthorDetailFields();
+    this.fields = PublisherDetailFields();
   }
 
   getAuthors() {
-    this.authorService.getAll().subscribe({
+    this.publisherService.getAll().subscribe({
       next: (resp) => {
         if(resp)
-          this.allAuthors = resp;
+          this.allPublishers = resp;
       }
     })
   }
@@ -86,18 +87,18 @@ export class BookAuthorEditComponent implements IDialogType, OnInit {
 
   submit() {
     this.confirmDialogService.showConfirmDialog(
-      'New Author will be added to system and will be referenced to this book, do you want to continue ?',
-      'Add Author to new Book confirmation'
+      'New Publisher will be added to system and will be referenced to this book, do you want to continue ?',
+      'Add Publisher to new Book confirmation'
     ).subscribe({
       next: (confirmed) => {
         if(confirmed) {
-          this.authorService.save(this.newAuthor).subscribe({
+          this.publisherService.save(this.newPublisher).subscribe({
             next: (resp) => {
               if(resp) {
-                this.allAuthors = [...this.allAuthors, resp];
-                this.selectedAuthors = [...this.selectedAuthors, resp];
+                this.allPublishers = [...this.allPublishers, resp];
+                this.selectedPublishers = [...this.selectedPublishers, resp];
               }
-              this.toastService.show(MessageType.success, 'Author info save success');
+              this.toastService.show(MessageType.success, 'Publisher info save success');
 
               this.form.reset();
             },
@@ -110,15 +111,8 @@ export class BookAuthorEditComponent implements IDialogType, OnInit {
     })
   }
 
-  saveAuthor() {
-    this.modal.close(this.selectedAuthors);
-  }
-
-  resetForm() {
-    this.newAuthor = {
-      name: '',
-
-    }
+  savePublisher() {
+    this.modal.close(this.selectedPublishers);
   }
 
   close() {

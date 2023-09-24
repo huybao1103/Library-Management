@@ -1,16 +1,70 @@
-<p>authors-management works!</p>
-
-<div class="pl-1" style="margin-left: 1rem;">
-    <button type="button" class="col-1" (click)="edit('')">Add new</button>
-
-    <div *ngIf="author$ | async as authors">
-
-        <div class="row" *ngFor="let author of authors">
-            <p class="col-3">{{ author.id }}</p>
-            <p class="col-3">{{ author.name }}</p>
-            <p class="col-3">{{ author.mail }}</p>
-            <p class="col-2">{{ author.phone }}</p>
-            <button type="button" class="col-1" (click)="edit(author.id)">Edit</button>
-        </div>
-    </div>
+<div *ngIf="author$ | async as Authors"> 
+  <p-table
+      #dt
+      [value]="Authors"
+      [globalFilterFields]="['phone','name', 'mail']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [scrollable]="true" scrollHeight="510px"
+  >
+      <ng-template pTemplate="caption">
+          <div class="justify-content-between align-items-center">
+              <h3 class=>Authors List</h3>
+              <div class="d-flex justify-content-between align-items-center">
+                  <div class="p-input-icon-left">
+                      <i class="la la-search"></i>
+                      <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search keyword..."/>
+                  </div>
+                  <div>
+                      <button pButton pRipple label="New Author" icon="la la-plus" class="btn-primary" (click)="edit('')"></button>
+                      <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                  </div>
+              </div>
+          </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+          <tr>
+              <th style="width: 4rem">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
+              <th pSortableColumn="mail">Mail <p-sortIcon field="mail"></p-sortIcon></th>
+              <th pSortableColumn="phone">Phone <p-sortIcon field="phone"></p-sortIcon></th>
+              <th pSortableColumn="action" style="min-width:10rem; text-align: center;">Action</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>
+              <p-columnFilter type="text" field="name"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="mail"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter type="text" field="phone"></p-columnFilter>
+            </th>
+            <th></th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-author of authors>
+          <tr>
+              <td>
+                  <p-tableCheckbox [value]="author"></p-tableCheckbox>
+              </td>
+              <td>{{ author.name }}</td>
+              <td>{{ author.mail }}</td>
+              <td>{{ author.phone }}</td>
+              <td style="text-align: center;">
+                  <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(author.id)"></button>
+                  <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteAuthor(author)"></button>
+              </td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">In total there are {{ Authors ? Authors.length : 0 }} Authors.</div>
+      </ng-template>
+  </p-table>
 </div>

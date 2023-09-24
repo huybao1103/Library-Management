@@ -32,12 +32,14 @@ import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DockModule } from 'primeng/dock';
 import { CategoryManagementComponent } from './category-management/category-management.component';
-import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
-
+import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
+import { ConfirmDialogService } from '../services/confirm-dialog.service';
+import { GalleriaModule } from 'primeng/galleria';
+import { BookPublisherEditComponent } from './books-management/book-info-edit/book-publisher-edit/book-publisher-edit.component';
 
 @NgModule({
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, ConfirmDialogService],
   declarations: [
     MainPageComponent,
     HeaderComponent,
@@ -52,6 +54,7 @@ import { PublisherInfoEditComponent } from './publishers-management/publisher-in
     BookAuthorEditComponent,
     PublishersManagementComponent,
     PublisherInfoEditComponent,
+    BookPublisherEditComponent
   ],
   imports: [
     DialogModule,
@@ -74,7 +77,7 @@ import { PublisherInfoEditComponent } from './publishers-management/publisher-in
     FileUploadModule,
     ToolbarModule,
     InputTextModule,
-    ConfirmDialogModule
+    GalleriaModule
   ]
 })
 export class FeatureModule { }

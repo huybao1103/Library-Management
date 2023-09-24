@@ -26,30 +26,33 @@ import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 export class PublisherInfoEditComponent implements IDialogType, OnInit {
   uniqueId: string = uniqueId('publisher-info');
   title: string = '';
-
-  publisher$?: Observable<IPublisher[] | null>;
-  
-  addPublisher: boolean = false;
-
   fields: FormlyFieldConfig[] = []; // abcxyz
   form = new FormGroup({});
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-        publisher: of(),
-        publishers: this.getPublisherOption(),
+      
       }
     }
   };
-  
+
   data: IPublisher = {
     name: '',
     phone:'',
     mail: '',
     address:'',
-  }
-  
+  }  
   publisher: IPublisher[] = [];
+
+  product: IPublisher[] = [
+    {
+      name: 'Kim Đồng',
+      mail: 'cskh_online@nxbkimdong.com.vn',
+      phone: '01900571595',
+      address: '55 Quang Trung, Nguyễn Du, Hai Bà Trưng, Hà Nội'
+    },
+
+  ];
 
   constructor(
     private modal: NgbActiveModal,
@@ -60,8 +63,8 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
     private confirmDialogService: ConfirmDialogService
   ) {
   }
-  
-  dialogInit(para: {id: string}): void {
+
+  dialogInit(para: { id: string }): void {
     this.title = "Add Publisher";
     if (para.id) {
       this.title = "Edit Publisher Information";
@@ -71,19 +74,15 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
       this.fields = PublisherDetailFields();
     }
   }
-  
+
   ngOnInit(): void {
 
-  }
-
-  getPublisherOption() {
-    return this.publisherService.getPublisherOption().pipe(map(res => res))
   }
 
   getPublisherById(id: string) {
     this.httpService.getById<IPublisher>({controller: 'Publishers'}, id).subscribe({
       next: (res) => {
-         if(res != undefined)
+        if (res)
           this.data = res;
 
           console.log(this.data);
@@ -115,8 +114,9 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
         this.toastService.show(MessageType.error, err.error?.detail);
       }
     })
-    console.log(this.data.id);
   }
+
+
 
   close() { this.modal.close() }
 
@@ -126,12 +126,12 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
         console.log(resp);
         this.toastService.show(MessageType.success, 'Publisher info save success');
 
-        this.addPublisher ? this.modal.close(resp) : this.close();
+        this.close();
       },
       error: (err: HttpErrorResponse) => {
         this.toastService.show(MessageType.error, err.error?.detail);
       }
-    })    
+    })
   }
 }
 
