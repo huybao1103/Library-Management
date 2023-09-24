@@ -1,33 +1,30 @@
-<link href="~/publishers-manegement.component.css">
 <div *ngIf="publisher$ | async as Publishers"> 
-    <p-table
-            #dt
-            [value]="Publishers"
-            [rows]="8"
-            [paginator]="true"
-            [globalFilterFields]="['name']"
-            [tableStyle]="{ 'min-width': '75rem' }"
-            [rowHover]="true"
-            dataKey="id"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [showCurrentPageReport]="true"
-        >
+     <p-table
+        #dt
+        [value]="Publishers"
+        [rows]="8"
+        [paginator]="true"
+        [globalFilterFields]="['name']"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true"
+    >
         <ng-template pTemplate="caption">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="file-wrap">
-                        <nav class="navbar navbar-light bg-white">
-                            <div class="container-fluid ">
-                                <span class="PM"> Publisher Managements </span>
-                                <div>
-                                <button pButton pRipple label="Add Publisher" icon="la la-plus" class="btn-primary rounded" (click)="edit('')"></button>
-                                <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
-                            </div>
-                            </div>
-                        </nav>
+            <div class="justify-content-between align-items-center">
+                <h3 class=>Publisher Managements</h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="p-input-icon-left">
+                        <i class="la la-search"></i>
+                        <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search..." style="width: 30rem;"/>
+                    </div>
+                    <div>
+                        <button pButton pRipple label="Add Publisher" icon="la la-plus" class="btn-primary" (click)="edit('')"></button>
+                        <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
                     </div>
                 </div>
-            </div>              
+            </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
@@ -49,10 +46,11 @@
                 <td>{{ publisher.phone }}</td>
                 <td>{{ publisher.mail }}</td>
                 <td>{{ publisher.address}}</td>
-                <td style="text-align: center;">
+                <td style="text-align: center;">                    
                     <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(publisher.id)"></button>
                     <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deletePublisher(publisher)"></button>
                 </td>
+                <!-- deleteCategory(category) -->
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
