@@ -1,16 +1,62 @@
-<div class="content container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="file-wrap">
-                <nav class="navbar navbar-light bg-white">
-                    <div class="container-fluid">
-                        <span class="PM"> Publisher Managements </span>
-                        <button type="button" class="btn-primary text-white rounded-pill p-2" (click)="edit('')">
-                            <i class="fa fa-plus"> Add Publisher </i> 
-                        </button>
+<link href="~/publishers-manegement.component.css">
+<div *ngIf="publisher$ | async as Publishers"> 
+    <p-table
+            #dt
+            [value]="Publishers"
+            [rows]="8"
+            [paginator]="true"
+            [globalFilterFields]="['name']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true"
+        >
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="file-wrap">
+                        <nav class="navbar navbar-light bg-white">
+                            <div class="container-fluid ">
+                                <span class="PM"> Publisher Managements </span>
+                                <div>
+                                <button pButton pRipple label="Add Publisher" icon="la la-plus" class="btn-primary rounded" (click)="edit('')"></button>
+                                <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                            </div>
+                            </div>
+                        </nav>
                     </div>
-                </nav>
-            </div>
-        </div>
-    </div>
+                </div>
+            </div>              
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="phone">Phone <p-sortIcon field="phone"></p-sortIcon></th>
+                <th pSortableColumn="mail" style="min-width:10rem; text-align: center;">Mail<p-sortIcon field="mail"></p-sortIcon></th>
+                <th pSortableColumn="address">Address <p-sortIcon field="address"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-publisher of publishers>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="publisher"></p-tableCheckbox>
+                </td>
+                <td>{{ publisher.name }}</td>
+                <td>{{ publisher.phone }}</td>
+                <td>{{ publisher.mail }}</td>
+                <td>{{ publisher.address}}</td>
+                <td style="text-align: center;">
+                    <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(publisher.id)"></button>
+                    <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deletePublisher(publisher)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">In total there are {{ Publishers ? Publishers.length : 0 }} Publishers.</div>
+        </ng-template>
+    </p-table>
 </div>

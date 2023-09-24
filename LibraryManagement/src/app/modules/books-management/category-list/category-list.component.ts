@@ -9,12 +9,12 @@ import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 
-
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.css'],
 })
+
 export class CategoryListComponent implements OnInit{
   searchName = "";
   categories!: ICategory[];

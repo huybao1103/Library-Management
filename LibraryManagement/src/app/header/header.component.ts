@@ -161,7 +161,7 @@ export class HeaderComponent implements OnInit {
         ];
 
         let temp;
-        this.httpService.getAll({ controller: 'Categories' }).subscribe({
+        this.httpService.getAll({ controller: 'Authors' }).subscribe({
             next: (resp) => {
                 temp = resp;
             }

@@ -8,7 +8,7 @@ import { IAuthor } from 'src/app/models/author.model';
 import { IBook, IBookSave } from 'src/app/models/book.model';
 import { IDialogType } from 'src/app/models/modal/dialog';
 import { ToastService } from 'src/app/services/toast.service';
-import { AuthorDetailFields } from '../../authors-management/author-info-edit/autho-info.form';
+import { AuthorDetailFields } from '../../authors-management/author-info-edit/author-info.form';
 import { AuthorInfoEditComponent } from '../../authors-management/author-info-edit/author-info-edit.component';
 import { BookDetailFields } from '../../books-management/book-info-edit/book-info-form';
 import { BookService } from '../../books-management/service/book.service';
@@ -54,7 +54,7 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
   constructor(
     private modalService: NgbModal,
     private modal: NgbActiveModal,
-    private _toastService: ToastService,
+    private _toastService: ToastService ,
     private categoryService: CategoryService,
     private confirmDialogService: ConfirmDialogService,
     private httpService: HttpService,

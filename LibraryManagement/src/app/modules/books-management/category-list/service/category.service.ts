@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-
 import { IComboboxOption } from "src/app/models/combobox-option.model";
 import { HttpService } from "src/app/services/http-service.service";
 import { BehaviorSubject, Observable, concatMap, map, of, switchMap, tap } from 'rxjs';
@@ -13,7 +12,10 @@ import { ICategory } from "src/app/models/category.model";
     private _category$?: BehaviorSubject<ICategory[]>;
 
 
-    constructor(private httpService: HttpService,private toastService: ToastService) { }
+    constructor(
+      private httpService: HttpService,
+      private toastService: ToastService
+      ) { }
     
     /////api/Categories/get-by-id/{id}
     getAll() {
