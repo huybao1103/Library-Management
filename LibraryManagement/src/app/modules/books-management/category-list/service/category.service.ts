@@ -9,7 +9,7 @@ import { ICategory } from "src/app/models/category.model";
     providedIn: 'root'
   })
   export class CategoryService {
-    private _category$?: BehaviorSubject<ICategory[]>;
+    private category$: BehaviorSubject<ICategory[]> = new BehaviorSubject<ICategory[]>([]);;
 
 
     constructor(
@@ -19,7 +19,13 @@ import { ICategory } from "src/app/models/category.model";
     
     /////api/Categories/get-by-id/{id}
     getAll() {
-      return this.httpService.getAll<ICategory[]>({ controller: 'Categories' });
+      return this.httpService.getAll<ICategory[]>({ controller: 'Categories' }).pipe(
+        tap((x) => {
+          if(x?.length) 
+            this.category$.next(x)
+        }),
+        concatMap(() => this.category$ ? this.category$.asObservable() : of([]))
+      );
     }
   
     getCategoryById(id: string) {
@@ -27,22 +33,36 @@ import { ICategory } from "src/app/models/category.model";
     }
   
     save(data: ICategory) {
-      return this.httpService.save<ICategory>({ controller: 'Categories', data, op: 'category-info'});
+      return this.httpService.save<ICategory>({ controller: 'Categories', data, op: 'category-info'}).pipe(
+        tap((res) => res ? this.updateCategoriesState(res) : of())
+      );
     }
   
     getCategoryOption() {
       return this.httpService.getOption<IComboboxOption>({ controller: 'Categories' });
     }
-  
-    updateCategoryrState(res: ICategory): Observable<null> {
-      this._category$?.next([...this._category$.value, res]);
-      console.log(this._category$?.value)
-      return of(null);
-    }
 
     delete(id: string){
-      return this.httpService.delete<ICategory>({controller: 'Categories'}, id);
+      return this.httpService.delete<ICategory>({controller: 'Categories'}, id).pipe(
+        tap(() => this.updateCategoriesState(undefined, id))
+      );
     }
-
+  
+    private updateCategoriesState(res?: ICategory, deletedCategoryId?: string, ) {
+      let old = this.category$.value;
+    
+      if(res) {
+        const updated = old.find(p => p.id === res.id);
+        
+        old = updated ? old.filter(p => p.id !== updated.id) : old;
+    
+        this.category$.next([res, ...old]);
+      } else if(deletedCategoryId) {
+        old = old.filter(p => p.id !== deletedCategoryId);
+    
+        this.category$.next([...old]);
+      }
+    
+    }
   }
   

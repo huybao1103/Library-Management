@@ -56,11 +56,9 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
 
   constructor(
     private modal: NgbActiveModal,
-    private modalService: NgbModal,
     private toastService: ToastService,
     private httpService: HttpService,
     private publisherService: PublisherService,
-    private confirmDialogService: ConfirmDialogService
   ) {
   }
 
@@ -80,12 +78,10 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
   }
 
   getPublisherById(id: string) {
-    this.httpService.getById<IPublisher>({controller: 'Publishers'}, id).subscribe({
+    this.publisherService.getPublisherById(id).subscribe({
       next: (res) => {
         if (res)
           this.data = res;
-
-          console.log(this.data);
           this.fields = PublisherDetailFields();
       }
     })
@@ -96,17 +92,14 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
       next: (res) => {
         if(res)
           this.data = res;
-          console.log(this.data);
-          console.log(this.data.id);
         this.fields = PublisherDetailFields();
       } 
     })
   }
 
   submit() {
-    this.httpService.save({ controller: 'Publishers', data: this.data}).subscribe({
+    this.publisherService.save(this.data).subscribe({
       next: (resp) => {
-        console.log(resp);
         this.toastService.show(MessageType.success, 'Publisher info save success');
         this.close();
       },

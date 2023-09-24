@@ -47,11 +47,11 @@
                                     <input type="text" class="form-control rounded-pill" placeholder="Search">
                                 </div>
                             </form>
-                            <div *ngIf="books.length" class="file-body">
+                            <div *ngIf="books$ | async as book" class="file-body">
                                 <div class="file-scroll">
                                     <div class="file-content-inner">
                                         <div class="row row-sm">
-                                            <div *ngFor="let book of booksDisplay" class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                            <div *ngFor="let book of book" class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
                                                 <div class="card card-file">
                                                     <div class="dropdown-file">
                                                         <a href="" class="dropdown-link" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
@@ -72,13 +72,13 @@
                                                     </div>
                                                     <div class="card-body text-truncate" style="overflow: hidden">
                                                         <h6 class="text-truncate" style="font-size: 18px;"><strong><a href="">{{book.name}}</a></strong></h6>
-                                                        <span style="font-weight: 900;">Tác giả: </span><span>{{book.authorName}} </span>
+                                                        <span style="font-weight: 900;">Author(s): </span><span>{{book.authorName}} </span>
                                                     </div>
                                                     <div class="card-footer text-truncate" style="overflow: hidden">
-                                                        <span style="font-weight: 900;">Thể loại: </span><span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span>
+                                                        <span style="font-weight: 900;">Category(es): </span><span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span>
                                                     </div>
                                                     <div class="card-footer text-truncate" style="overflow: hidden">
-                                                        <span style="font-weight: 900;">Nhà xuất bản: </span><span *ngFor="let bookPublisher of book.bookPublishers">{{bookPublisher.publisher.name}}, </span>
+                                                        <span style="font-weight: 900;">Publisher(s): </span><span *ngFor="let bookPublisher of book.bookPublishers">{{bookPublisher.publisher.name}}, </span>
                                                     </div>
                                                 </div>
                                             </div>

@@ -117,56 +117,9 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
     modalRef.componentInstance.addBookToCategory = true;
     modalRef.result.then((res) => this.categorys.push(res));
   }
+
   submit() {
-    // if(this.data) {
-    //   var categoryModel: ICategorySave = this.data;
-    //   categoryModel = {
-    //     ...categoryModel,
-    //     bookCategory: this.categorys.map(a => a.id ? a.id : '')
-    //   }  
-    //   this.categoryService.save(categoryModel).subscribe({
-    //     next: (res) => {
-    //       this._toastService.show(MessageType.success, 'Add Category successfully');
-    //       this.close();
-    //     },
-    //     error: (err: HttpErrorResponse) => {
-    //       this._toastService.show(MessageType.error, err.error?.detail);
-    //     }
-    //   })
-    // }
-
-    // this.addCategory 
-    // ? this.confirmDialogService.showConfirmDialog(
-    //     'New Category will be added to system and will be referenced to this book, do you want to continue ?',
-    //     'Add Category to new Category confirmation'
-    //   ).subscribe({
-    //     next: (confirmed) => {
-    //       if(confirmed) {
-    //         this.addCategoryConfirmed();
-    //       }
-    //     }
-    //   })
-    // : this.addCategoryConfirmed();
-    
-    // var bookModel: ICategory = this.data;
-    // bookModel = {
-    //   ...bookModel,
-    //   categories: this.categorys.map(a => a.id ? a.id : '')
-    // };
-
-    // this.categoryService.save(bookModel).subscribe({
-    //       next: (res) => {
-    //         this._toastService.show(MessageType.success, 'Add Category successfully');
-    //         this.close();
-    //       },
-    //       error: (err: HttpErrorResponse) => {
-    //         this._toastService.show(MessageType.error, err.error?.detail);
-    //       }
-    //     })
-    //   this.addAccount(); 
-    // console.log(this.data);
-    ///api/Categories/save
-    this.httpService.save({ controller: 'Categories', data: this.data}).subscribe({
+    this.categoryService.save(this.data).subscribe({
       next: (resp) => {
         console.log(resp);
         this._toastService.show(MessageType.success, 'Category info save success');
@@ -176,24 +129,8 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
         this._toastService.show(MessageType.error, err.error?.detail);
       }
     })
-    console.log(this.data.id);
-
   }
 
   close() { this.modal.close() }
-
-  private addCategoryConfirmed() {
-    this.categoryService.save(this.data).subscribe({
-      next: (resp) => {
-        console.log(resp);
-        this._toastService.show(MessageType.success, 'Category info save success');
-
-        this.addCategory ? this.modal.close(resp) : this.close();
-      },
-      error: (err: HttpErrorResponse) => {
-        this._toastService.show(MessageType.error, err.error?.detail);
-      }
-    })    
-  }
 }
 

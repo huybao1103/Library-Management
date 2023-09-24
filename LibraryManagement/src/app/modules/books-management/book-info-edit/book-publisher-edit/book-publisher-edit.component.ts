@@ -65,7 +65,7 @@ export class BookPublisherEditComponent  implements IDialogType, OnInit {
   }
 
   getAuthors() {
-    this.publisherService.getAll().subscribe({
+    this.publisherService.getAll()?.subscribe({
       next: (resp) => {
         if(resp)
           this.allPublishers = resp;

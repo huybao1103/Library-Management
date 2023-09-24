@@ -16,9 +16,7 @@ import { MessageType } from 'src/app/enums/toast-message.enum';
 })
 export class AuthorsManagementComponent implements OnInit {
   searchName = "";
-  authors!: IAuthor[];
-  author!: IAuthor;
-  authorData: IAuthor[] = [];
+  
   author$?: Observable<IAuthor[] | null>;
   @ViewChild('dt') dt: Table | undefined;
   messageService: any;
@@ -46,8 +44,7 @@ export class AuthorsManagementComponent implements OnInit {
   }
 
   edit(id?: string) {
-    console.log('selected author id ' + id);
-      this.route.navigate([{ outlets: { modal: ['author', 'edit', id] } }]);
+    this.route.navigate([{ outlets: { modal: ['author', 'edit', id] } }]);
   }
 
   deleteAuthor(author: IAuthor) {
@@ -58,12 +55,10 @@ export class AuthorsManagementComponent implements OnInit {
           if (result) {
             this.authorService.delete(authorId).subscribe({
               next: () => {
-                this.authorData = this.authorData.filter((val) => val.id !== authorId);
                 this.toastService.show(MessageType.success, 'Delete Author Successfully');
                 this.getData();
               },
               error: (err: any) => {
-                console.error('Error deleting author:', err);
                 this.toastService.show(MessageType.error, 'Error deleting author');
               },
             });

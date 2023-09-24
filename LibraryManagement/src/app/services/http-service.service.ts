@@ -16,11 +16,11 @@ export class HttpService {
     private toastSevice: ToastService
   ) { }
 
-  getAll<T>(query: IQueryData) {
+  getAll<T>(query: IQueryData, id?: string) {
     // api/Authors
     return this.getDataFromResponse<T> (
       this.http.get<T>(
-        `api/${query.controller}`,
+        `api/${query.controller}${id ? `/${id}` : ''}`,
         { observe: 'response'}
       )
     );

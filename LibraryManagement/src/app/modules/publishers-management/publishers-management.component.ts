@@ -16,22 +16,16 @@ import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 })
 
 export class PublishersManagementComponent implements OnInit{
-  publisherData: IPublisher[] = [];
   publisher$?: Observable<IPublisher[] | null>;
-  publisherById: IPublisher[] | undefined;
-  publishers!: IPublisher[];
-  publisher!: IPublisher;
   selectedPublishers!: IPublisher[] | null;
   
   @ViewChild('dt') dt: Table | undefined;
-  messageService: any;
 
   constructor(
     private route: Router,
     private publisherService: PublisherService,
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
-    private httpService: HttpService
     ) {
   }
 
@@ -48,24 +42,22 @@ export class PublishersManagementComponent implements OnInit{
   }
 
   edit(id?: string) {
-    console.log('selected publisher id ' + id);
     this.route.navigate([{ outlets: { modal: ['publisher', 'edit', id] } }]);
   }
 
   deletePublisher(publisher: IPublisher) {
     const publisherId = publisher?.id; 
+
     if (publisherId !== undefined) {
       this.confirmDialogService.showConfirmDialog('Are you sure you want to delete ' + publisher.name + '?')
         .subscribe((result) => {
           if (result) {
             this.publisherService.delete(publisherId).subscribe({
               next: () => {
-                this.publisherData = this.publisherData.filter((val) => val.id !== publisherId);
                 this.toastService.show(MessageType.success, 'Delete Publisher Successfully');
                 this.getData();
               },
               error: (err: any) => {
-                console.error('Error deleting publisher:', err);
                 this.toastService.show(MessageType.error, 'Error deleting publisher');
               },
             });

@@ -28,13 +28,11 @@ namespace LibraryAPI.Controllers
         }
 
         // GET: api/Books
-        [HttpGet]
+        [HttpGet("{id?}")]
         [PubSub(PubSubConstas.AUTHOR_INFO)]
-        public async Task<ActionResult<IEnumerable<BookModel>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<BookModel>>> GetBooks(Guid? id)
         {
-            return Ok(_mapper.Map<List<BookModel>>
-                (
-                     _context.Books
+            var query = _context.Books
                     .Include(a => a.BookAuthors)
                         .ThenInclude(a => a.Author)
                     .Include(a => a.BookPublishers)
@@ -42,8 +40,15 @@ namespace LibraryAPI.Controllers
                     .Include(a => a.BookImages)
                         .ThenInclude(a => a.File)
                     .Include(a => a.BookCategories)
-                        .ThenInclude(a => a.Category)
-                ));
+                        .ThenInclude(a => a.Category).AsQueryable();
+
+            if(id.HasValue)
+            {
+                query = query.Where(a => a.BookCategories.Any(b => b.CategoryId == id));
+            }
+            var books = query.ToList();
+
+            return Ok(_mapper.Map<List<BookModel>>(books));
         }
 
         // GET: api/Books/5
@@ -99,7 +104,7 @@ namespace LibraryAPI.Controllers
             }
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, _mapper.Map<BookModel>(book));
+            return CreatedAtAction("GetBook", new { id = book.Id }, _mapper.Map<BookModel>(GetBookByIdAsync(book.Id)));
         }
 
         // DELETE: api/Books/5
