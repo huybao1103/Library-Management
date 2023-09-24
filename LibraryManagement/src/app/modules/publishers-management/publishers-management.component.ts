@@ -30,7 +30,9 @@ export class PublishersManagementComponent implements OnInit{
     private route: Router,
     private publisherService: PublisherService,
     private confirmDialogService: ConfirmDialogService,
-    private toastService: ToastService,) {
+    private toastService: ToastService,
+    private httpService: HttpService
+    ) {
   }
 
   ngOnInit(): void {
@@ -43,13 +45,6 @@ export class PublishersManagementComponent implements OnInit{
 
   getData() {
     this.publisher$ = this.publisherService.getAll();
-    this.httpService.getAll<IPublisher[]>({ controller: 'Publishers' }).subscribe({
-      next: (res) => {
-         if(res != undefined)
-          this.publisherData = res;
-          console.log(this.publisherData);
-      }
-    })
   }
 
   edit(id?: string) {
@@ -60,9 +55,9 @@ export class PublishersManagementComponent implements OnInit{
   deletePublisher(publisher: IPublisher) {
     const publisherId = publisher?.id; 
     if (publisherId !== undefined) {
-      // this.confirmDialogService.showConfirmDialog('Are you sure you want to delete ' + category.name + '?')
-      //   .subscribe((result) => {
-      //     if (result) {
+      this.confirmDialogService.showConfirmDialog('Are you sure you want to delete ' + publisher.name + '?')
+        .subscribe((result) => {
+          if (result) {
             this.publisherService.delete(publisherId).subscribe({
               next: () => {
                 this.publisherData = this.publisherData.filter((val) => val.id !== publisherId);
@@ -74,8 +69,8 @@ export class PublishersManagementComponent implements OnInit{
                 this.toastService.show(MessageType.error, 'Error deleting publisher');
               },
             });
-        //   }
-        // });
+          }
+        });
     } else {
       console.error('category.id is undefined');
     }

@@ -104,7 +104,7 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
   }
 
   submit() {
-    this.httpService.save({ controller: 'Publisher', data: this.data}).subscribe({
+    this.httpService.save({ controller: 'Publishers', data: this.data}).subscribe({
       next: (resp) => {
         console.log(resp);
         this.toastService.show(MessageType.success, 'Publisher info save success');

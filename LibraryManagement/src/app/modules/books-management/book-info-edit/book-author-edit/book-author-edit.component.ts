@@ -15,7 +15,6 @@ import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { AuthorService } from 'src/app/modules/authors-management/service/author.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageType } from 'src/app/enums/toast-message.enum';
-import { AuthorDetailFields } from 'src/app/modules/authors-management/author-info-edit/author-info.form';
 
 @Component({
   selector: 'app-book-author-edit',

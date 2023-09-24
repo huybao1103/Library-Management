@@ -1,4 +1,5 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
+import { INPUT_TEXT_TYPE } from "src/app/enums/input-text.type";
 import { KeyFilterType } from "src/app/enums/p-key-filter.type";
 import { FORMLY_INPUT } from "src/app/formly/formly.config";
 
@@ -14,7 +15,7 @@ export function CategorysDetailFields(): FormlyFieldConfig[] {
             templateOptions: {
               label: 'Category Name',
               required: true,
-              keyFilter: KeyFilterType.text
+              keyFilter: /^[^<>*!0-9@$%#]+$/
             }
           },
           {

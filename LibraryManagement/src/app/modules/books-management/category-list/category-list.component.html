@@ -2,7 +2,7 @@
         <p-table
             #dt
             [value]="Categories"
-            [rows]="5"
+            [rows]="7"
             [paginator]="true"
             [globalFilterFields]="['name']"
             [tableStyle]="{ 'min-width': '75rem' }"
@@ -13,14 +13,14 @@
         >
             <ng-template pTemplate="caption">
                 <div class="justify-content-between align-items-center">
-                    <h3 class=>Categories List</h3>
+                    <h3 class=>Category List</h3>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="p-input-icon-left">
                             <i class="la la-search"></i>
                             <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search..." style="width: 30rem;"/>
                         </div>
                         <div>
-                            <button pButton pRipple label="New Category" icon="la la-plus" class="btn-primary" (click)="edit('')"></button>
+                            <button pButton pRipple label="New Category" icon="fa fa-plus" class="btn-primary" (click)="edit('')"></button>
                             <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 4rem">
+                    <th style="width: 2rem">
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
                     <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
@@ -49,9 +49,6 @@
                     </td>
                     <!-- deleteCategory(category) -->
                 </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-                <div class="flex align-items-center justify-content-between">In total there are {{ Categories ? Categories.length : 0 }} Categories.</div>
             </ng-template>
         </p-table>
     </div>

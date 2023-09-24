@@ -73,6 +73,15 @@
     padding: 0;
 }
 
+/* PrimeNG Button */
+.p-button.p-button-icon-only.p-button-rounded {
+    height: 2rem;
+}
+
+.p-button.p-button-icon-only {
+    width: 2rem;
+}
+
 /* Books Modal */
 .form-child-title {
     margin-left: 10px;
