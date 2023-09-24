@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { uniqueId } from 'lodash';
+import { of, map, tap, Observable} from 'rxjs';
+import { IAuthor } from 'src/app/models/author.model';
+import { IBook, IBookSave } from 'src/app/models/book.model';
 import { IPublisher } from 'src/app/models/publisher.model';
 import { IDialogType } from 'src/app/models/modal/dialog';
 import { ToastService } from 'src/app/services/toast.service';
 import { BookDetailFields } from '../../books-management/book-info-edit/book-info-form';
+import { BookService } from '../../books-management/service/book.service';
 import { HttpService } from 'src/app/services/http-service.service';
 import { PublisherDetailFields } from './publisher-info.form';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublisherService } from '../service/publisher.service';
-import { map, tap } from 'rxjs';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 
 @Component({
@@ -24,36 +27,36 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
   uniqueId: string = uniqueId('publisher-info');
   title: string = '';
 
+  publisher$?: Observable<IPublisher[] | null>;
+  
+  addPublisher: boolean = false;
+
   fields: FormlyFieldConfig[] = []; // abcxyz
   form = new FormGroup({});
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-        
+        publisher: of(),
+        publishers: this.getPublisherOption(),
       }
     }
   };
   
   data: IPublisher = {
     name: '',
+    phone:'',
+    mail: '',
+    address:'',
   }
   
-  product: IPublisher[] = [
-    {
-      name: 'Kim Đồng',
-      mail: 'cskh_online@nxbkimdong.com.vn',
-      phone: '01900571595',
-      address: '55 Quang Trung, Nguyễn Du, Hai Bà Trưng, Hà Nội'
-    },
-    
-  ];
+  publisher: IPublisher[] = [];
 
   constructor(
     private modal: NgbActiveModal,
+    private modalService: NgbModal,
     private toastService: ToastService,
     private httpService: HttpService,
-    private toastSerivce: ToastService,
-    private publisherSerive: PublisherService,
+    private publisherService: PublisherService,
     private confirmDialogService: ConfirmDialogService
   ) {
   }
@@ -63,6 +66,7 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
     if (para.id) {
       this.title = "Edit Publisher Information";
       this.getPublisherById(para.id);
+      console.log(para.id);
     } else {
       this.fields = PublisherDetailFields();
     }
@@ -72,39 +76,57 @@ export class PublisherInfoEditComponent implements IDialogType, OnInit {
 
   }
 
+  getPublisherOption() {
+    return this.publisherService.getPublisherOption().pipe(map(res => res))
+  }
+
   getPublisherById(id: string) {
-    this.publisherSerive.getPublisherById(id).subscribe({
+    this.httpService.getById<IPublisher>({controller: 'Publishers'}, id).subscribe({
       next: (res) => {
-        if(res)
+         if(res != undefined)
           this.data = res;
 
-        this.fields = PublisherDetailFields();
+          console.log(this.data);
+          this.fields = PublisherDetailFields();
       }
     })
   }
 
+  loadData(id: string) {
+    this.publisherService.getPublisherById(id).subscribe({
+      next: (res) => {
+        if(res)
+          this.data = res;
+          console.log(this.data);
+          console.log(this.data.id);
+        this.fields = PublisherDetailFields();
+      } 
+    })
+  }
+
   submit() {
-      this.confirmDialogService.showConfirmDialog(
-        'New publisher will be added to system and will be referenced to this book, do you want to continue ?',
-        'Add publisher to new Book confirmation'
-      ).subscribe({
-        next: (confirmed) => {
-          if(confirmed) {
-            this.addPublisherConfirmed();
-          }
-        }
-      })
+    this.httpService.save({ controller: 'Publisher', data: this.data}).subscribe({
+      next: (resp) => {
+        console.log(resp);
+        this.toastService.show(MessageType.success, 'Publisher info save success');
+        this.close();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toastService.show(MessageType.error, err.error?.detail);
+      }
+    })
+    console.log(this.data.id);
   }
 
   close() { this.modal.close() }
 
   private addPublisherConfirmed() {
-    this.publisherSerive.save(this.data).subscribe({
+    this.publisherService.save(this.data).subscribe({
       next: (resp) => {
         console.log(resp);
         this.toastService.show(MessageType.success, 'Publisher info save success');
 
-        this.close();
+        this.addPublisher ? this.modal.close(resp) : this.close();
       },
       error: (err: HttpErrorResponse) => {
         this.toastService.show(MessageType.error, err.error?.detail);

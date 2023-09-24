@@ -51,7 +51,7 @@ import { PublisherInfoEditComponent } from './publishers-management/publisher-in
     CategoryInfoEditComponent,
     BookAuthorEditComponent,
     PublishersManagementComponent,
-    PublisherInfoEditComponent
+    PublisherInfoEditComponent,
   ],
   imports: [
     DialogModule,

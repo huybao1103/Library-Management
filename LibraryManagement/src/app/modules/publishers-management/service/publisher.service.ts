@@ -1,7 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, concatMap, map, of, switchMap, tap } from 'rxjs';
-import { MessageType } from 'src/app/enums/toast-message.enum';
 import { IPublisher } from 'src/app/models/publisher.model';
 import { IComboboxOption } from 'src/app/models/combobox-option.model';
 import { HttpService } from 'src/app/services/http-service.service';
@@ -11,7 +9,7 @@ import { ToastService } from 'src/app/services/toast.service';
   providedIn: 'root'
 })
 export class PublisherService {
-  private _publisher$?: BehaviorSubject<IPublisher[]>;
+  private publisher$?: BehaviorSubject<IPublisher[]>;
 
 
   constructor(
@@ -19,6 +17,7 @@ export class PublisherService {
     private toastService: ToastService
   ) { }
   
+  ////api/Publishers
   getAll() {
     return this.httpService.getAll<IPublisher[]>({ controller: 'Publishers' });
   }
@@ -31,9 +30,17 @@ export class PublisherService {
     return this.httpService.save<IPublisher>({ controller: 'Publishers', data, op: 'publisher-info'});
   }
 
+  getPublisherOption() {
+    return this.httpService.getOption<IComboboxOption>({ controller: 'Publishers' });
+  }
+
   updatePublisherState(res: IPublisher): Observable<null> {
-    this._publisher$?.next([...this._publisher$.value, res]);
-    console.log(this._publisher$?.value)
+    this.publisher$?.next([...this.publisher$.value, res]);
+    console.log(this.publisher$?.value)
     return of(null);
+  }
+
+  delete(id: string){
+    return this.httpService.delete<IPublisher>({controller: 'Publishers'}, id);
   }
 }

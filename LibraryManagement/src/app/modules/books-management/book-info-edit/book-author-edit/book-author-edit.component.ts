@@ -8,7 +8,7 @@ import { IAuthor } from 'src/app/models/author.model';
 import { IDialogType } from 'src/app/models/modal/dialog';
 import { ToastService } from 'src/app/services/toast.service';
 import { BookService } from '../../service/book.service';
-import { AuthorDetailFields } from 'src/app/modules/authors-management/author-info-edit/autho-info.form';
+import { AuthorDetailFields } from 'src/app/modules/authors-management/author-info-edit/author-info.form';
 import { Table } from 'primeng/table';
 import { ToggleButtonChangeEvent } from 'primeng/togglebutton';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';

@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 
 // Add DbContext to service
 builder.Services.AddDbContext<LibraryManagementContext>(options => 
-    options.UseSqlServer("Server=localhost;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True"));
+    options.UseSqlServer("Server=DESKTOP-BQQTDCL\\TUQUYEN;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True"));
 
 // Allow CORS Angular
 builder.Services.AddCors(options =>

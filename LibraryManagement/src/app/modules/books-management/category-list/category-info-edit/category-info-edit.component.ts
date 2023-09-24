@@ -77,7 +77,6 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
 
   }
 
-
   getCategoryById(id: string): void{
     this.httpService.getById<ICategory>({controller: 'Categories'}, id).subscribe({
       next: (res) => {
@@ -103,7 +102,6 @@ export class CategoryInfoEditComponent implements IDialogType ,OnInit{
     
   }
   
-
   getCategoryOption() {
     return this.categoryService.getCategoryOption().pipe(map(res => res))
   }
