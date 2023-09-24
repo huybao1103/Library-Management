@@ -23,7 +23,8 @@ export function BookDetailFields(): FormlyFieldConfig[] {
             templateOptions: {
               label: 'Categories',
               multiple: true,
-              required: true
+              required: true,
+              searchable: true
             },
             expressions: {
               'props.options': "formState.optionList.categories"
@@ -45,10 +46,7 @@ export function BookDetailFields(): FormlyFieldConfig[] {
             type: FORMLY_INPUT.name,
             templateOptions: {
               label: 'Publish Year',
-              keyFilter: KeyFilterType.int
-            },
-            expressions: {
-              'props.options': "formState.optionList.author"
+              keyFilter: KeyFilterType.int // chỉ lấy kí tự số, chỉ dùng cho FORMLY_INPUT
             }
           }
         ]

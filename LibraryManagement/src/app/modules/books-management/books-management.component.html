@@ -60,9 +60,13 @@
                                                             <a href="javascript:" class="dropdown-item" (click)="deleteItem(book.id || '')">Delete</a>
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="book.bookImages?.length">
-                                                        <span *ngFor="let bookImage of book.bookImages">
-                                                            <img [src]="bookImage.base64" class="img-fluid" alt="Responsive image">
+                                                    <div>
+                                                        <span>
+                                                            <p-galleria [value]="book.bookImages" [circular]="true" [showThumbnails]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true"  [containerStyle]="{ 'max-width': '640px' }">
+                                                                <ng-template pTemplate="item" let-item>
+                                                                    <img [src]="item.base64" class="img-fluid"/>
+                                                                </ng-template>
+                                                            </p-galleria>
                                                         </span>
                                                     </div>
 

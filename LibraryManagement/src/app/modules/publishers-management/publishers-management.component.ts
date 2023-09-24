@@ -27,7 +27,6 @@ export class PublishersManagementComponent implements OnInit{
   messageService: any;
 
   constructor(
-    private httpService: HttpService,
     private route: Router,
     private publisherService: PublisherService,
     private confirmDialogService: ConfirmDialogService,

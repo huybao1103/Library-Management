@@ -71,10 +71,10 @@ export class CategoryListComponent implements OnInit{
 
   deleteCategory(category: ICategory) {
     const categoryId = category?.id; 
-    if (categoryId !== undefined) {
-      // this.confirmDialogService.showConfirmDialog('Are you sure you want to delete ' + category.name + '?')
-      //   .subscribe((result) => {
-      //     if (result) {
+    if (categoryId) {
+      this.confirmDialogService.showConfirmDialog('Are you sure you want to delete ' + category.name + '?')
+        .subscribe((result) => {
+          if (result) {
             this.categoryService.delete(categoryId).subscribe({
               next: () => {
                 this.categoryData = this.categoryData.filter((val) => val.id !== categoryId);
@@ -86,8 +86,8 @@ export class CategoryListComponent implements OnInit{
                 this.toastService.show(MessageType.error, 'Error deleting category');
               },
             });
-        //   }
-        // });
+          }
+        });
     } else {
       console.error('category.id is undefined');
     }
