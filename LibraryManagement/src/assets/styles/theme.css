@@ -10631,3 +10631,9 @@ span.userrole-info {
 	justify-content: center;
 	font-size: 11px;
 }
+.rsp-Image {
+    max-width: 250px; 
+    height: 300px;
+    object-fit: contain;
+}
+

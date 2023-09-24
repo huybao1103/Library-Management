@@ -60,26 +60,25 @@
                                                             <a href="javascript:" class="dropdown-item" (click)="deleteItem(book.id || '')">Delete</a>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <span>
-                                                            <p-galleria [value]="book.bookImages" [circular]="true" [showThumbnails]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true"  [containerStyle]="{ 'max-width': '640px' }">
-                                                                <ng-template pTemplate="item" let-item>
-                                                                    <img [src]="item.base64" class="img-fluid"/>
-                                                                </ng-template>
-                                                            </p-galleria>
-                                                        </span>
+                                                    <div style="overflow: hidden;">
+                                                        <p-galleria [value]="book.bookImages" [circular]="true" [showThumbnails]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true"  [containerStyle]="{ 'max-width': '640px' }">
+                                                            <ng-template pTemplate="item" let-item>
+                                                                <img [src]="item.base64" class="rsp-Image"/>
+                                                            </ng-template>
+                                                        </p-galleria>
                                                     </div>
-
                                                     <div *ngIf="!book.bookImages?.length" class="card-file-thumb">
                                                         <i class="fa fa-image"></i>
                                                     </div>
-
-                                                    <div class="card-body">
-                                                        <h6><a href="">{{book.name}}</a></h6>
-                                                        <span>{{book.authorName}} </span>
+                                                    <div class="card-body text-truncate" style="overflow: hidden">
+                                                        <h6 class="text-truncate" style="font-size: 18px;"><strong><a href="">{{book.name}}</a></strong></h6>
+                                                        <span style="font-weight: 900;">Tác giả: </span><span>{{book.authorName}} </span>
                                                     </div>
-                                                    <div class="card-footer">
-                                                        <span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span>
+                                                    <div class="card-footer text-truncate" style="overflow: hidden">
+                                                        <span style="font-weight: 900;">Thể loại: </span><span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span>
+                                                    </div>
+                                                    <div class="card-footer text-truncate" style="overflow: hidden">
+                                                        <span style="font-weight: 900;">Nhà xuất bản: </span><span *ngFor="let bookPublisher of book.bookPublishers">{{bookPublisher.publisher.name}}, </span>
                                                     </div>
                                                 </div>
                                             </div>
