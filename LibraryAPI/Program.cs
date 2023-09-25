@@ -4,6 +4,7 @@ using LibraryAPI.Controllers;
 using LibraryAPI.CustomException;
 using LibraryAPI.PubSub;
 using System.Reflection;
+using Microsoft.AspNetCore.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddSwaggerGen();
 
 // Add DbContext to service
 builder.Services.AddDbContext<LibraryManagementContext>(options => 
-    options.UseSqlServer("Server=DESKTOP-BQQTDCL\\TUQUYEN;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True"));
+    options.UseSqlServer("Server=.;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True"));
 
 // Allow CORS Angular
 builder.Services.AddCors(options =>
