@@ -8,6 +8,7 @@ using LibraryAPI.CustomException;
 using AutoMapper;
 using LibraryAPI.ViewModels.Book;
 using LibraryAPI.ViewModels.File;
+using System.Linq;
 
 namespace LibraryAPI.Controllers
 {
@@ -46,7 +47,7 @@ namespace LibraryAPI.Controllers
             {
                 query = query.Where(a => a.BookCategories.Any(b => b.CategoryId == id));
             }
-            var books = query.ToList();
+            var books = await query.ToListAsync();
 
             return Ok(_mapper.Map<List<BookModel>>(books));
         }
@@ -105,6 +106,39 @@ namespace LibraryAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBook", new { id = book.Id }, _mapper.Map<BookModel>(GetBookByIdAsync(book.Id)));
+        }
+
+        [HttpPost("search")]
+        public async Task<ActionResult<IEnumerable<BookModel>>> BookFilter(BookRequest? bookRequestModel)
+        {
+            var query = _context.Books
+                    .Include(a => a.BookAuthors)
+                        .ThenInclude(a => a.Author)
+                    .Include(a => a.BookPublishers)
+                        .ThenInclude(a => a.Publisher)
+                    .Include(a => a.BookImages)
+                        .ThenInclude(a => a.File)
+                    .Include(a => a.BookCategories)
+                        .ThenInclude(a => a.Category).AsQueryable();
+
+            if(bookRequestModel != null)
+            {
+                query = query.Where(b =>
+                    (string.IsNullOrEmpty(bookRequestModel.Name) || b.Name.Contains(bookRequestModel.Name))
+                        &&
+                        (
+                            bookRequestModel.Authors == null || !bookRequestModel.Authors.Any() ||
+                            b.BookAuthors.Any(ba => bookRequestModel.Authors.Contains((Guid)ba.AuthorId))
+                        )
+                        &&
+                        (
+                            bookRequestModel.Categories == null || !bookRequestModel.Categories.Any() ||
+                            b.BookCategories.Any(ba => bookRequestModel.Categories.Contains((Guid)ba.CategoryId))
+                        )
+                    );
+            }
+
+            return Ok(_mapper.Map<List<BookModel>>(await query.ToListAsync()));
         }
 
         // DELETE: api/Books/5

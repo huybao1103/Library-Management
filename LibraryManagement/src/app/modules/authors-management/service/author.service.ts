@@ -39,7 +39,7 @@ export class AuthorService {
     );
   }
 
-  getBookOption() {
+  getAuthorOption() {
     return this.httpService.getOption<IComboboxOption>({ controller: 'Authors' });
   }
 

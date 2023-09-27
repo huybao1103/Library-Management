@@ -32,7 +32,7 @@ export class AuthorInfoEditComponent implements IDialogType, OnInit {
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-        author: this.getBookOption()
+        // author: this.getBookOption()
       }
     }
   };
@@ -80,9 +80,9 @@ export class AuthorInfoEditComponent implements IDialogType, OnInit {
     })
   }
 
-  getBookOption() {
-    return this.authorSerive.getBookOption().pipe(map(res => res))
-  }
+  // getBookOption() {
+  //   return this.authorSerive.getBookOption().pipe(map(res => res))
+  // }
 
   submit() {
     this.addAuthorToBook 

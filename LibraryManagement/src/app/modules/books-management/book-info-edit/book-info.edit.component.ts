@@ -113,6 +113,11 @@ export class BookInfoEditComponent implements IDialogType {
     });
   }
 
+  removeAuthor(id: string) {
+    console.log(id)
+    this.authors = this.authors.filter(x => x.author.id !== id)
+  }
+
   addPublisher() {
     const modalRef = this.modalService.open(BookPublisherEditComponent, {
       size: 'xl',

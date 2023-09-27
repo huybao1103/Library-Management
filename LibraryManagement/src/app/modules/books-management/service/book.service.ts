@@ -51,6 +51,18 @@ export class BookService {
     this.books$.next(bookDisplay);
   }
 
+  search(data: IBookSave) {
+    return this.httpService.search<IBook[]>({ controller: 'Books', data}).pipe(
+      tap((res) => {
+        if(res?.length) {
+          res.map(b => b.authorName = b.bookAuthors?.map(ba => ba.author.name).join(', '));
+
+          this.books$.next(res);
+        }
+      })
+    );
+  }
+
   private updateBookrState(res?: IBook, deletedBookId?: string, ) {
     let old = this.books$.value;
   

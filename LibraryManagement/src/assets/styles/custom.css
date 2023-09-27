@@ -3,13 +3,38 @@
     background-color: #FF7849;
 }
 
+.p-tooltip-text {
+    font-size: 15px;
+}
+
+.page-title {
+    font-weight: 600;
+}
+
 .bg-light-gray {
     background-color: #f8f9fa;
+}
+
+.p-inputtext {
+    height: 50.35px !important;
+}
+
+.p-datatable-loading-overlay {
+    opacity: 0.35;
 }
 
 /* Header */
 .header {
     background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
+}
+
+@media only screen and (min-width: 991px) {
+    .mini-sidebar .header-left .logo img {
+        height: auto;
+        max-height: 50px;
+        width: auto;
+        margin: 0 auto;
+    }
 }
 
 /* Modal */
@@ -80,6 +105,24 @@
 
 .p-button.p-button-icon-only {
     width: 2rem;
+}
+
+/* Book Management */
+.file-body {
+    overflow: auto;
+    height: 480px;
+}
+
+.book-management.file-wrap {
+    border: none;
+}
+.file-wrap .file-cont-wrap {
+    margin-left: 0px;
+}
+
+.rsp-Image {
+    max-width: 100%;
+    height: 200px;
 }
 
 /* Books Modal */

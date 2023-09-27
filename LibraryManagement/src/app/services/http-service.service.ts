@@ -35,6 +35,18 @@ export class HttpService {
     );
   }
 
+  search<T>(query: IQueryData) {
+    return this.getDataFromResponse<T> (
+      this.http.post<T> (
+        `api/${query.controller}/search`,
+        query.data,
+        { observe: 'response'}
+      ),
+      true,
+      query
+    );
+  }
+
   // update<T>(query: IQueryData, id: string): Observable<HttpResponse<T>> {
   //   return this.http.put<T>(
   //     `api/${query.controller}/update/${id}`,

@@ -26,7 +26,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, FilterService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
@@ -37,9 +37,13 @@ import { PublishersManagementComponent } from './publishers-management/publisher
 import { ConfirmDialogService } from '../services/confirm-dialog.service';
 import { GalleriaModule } from 'primeng/galleria';
 import { BookPublisherEditComponent } from './books-management/book-info-edit/book-publisher-edit/book-publisher-edit.component';
-
+import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
-  providers: [ConfirmationService, ConfirmDialogService],
+  providers: [
+    ConfirmationService, 
+    ConfirmDialogService,
+    FilterService
+  ],
   declarations: [
     MainPageComponent,
     HeaderComponent,
@@ -77,7 +81,8 @@ import { BookPublisherEditComponent } from './books-management/book-info-edit/bo
     FileUploadModule,
     ToolbarModule,
     InputTextModule,
-    GalleriaModule
+    GalleriaModule,
+    TooltipModule
   ]
 })
 export class FeatureModule { }
