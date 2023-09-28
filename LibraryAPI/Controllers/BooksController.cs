@@ -33,17 +33,9 @@ namespace LibraryAPI.Controllers
         [PubSub(PubSubConstas.AUTHOR_INFO)]
         public async Task<ActionResult<IEnumerable<BookModel>>> GetBooks(Guid? id)
         {
-            var query = _context.Books
-                    .Include(a => a.BookAuthors)
-                        .ThenInclude(a => a.Author)
-                    .Include(a => a.BookPublishers)
-                        .ThenInclude(a => a.Publisher)
-                    .Include(a => a.BookImages)
-                        .ThenInclude(a => a.File)
-                    .Include(a => a.BookCategories)
-                        .ThenInclude(a => a.Category).AsQueryable();
+            var query = GetAllBook();
 
-            if(id.HasValue)
+            if (id.HasValue)
             {
                 query = query.Where(a => a.BookCategories.Any(b => b.CategoryId == id));
             }
@@ -111,17 +103,9 @@ namespace LibraryAPI.Controllers
         [HttpPost("search")]
         public async Task<ActionResult<IEnumerable<BookModel>>> BookFilter(BookRequest? bookRequestModel)
         {
-            var query = _context.Books
-                    .Include(a => a.BookAuthors)
-                        .ThenInclude(a => a.Author)
-                    .Include(a => a.BookPublishers)
-                        .ThenInclude(a => a.Publisher)
-                    .Include(a => a.BookImages)
-                        .ThenInclude(a => a.File)
-                    .Include(a => a.BookCategories)
-                        .ThenInclude(a => a.Category).AsQueryable();
+            var query = GetAllBook();
 
-            if(bookRequestModel != null)
+            if (bookRequestModel != null)
             {
                 query = query.Where(b =>
                     (string.IsNullOrEmpty(bookRequestModel.Name) || b.Name.Contains(bookRequestModel.Name))
@@ -276,7 +260,22 @@ namespace LibraryAPI.Controllers
                     .ThenInclude(a => a.File)
                 .Include(a => a.BookCategories)
                     .ThenInclude(a => a.Category)
+                .Include(a => a.BookChapters)
             .FirstOrDefault(book => book.Id == bookId);
+        }
+
+        private IQueryable<Book> GetAllBook()
+        {
+            return _context.Books
+                .Include(a => a.BookAuthors)
+                    .ThenInclude(a => a.Author)
+                .Include(a => a.BookPublishers)
+                    .ThenInclude(a => a.Publisher)
+                .Include(a => a.BookImages)
+                    .ThenInclude(a => a.File)
+                .Include(a => a.BookCategories)
+                    .ThenInclude(a => a.Category)
+                .Include(a => a.BookChapters).AsQueryable();
         }
     }
 }
