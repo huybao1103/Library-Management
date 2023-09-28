@@ -3,15 +3,19 @@ using System.Collections.Generic;
 
 namespace LibraryAPI.Models;
 
-public partial class BookAuthor
+public partial class BookChapter
 {
     public Guid Id { get; set; }
 
-    public Guid? AuthorId { get; set; }
+    public string? IdentifyId { get; set; }
+
+    public byte? Status { get; set; }
+
+    public string? Description { get; set; }
 
     public Guid? BookId { get; set; }
 
-    public virtual Author? Author { get; set; }
+    public int? Chapter { get; set; }
 
     public virtual Book? Book { get; set; }
 }
