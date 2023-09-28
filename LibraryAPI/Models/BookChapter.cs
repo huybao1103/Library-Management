@@ -1,5 +1,4 @@
-﻿using LibraryAPI.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace LibraryAPI.Models;
@@ -10,7 +9,7 @@ public partial class BookChapter
 
     public string? IdentifyId { get; set; }
 
-    public BookChapterStatusEnum? Status { get; set; }
+    public int? Status { get; set; }
 
     public string? Description { get; set; }
 
