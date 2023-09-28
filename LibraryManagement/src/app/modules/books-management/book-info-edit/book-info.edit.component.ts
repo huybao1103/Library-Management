@@ -114,8 +114,11 @@ export class BookInfoEditComponent implements IDialogType {
   }
 
   removeAuthor(id: string) {
-    console.log(id)
     this.authors = this.authors.filter(x => x.author.id !== id)
+  }
+
+  removePublisher(id: string) {
+    this.publishers = this.publishers.filter(x => x.publisher.id !== id)
   }
 
   addPublisher() {
