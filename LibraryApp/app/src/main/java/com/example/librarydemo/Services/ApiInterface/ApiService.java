@@ -26,19 +26,19 @@ public interface ApiService {
 
     // Fetch spinner
     @GET("api/{controller}/option")
-    Call<SpinnerModel[]> getSpinner(@Path("controller") String controller);
+    Call<JsonArray> getSpinner(@Path("controller") String controller); /* Dùng model SpinnerModel */
 
     // Fetch a item by its ID
     @GET("api/{controller}/{id}")
-    <T> Call<T> getById(@Path("controller") String controller, @Path("id") int id);
+    Call<JsonObject> getById(@Path("controller") String controller, @Path("id") int id);
 
     // Save information
     @POST("api/{controller}")
-    <T> Call<T> save(@Path("controller") String controller, @Body T data);
+    Call<JsonObject> save(@Path("controller") String controller, @Body JsonObject data);
 
     // Search book
     @POST("api/{controller}/search")
-    <T> Call<T> searchBook(@Path("controller") String controller, @Body T data);
+    Call<JsonArray> searchBook(@Path("controller") String controller, @Body JsonObject data);
 
     // Delete a item by its ID
     @DELETE("api/{controller}/{id}")
