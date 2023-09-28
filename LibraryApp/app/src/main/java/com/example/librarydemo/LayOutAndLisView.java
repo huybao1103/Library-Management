@@ -5,26 +5,34 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import com.example.librarydemo.Models.Book.BookModel;
+import com.example.librarydemo.Sample.SampleAdapter;
+import com.example.librarydemo.Services.ApiService;
+import com.example.librarydemo.Services.RetrofitClient;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.DBBook.BookAdapter;
 import com.example.librarydemo.DBUser.User;
-import com.example.librarydemo.Database.SQLBook;
 import com.example.librarydemo.Database.SQLSever;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LayOutAndLisView extends AppCompatActivity
 
@@ -83,15 +91,29 @@ public class LayOutAndLisView extends AppCompatActivity
     }
 
     public void ArrayBook(){
-        SQLBook sqlBook = new SQLBook(this);
-        ArrayList<Book> book = sqlBook.getAllBook();
-        adapter = new BookAdapter(this, R.layout.elemen_book, book);
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ApiService apiService = RetrofitClient.getApiService(this);
+        
+        apiService.getYourData().enqueue(new Callback<BookModel[]>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LayOutAndLisView.setBookid(position+1);
-                OpenThongTinSach();
+            public void onResponse(Call<BookModel[]> call, Response<BookModel[]> response) {
+                BookModel[] bookModels = response.body();
+
+                if(bookModels != null) {
+                    adapter = new BookAdapter(getApplicationContext(), R.layout.elemen_book, Arrays.asList(bookModels));
+                    lv.setAdapter(adapter);
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            LayOutAndLisView.setBookid(position+1);
+                            OpenThongTinSach();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookModel[]> call, Throwable t) {
+
             }
         });
     }

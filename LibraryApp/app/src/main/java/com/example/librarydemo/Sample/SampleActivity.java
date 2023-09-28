@@ -4,23 +4,20 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.librarydemo.DBBook.Book;
-import com.example.librarydemo.DBBook.BookAdapter;
-import com.example.librarydemo.Models.BookModel;
+import com.example.librarydemo.Models.Book.BookModel;
 import com.example.librarydemo.R;
+import com.example.librarydemo.Services.ApiService;
 import com.example.librarydemo.Services.Base64Service;
-import com.example.librarydemo.Services.HttpService;
+import com.example.librarydemo.Services.RetrofitClient;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import retrofit2.Call;
@@ -73,7 +70,9 @@ public class SampleActivity extends AppCompatActivity {
     }
 
     private void callAPI() {
-        HttpService.httpService.getBooks().enqueue(new Callback<BookModel[]>() {
+        ApiService apiService = RetrofitClient.getApiService(this);
+
+        apiService.getYourData().enqueue(new Callback<BookModel[]>() {
             @Override
             public void onResponse(Call<BookModel[]> call, Response<BookModel[]> response) {
                 Toast.makeText(SampleActivity.this, "CAll API SUCCESS", Toast.LENGTH_SHORT).show();
