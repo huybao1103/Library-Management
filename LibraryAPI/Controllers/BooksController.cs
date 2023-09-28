@@ -161,7 +161,7 @@ namespace LibraryAPI.Controllers
             book.BookAuthors.Clear();
             book.BookImages.Clear();
             book.BookCategories.Clear();
-            book.BookVersions.Clear();
+            book.BookChapters.Clear();
 
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
