@@ -80,7 +80,7 @@ public class BookAdapter extends BaseAdapter {
         //Ghi giá trị vào listview
         viewAnhXa.tensach.setText(book.getName());
         viewAnhXa.tacgia.setText("Author: " + authorName);
-        viewAnhXa.nxb.setText("Author: " + publisherName);
+        viewAnhXa.nxb.setText("Publisher: " + publisherName);
         viewAnhXa.theloai.setText("Category: " + categoryName);
 
         Bitmap decodedByte = new Base64Service(context).convertBase64ToImage(book.getBookImages()[0].getBase64());

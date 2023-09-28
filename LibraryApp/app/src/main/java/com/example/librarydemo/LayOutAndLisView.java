@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.librarydemo.Models.Book.BookModel;
-import com.example.librarydemo.Sample.SampleAdapter;
-import com.example.librarydemo.Services.ApiService;
+import com.example.librarydemo.Services.ApiInterface.ApiService;
+import com.example.librarydemo.Services.ApiResponse;
+import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.RetrofitClient;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
@@ -26,9 +27,11 @@ import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.DBBook.BookAdapter;
 import com.example.librarydemo.DBUser.User;
 import com.example.librarydemo.Database.SQLSever;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,16 +93,27 @@ public class LayOutAndLisView extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    /**
+     * Mở file <> ApiService.java </> để biết cách gọi API
+     *
+     * Mở file <> ControllerConst.java </> để biết có constant của controller nào
+     */
     public void ArrayBook(){
-        ApiService apiService = RetrofitClient.getApiService(this);
-        
-        apiService.getYourData().enqueue(new Callback<BookModel[]>() {
+
+        ApiService apiService = RetrofitClient.getApiService(this); /* Khai báo để gọi API */
+
+        apiService.getAll(ControllerConst.BOOKS /* Tên controller */).enqueue(new Callback<JsonArray>() {
             @Override
-            public void onResponse(Call<BookModel[]> call, Response<BookModel[]> response) {
-                BookModel[] bookModels = response.body();
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                List<BookModel> bookModels = new ApiResponse<List<BookModel>>()
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                        (
+                                response,
+                                new TypeToken<List<BookModel>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                        );
 
                 if(bookModels != null) {
-                    adapter = new BookAdapter(getApplicationContext(), R.layout.elemen_book, Arrays.asList(bookModels));
+                    adapter = new BookAdapter(getApplicationContext(), R.layout.elemen_book, bookModels);
                     lv.setAdapter(adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -112,7 +126,7 @@ public class LayOutAndLisView extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(Call<BookModel[]> call, Throwable t) {
+            public void onFailure(Call<JsonArray> call, Throwable t) {
 
             }
         });

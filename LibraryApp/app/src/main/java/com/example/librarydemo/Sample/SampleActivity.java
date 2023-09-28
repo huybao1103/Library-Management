@@ -1,5 +1,7 @@
 package com.example.librarydemo.Sample;
 
+import static com.example.librarydemo.Services.ControllerConst.ControllerConst.BOOKS;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.librarydemo.Models.Book.BookModel;
 import com.example.librarydemo.R;
-import com.example.librarydemo.Services.ApiService;
+import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.Base64Service;
 import com.example.librarydemo.Services.RetrofitClient;
 
@@ -70,24 +72,24 @@ public class SampleActivity extends AppCompatActivity {
     }
 
     private void callAPI() {
-        ApiService apiService = RetrofitClient.getApiService(this);
-
-        apiService.getYourData().enqueue(new Callback<BookModel[]>() {
-            @Override
-            public void onResponse(Call<BookModel[]> call, Response<BookModel[]> response) {
-                Toast.makeText(SampleActivity.this, "CAll API SUCCESS", Toast.LENGTH_SHORT).show();
-                BookModel[] bookModels = response.body();
-
-                if(bookModels != null) {
-                    SampleAdapter adapter = new SampleAdapter(getApplicationContext(), R.layout.elemen_book, Arrays.asList(bookModels));
-                    sample_list.setAdapter(adapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BookModel[]> call, Throwable t) {
-                Toast.makeText(SampleActivity.this, "CAll API FAILED", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        ApiService apiService = RetrofitClient.getApiService(this);
+//
+//        apiService.<BookModel>getAll(BOOKS).enqueue(new Callback<BookModel[]>() {
+//            @Override
+//            public void onResponse(Call<BookModel[]> call, Response<BookModel[]> response) {
+//                Toast.makeText(SampleActivity.this, "CAll API SUCCESS", Toast.LENGTH_SHORT).show();
+//                BookModel[] bookModels = response.body();
+//
+//                if(bookModels != null) {
+//                    SampleAdapter adapter = new SampleAdapter(getApplicationContext(), R.layout.elemen_book, Arrays.asList(bookModels));
+//                    sample_list.setAdapter(adapter);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BookModel[]> call, Throwable t) {
+//                Toast.makeText(SampleActivity.this, "CAll API FAILED", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }
