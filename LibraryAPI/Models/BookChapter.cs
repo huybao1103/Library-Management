@@ -9,7 +9,7 @@ public partial class BookChapter
 
     public string? IdentifyId { get; set; }
 
-    public byte? Status { get; set; }
+    public int? Status { get; set; }
 
     public string? Description { get; set; }
 

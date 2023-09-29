@@ -33,9 +33,9 @@ public partial class LibraryManagementContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<Publisher> Publishers { get; set; }
+    public virtual DbSet<LibraryCard> LibraryCards { get; set; }
 
-    public virtual DbSet<StudentCard> StudentCards { get; set; }
+    public virtual DbSet<Publisher> Publishers { get; set; }
 
     public virtual DbSet<StudentImage> StudentImages { get; set; }
 
@@ -43,15 +43,15 @@ public partial class LibraryManagementContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Author>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Authors__3213E83F3BEB1E5B");
+            entity.HasKey(e => e.Id).HasName("PK__Authors__3213E83F3B90C7B9");
 
-            entity.HasIndex(e => e.Name, "UQ__Authors__72E12F1B2C7D2150").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Authors__72E12F1BF63A20FE").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -71,7 +71,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Books__3213E83FDFA1A069");
+            entity.HasKey(e => e.Id).HasName("PK__Books__3213E83F3E2885A5");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -90,7 +90,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<BookAuthor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookAuth__3213E83FA7AFC6FC");
+            entity.HasKey(e => e.Id).HasName("PK__BookAuth__3213E83F54EA1040");
 
             entity.ToTable("BookAuthor");
 
@@ -111,7 +111,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<BookCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookCate__3213E83FD3A096CC");
+            entity.HasKey(e => e.Id).HasName("PK__BookCate__3213E83FCE98CEB1");
 
             entity.ToTable("BookCategory");
 
@@ -132,7 +132,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<BookChapter>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookChap__3213E83F061A6FD8");
+            entity.HasKey(e => e.Id).HasName("PK__BookChap__3213E83FD06DA7E8");
 
             entity.ToTable("BookChapter");
 
@@ -155,7 +155,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<BookImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookImag__3213E83F064514DC");
+            entity.HasKey(e => e.Id).HasName("PK__BookImag__3213E83F12E5B8E9");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -181,7 +181,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<BookPublisher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookPubl__3213E83FB2E3FF0A");
+            entity.HasKey(e => e.Id).HasName("PK__BookPubl__3213E83F3823BD31");
 
             entity.ToTable("BookPublisher");
 
@@ -202,7 +202,7 @@ public partial class LibraryManagementContext : DbContext
 
         modelBuilder.Entity<BorrowHistory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BorrowHi__3213E83FDFC730A9");
+            entity.HasKey(e => e.Id).HasName("PK__BorrowHi__3213E83FA551A433");
 
             entity.ToTable("BorrowHistory");
 
@@ -216,23 +216,23 @@ public partial class LibraryManagementContext : DbContext
             entity.Property(e => e.EndDate)
                 .HasColumnType("date")
                 .HasColumnName("endDate");
+            entity.Property(e => e.LibraryCardId).HasColumnName("libraryCardId");
             entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.StudentCardId).HasColumnName("studentCardId");
 
             entity.HasOne(d => d.Book).WithMany(p => p.BorrowHistories)
                 .HasForeignKey(d => d.BookId)
                 .HasConstraintName("FK__BorrowHis__bookI__6754599E");
 
-            entity.HasOne(d => d.StudentCard).WithMany(p => p.BorrowHistories)
-                .HasForeignKey(d => d.StudentCardId)
-                .HasConstraintName("FK__BorrowHis__stude__68487DD7");
+            entity.HasOne(d => d.LibraryCard).WithMany(p => p.BorrowHistories)
+                .HasForeignKey(d => d.LibraryCardId)
+                .HasConstraintName("FK__BorrowHis__libra__68487DD7");
         });
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Categori__3213E83F2BDD4C9B");
+            entity.HasKey(e => e.Id).HasName("PK__Categori__3213E83F2A5D13E2");
 
-            entity.HasIndex(e => e.Name, "UQ__Categori__72E12F1B7925CC85").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Categori__72E12F1BDCF15C71").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -243,11 +243,35 @@ public partial class LibraryManagementContext : DbContext
                 .HasColumnName("name");
         });
 
+        modelBuilder.Entity<LibraryCard>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__LibraryC__3213E83FFE83BF12");
+
+            entity.HasIndex(e => e.Name, "UQ__LibraryC__72E12F1B2C7466B0").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("id");
+            entity.Property(e => e.Class)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("class");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.ExpiryDate)
+                .HasColumnType("date")
+                .HasColumnName("expiryDate");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.StudentId).HasColumnName("studentId");
+        });
+
         modelBuilder.Entity<Publisher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Publishe__3213E83F9FD9B88E");
+            entity.HasKey(e => e.Id).HasName("PK__Publishe__3213E83FC555498E");
 
-            entity.HasIndex(e => e.Name, "UQ__Publishe__72E12F1BD8EBC8BF").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Publishe__72E12F1B97311550").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -268,33 +292,9 @@ public partial class LibraryManagementContext : DbContext
                 .HasColumnName("phone");
         });
 
-        modelBuilder.Entity<StudentCard>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__StudentC__3213E83F8341F2A9");
-
-            entity.HasIndex(e => e.Name, "UQ__StudentC__72E12F1B67040851").IsUnique();
-
-            entity.Property(e => e.Id)
-                .HasDefaultValueSql("(newid())")
-                .HasColumnName("id");
-            entity.Property(e => e.Class)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("class");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.ExpiryDate)
-                .HasColumnType("date")
-                .HasColumnName("expiryDate");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.StudentId).HasColumnName("studentId");
-        });
-
         modelBuilder.Entity<StudentImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__StudentI__3213E83FF99D2425");
+            entity.HasKey(e => e.Id).HasName("PK__StudentI__3213E83FB8AC070F");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")
@@ -307,20 +307,20 @@ public partial class LibraryManagementContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("filePath");
-            entity.Property(e => e.StudentCardId).HasColumnName("studentCardId");
+            entity.Property(e => e.LibraryCardId).HasColumnName("libraryCardId");
 
             entity.HasOne(d => d.File).WithMany(p => p.StudentImages)
                 .HasForeignKey(d => d.FileId)
                 .HasConstraintName("FK__StudentIm__fileI__66603565");
 
-            entity.HasOne(d => d.StudentCard).WithMany(p => p.StudentImages)
-                .HasForeignKey(d => d.StudentCardId)
-                .HasConstraintName("FK__StudentIm__stude__656C112C");
+            entity.HasOne(d => d.LibraryCard).WithMany(p => p.StudentImages)
+                .HasForeignKey(d => d.LibraryCardId)
+                .HasConstraintName("FK__StudentIm__libra__656C112C");
         });
 
         modelBuilder.Entity<UploadFile>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UploadFi__3213E83F85DE2DF0");
+            entity.HasKey(e => e.Id).HasName("PK__UploadFi__3213E83F896F1613");
 
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("(newid())")

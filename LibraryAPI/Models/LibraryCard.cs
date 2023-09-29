@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LibraryAPI.Models;
 
-public partial class StudentCard
+public partial class LibraryCard
 {
     public Guid Id { get; set; }
 
@@ -13,11 +13,11 @@ public partial class StudentCard
 
     public DateTime? ExpiryDate { get; set; }
 
-    public byte? Status { get; set; }
+    public int? Status { get; set; }
 
     public string? Description { get; set; }
 
-    public Guid StudentId { get; set; }
+    public string StudentId { get; set; } = null!;
 
     public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
 
