@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tên Sách"
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:textColor="#000"
         android:textStyle="bold"
         android:layout_marginLeft="10dp"
@@ -70,30 +70,28 @@
         android:textColor="#000"
         android:textSize="20dp"
         android:textStyle="bold" />
+
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+
         <Button
             android:id="@+id/tt_btMuon"
-            android:layout_marginTop="430dp"
-            android:layout_marginLeft="200dp"
-            android:background="#FFEB3B"
             android:layout_width="150dp"
             android:layout_height="70dp"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="430dp"
+            android:background="#FFEB3B"
             android:text="Mượn"
-            android:textStyle="bold"
+            android:textColor="#1D43E7"
             android:textSize="35dp"
-            android:textColor="#1D43E7" />
+            android:textStyle="bold" />
     </RelativeLayout>
-    <TextView
-        android:id="@+id/tt_MoTa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mô Tả"
-        android:textSize="20dp"
-        android:layout_below="@id/rl"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"/>
 </RelativeLayout>
