@@ -38,6 +38,8 @@ import { ConfirmDialogService } from '../services/confirm-dialog.service';
 import { GalleriaModule } from 'primeng/galleria';
 import { BookPublisherEditComponent } from './books-management/book-info-edit/book-publisher-edit/book-publisher-edit.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
+import { LibraryCardEditComponent } from './library-card-management/library-card-edit/library-card-edit.component';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -58,7 +60,9 @@ import { TooltipModule } from 'primeng/tooltip';
     BookAuthorEditComponent,
     PublishersManagementComponent,
     PublisherInfoEditComponent,
-    BookPublisherEditComponent
+    BookPublisherEditComponent,
+    LibraryCardManagementComponent,
+    LibraryCardEditComponent
   ],
   imports: [
     DialogModule,
