@@ -29,11 +29,11 @@ public interface ApiService {
     Call<JsonArray> getSpinner(@Path("controller") String controller); /* Dùng model SpinnerModel */
 
     // Fetch a item by its ID
-    @GET("api/{controller}/{id}")
+    @GET("api/{controller}/get-by-id/{id}")
     Call<JsonObject> getById(@Path("controller") String controller, @Path("id") String id);
 
     // Save information
-    @POST("api/{controller}")
+    @POST("api/{controller}/save")
     Call<JsonObject> save(@Path("controller") String controller, @Body JsonObject data);
 
     // Search book
@@ -41,6 +41,6 @@ public interface ApiService {
     Call<JsonArray> searchBook(@Path("controller") String controller, @Body JsonObject data);
 
     // Delete a item by its ID
-    @DELETE("api/{controller}/{id}")
+    @DELETE("api/{controller}/delete/{id}")
     Call<Void> delete(@Path("controller") String controller, @Path("id") String id);
 }
