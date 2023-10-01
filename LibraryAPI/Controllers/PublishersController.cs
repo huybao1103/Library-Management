@@ -34,7 +34,9 @@ namespace LibraryAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PublisherModel>>> GetPublishers()
         {
-            return Ok(_mapper.Map<List<PublisherModel>>(_context.Publishers.ToListAsync()));
+            var result = await _context.Publishers.ToListAsync();
+
+            return Ok(_mapper.Map<List<PublisherModel>>(result));
         }
 
         // GET: api/Publishers/5
@@ -67,21 +69,20 @@ namespace LibraryAPI.Controllers
 
             RequestSavePublisherValidate(publisherRequestModel);
 
-            PublisherModel? publisherModel;
-            if (publisherRequestModel.Id == Guid.Empty)
+            Publisher? publisher;
+            if (!publisherRequestModel.Id.HasValue)
             {
-                var newPublisher = _mapper.Map<Publisher>(publisherRequestModel);
-                _context.Publishers.Add(newPublisher);
-                publisherModel = _mapper.Map<PublisherModel>(newPublisher);
+                publisher = _mapper.Map<Publisher>(publisherRequestModel);
+                _context.Publishers.Add(publisher);
             }
             else
             {
-                var publisher = await _context.Publishers.FindAsync(publisherRequestModel.Id);
+                publisher = await _context.Publishers.FindAsync(publisherRequestModel.Id);
                 publisher = _mapper.Map(publisherRequestModel, publisher);
-                publisherModel = _mapper.Map<PublisherModel>(publisher);
             }
 
-            return CreatedAtAction("GetPublisher", new { id = publisherModel.Id }, publisherModel);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetPublisher", new { id = publisher.Id }, _mapper.Map<PublisherModel>(publisher));
         }
 
         // DELETE: api/Publishers/5

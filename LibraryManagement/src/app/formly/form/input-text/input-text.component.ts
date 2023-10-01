@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostBinding, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { uniqueId } from 'lodash';
+import { KeyFilterPattern } from 'primeng/keyfilter';
 import { INPUT_TEXT_TYPE } from 'src/app/enums/input-text.type';
 import { KeyFilterType } from 'src/app/enums/p-key-filter.type';
 
@@ -18,7 +19,6 @@ export class InputTextComponent implements ControlValueAccessor {
 
   @HostBinding('class.form-control-host') defaultClass = true;
   uniqueId = uniqueId('input-text-');
-
   @Input() inline = false;
   @Input() label: string | undefined;
   @Input() required: boolean = false;
@@ -37,7 +37,7 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() numberFormat!: string;
   @Input() calculated = false;
   @Input() showIcon = true;
-  @Input() keyFilter: KeyFilterType = KeyFilterType.text_number
+  @Input() keyFilter: KeyFilterPattern = KeyFilterType.text_number
 
   @Output() keyup: EventEmitter<any> = new EventEmitter<any>();
 

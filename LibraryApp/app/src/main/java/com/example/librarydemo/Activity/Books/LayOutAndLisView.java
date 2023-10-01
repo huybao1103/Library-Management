@@ -1,0 +1,254 @@
+package com.example.librarydemo.Activity.Books;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.example.librarydemo.ArrayLog;
+import com.example.librarydemo.BookInformation;
+import com.example.librarydemo.ChangPass;
+import com.example.librarydemo.Login;
+import com.example.librarydemo.Models.Book.BookModel;
+import com.example.librarydemo.R;
+import com.example.librarydemo.Services.ApiInterface.ApiService;
+import com.example.librarydemo.Services.ApiResponse;
+import com.example.librarydemo.Services.ControllerConst.ControllerConst;
+import com.example.librarydemo.Services.RetrofitClient;
+import com.example.librarydemo.UpdateBook;
+import com.example.librarydemo.UserInformation;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.example.librarydemo.DBBook.Book;
+import com.example.librarydemo.DBBook.BookAdapter;
+import com.example.librarydemo.DBUser.User;
+import com.example.librarydemo.Database.SQLSever;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class LayOutAndLisView extends AppCompatActivity
+
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ListView lv;
+
+    public static ArrayList<Book> Book_Deefault;
+
+    public static ArrayList<Book> getBook_Deefault() {
+        return Book_Deefault;
+    }
+
+    public static void setBook_Deefault(ArrayList<Book> book_Deefault) {
+        Book_Deefault = book_Deefault;
+    }
+    private BookAdapter adapter;
+    //---------------User hiện tại------------------------------------
+    public static User user_pro;
+
+    public static User getUser() {
+        return user_pro;
+    }
+    public void setUser(User user) {
+        this.user_pro = user;
+    }
+
+    //--------------Lấy Sách Đưa vào Book information---------------
+    public static int Bookid;
+    public static int getBookid() {
+        return Bookid;
+    }
+    public static void setBookid(int bookid) {
+        Bookid = bookid;
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_lay_out_and_lis_view);
+
+        AnhXa();
+        ArrayBook();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    /**
+     * Mở file <> ApiService.java </> để biết cách gọi API
+     *
+     * Mở file <> ControllerConst.java </> để biết có constant của controller nào
+     */
+    public void ArrayBook(){
+
+        ApiService apiService = RetrofitClient.getApiService(this); /* Khai báo để gọi API */
+
+        apiService.getAll(ControllerConst.BOOKS /* Tên controller */).enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                List<BookModel> bookModels = new ApiResponse<List<BookModel>>()
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                        (
+                                response,
+                                new TypeToken<List<BookModel>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                        );
+
+                if(bookModels != null) {
+                    adapter = new BookAdapter(getApplicationContext(), R.layout.elemen_book, bookModels);
+                    lv.setAdapter(adapter);
+                    lv.setOnItemClickListener((parent, view, position, id) -> {
+                        BookModel bookModel = (BookModel) parent.getItemAtPosition(position);
+
+                        OpenThongTinSach(bookModel.getId());
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void OpenThongTinSach(String bookId){
+        Intent intent = new Intent(this, BookDetail.class);
+        intent.putExtra("bookId", bookId);
+        startActivity(intent);
+    }
+    public void AnhXa(){
+        lv= (ListView) findViewById(R.id.arraybook);
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.lay_out_and_lis_view, menu);
+//        TextView ten = (TextView) findViewById(R.id.Text_Name);
+//        TextView email = (TextView) findViewById(R.id.Text_Gmail);
+//        TextView trangthai = (TextView) findViewById(R.id.Text_TrangThai);
+
+//        Intent intent = getIntent();
+//        final String tt_acc = intent.getStringExtra(Login.EXTRA_USER);
+//        final SQLSever sqlSever = new SQLSever(this);
+//        User s = sqlSever.getUser(tt_acc);
+
+//        ten.setText(s.getFullname());
+//        email.setText(s.getGmail());
+//        trangthai.setText(s.getStatus());
+//        this.setUser(s);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_Search) {
+            return true;
+        }
+        if (id == R.id.action_Log) {
+            Intent intent = new Intent(this, ArrayLog.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_UpdateBook) {
+            Intent intent = new Intent(this, UpdateBook.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        if (id == R.id.nav_camera) {
+            Intent intent = new Intent(this, UserInformation.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(this, ChangPass.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_slideshow) {
+            AlertDialog.Builder b=new AlertDialog.Builder(LayOutAndLisView.this);
+            b.setTitle("Đăng Xuất");
+            b.setMessage("Bạn có muốn đăng xuất?");
+            b.setIcon(R.drawable.icons_out);
+            b.setPositiveButton("Yes", new DialogInterface. OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    OpenLogin();
+                    finish();
+                }});
+            b.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    dialog.cancel();
+                }
+            });
+            b.create().show();
+        } else {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    public void OpenLogin(){
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+    }
+
+    public void bookDetail(View view) {
+        startActivity(new Intent(getApplicationContext(), BookDetail.class));
+    }
+}

@@ -11,7 +11,7 @@ import { ToastService } from 'src/app/services/toast.service';
   providedIn: 'root'
 })
 export class AuthorService {
-  private _author$?: BehaviorSubject<IAuthor[]>;
+  private author$: BehaviorSubject<IAuthor[]> = new BehaviorSubject<IAuthor[]>([]);
 
 
   constructor(
@@ -20,7 +20,13 @@ export class AuthorService {
   ) { }
   
   getAll() {
-    return this.httpService.getAll<IAuthor[]>({ controller: 'Authors' });
+    return this.httpService.getAll<IAuthor[]>({ controller: 'Authors' }).pipe(
+      tap((x) => {
+        if(x?.length) 
+          this.author$.next(x)
+      }),
+      concatMap(() => this.author$ ? this.author$.asObservable() : of([]))
+    );
   }
 
   getAuthorById(id: string) {
@@ -28,16 +34,34 @@ export class AuthorService {
   }
 
   save(data: IAuthor) {
-    return this.httpService.save<IAuthor>({ controller: 'Authors', data, op: 'author-info'});
+    return this.httpService.save<IAuthor>({ controller: 'Authors', data, op: 'author-info'}).pipe(
+      tap((res) => res ? this.updateAuthorState(res) : of())
+    );
   }
 
-  getBookOption() {
+  getAuthorOption() {
     return this.httpService.getOption<IComboboxOption>({ controller: 'Authors' });
   }
 
-  updateAuthorState(res: IAuthor): Observable<null> {
-    this._author$?.next([...this._author$.value, res]);
-    console.log(this._author$?.value)
-    return of(null);
+  delete(id: string) {
+    return this.httpService.delete<IAuthor>({controller: 'Authors'}, id).pipe(
+      tap(() => this.updateAuthorState(undefined, id))
+    );
+  }
+
+  private updateAuthorState(res?: IAuthor, deletedAuthorId?: string, ) {
+    let old = this.author$.value;
+  
+    if(res) {
+      const updated = old.find(p => p.id === res.id);
+      
+      old = updated ? old.filter(p => p.id !== updated.id) : old;
+  
+      this.author$.next([res, ...old]);
+    } else if(deletedAuthorId) {
+      old = old.filter(p => p.id !== deletedAuthorId);
+  
+      this.author$.next([...old]);
+    }
   }
 }

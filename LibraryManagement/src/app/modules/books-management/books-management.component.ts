@@ -1,13 +1,19 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from './service/book.service';
-import { IBook } from 'src/app/models/book.model';
+import { IBook, IBookSave } from 'src/app/models/book.model';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ICategories } from 'src/app/models/categories.model';
 import { IComboboxOption } from 'src/app/models/combobox-option.model';
+import { Observable, filter, first, map, of, tap } from 'rxjs';
+import { FilterMatchMode, FilterService } from 'primeng/api';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { AuthorService } from '../authors-management/service/author.service';
+import { BookSearchFields } from './book-search-field';
 
 @Component({
   selector: 'app-books-management',
@@ -19,37 +25,67 @@ export class BooksManagementComponent implements OnInit {
   booksDisplay: IBook[] = [];
   image: string = '';
   categories: IComboboxOption[] = [];
-  selectedCategory: string = "all";
+  allCategories: IComboboxOption[] = [];
+  selectedCategory: string = "";
 
+  categorySearchName: string = "All";
+
+  books$?: Observable<IBook[] | null>;
+
+  fields: FormlyFieldConfig[] = [];
+  form = new FormGroup({});
+  options: FormlyFormOptions = {
+    formState: {
+      optionList: {
+        authors: this.authorService.getAuthorOption(),
+        categories: this.bookService.getCategoriesOption()
+      }
+    }
+  };
+  
+  data: IBookSave = {
+    name: '',
+    publishYear: '',
+  };
+  
   constructor(
     private router: Router,
     private activatedRoute : ActivatedRoute,
     private bookService: BookService,
     private confirmDialog: ConfirmDialogService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private filterServive: FilterService,
+    private authorService: AuthorService
   ) {}
 
   ngOnInit(): void {
     this.loadData();
     this.getCagories();
   }
-
+  responsiveOptions: any[] = [
+    {
+        breakpoint: '1024px',
+        numVisible: 5
+    },
+    {
+        breakpoint: '768px',
+        numVisible: 3
+    },
+    {
+        breakpoint: '560px',
+        numVisible: 1
+    }
+  ];
   loadData() {
-    this.bookService.getAll().subscribe({
-      next: (res) => {
-        if(res?.length) {
-          this.books = this.booksDisplay = res;
-          this.books.map(b => b.authorName = b.bookAuthors?.map(ba => ba.author.name).join(', '))
-        }
-      }
-    })
+    this.books$ = this.bookService.getAll(this.selectedCategory);
+    this.fields = BookSearchFields();
   }
 
   getCagories() {
     this.bookService.getCategoriesOption().subscribe({
       next: (res) => {
         if(res) {
-          this.categories = [{ value: 'all', label: 'All' }, ...res];
+          this.categories = [...this.allCategories] = [{ value: '', label: 'All' }, ...res];
         }
       }
     })
@@ -57,11 +93,22 @@ export class BooksManagementComponent implements OnInit {
 
   categoryChange(categoryId: string) {
     if(categoryId === 'all') {
-      this.selectedCategory = categoryId;
-      this.booksDisplay = [...this.books];
+      this.selectedCategory = '';
+      this.loadData();
     } else if(categoryId !== this.selectedCategory) {
       this.selectedCategory = categoryId;
-      this.booksDisplay = this.books.filter(book => book.bookCategories?.some(cate => cate.categoryId === categoryId));
+      this.loadData();
+    }
+  }
+
+  categorySearch(text: string) {
+    this.categories = [...this.allCategories];
+    if(text) {
+      this.categorySearchName = text.trim();
+
+      this.categories = this.allCategories.filter(cate => {
+        return this.filterServive.filters[FilterMatchMode.CONTAINS](cate.label, this.categorySearchName) ? cate : ''
+      });
     }
   }
   
@@ -87,10 +134,10 @@ export class BooksManagementComponent implements OnInit {
         }
       }
     })
-    
   }
 
-  filter() {
-
+  search() {
+    console.log('here')
+    this.books$ = this.bookService.search(this.data);
   }
 }

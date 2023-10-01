@@ -16,11 +16,11 @@ export class HttpService {
     private toastSevice: ToastService
   ) { }
 
-  getAll<T>(query: IQueryData) {
+  getAll<T>(query: IQueryData, id?: string) {
     // api/Authors
     return this.getDataFromResponse<T> (
       this.http.get<T>(
-        `api/${query.controller}`,
+        `api/${query.controller}${id ? `/${id}` : ''}`,
         { observe: 'response'}
       )
     );
@@ -32,6 +32,18 @@ export class HttpService {
         `api/${query.controller}/get-by-id/${id}`,
         { observe: 'response'}
       )
+    );
+  }
+
+  search<T>(query: IQueryData) {
+    return this.getDataFromResponse<T> (
+      this.http.post<T> (
+        `api/${query.controller}/search`,
+        query.data,
+        { observe: 'response'}
+      ),
+      true,
+      query
     );
   }
 
@@ -68,6 +80,15 @@ export class HttpService {
     return this.getDataFromResponse<T> (
       this.http.get<T>(
         `api/${query.controller}/option`,
+        { observe: 'response'}
+      )
+    )
+  }
+
+  getWithCustomURL<T>(query: IQueryData) {
+    return this.getDataFromResponse<T> (
+      this.http.get<T>(
+        `api/${query.url}`,
         { observe: 'response'}
       )
     )

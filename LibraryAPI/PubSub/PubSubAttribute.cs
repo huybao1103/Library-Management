@@ -1,19 +1,30 @@
 ﻿using LibraryAPI.PubSub.Config;
 using LibraryAPI.PubSub.Services;
+using LibraryAPI.RequestModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace LibraryAPI.PubSub
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class PubSubAttribute : ActionFilterAttribute
     {
-        //private ApiRequest _apiRequest;
+        private ApiRequest _apiRequest;
         private ActionExecutingContext _context;
         private readonly string rootTopic;
         public string[] paths;
+
+        private static JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true,
+            IgnoreNullValues = true
+        };
 
         public List<string> Topic { get; set; }
 
@@ -39,14 +50,14 @@ namespace LibraryAPI.PubSub
             this.paths = new string[] { path1, path2 };
         }
 
-        //public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
-        //{
-        //    _context = context;
-        //    var req = context.ActionArguments.FirstOrDefault(rep => rep.Value is ApiRequest).Value;
-        //    if (req is ApiRequest apiRequest)
-        //        _apiRequest = apiRequest;
-        //    return base.OnActionExecutionAsync(context, next);
-        //}
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            _context = context;
+            var req = context.ActionArguments.FirstOrDefault(rep => rep.Value is ApiRequest).Value;
+            if (req is ApiRequest apiRequest)
+                _apiRequest = apiRequest;
+            return base.OnActionExecutionAsync(context, next);
+        }
 
         public override void OnResultExecuted(ResultExecutedContext context)
         {
@@ -55,18 +66,18 @@ namespace LibraryAPI.PubSub
                 var result = context.Result;
                 List<string> m_topics = new List<string>();
 
-                //foreach (var item in this.paths)
-                //{
-                //    if (item == ".")
-                //    {
-                //        m_topics.Add(this.rootTopic);
-                //        continue;
-                //    }
+                foreach (var item in this.paths)
+                {
+                    if (item == ".")
+                    {
+                        m_topics.Add(this.rootTopic);
+                        continue;
+                    }
 
-                //    var subTopic = GetTopic(item, result);
-                //    if (!string.IsNullOrEmpty(subTopic))
-                //        m_topics.Add(subTopic);
-                //}
+                    var subTopic = GetTopic(item, result);
+                    if (!string.IsNullOrEmpty(subTopic))
+                        m_topics.Add(subTopic);
+                }
 
                 if (m_topics.Any())
                 {
@@ -81,59 +92,18 @@ namespace LibraryAPI.PubSub
             }
         }
 
-        //private string GetTopic(string fullPath, IActionResult? result)
-        //{
-        //    var subId = "";
-        //    string[] pathItems = (fullPath ?? "").Split("/");
-        //    if (pathItems.Length > 0)
-        //    {
-        //        if (!string.IsNullOrEmpty(rootTopic))
-        //        {
+        private string GetTopic(string fullPath, IActionResult? result)
+        {
+            var subId = "";
+            string[] pathItems = (fullPath ?? "").Split("/");
+            return $"{rootTopic}{subId}";
+        }
+        private string? GetData(JObject? jobj, string path)
+        {
+            if (path == ".")
+                return jobj.ToString();
 
-        //            ObjectResult? objectResult = null;
-        //            if (result != null && result is ObjectResult s) objectResult = s;
-
-        //            JObject? jResultdata = objectResult?.Value != null ? SerializeToJObject(objectResult.Value) : null;
-        //            foreach (var path in pathItems)
-        //            {
-        //                var _s = GetDataBypath(jResultdata, path);
-        //                if (!string.IsNullOrEmpty(_s))
-        //                    subId += $"/{_s}";
-        //            }
-        //            jResultdata = null;
-        //        }
-        //    }
-        //    return $"{rootTopic}{subId}";
-        //}
-
-        //public static JObject? SerializeToJObject(object obj)
-        //{
-        //    return (JObject)JsonConvert.DeserializeObject(obj.SerializeObject());
-        //}
-
-        //private string GetDataBypath(JObject? jResultdata, string path)
-        //{
-        //    string result = "";
-        //    var paths = (path ?? "").Split(".");
-        //    if (paths.Length > 0)
-        //    {
-        //        if (paths[0] == PubSubConst.QUERY)
-        //        {
-        //            if (_context.ActionArguments.ContainsKey(paths[1]))
-        //            {
-        //                return _context.ActionArguments[paths[1]]?.ToString() ?? "";
-        //            }
-        //        }
-
-        //        JObject? jdata = paths[0] == PubSubConst.REQUEST ? SerializeToJObject(_apiRequest) : jResultdata;
-
-        //        if (jdata == null) return result;
-
-        //        result = GetData(jdata, string.Join(".", paths.Skip(1).Select(f => f.ToCamelCase()))) ?? "";
-        //        jdata = null;
-        //    }
-
-        //    return result;
-        //}
+            return jobj?.SelectToken(path)?.ToString();
+        }
     }
 }

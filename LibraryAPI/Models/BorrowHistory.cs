@@ -11,13 +11,13 @@ public partial class BorrowHistory
 
     public DateTime? EndDate { get; set; }
 
-    public byte? Status { get; set; }
+    public int? Status { get; set; }
 
     public Guid? BookId { get; set; }
 
-    public Guid? StudentCardId { get; set; }
+    public Guid? LibraryCardId { get; set; }
 
     public virtual Book? Book { get; set; }
 
-    public virtual StudentCard? StudentCard { get; set; }
+    public virtual LibraryCard? LibraryCard { get; set; }
 }

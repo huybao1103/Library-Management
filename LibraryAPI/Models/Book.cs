@@ -17,11 +17,11 @@ public partial class Book
 
     public virtual ICollection<BookCategory> BookCategories { get; set; } = new List<BookCategory>();
 
+    public virtual ICollection<BookChapter> BookChapters { get; set; } = new List<BookChapter>();
+
     public virtual ICollection<BookImage> BookImages { get; set; } = new List<BookImage>();
 
     public virtual ICollection<BookPublisher> BookPublishers { get; set; } = new List<BookPublisher>();
-
-    public virtual ICollection<BookVersion> BookVersions { get; set; } = new List<BookVersion>();
 
     public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
 }

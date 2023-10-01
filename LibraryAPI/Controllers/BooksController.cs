@@ -8,6 +8,7 @@ using LibraryAPI.CustomException;
 using AutoMapper;
 using LibraryAPI.ViewModels.Book;
 using LibraryAPI.ViewModels.File;
+using System.Linq;
 
 namespace LibraryAPI.Controllers
 {
@@ -28,20 +29,19 @@ namespace LibraryAPI.Controllers
         }
 
         // GET: api/Books
-        [HttpGet]
+        [HttpGet("{id?}")]
         [PubSub(PubSubConstas.AUTHOR_INFO)]
-        public async Task<ActionResult<IEnumerable<BookModel>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<BookModel>>> GetBooks(Guid? id)
         {
-            return Ok(_mapper.Map<List<BookModel>>
-                (
-                     _context.Books
-                    .Include(a => a.BookAuthors)
-                        .ThenInclude(a => a.Author)
-                    .Include(a => a.BookImages)
-                        .ThenInclude(a => a.File)
-                    .Include(a => a.BookCategories)
-                        .ThenInclude(a => a.Category)
-                ));
+            var query = GetAllBook();
+
+            if (id.HasValue)
+            {
+                query = query.Where(a => a.BookCategories.Any(b => b.CategoryId == id));
+            }
+            var books = await query.ToListAsync();
+
+            return Ok(_mapper.Map<List<BookModel>>(books));
         }
 
         // GET: api/Books/5
@@ -97,7 +97,32 @@ namespace LibraryAPI.Controllers
             }
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, _mapper.Map<BookModel>(book));
+            return CreatedAtAction("GetBook", new { id = book.Id }, _mapper.Map<BookModel>(GetBookByIdAsync(book.Id)));
+        }
+
+        [HttpPost("search")]
+        public async Task<ActionResult<IEnumerable<BookModel>>> BookFilter(BookRequest? bookRequestModel)
+        {
+            var query = GetAllBook();
+
+            if (bookRequestModel != null)
+            {
+                query = query.Where(b =>
+                    (string.IsNullOrEmpty(bookRequestModel.Name) || b.Name.Contains(bookRequestModel.Name))
+                        &&
+                        (
+                            bookRequestModel.Authors == null || !bookRequestModel.Authors.Any() ||
+                            b.BookAuthors.Any(ba => bookRequestModel.Authors.Contains((Guid)ba.AuthorId))
+                        )
+                        &&
+                        (
+                            bookRequestModel.Categories == null || !bookRequestModel.Categories.Any() ||
+                            b.BookCategories.Any(ba => bookRequestModel.Categories.Contains((Guid)ba.CategoryId))
+                        )
+                    );
+            }
+
+            return Ok(_mapper.Map<List<BookModel>>(await query.ToListAsync()));
         }
 
         // DELETE: api/Books/5
@@ -120,7 +145,7 @@ namespace LibraryAPI.Controllers
             book.BookAuthors.Clear();
             book.BookImages.Clear();
             book.BookCategories.Clear();
-            book.BookVersions.Clear();
+            book.BookChapters.Clear();
 
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
@@ -229,11 +254,28 @@ namespace LibraryAPI.Controllers
             return _context.Books
                 .Include(a => a.BookAuthors)
                     .ThenInclude(a => a.Author)
+                .Include(a => a.BookPublishers)
+                    .ThenInclude(a => a.Publisher)
                 .Include(a => a.BookImages)
                     .ThenInclude(a => a.File)
                 .Include(a => a.BookCategories)
                     .ThenInclude(a => a.Category)
+                .Include(a => a.BookChapters)
             .FirstOrDefault(book => book.Id == bookId);
+        }
+
+        private IQueryable<Book> GetAllBook()
+        {
+            return _context.Books
+                .Include(a => a.BookAuthors)
+                    .ThenInclude(a => a.Author)
+                .Include(a => a.BookPublishers)
+                    .ThenInclude(a => a.Publisher)
+                .Include(a => a.BookImages)
+                    .ThenInclude(a => a.File)
+                .Include(a => a.BookCategories)
+                    .ThenInclude(a => a.Category)
+                .Include(a => a.BookChapters).AsQueryable();
         }
     }
 }

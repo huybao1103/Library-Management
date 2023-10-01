@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": [""],
+    "java.project.referencedLibraries": [
+        "libs/**/*.jar",
+        "/path/to/external/library/*.jar"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+}

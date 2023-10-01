@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="src" path="src"/> <!-- Source directory -->
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/> <!-- Java runtime -->
+    <classpathentry kind="lib" path="libs/my-library.jar"/> <!-- External library -->
+</classpath>

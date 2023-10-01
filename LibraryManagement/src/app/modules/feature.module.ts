@@ -19,14 +19,40 @@ import { FeatureRoutingModule } from './feature-routing.module';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { SideBarComponent } from '../layout/side-bar/side-bar.component';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
 import { BookAuthorEditComponent } from './books-management/book-info-edit/book-author-edit/book-author-edit.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
+import { ToolbarModule } from 'primeng/toolbar';
+import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmationService, FilterService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
+import { DockModule } from 'primeng/dock';
+import { CategoryManagementComponent } from './category-management/category-management.component';
+import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
+import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
+import { ConfirmDialogService } from '../services/confirm-dialog.service';
+import { GalleriaModule } from 'primeng/galleria';
+import { BookPublisherEditComponent } from './books-management/book-info-edit/book-publisher-edit/book-publisher-edit.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
+import { LibraryCardEditComponent } from './library-card-management/library-card-edit/library-card-edit.component';
+import { AvatarModule } from 'primeng/avatar';
+import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
+  providers: [
+    ConfirmationService, 
+    ConfirmDialogService,
+    FilterService,
+    NgbActiveModal,
+  ],
   declarations: [
     MainPageComponent,
     HeaderComponent,
@@ -38,9 +64,19 @@ import { CategoryInfoEditComponent } from './books-management/category-list/cate
     SideBarComponent,
     CategoryListComponent,
     CategoryInfoEditComponent,
-    BookAuthorEditComponent
+    BookAuthorEditComponent,
+    PublishersManagementComponent,
+    PublisherInfoEditComponent,
+    BookPublisherEditComponent,
+    LibraryCardManagementComponent,
+    LibraryCardEditComponent,
+    LibraryCardDetailComponent
   ],
   imports: [
+    DialogModule,
+    ToggleButtonModule,
+    DockModule,
+    DividerModule,
     CommonModule,
     FeatureRoutingModule,
     ToastModule,
@@ -55,7 +91,12 @@ import { CategoryInfoEditComponent } from './books-management/category-list/cate
     TabViewModule,
     ConfirmDialogModule,
     FileUploadModule,
-    ToggleButtonModule
+    ToolbarModule,
+    InputTextModule,
+    GalleriaModule,
+    AvatarModule,
+    NgbModule,
+    TooltipModule
   ]
 })
 export class FeatureModule { }

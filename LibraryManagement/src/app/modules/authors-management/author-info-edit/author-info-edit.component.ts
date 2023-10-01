@@ -8,7 +8,7 @@ import { IDialogType } from 'src/app/models/modal/dialog';
 import { ToastService } from 'src/app/services/toast.service';
 import { BookDetailFields } from '../../books-management/book-info-edit/book-info-form';
 import { HttpService } from 'src/app/services/http-service.service';
-import { AuthorDetailFields } from './autho-info.form';
+import { AuthorDetailFields } from './author-info.form';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthorService } from '../service/author.service';
@@ -32,7 +32,7 @@ export class AuthorInfoEditComponent implements IDialogType, OnInit {
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-        author: this.getBookOption()
+        // author: this.getBookOption()
       }
     }
   };
@@ -42,21 +42,7 @@ export class AuthorInfoEditComponent implements IDialogType, OnInit {
   }
   
   product: IAuthor[] = [
-    {
-      name: 'Huy Bao',
-      mail: 'l.q.h.bao@gmail.com',
-      phone: '0911721026'
-    },
-    {
-      name: 'Huy Bao',
-      mail: 'l.q.h.bao@gmail.com',
-      phone: '0911721026'
-    },
-    {
-      name: 'Huy Bao',
-      mail: 'l.q.h.bao@gmail.com',
-      phone: '0911721026'
-    },
+
   ];
 
   constructor(
@@ -94,9 +80,9 @@ export class AuthorInfoEditComponent implements IDialogType, OnInit {
     })
   }
 
-  getBookOption() {
-    return this.authorSerive.getBookOption().pipe(map(res => res))
-  }
+  // getBookOption() {
+  //   return this.authorSerive.getBookOption().pipe(map(res => res))
+  // }
 
   submit() {
     this.addAuthorToBook 

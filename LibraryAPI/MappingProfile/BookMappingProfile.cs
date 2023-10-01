@@ -25,6 +25,9 @@ namespace LibraryAPI.MappingProfile
 
             CreateMap<BookCategory, BookCategoryModel>();
             CreateMap<BookCategoryModel, BookCategory>();
+
+            CreateMap<BookPublisher, BookPublisherModel>();
+            CreateMap<BookPublisherModel, BookPublisher>();
         }
     }
 }

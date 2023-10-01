@@ -1,7 +1,9 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
+import { INPUT_TEXT_TYPE } from "src/app/enums/input-text.type";
+import { KeyFilterType } from "src/app/enums/p-key-filter.type";
 import { FORMLY_INPUT } from "src/app/formly/formly.config";
 
-export function CategoryDetailFields(): FormlyFieldConfig[] {
+export function CategorysDetailFields(): FormlyFieldConfig[] {
     return [
       {
         fieldGroupClassName: 'row',
@@ -12,7 +14,8 @@ export function CategoryDetailFields(): FormlyFieldConfig[] {
             type: FORMLY_INPUT.name,
             templateOptions: {
               label: 'Category Name',
-              required: true
+              required: true,
+              keyFilter: /^[^<>*!0-9@$%#]+$/
             }
           },
           {
@@ -20,7 +23,7 @@ export function CategoryDetailFields(): FormlyFieldConfig[] {
             key: 'description',
             type: FORMLY_INPUT.name,
             templateOptions: {
-              label: 'Description',
+            label: 'Description',
             },
             expressionProperties: {
             }

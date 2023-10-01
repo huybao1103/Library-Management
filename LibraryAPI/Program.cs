@@ -4,6 +4,7 @@ using LibraryAPI.Controllers;
 using LibraryAPI.CustomException;
 using LibraryAPI.PubSub;
 using System.Reflection;
+using Microsoft.AspNetCore.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddSwaggerGen();
 
 // Add DbContext to service
 builder.Services.AddDbContext<LibraryManagementContext>(options => 
-    options.UseSqlServer("Server=localhost;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True"));
+    options.UseSqlServer("Server=.;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True"));
 
 // Allow CORS Angular
 builder.Services.AddCors(options =>
@@ -32,16 +33,27 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers(options =>
+// Allow CORS Android Studio
+builder.Services.AddCors(options =>
 {
-    options.Filters.Add<CustomExceptionFilter>();
+    options.AddPolicy("AllowAndroiStudioOrigins",
+    builder =>
+    {
+        builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
 });
+
+builder.WebHost.UseKestrel();
+builder.WebHost.UseUrls("https://10.0.2.2:7082");
 
 builder.AddPubSub((config) => { });
 
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 var app = builder.Build();
 app.UseCors("AllowAngularOrigins");
+app.UseCors("AllowAndroiStudioOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

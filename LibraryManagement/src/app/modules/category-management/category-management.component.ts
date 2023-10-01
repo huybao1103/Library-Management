@@ -13,7 +13,7 @@ import { CategoryService } from './service/category.service';
 export class CategoryManagementComponent implements OnInit {
   categoryData: ICategory[] = [];
   category$?: Observable<ICategory[] | null>;
-  categoryById: ICategory | undefined;
+  categoryById: ICategory[] | undefined;
 
   constructor(
     private httpService: HttpService,
@@ -27,33 +27,21 @@ export class CategoryManagementComponent implements OnInit {
   }
 
   getData() {
-    // /api/Categories
-    // this.categoryService.getAll().subscribe({
-    //   next: (resp) => {
-    //     if(resp)
-    //       this.categoryData = resp;
-
-    //     console.log(this.categoryById);
-    //   }
-    // })
-
-    // this.category$ = this.categoryService.getAll();
-    // const id = '173265c1-05d1-4c24-a686-c3c866b27a1a';
-    // this.httpService.getById<ICategory[]>({controller: 'Categories'},id).subscribe({
-    //   next: (resp) => {
-    //     if(resp)//check có dữ liệu hay không
-    //     {
-    //       this.categoryData = resp;
-    //       console.log(this.categoryById)
-    //     }
-    //   }
-    // });
-
-    this.categoryService.getAll().subscribe({
+    this.httpService.getAll<ICategory[]>({ controller: 'Categories' }).subscribe({
       next: (res) => {
-        if(res?.length)
+         if(res != undefined)
           this.categoryData = res;
           console.log(this.categoryData);
+      }
+    })
+
+
+    const id = 'ef923ad9-7bbe-411c-a46c-4ddc86285f1a';
+    this.httpService.getById<ICategory[]>({controller: 'Categories'}, id).subscribe({
+      next: (res) => {
+         if(res != undefined)
+          this.categoryById = res;
+          console.log(this.categoryById);
       }
     })
   }

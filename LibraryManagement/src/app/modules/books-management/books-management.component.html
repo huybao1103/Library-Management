@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="file-wrap">
-                <div class="file-sidebar">
+                <!-- <div class="file-sidebar">
                     <div class="file-header justify-content-center">
                         <span>Categories</span>
                         <a href="javascript:void(0);" class="file-side-close"><i class="fa fa-times"></i></a>
@@ -17,7 +17,15 @@
                             <div class="input-group-prepend">
                                 <i class="fa fa-search"></i>
                             </div>
-                            <input type="text" class="form-control rounded-pill" placeholder="Search">
+                            <input 
+                                pInputText 
+                                (ngModelChange)="categorySearch($event)" 
+                                type="text" 
+                                class="form-control rounded-pill" 
+                                placeholder="Search" 
+                                (ngModel)="categorySearchName"
+                                name="categorySearchName"
+                            >
                         </div>
                     </form>
                     <div class="file-pro-list">
@@ -29,54 +37,69 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="file-cont-wrap">
                     <div class="file-cont-inner">
                         <div class="file-cont-header">
-                            <span>Book Management</span>
-                            <div class="file-options">
-                                <a href="javascript:void(0);" class="btn-file" (click)="editItem('')"><i class="fa fa-plus"></i></a>
+                            <div class="page-header my-2 w-100">
+                                <div class="row align-items-center ">
+                                    <div class="col">
+                                        <h3 class="page-title font-weight-bold">Book Management</h3>
+                                    </div>
+                                    <div class="col-auto float-end ms-auto">
+                                        <a href="javascript:" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_employee" (click)="editItem('')"><i class="fa fa-plus"></i> New Book</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="file-content">
-                            <form class="file-search">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="fa fa-search"></i>
+                            <div class="m-3">
+                                <form [formGroup]="form" class="row" (submit)="search()">
+                                    <formly-form class="col-10" [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
+                                    <div class="col-2  d-flex align-items-center">
+                                        <button class="btn btn-primary w-100 mb-3" 
+                                            style="height: 49.8px; margin-bottom: 0px !important; margin-top: 11.9px;" 
+                                            type="submit"
+                                        >
+                                            <i class="fa fa-search"></i>
+                                            Search
+                                        </button>
                                     </div>
-                                    <input type="text" class="form-control rounded-pill" placeholder="Search">
-                                </div>
-                            </form>
-                            <div *ngIf="books.length" class="file-body">
+                                </form>
+                            </div>
+                            <div *ngIf="books$ | async as book" class="file-body">
                                 <div class="file-scroll">
                                     <div class="file-content-inner">
                                         <div class="row row-sm">
-                                            <div *ngFor="let book of booksDisplay" class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                            <div *ngFor="let book of book" class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-2"  style="max-width: 250px;">
                                                 <div class="card card-file">
                                                     <div class="dropdown-file">
-                                                        <a href="" class="dropdown-link" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
+                                                        <a href="javascript:" class="dropdown-link" data-bs-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a href="javascript:" class="dropdown-item" (click)="editItem(book.id || '')">View Details</a>
                                                             <a href="javascript:" class="dropdown-item" (click)="deleteItem(book.id || '')">Delete</a>
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="book.bookImages?.length">
-                                                        <span *ngFor="let bookImage of book.bookImages">
-                                                            <img [src]="bookImage.base64" class="img-fluid" alt="Responsive image">
-                                                        </span>
+                                                    <div style="overflow: hidden;">
+                                                        <p-galleria [value]="book.bookImages" [circular]="true" [showThumbnails]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true"  [containerStyle]="{ 'max-width': '500px' }">
+                                                            <ng-template pTemplate="item" let-item>
+                                                                <img [src]="item.base64" class="rsp-Image"/>
+                                                            </ng-template>
+                                                        </p-galleria>
                                                     </div>
-
                                                     <div *ngIf="!book.bookImages?.length" class="card-file-thumb">
                                                         <i class="fa fa-image"></i>
                                                     </div>
-
-                                                    <div class="card-body">
-                                                        <h6><a href="">{{book.name}}</a></h6>
-                                                        <span>{{book.authorName}} </span>
+                                                    <div class="card-body text-truncate" style="overflow: hidden">
+                                                        <h6 class="text-truncate" style="font-size: 18px;"><strong><a href="javascript:" [pTooltip]="book.name">{{book.name}}</a></strong></h6>
+                                                        <span style="font-weight: 900;">Author(s): </span><span [pTooltip]="book.authorName" tooltipPosition="bottom">{{book.authorName}} </span>
                                                     </div>
-                                                    <div class="card-footer">
-                                                        <span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span>
+                                                    <div class="card-footer text-truncate" style="overflow: hidden">
+                                                        <span style="font-weight: 900;">Category(es): </span><span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span>
                                                     </div>
+                                                    <!-- <div class="card-footer text-truncate" style="overflow: hidden">
+                                                        <span style="font-weight: 900;">Publisher(s): </span><span *ngFor="let bookPublisher of book.bookPublishers">{{bookPublisher.publisher.name}}, </span>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>

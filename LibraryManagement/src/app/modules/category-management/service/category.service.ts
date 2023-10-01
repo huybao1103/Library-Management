@@ -23,15 +23,15 @@ import { ToastService } from "src/app/services/toast.service";
       return this.httpService.getById<ICategory>({controller: 'Categories'}, id);
     }
   
-    save(data: ICategorySave) {
-      return this.httpService.save<ICategorySave>({ controller: 'Categories', data, op: 'category-info'});
+    save(data: ICategory) {
+      return this.httpService.save<ICategory>({ controller: 'Categories', data, op: 'category-info'});
     }
   
-    getBookOption() {
-      return this.httpService.getOption<IComboboxOption>({ controller: 'Books' });
+    getCategoryOption() {
+      return this.httpService.getOption<IComboboxOption>({ controller: 'Categories' });
     }
   
-    updateAuthorState(res: ICategory): Observable<null> {
+    updateCategoryState(res: ICategory): Observable<null> {
       this._category$?.next([...this._category$.value, res]);
       console.log(this._category$?.value)
       return of(null);

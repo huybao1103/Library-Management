@@ -44,9 +44,9 @@
         <p-tabPanel header="Author(s)">
             <div class="row">
                 <div class="d-flex justify-content-end mb-2">
-                    <button class="btn-primary text-white rounded p-2" (click)="addAccount()">
+                    <button class="btn-primary text-white rounded p-2" (click)="addAuthor()">
                         <i class="fa fa-plus"></i>
-                        Add author
+                        Add Author
                     </button>
                 </div>
                 <p-table 
@@ -68,45 +68,45 @@
                             <td>{{bookAuthor.author.name}}</td>
                             <td>{{bookAuthor.author.mail}}</td>
                             <td>{{bookAuthor.author.phone}}</td>
-                            <td><i class="fa fa-trash"></i></td>
+                            <td><i class="fa fa-trash" (click)="removeAuthor(bookAuthor.author.id)"></i></td>
                         </tr>
                     </ng-template>
                 </p-table>
             </div>
         </p-tabPanel>
         <p-tabPanel header="Publisher(s)">
-            <div class="row">
-                <div class="d-flex justify-content-end mb-2">
-                    <button class="btn-primary text-white rounded p-2">
-                        <i class="fa fa-plus"></i>
-                        Add publisher
-                    </button>
-                </div>
-                <p-table 
-                    [value]="publishers" 
-                    [paginator]="true"
-                    [rows]="5"
-                    [rowsPerPageOptions]="[5, 10, 25, 50]"
-                >
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th></th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-publisher>
-                        <tr>
-                            <td>{{publisher.name}}</td>
-                            <td>{{publisher.mail}}</td>
-                            <td>{{publisher.phone}}</td>
-                            <td><i class="fa fa-trash"></i></td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-        </p-tabPanel>
+          <div class="row">
+              <div class="d-flex justify-content-end mb-2">
+                  <button class="btn-primary text-white rounded p-2" (click)="addPublisher()">
+                      <i class="fa fa-plus"></i>
+                      Add Publisher
+                  </button>
+              </div>
+              <p-table 
+                  [value]="publishers" 
+                  [paginator]="true"
+                  [rows]="5"
+                  [rowsPerPageOptions]="[5, 10, 25, 50]"
+              >
+                  <ng-template pTemplate="header">
+                      <tr>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Phone</th>
+                          <th></th>
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-bookPublisher>
+                      <tr>
+                          <td>{{bookPublisher.publisher.name}}</td>
+                          <td>{{bookPublisher.publisher.mail}}</td>
+                          <td>{{bookPublisher.publisher.phone}}</td>
+                          <td><i class="fa fa-trash" (click)="removeAuthor(bookPublisher.author.id)"></i></td>
+                      </tr>
+                  </ng-template>
+              </p-table>
+          </div>
+      </p-tabPanel>
     </p-tabView>
     
     <div class="submit-section">

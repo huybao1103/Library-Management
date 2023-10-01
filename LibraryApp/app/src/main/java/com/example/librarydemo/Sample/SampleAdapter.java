@@ -8,9 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.librarydemo.DBBook.Book;
-import com.example.librarydemo.DBBook.BookAdapter;
-import com.example.librarydemo.Models.BookModel;
+import com.example.librarydemo.Models.Book.BookModel;
 import com.example.librarydemo.R;
 
 import java.util.List;
@@ -46,7 +44,7 @@ public class SampleAdapter extends BaseAdapter {
         TextView tensach, tacgia, theloai, soluong;
         ImageView imgsach;
 
-        if(view == null){
+        if(view != null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(layout,null);
 
@@ -66,8 +64,6 @@ public class SampleAdapter extends BaseAdapter {
             soluong.setText(book.getPublishYear());
 //            imgsach.setImageResource(book.getImgBook());
         }
-
-
         return view;
     }
 }
