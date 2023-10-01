@@ -42,7 +42,7 @@ namespace LibraryAPI.Controllers
           {
               return NotFound();
           }
-            var libraryCard = await _context.LibraryCards.FindAsync(id);
+            var libraryCard = GetCardByIdAsync((Guid)id);
 
             if (libraryCard == null)
             {
@@ -131,6 +131,14 @@ namespace LibraryAPI.Controllers
             {
                 throw new CustomApiException(500, "Student ID is existed.", "Student ID is existed.");
             }
+        }
+
+        private LibraryCard? GetCardByIdAsync(Guid cardId)
+        {
+            return _context.LibraryCards
+                    .Include(c => c.StudentImages)
+                        .ThenInclude(c => c.File)
+                    .FirstOrDefault(book => book.Id == cardId);
         }
 
         private IQueryable<LibraryCard> GetAllCard()
