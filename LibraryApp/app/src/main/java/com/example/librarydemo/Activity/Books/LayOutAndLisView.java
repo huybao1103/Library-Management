@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.librarydemo.Activity.Books.Publisher.PublisherList;
 import com.example.librarydemo.ArrayLog;
 import com.example.librarydemo.BookInformation;
 import com.example.librarydemo.ChangPass;
@@ -195,6 +196,7 @@ public class LayOutAndLisView extends AppCompatActivity
             return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -208,6 +210,9 @@ public class LayOutAndLisView extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
             Intent intent = new Intent(this, ChangPass.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_publisherlist) {
+            Intent intent = new Intent(this, PublisherList.class);
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
             AlertDialog.Builder b=new AlertDialog.Builder(LayOutAndLisView.this);

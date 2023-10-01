@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFA500"
+        tools:ignore="ExtraText,MissingConstraints">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="16dp"
+            android:text="PUBLISHER LIST"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+    </RelativeLayout>
+
+    <android.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="404dp"
+        android:layout_height="34dp"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search . . ."
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btnaddpublisher"
+        android:layout_width="227dp"
+        android:layout_height="42dp"
+        android:background="#FEA400"
+        android:text="+ New Publisher"
+        tools:ignore="HardcodedText,MissingConstraints" />
+
+    <ListView
+        android:layout_width="409dp"
+        android:layout_height="574dp"
+        tools:ignore="MissingConstraints" />
+
+
+</LinearLayout>
