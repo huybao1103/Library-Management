@@ -1,0 +1,12 @@
+1) ./gradlew assembleDebug
+2) adb -s {emulator name here} install -r app/build/outputs/apk/debug/app-debug.apk
+
+
+--- NOTE ---
+chạy "adb devices" để lấy {emulator name}
+ví dụ:
+List of devices attached
+emulator-5554   device
+emulator-5556   device
+
+=> adb -s emulator-5554 install -r app/build/outputs/apk/debug/app-debug.apk
