@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <h2 class="text-center">Add Card</h2>
+      <form (ngSubmit)="addCard()">
+        <div class="row mb-3">
+          <div class="col">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" id="name" class="form-control" [(ngModel)]="newCard.name" required>
+          </div>
+          <div class="col">
+            <label for="class" class="form-label">Class:</label>
+            <input type="text" id="class" class="form-control" [(ngModel)]="newCard.class" required>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col">
+            <label for="expirydate" class="form-label">Expiry Date:</label>
+            <input type="date" id="expirydate" class="form-control" [(ngModel)]="newCard.expirydate" required>
+          </div>
+          <div class="col">
+            <label for="status" class="form-label">Status:</label>
+            <select id="status" class="form-select" [(ngModel)]="newCard.status" required>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Expired">Expired</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="avatar" class="form-label">Avatar:</label>
+          <input type="file" id="avatar" class="form-control" (change)="handleFileInput($event)" accept="image/*"
+            required>
+          <img *ngIf="newCard.avatar" [src]="newCard.avatar" alt="Avatar" class="avatar-preview img-thumbnail">
+        </div>
+
+        <button type="submit" class="add-card-button">Add</button>
+      </form>
+    </div>
+  </div>
+</div>
