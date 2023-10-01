@@ -2,7 +2,6 @@ package com.example.librarydemo;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.librarydemo.Activity.Books.LayOutAndLisView;
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.DBLog.Log;
 import com.example.librarydemo.DBUser.User;
@@ -62,31 +62,31 @@ public class Login extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Login(s);
+                 Login(s);
 
-               String name = username.getText().toString();
-               String pass = password.getText().toString();
-               if(name.equals("") || pass.equals("")){
-                   Toast.makeText( Login.this, "Vui Lòng Điền Đủ Thông tin!!!", Toast.LENGTH_SHORT).show();
-               }else{
-                   User s = sqlSever.getUser(name);
-                   if(s != null){
-                       if(s.getPassword().equals(pass)){
-                           Toast.makeText( Login.this, "Đăng nhập thành công ^.^", Toast.LENGTH_SHORT).show();
-                           password.setText("");
-                           username.setText("");
-                           Login(s);
-                       }else {
-                           password.setText("");
-                           username.setText("");
-                           Toast.makeText( Login.this, "Tài khoản hoặc mật khẩu không chính xác!!!", Toast.LENGTH_SHORT).show();
-                       }
-                   }else{
-                       password.setText("");
-                       username.setText("");
-                       Toast.makeText( Login.this, "Tài khoản Không Tồn tại!!!", Toast.LENGTH_SHORT).show();
-                   }
-               }
+//               String name = username.getText().toString();
+//               String pass = password.getText().toString();
+//               if(name.equals("") || pass.equals("")){
+//                   Toast.makeText( Login.this, "Vui Lòng Điền Đủ Thông tin!!!", Toast.LENGTH_SHORT).show();
+//               }else{
+//                   User s = sqlSever.getUser(name);
+//                   if(s != null){
+//                       if(s.getPassword().equals(pass)){
+//                           Toast.makeText( Login.this, "Đăng nhập thành công ^.^", Toast.LENGTH_SHORT).show();
+//                           password.setText("");
+//                           username.setText("");
+//                           Login(s);
+//                       }else {
+//                           password.setText("");
+//                           username.setText("");
+//                           Toast.makeText( Login.this, "Tài khoản hoặc mật khẩu không chính xác!!!", Toast.LENGTH_SHORT).show();
+//                       }
+//                   }else{
+//                       password.setText("");
+//                       username.setText("");
+//                       Toast.makeText( Login.this, "Tài khoản Không Tồn tại!!!", Toast.LENGTH_SHORT).show();
+//                   }
+//               }
             }
         });
         quenmk.setOnClickListener(new View.OnClickListener() {

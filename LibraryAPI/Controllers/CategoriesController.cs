@@ -70,22 +70,20 @@ namespace LibraryAPI.Controllers
           }
             RequestSaveCategoryValidate(categoryRequestModel);
 
-            CategoryModel? categoryModel;
+            Category? category;
             if(!categoryRequestModel.Id.HasValue)
             {
-                var newCategory = _mapper.Map<Category>(categoryRequestModel);
-                _context.Categories.Add(newCategory);
-                categoryModel = _mapper.Map<CategoryModel>(newCategory);
+                category = _mapper.Map<Category>(categoryRequestModel);
+                _context.Categories.Add(category);
             }
             else
             {
-                var category = await _context.Categories.FindAsync(categoryRequestModel.Id);
+                category = await _context.Categories.FindAsync(categoryRequestModel.Id);
                 category = _mapper.Map(categoryRequestModel, category);
-                categoryModel = _mapper.Map<CategoryModel>(category);
             }
 
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetCategory", new { id = categoryModel.Id }, categoryModel);
+            return CreatedAtAction("GetCategory", new { id = category.Id }, _mapper.Map<CategoryModel>(category));
         }
 
         // DELETE: api/Categories/5
