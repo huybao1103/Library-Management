@@ -1,0 +1,13 @@
+.add-card-button {
+  background-color: orange;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 8px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.add-card-button:hover {
+  background-color: darkorange;
+}
