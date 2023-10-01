@@ -38,6 +38,7 @@ import { ConfirmDialogService } from '../services/confirm-dialog.service';
 import { GalleriaModule } from 'primeng/galleria';
 import { BookPublisherEditComponent } from './books-management/book-info-edit/book-publisher-edit/book-publisher-edit.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -58,7 +59,8 @@ import { TooltipModule } from 'primeng/tooltip';
     BookAuthorEditComponent,
     PublishersManagementComponent,
     PublisherInfoEditComponent,
-    BookPublisherEditComponent
+    BookPublisherEditComponent,
+    BookChapterComponent,
   ],
   imports: [
     DialogModule,

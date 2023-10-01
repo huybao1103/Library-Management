@@ -11,8 +11,7 @@ import { PublishersManagementComponent } from './publishers-management/publisher
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
-
-
+import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 
 const routes: Routes = [
   {
@@ -38,6 +37,11 @@ const routes: Routes = [
         outlet: 'modal',
         data: { component: BookInfoEditComponent }
       },
+      {
+        path: 'bookchapter',
+        component: BookChapterComponent 
+      },
+
       {
         path: 'author',
         component: AuthorsManagementComponent
