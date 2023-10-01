@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,8 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -95,108 +94,3 @@ public class LayOutAndLisView extends AppCompatActivity
             }
         });
     }
-
-    public void OpenThongTinSach(){
-        Intent intent = new Intent(this, BookInformation.class);
-        startActivity(intent);
-    }
-    public void AnhXa(){
-        lv= (ListView) findViewById(R.id.arraybook);
-    }
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.lay_out_and_lis_view, menu);
-        TextView ten = (TextView) findViewById(R.id.Text_Name);
-        TextView email = (TextView) findViewById(R.id.Text_Gmail);
-        TextView trangthai = (TextView) findViewById(R.id.Text_TrangThai);
-
-        Intent intent = getIntent();
-        final String tt_acc = intent.getStringExtra(Login.EXTRA_USER);
-        final SQLSever sqlSever = new SQLSever(this);
-        User s = sqlSever.getUser(tt_acc);
-
-        ten.setText(s.getFullname());
-        email.setText(s.getGmail());
-        trangthai.setText(s.getStatus());
-        this.setUser(s);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_Search) {
-            return true;
-        }
-        if (id == R.id.action_Log) {
-            Intent intent = new Intent(this, ArrayLog.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.action_UpdateBook) {
-            Intent intent = new Intent(this, UpdateBook.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        if (id == R.id.nav_camera) {
-            Intent intent = new Intent(this, UserInformation.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(this, ChangPass.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-            AlertDialog.Builder b=new AlertDialog.Builder(LayOutAndLisView.this);
-            b.setTitle("Đăng Xuất");
-            b.setMessage("Bạn có muốn đăng xuất?");
-            b.setIcon(R.drawable.icons_out);
-            b.setPositiveButton("Yes", new DialogInterface. OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    OpenLogin();
-                    finish();
-                }});
-            b.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    dialog.cancel();
-                }
-            });
-            b.create().show();
-        } else {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-    public void OpenLogin(){
-        Intent intent = new Intent(this, Login.class);
-        startActivity(intent);
-    }
-}

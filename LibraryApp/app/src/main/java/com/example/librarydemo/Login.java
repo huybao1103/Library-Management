@@ -65,31 +65,31 @@ public class Login extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Login(s);
+//                Login(s);
 
-//                String name = username.getText().toString();
-//                String pass = password.getText().toString();
-//                if(name.equals("") || pass.equals("")){
-//                    Toast.makeText( Login.this, "Vui Lòng Điền Đủ Thông tin!!!", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    User s = sqlSever.getUser(name);
-//                    if(s != null){
-//                        if(s.getPassword().equals(pass)){
-//                            Toast.makeText( Login.this, "Đăng nhập thành công ^.^", Toast.LENGTH_SHORT).show();
-//                            password.setText("");
-//                            username.setText("");
-//                            Login(s);
-//                        }else {
-//                            password.setText("");
-//                            username.setText("");
-//                            Toast.makeText( Login.this, "Tài khoản hoặc mật khẩu không chính xác!!!", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }else{
-//                        password.setText("");
-//                        username.setText("");
-//                        Toast.makeText( Login.this, "Tài khoản Không Tồn tại!!!", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
+                String name = username.getText().toString();
+                String pass = password.getText().toString();
+                if(name.equals("") || pass.equals("")){
+                    Toast.makeText( Login.this, "Vui Lòng Điền Đủ Thông tin!!!", Toast.LENGTH_SHORT).show();
+                }else{
+                    User s = sqlSever.getUser(name);
+                    if(s != null){
+                        if(s.getPassword().equals(pass)){
+                            Toast.makeText( Login.this, "Đăng nhập thành công ^.^", Toast.LENGTH_SHORT).show();
+                            password.setText("");
+                            username.setText("");
+                            Login(s);
+                        }else {
+                            password.setText("");
+                            username.setText("");
+                            Toast.makeText( Login.this, "Tài khoản hoặc mật khẩu không chính xác!!!", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        password.setText("");
+                        username.setText("");
+                        Toast.makeText( Login.this, "Tài khoản Không Tồn tại!!!", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
         quenmk.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +121,7 @@ public class Login extends Activity {
     }
 
     public void Login(User s){
-        Intent intent = new Intent( Login.this, SampleActivity.class);
+        Intent intent = new Intent( Login.this, LayOutAndLisView.class);
         intent.putExtra(EXTRA_USER, s.getAccount());
         startActivity(intent);
         finish();
