@@ -1,4 +1,4 @@
-package com.example.librarydemo;
+package com.example.librarydemo.Activity.Books;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -6,11 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.librarydemo.ArrayLog;
+import com.example.librarydemo.BookInformation;
+import com.example.librarydemo.ChangPass;
+import com.example.librarydemo.Login;
 import com.example.librarydemo.Models.Book.BookModel;
+import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.RetrofitClient;
+import com.example.librarydemo.UpdateBook;
+import com.example.librarydemo.UserInformation;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -115,12 +122,10 @@ public class LayOutAndLisView extends AppCompatActivity
                 if(bookModels != null) {
                     adapter = new BookAdapter(getApplicationContext(), R.layout.elemen_book, bookModels);
                     lv.setAdapter(adapter);
-                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            LayOutAndLisView.setBookid(position+1);
-                            OpenThongTinSach();
-                        }
+                    lv.setOnItemClickListener((parent, view, position, id) -> {
+                        BookModel bookModel = (BookModel) parent.getItemAtPosition(position);
+
+                        OpenThongTinSach(bookModel.getId());
                     });
                 }
             }
@@ -132,8 +137,9 @@ public class LayOutAndLisView extends AppCompatActivity
         });
     }
 
-    public void OpenThongTinSach(){
-        Intent intent = new Intent(this, BookInformation.class);
+    public void OpenThongTinSach(String bookId){
+        Intent intent = new Intent(this, BookDetail.class);
+        intent.putExtra("bookId", bookId);
         startActivity(intent);
     }
     public void AnhXa(){
@@ -153,19 +159,19 @@ public class LayOutAndLisView extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.lay_out_and_lis_view, menu);
-        TextView ten = (TextView) findViewById(R.id.Text_Name);
-        TextView email = (TextView) findViewById(R.id.Text_Gmail);
-        TextView trangthai = (TextView) findViewById(R.id.Text_TrangThai);
+//        TextView ten = (TextView) findViewById(R.id.Text_Name);
+//        TextView email = (TextView) findViewById(R.id.Text_Gmail);
+//        TextView trangthai = (TextView) findViewById(R.id.Text_TrangThai);
 
-        Intent intent = getIntent();
-        final String tt_acc = intent.getStringExtra(Login.EXTRA_USER);
-        final SQLSever sqlSever = new SQLSever(this);
-        User s = sqlSever.getUser(tt_acc);
+//        Intent intent = getIntent();
+//        final String tt_acc = intent.getStringExtra(Login.EXTRA_USER);
+//        final SQLSever sqlSever = new SQLSever(this);
+//        User s = sqlSever.getUser(tt_acc);
 
-        ten.setText(s.getFullname());
-        email.setText(s.getGmail());
-        trangthai.setText(s.getStatus());
-        this.setUser(s);
+//        ten.setText(s.getFullname());
+//        email.setText(s.getGmail());
+//        trangthai.setText(s.getStatus());
+//        this.setUser(s);
         return true;
     }
 
@@ -234,5 +240,9 @@ public class LayOutAndLisView extends AppCompatActivity
     public void OpenLogin(){
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
+    }
+
+    public void bookDetail(View view) {
+        startActivity(new Intent(getApplicationContext(), BookDetail.class));
     }
 }

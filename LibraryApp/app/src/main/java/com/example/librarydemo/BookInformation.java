@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.librarydemo.Activity.Books.LayOutAndLisView;
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.DBLog.Log;
 import com.example.librarydemo.DBUser.User;
