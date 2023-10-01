@@ -65,15 +65,14 @@
                 <td>
                     <span style="vertical-align: middle;">
                         <p-avatar 
-                            *ngIf="card.studentImages"
+                            *ngIf="card.studentImages.length"
                             [image]="card.studentImages[0].base64" 
                             size="large" 
                             shape="circle"
                         >
                         </p-avatar>
                     </span>
-                    <span class="ml-1" style="vertical-align: middle;">
-
+                    <span class="ml-1" style="vertical-align: middle;" (click)="goToDetail(card.id)">
                         {{ card.name }}
                     </span>
                 </td>

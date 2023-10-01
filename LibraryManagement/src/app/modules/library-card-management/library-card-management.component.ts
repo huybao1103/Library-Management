@@ -31,6 +31,7 @@ export class LibraryCardManagementComponent {
     private libraryCardService: LibraryCardService,
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
+    private router: Router,
   ) {
   }
   ngOnInit(): void {
@@ -69,5 +70,7 @@ export class LibraryCardManagementComponent {
       console.error('libraryCard id is undefined');
     }
   }
-
+  goToDetail(id: string) {
+    this.router.navigate(['/library-card-detail', id]);
+  }
 }
