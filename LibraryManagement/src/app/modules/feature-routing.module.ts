@@ -11,6 +11,7 @@ import { PublishersManagementComponent } from './publishers-management/publisher
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
+import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
 
 
 
@@ -67,7 +68,11 @@ const routes: Routes = [
         component: ModalbaseComponent,
         outlet: 'modal',
         data: { component: PublisherInfoEditComponent }
-      }
+      },
+      {
+        path: 'library-card',
+        component: LibraryCardManagementComponent
+      },
     ]
   },
 ];
