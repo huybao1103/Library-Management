@@ -30,7 +30,7 @@ public interface ApiService {
 
     // Fetch a item by its ID
     @GET("api/{controller}/{id}")
-    Call<JsonObject> getById(@Path("controller") String controller, @Path("id") int id);
+    Call<JsonObject> getById(@Path("controller") String controller, @Path("id") String id);
 
     // Save information
     @POST("api/{controller}")
@@ -42,5 +42,5 @@ public interface ApiService {
 
     // Delete a item by its ID
     @DELETE("api/{controller}/{id}")
-    Call<Void> delete(@Path("controller") String controller, @Path("id") int id);
+    Call<Void> delete(@Path("controller") String controller, @Path("id") String id);
 }
