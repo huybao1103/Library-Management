@@ -41,12 +41,17 @@ import { TooltipModule } from 'primeng/tooltip';
 import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
 import { LibraryCardEditComponent } from './library-card-management/library-card-edit/library-card-edit.component';
 import { AvatarModule } from 'primeng/avatar';
+import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   providers: [
     ConfirmationService, 
     ConfirmDialogService,
-    FilterService
+    FilterService,
+    NgbActiveModal,
   ],
   declarations: [
     MainPageComponent,
@@ -64,7 +69,8 @@ import { AvatarModule } from 'primeng/avatar';
     PublisherInfoEditComponent,
     BookPublisherEditComponent,
     LibraryCardManagementComponent,
-    LibraryCardEditComponent
+    LibraryCardEditComponent,
+    LibraryCardDetailComponent
   ],
   imports: [
     DialogModule,
@@ -88,8 +94,9 @@ import { AvatarModule } from 'primeng/avatar';
     ToolbarModule,
     InputTextModule,
     GalleriaModule,
-    TooltipModule,
-    AvatarModule
+    AvatarModule,
+    NgbModule,
+    TooltipModule
   ]
 })
 export class FeatureModule { }
