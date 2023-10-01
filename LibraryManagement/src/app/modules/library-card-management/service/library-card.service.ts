@@ -25,17 +25,17 @@ export class LibraryCardService {
     );
   }
 
-  getAuthorById(id: string) {
+  getLibraryCardById(id: string) {
     return this.httpService.getById<ILibraryCardInfo>({controller: 'LibraryCards'}, id);
   }
 
   save(data: ILibraryCardInfo) {
-    return this.httpService.save<ILibraryCardInfo>({ controller: 'LibraryCards', data, op: 'author-info'}).pipe(
+    return this.httpService.save<ILibraryCardInfo>({ controller: 'LibraryCards', data, op: 'LibraryCard-info'}).pipe(
       tap((res) => res ? this.updateLibraryCardstate(res) : of())
     );
   }
 
-  getAuthorOption() {
+  getLibraryCardOption() {
     return this.httpService.getOption<IComboboxOption>({ controller: 'LibraryCards' });
   }
 

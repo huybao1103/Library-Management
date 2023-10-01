@@ -85,6 +85,15 @@ export class HttpService {
     )
   }
 
+  getWithCustomURL<T>(query: IQueryData) {
+    return this.getDataFromResponse<T> (
+      this.http.get<T>(
+        `api/${query.url}`,
+        { observe: 'response'}
+      )
+    )
+  }
+
   getDataFromResponse<T>(result$: Observable<HttpResponse<T>>, needReLoad?: boolean, query?: IQueryData) {
     return result$.pipe(
       tap(() => {needReLoad ? this.getAll<T>(query!) : ''}),
