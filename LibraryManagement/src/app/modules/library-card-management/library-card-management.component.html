@@ -31,6 +31,7 @@
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
                 <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="studentId" style="min-width:15rem">Card ID <p-sortIcon field="studentId"></p-sortIcon></th>
                 <th pSortableColumn="class">Class <p-sortIcon field="class"></p-sortIcon></th>
                 <th pSortableColumn="expirydate">Expiry Date <p-sortIcon field="expirydate"></p-sortIcon></th>
                 <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
@@ -40,6 +41,9 @@
               <th></th>
               <th>
                 <p-columnFilter type="text" field="name"></p-columnFilter>
+              </th>
+              <th>
+                <p-columnFilter type="text" field="studentId"></p-columnFilter>
               </th>
               <th>
                   <p-columnFilter type="text" field="class"></p-columnFilter>
@@ -58,10 +62,25 @@
                 <td>
                     <p-tableCheckbox [value]="card"></p-tableCheckbox>
                 </td>
-                <td>{{ card.name }}</td>
+                <td>
+                    <span style="vertical-align: middle;">
+                        <p-avatar 
+                            *ngIf="card.studentImages"
+                            [image]="card.studentImages[0].base64" 
+                            size="large" 
+                            shape="circle"
+                        >
+                        </p-avatar>
+                    </span>
+                    <span class="ml-1" style="vertical-align: middle;">
+
+                        {{ card.name }}
+                    </span>
+                </td>
+                <td>{{ card.studentId }}</td>
                 <td>{{ card.class }}</td>
                 <td>{{ card.expirydate }}</td>
-                <td>{{ card.status }}</td>
+                <td>{{ LibraryCardStatus[card.status] }}</td>
                 <td style="text-align: center;">
                     <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(card.id)"></button>
                     <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteLibraryCard(card)"></button>

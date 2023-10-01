@@ -40,6 +40,8 @@ import { BookPublisherEditComponent } from './books-management/book-info-edit/bo
 import { TooltipModule } from 'primeng/tooltip';
 import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
 import { LibraryCardEditComponent } from './library-card-management/library-card-edit/library-card-edit.component';
+import { AvatarModule } from 'primeng/avatar';
+
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -86,7 +88,8 @@ import { LibraryCardEditComponent } from './library-card-management/library-card
     ToolbarModule,
     InputTextModule,
     GalleriaModule,
-    TooltipModule
+    TooltipModule,
+    AvatarModule
   ]
 })
 export class FeatureModule { }

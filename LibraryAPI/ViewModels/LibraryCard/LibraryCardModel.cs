@@ -20,6 +20,6 @@ namespace LibraryAPI.ViewModels.LibraryCard
 
         //public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
 
-        //public virtual ICollection<StudentImage> StudentImages { get; set; } = new List<StudentImage>();
+        public virtual ICollection<StudentImageModel> StudentImages { get; set; } = new List<StudentImageModel>();
     }
 }

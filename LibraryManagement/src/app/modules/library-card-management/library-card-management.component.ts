@@ -1,3 +1,4 @@
+import { LibraryCardStatus } from './../../enums/library-card-status';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
@@ -21,7 +22,7 @@ export class LibraryCardManagementComponent {
   @ViewChild('dt') dt: Table | undefined;
   messageService: any;
 
-
+  LibraryCardStatus = LibraryCardStatus;
   categoryById: ILibraryCardInfo[] | undefined;
 
   constructor(
@@ -44,7 +45,7 @@ export class LibraryCardManagementComponent {
   }
 
   edit(id?: string) {
-    this.route.navigate([{ outlets: { modal: ['libraryCard', 'edit', id] } }]);
+    this.route.navigate([{ outlets: { modal: ['library-card', 'edit', id] } }]);
   }
 
   deleteLibraryCard(libraryCard: ILibraryCardInfo) {
