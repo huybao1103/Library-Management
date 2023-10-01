@@ -35,6 +35,10 @@ public class MainActivity extends Activity {
             }
         }, SPLASH_TIME_OUT);
     }
+
+    public static void main(String[] args) {
+        
+    }
     public void OpenMainActivity(){
         Intent intent = new Intent(MainActivity.this, Login.class);
         startActivity(intent);

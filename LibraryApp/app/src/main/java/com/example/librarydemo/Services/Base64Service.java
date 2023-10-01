@@ -30,8 +30,13 @@ public class Base64Service {
     }
 
     public Bitmap convertBase64ToImage(String base64) {
-        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        if(!base64.equals("")) {
+            if(base64.contains(","))
+                base64 = base64.split(",")[1];
+            byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        }
+        return null;
     }
     private byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();

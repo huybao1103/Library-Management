@@ -1,0 +1,8 @@
+package com.example.librarydemo.Services.ControllerConst;
+
+public class ControllerConst {
+    public static final String BOOKS = "Books";
+    public static final String AUTHORS = "Authors";
+    public static final String PUBLISHERS = "Publishers";
+    public static final String CATEGORIES = "Categories";
+}
