@@ -33,16 +33,27 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers(options =>
+// Allow CORS Android Studio
+builder.Services.AddCors(options =>
 {
-    options.Filters.Add<CustomExceptionFilter>();
+    options.AddPolicy("AllowAndroiStudioOrigins",
+    builder =>
+    {
+        builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
 });
+
+builder.WebHost.UseKestrel();
+builder.WebHost.UseUrls("https://10.0.2.2:7082");
 
 builder.AddPubSub((config) => { });
 
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 var app = builder.Build();
 app.UseCors("AllowAngularOrigins");
+app.UseCors("AllowAndroiStudioOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

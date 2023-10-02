@@ -11,6 +11,10 @@ import { PublishersManagementComponent } from './publishers-management/publisher
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 import { CategoryListComponent } from './books-management/category-list/category-list.component';
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
+import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
+import { LibraryCardEditComponent } from './library-card-management/library-card-edit/library-card-edit.component';
+import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
+
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 
 const routes: Routes = [
@@ -71,7 +75,21 @@ const routes: Routes = [
         component: ModalbaseComponent,
         outlet: 'modal',
         data: { component: PublisherInfoEditComponent }
-      }
+      },
+      {
+        path: 'library-card',
+        component: LibraryCardManagementComponent
+      },
+      {
+        path: 'library-card/edit/:id',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: LibraryCardEditComponent }
+      },
+      {
+        path: 'library-card-detail/:id',
+        component: LibraryCardDetailComponent,
+      },
     ]
   },
 ];

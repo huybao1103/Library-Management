@@ -30,7 +30,7 @@ namespace LibraryAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LibraryCardModel>>> GetLibraryCards()
         {
-            var result = await _context.LibraryCards.ToListAsync();
+            var result = await GetAllCard().ToListAsync();
             return Ok(_mapper.Map<List<LibraryCardModel>>(result));
         }
 
@@ -42,7 +42,7 @@ namespace LibraryAPI.Controllers
           {
               return NotFound();
           }
-            var libraryCard = await _context.LibraryCards.FindAsync(id);
+            var libraryCard = GetCardByIdAsync((Guid)id);
 
             if (libraryCard == null)
             {
@@ -51,6 +51,23 @@ namespace LibraryAPI.Controllers
 
             return Ok(_mapper.Map<LibraryCardModel>(libraryCard));
         }
+
+        //[HttpGet("get-card-id")]
+        //public async Task<ActionResult<LibraryCardModel>> GetCardID()
+        //{
+        //    if (_context.LibraryCards == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var libraryCard = await _context.LibraryCards.FindAsync(id);
+
+        //    if (libraryCard == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(_mapper.Map<LibraryCardModel>(libraryCard));
+        //}
 
         // POST: api/LibraryCards
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -110,10 +127,25 @@ namespace LibraryAPI.Controllers
             {
                 throw new CustomApiException(500, "Student name is existed.", "Student name is existed.");
             }
-            if (_context.LibraryCards.Any(card => card.Name == libraryCardModel.Name && card.Id != libraryCardModel.Id))
+            if (_context.LibraryCards.Any(card => card.StudentId.ToLower() == libraryCardModel.StudentId.ToLower() && card.Id != libraryCardModel.Id))
             {
-                throw new CustomApiException(500, "Student name is existed.", "Student name is existed.");
+                throw new CustomApiException(500, "Student ID is existed.", "Student ID is existed.");
             }
+        }
+
+        private LibraryCard? GetCardByIdAsync(Guid cardId)
+        {
+            return _context.LibraryCards
+                    .Include(c => c.StudentImages)
+                        .ThenInclude(c => c.File)
+                    .FirstOrDefault(book => book.Id == cardId);
+        }
+
+        private IQueryable<LibraryCard> GetAllCard()
+        {
+            return _context.LibraryCards
+                    .Include(c => c.StudentImages)
+                        .ThenInclude(c => c.File).AsQueryable();
         }
     }
 }

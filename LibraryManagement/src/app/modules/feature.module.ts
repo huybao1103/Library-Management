@@ -38,12 +38,21 @@ import { ConfirmDialogService } from '../services/confirm-dialog.service';
 import { GalleriaModule } from 'primeng/galleria';
 import { BookPublisherEditComponent } from './books-management/book-info-edit/book-publisher-edit/book-publisher-edit.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
+import { LibraryCardEditComponent } from './library-card-management/library-card-edit/library-card-edit.component';
+import { AvatarModule } from 'primeng/avatar';
+import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 @NgModule({
   providers: [
     ConfirmationService, 
     ConfirmDialogService,
-    FilterService
+    FilterService,
+    NgbActiveModal,
   ],
   declarations: [
     MainPageComponent,
@@ -60,6 +69,9 @@ import { BookChapterComponent } from './books-management/book-chapter/book-chapt
     PublishersManagementComponent,
     PublisherInfoEditComponent,
     BookPublisherEditComponent,
+    LibraryCardManagementComponent,
+    LibraryCardEditComponent,
+    LibraryCardDetailComponent,
     BookChapterComponent,
   ],
   imports: [
@@ -84,6 +96,8 @@ import { BookChapterComponent } from './books-management/book-chapter/book-chapt
     ToolbarModule,
     InputTextModule,
     GalleriaModule,
+    AvatarModule,
+    NgbModule,
     TooltipModule
   ]
 })

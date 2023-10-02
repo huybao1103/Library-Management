@@ -10,6 +10,10 @@ namespace LibraryAPI.MappingProfile
         {
             CreateMap<LibraryCard, LibraryCardModel>();
             CreateMap<LibraryCardModel, LibraryCard>();
+
+            CreateMap<StudentImage, StudentImageModel>();
+            CreateMap<StudentImageModel, StudentImage>()
+                .ForMember(x => x.Id, opt => opt.Ignore());
         }
     }
 }

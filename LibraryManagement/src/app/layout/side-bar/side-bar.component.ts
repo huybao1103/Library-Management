@@ -71,6 +71,19 @@ export class SideBarComponent implements OnInit {
         }
       ]
     },
+    {
+      name: 'Readers Managements',
+      code: 'reader',
+      icon: 'la la-book-reader',
+      subMenus: [
+        {
+          name: 'Library Cards',
+          code: 'library-card',
+          icon: 'fa fa-address-card',
+          route: 'library-card'
+        }
+      ]
+    },
   ];
 
   subscriptions = new Subscription();
