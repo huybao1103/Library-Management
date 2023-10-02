@@ -100,6 +100,12 @@ public class LayOutAndLisView extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ArrayBook();
+    }
+
     /**
      * Mở file <> ApiService.java </> để biết cách gọi API
      *

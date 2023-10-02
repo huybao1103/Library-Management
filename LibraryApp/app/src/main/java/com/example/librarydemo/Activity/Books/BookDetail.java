@@ -11,27 +11,32 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.librarydemo.Activity.Books.BookAuthor.BookAuthorAdapter;
 import com.example.librarydemo.Models.AuthorModel;
 import com.example.librarydemo.Models.Book.BookCategories;
 import com.example.librarydemo.Models.Book.BookModel;
+import com.example.librarydemo.Models.Book.BookRequestModel;
 import com.example.librarydemo.Models.SpinnerOption;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
+import com.example.librarydemo.Services.Layout.ApiRequest;
 import com.example.librarydemo.Services.Layout.CustomSpinner;
 import com.example.librarydemo.Services.Layout.DatePickerService;
 import com.example.librarydemo.Services.LocalDateTimeConvert;
 import com.example.librarydemo.Services.RetrofitClient;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -57,7 +62,7 @@ public class BookDetail extends AppCompatActivity {
     BookModel currentBook;
     AuthorModel[] authors;
     EditText edt_bookName, edt_publishYear;
-
+    Button submit_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +92,9 @@ public class BookDetail extends AppCompatActivity {
             if(!bookId.equals(""))
                 getBookById(bookId);
         }
-//        categories = new
+
+        submit_btn = findViewById(R.id.submit_btn);
+        submit_btn.setOnClickListener(v -> submit());
     }
 
     private void getBookById(String bookId) {
@@ -204,5 +211,48 @@ public class BookDetail extends AppCompatActivity {
 
         if(bookAuthorAdapter != null)
             rcl_author.setAdapter(bookAuthorAdapter);
+    }
+
+    public void submit() {
+        String bookName = edt_bookName.getText().toString();
+        String inputDay = edt_inputDay.getText().toString();
+        String publishYear = edt_publishYear.getText().toString();
+
+        BookRequestModel bookRequestModel = new BookRequestModel();
+
+        if(bookName.equals("")) {
+            Toast.makeText(this, "Book name must not be null", Toast.LENGTH_SHORT).show();
+        } else if (selectedCategories == null || selectedCategories.isEmpty()) {
+            Toast.makeText(this, "Book must have a category", Toast.LENGTH_SHORT).show();
+        } else {
+            bookRequestModel.setName(bookName);
+            if(!inputDay.equals(""))
+                bookRequestModel.setInputDay(new LocalDateTimeConvert().convertToISODateTime(inputDay));
+
+            bookRequestModel.setPublishYear(publishYear);
+
+            String[] categories = new String[selectedCategories.size()];
+            for (int i = 0; i < categories.length; i++) {
+                categories[i] = selectedCategories.get(i).getValue();
+            }
+            bookRequestModel.setCategories(categories);
+            save(bookRequestModel);
+        }
+
+    }
+
+    private void save(BookRequestModel bookModel) {
+        JsonObject data = new ApiRequest().convertModelToJSONObject(bookModel);
+        apiService.save(ControllerConst.BOOKS, data).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(BookDetail.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
