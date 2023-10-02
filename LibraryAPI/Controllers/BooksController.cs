@@ -39,7 +39,7 @@ namespace LibraryAPI.Controllers
             {
                 query = query.Where(a => a.BookCategories.Any(b => b.CategoryId == id));
             }
-            var books = await query.ToListAsync();
+            var books = query.ToList();
 
             return Ok(_mapper.Map<List<BookModel>>(books));
         }

@@ -141,6 +141,23 @@
         </LinearLayout>
     </LinearLayout>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        android:layout_gravity="center"
+        android:theme="@style/AppTheme">
+
+        <Button
+            android:id="@+id/submit_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:background="#ff7849"
+            android:textColor="#fff"
+            android:textAllCaps="false"/>
+    </androidx.cardview.widget.CardView>
+
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
