@@ -20,8 +20,13 @@ export class BookChapterService {
     ) { }
     
   //api/BookChapters
-  getAll() {
-    return this.httpService.getAll<IBookChapter[]>({ controller: 'BookChapters' }).pipe(
+  getAll(id: string) {
+    return this.httpService.getWithCustomURL<IBookChapter[]>(
+      { 
+        controller: 'BookChapters', 
+        url: `BookChapters/get-by-id/${id}` 
+      }
+    ).pipe(
       tap((x) => {
         if(x?.length) 
           this.bookchapter$.next(x)

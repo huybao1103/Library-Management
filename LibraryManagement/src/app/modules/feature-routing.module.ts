@@ -42,7 +42,7 @@ const routes: Routes = [
         data: { component: BookInfoEditComponent }
       },
       {
-        path: 'bookchapter',
+        path: 'bookchapter/:id',
         component: BookChapterComponent 
       },
 

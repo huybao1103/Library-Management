@@ -1,13 +1,15 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from 'src/app/services/http-service.service';
 import { IBookChapter } from 'src/app/models/bookchapter.model';
 import { BookChapterService } from './service/book-chapter.service';
-import { Observable } from 'rxjs';
+import { Observable, first } from 'rxjs';
 import { Table } from 'primeng/table'
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { BookService } from '../service/book.service';
+import { IBook } from 'src/app/models/book.model';
 
 @Component({
   selector: 'app-book-chapter',
@@ -15,9 +17,11 @@ import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
   styleUrls: ['./book-chapter.component.css']
 })
 export class BookChapterComponent implements OnInit {
-  bookchapter$?: Observable<IBookChapter[] | null>;
+  book$?: Observable<IBook | null>;
   selectedBookChapters!: IBookChapter[] | null;
-  
+  book: IBook | undefined;
+
+  bookId: any;
   @ViewChild('dt') dt: Table | undefined;
 
   constructor(
@@ -25,18 +29,25 @@ export class BookChapterComponent implements OnInit {
     private bookChapterService: BookChapterService,
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
+    private activatedRoute: ActivatedRoute,
+    private bookService: BookService
     ) {}
 
   ngOnInit(): void {
-    this.getData();
+    this.bookId = this.activatedRoute.snapshot.paramMap.get('id');
+    this.getBook();
   }
 
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
+  getBook() {
+    this.book$ = this.bookService.getBookById(this.bookId);
+  }
+
   getData() {
-    this.bookchapter$ = this.bookChapterService.getAll();
+    // this.bookchapter$ = this.bookChapterService.getAll(this.bookId);
   }
 
   edit(id?: string) {
