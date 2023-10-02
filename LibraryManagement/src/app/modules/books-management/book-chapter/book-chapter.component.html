@@ -1,0 +1,106 @@
+<div class="mx-4">
+    <h3 class="page-title">Book </h3>
+    <h4>Detail Information</h4>
+    <div class="row border p-3 profile" *ngIf="book$ | async as book">
+        <div class="col-2 vertical-center">
+            <div *ngIf="book.bookImages?.length">
+                <p-galleria [value]="book.bookImages" [circular]="true" [showThumbnails]="false"
+                    [containerStyle]="{ 'max-width': '500px' }">
+                    <ng-template pTemplate="item" let-item>
+                        <img [src]="item.base64" class="rsp-Image" />
+                    </ng-template>
+                </p-galleria>
+            </div>
+        </div>
+        <div class="col-3 vertical-center">
+            <div class="text-truncate" style="overflow: hidden">
+                <p>Name: {{ book.name }}</p>
+                <p><span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span></p>
+                <p>{{ book.bookChapters?.length }} Chapters</p>
+            </div>
+        </div>
+        <div class="column-border-right col-1"></div>
+        <div class="col-5 vertical-center">
+            <div class="text-truncate" style="overflow: hidden">
+                <p>Author(s): <span *ngFor="let bookAuthor of book.bookAuthors">{{bookAuthor.author.name}}, </span></p>
+                <p>Publisher(es): <span *ngFor="let bookPublisher of book.bookPublishers">{{bookPublisher.publisher.name}}, </span></p>
+            </div>
+        </div>
+        <div class="col-1" style="text-align: right;">
+            <p class="la la-edit"(click)="edit(book.id)"></p>
+        </div>
+    </div>
+    <div *ngIf="book?.bookChapters as BookChapters">
+        <p-table
+            #dt
+            [value]="BookChapters"
+            [rows]="7"
+            [paginator]="true"
+            [globalFilterFields]="['chapter', 'identifyId', 'description', 'status']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true"
+        >
+            <ng-template pTemplate="caption">
+                <div class="justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="page-title">Book Chapter</h3>
+                       <!-- <div class="p-input-icon-left">
+                            <i class="la la-search"></i>
+                            <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search..." style="width: 30rem;"/>
+                        </div>
+                        <div>
+                            <button pButton pRipple label="New Publisher" icon="fa fa-plus" class="btn-primary" (click)="edit('')"></button>
+                            <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                        </div>-->
+                    </div>
+                </div>          
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="chapter">Chapter <p-sortIcon field="chapter"></p-sortIcon></th>
+                    <th pSortableColumn="identifyId">ID <p-sortIcon field="identifyId"></p-sortIcon></th>
+                    <th pSortableColumn="description">descriptione<p-sortIcon field="description"></p-sortIcon></th>
+                    <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                    <th pSortableColumn="action" style="min-width:10rem; text-align: center;">Action</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                      <p-columnFilter type="text" field="chapter"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="identifyId"></p-columnFilter>
+                    </th>
+                    <th>
+                      <p-columnFilter type="text" field="description"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="status"></p-columnFilter>
+                    </th>
+                    <th></th>
+                  </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-bookchapter of bookchapters>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="bookchapter"></p-tableCheckbox>
+                    </td>
+                    <td>{{ bookchapter.chapter }}</td>
+                    <td>{{ bookchapter.identifyId }}</td>
+                    <td>{{ bookchapter.description }}</td>
+                    <td>{{ bookchapter.status}}</td>
+                    <td style="text-align: center;">
+                        <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(bookchapter.id)"></button>
+                        <button pButton pRipple icon="la la-trash" class (click)="deleteBookChapter(bookchapter)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

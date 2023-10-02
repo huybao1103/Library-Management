@@ -131,3 +131,19 @@
     font-weight: 700;
     font-size: 22.3px;
 }
+
+/* Profile */
+.profile {
+    background-color: #ffffff;
+}
+
+.column-border-right {
+    border-right: 1px solid #000;
+    border-right-style: dashed; 
+  }
+  .vertical-center {
+    display: flex;
+    align-items: center;
+}
+
+ 
