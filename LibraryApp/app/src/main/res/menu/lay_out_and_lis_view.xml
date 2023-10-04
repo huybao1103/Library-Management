@@ -16,9 +16,4 @@
         android:orderInCategory="100"
         android:title="Update Book"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_CategoryBook"
-        android:orderInCategory="100"
-        android:title="Category Book"
-        app:showAsAction="never" />
 </menu>
