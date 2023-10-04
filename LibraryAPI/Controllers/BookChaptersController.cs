@@ -108,7 +108,11 @@ namespace LibraryAPI.Controllers
 
         private void RequestSaveChapterValidate(BookChapterModel bookChapterModel)
         {
-            if(!bookChapterModel.Chapter.HasValue)
+            if (!bookChapterModel.BookId.HasValue)
+            {
+                throw new CustomApiException(500, "Book ID must not be null.", "Book ID must not be null");
+            }
+            if (!bookChapterModel.Chapter.HasValue)
             {
                 throw new CustomApiException(500, "Book Chapter number must not be null.", "Book Chapter number must not be null");
             }

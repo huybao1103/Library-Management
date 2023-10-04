@@ -13,6 +13,8 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class BookChapterService {
   private bookchapter$: BehaviorSubject<IBookChapter[]> = new BehaviorSubject<IBookChapter[]>([]);
+
+  private bookId: string = "";
   
   constructor(
     private httpService: HttpService,
@@ -53,6 +55,14 @@ export class BookChapterService {
     return this.httpService.delete<IBookChapter>({controller: 'BookChapters'}, id).pipe(
       tap(() => this.updateBookChapterState(undefined, id))
     );
+  }
+
+  setCurrentBookId(id: string) {
+    this.bookId = id;
+  }
+
+  getCurrentBookID() { 
+    return this.bookId;
   }
 
   private updateBookChapterState(res?: IBookChapter, deletedBookChapterId?: string, ) {
