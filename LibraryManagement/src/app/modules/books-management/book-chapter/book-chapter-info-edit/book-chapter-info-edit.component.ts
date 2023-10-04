@@ -44,8 +44,7 @@ export class BookChapterInfoEditComponent {
     private modal: NgbActiveModal,
     private toastService: ToastService,
     private httpService: HttpService,
-    private toastSerivce: ToastService,
-    private bookChatperService: BookChapterService,
+    private bookChapterService: BookChapterService,
     private confirmDialogService: ConfirmDialogService
   ) {
   }
@@ -56,7 +55,7 @@ export class BookChapterInfoEditComponent {
       this.title = "Edit Chapter Information";
       this.getBookChapterById(para.id);
     } else {
-      this.bookId = this.bookChatperService.getCurrentBookID();
+      this.bookId = this.bookChapterService.getCurrentBookID();
       this.fields = BookChapterDetailFields();
     }
   }
@@ -66,7 +65,7 @@ export class BookChapterInfoEditComponent {
   }
 
   getBookChapterById(id: string) {
-    this.bookChatperService.getBookChapterByBookId(id).subscribe({
+    this.bookChapterService.getBookChapterByBookId(id).subscribe({
       next: (res) => {
         if(res)
           this.data = res;
@@ -77,7 +76,7 @@ export class BookChapterInfoEditComponent {
   }
 
   // getBookOption() {
-  //   return this.authorSerive.getBookOption().pipe(map(res => res))
+  //   return this.authorService.getBookOption().pipe(map(res => res))
   // }
 
   submit() {
@@ -104,7 +103,7 @@ export class BookChapterInfoEditComponent {
         bookId: this.bookId
       };
     }
-    this.bookChatperService.save(this.data).subscribe({
+    this.bookChapterService.save(this.data).subscribe({
       next: (resp) => {
         console.log(resp);
         this.toastService.show(MessageType.success, 'Book chapter info save success');
