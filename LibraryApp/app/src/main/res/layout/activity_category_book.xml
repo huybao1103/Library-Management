@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFA500"
+        tools:ignore="ExtraText,MissingConstraints">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="16dp"
+            android:text="BOOK CATEGORY"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="398dp"
+        android:layout_height="33dp"
+        tools:ignore="MissingClass,MissingConstraints" />
+
+    <Button
+        android:id="@+id/btnaddcategory"
+        android:layout_width="212dp"
+        android:layout_height="45dp"
+        android:background="#FEA400"
+        android:text="+ New Category"
+        tools:ignore="MissingConstraints" />
+
+    <ListView
+        android:layout_width="409dp"
+        android:layout_height="568dp"
+        tools:ignore="MissingConstraints" />
+
+
+</LinearLayout>

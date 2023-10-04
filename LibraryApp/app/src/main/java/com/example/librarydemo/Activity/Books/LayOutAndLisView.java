@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.example.librarydemo.ArrayLog;
 import com.example.librarydemo.BookInformation;
+import com.example.librarydemo.CategoryBook;
 import com.example.librarydemo.ChangPass;
 import com.example.librarydemo.Login;
 import com.example.librarydemo.Models.Book.BookModel;
@@ -200,7 +201,11 @@ public class LayOutAndLisView extends AppCompatActivity
             startActivity(intent);
             return true;
         }
-
+        if (id == R.id.action_CategoryBook) {
+            Intent intent = new Intent(this, CategoryBook.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
