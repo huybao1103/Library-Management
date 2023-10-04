@@ -63,6 +63,7 @@ public class BookDetail extends AppCompatActivity {
     AuthorModel[] authors;
     EditText edt_bookName, edt_publishYear;
     Button submit_btn;
+    String bookId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,7 @@ public class BookDetail extends AppCompatActivity {
 
         // Kiểm tra đang thêm hay sửa thông tin
         if(getIntent().getExtras() != null) {
-            String bookId = getIntent().getExtras().getString("bookId");
+            bookId = getIntent().getExtras().getString("bookId");
 
             if(!bookId.equals(""))
                 getBookById(bookId);
@@ -226,10 +227,15 @@ public class BookDetail extends AppCompatActivity {
             Toast.makeText(this, "Book must have a category", Toast.LENGTH_SHORT).show();
         } else {
             bookRequestModel.setName(bookName);
+
             if(!inputDay.equals(""))
                 bookRequestModel.setInputDay(new LocalDateTimeConvert().convertToISODateTime(inputDay));
 
+            if(bookId != null && !bookId.equals(""))
+                bookRequestModel.setId(bookId);
+
             bookRequestModel.setPublishYear(publishYear);
+
 
             String[] categories = new String[selectedCategories.size()];
             for (int i = 0; i < categories.length; i++) {

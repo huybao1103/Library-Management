@@ -1,3 +1,4 @@
+import { BookChapterStatus } from 'src/app/enums/book-chapter-status';
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from 'src/app/services/http-service.service';
@@ -24,6 +25,7 @@ export class BookChapterComponent implements OnInit {
   bookId: any;
   @ViewChild('dt') dt: Table | undefined;
 
+  BookChapterStatus = BookChapterStatus;
   constructor(
     private route: Router,
     private bookChapterService: BookChapterService,

@@ -90,7 +90,7 @@
                     <td>{{ bookchapter.chapter }}</td>
                     <td>{{ bookchapter.identifyId }}</td>
                     <td>{{ bookchapter.description }}</td>
-                    <td>{{ bookchapter.status}}</td>
+                    <td>{{ BookChapterStatus[bookchapter.status] }}</td>
                     <td style="text-align: center;">
                         <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(bookchapter.id)"></button>
                         <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteBookChapter(bookchapter)"></button>

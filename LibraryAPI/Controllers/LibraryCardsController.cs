@@ -104,11 +104,15 @@ namespace LibraryAPI.Controllers
             {
                 return NotFound();
             }
-            var libraryCard = await _context.LibraryCards.FindAsync(id);
+            var libraryCard = _context.LibraryCards
+                            .Include(c => c.StudentImages)
+                                .ThenInclude(a => a.File).FirstOrDefault(c => c.Id == id);
             if (libraryCard == null)
             {
                 return NotFound();
             }
+
+            libraryCard.StudentImages.Clear();
 
             _context.LibraryCards.Remove(libraryCard);
             await _context.SaveChangesAsync();

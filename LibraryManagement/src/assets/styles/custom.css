@@ -99,12 +99,22 @@
 }
 
 /* PrimeNG Button */
-.p-button.p-button-icon-only.p-button-rounded {
+.p-button {
+    border-radius: 6px;
+}
+
+.p-button-rounded {
+    border-radius: 50%;
     height: 2rem;
 }
 
 .p-button.p-button-icon-only {
     width: 2rem;
+}
+
+/* PrimeNG Paginator */
+.p-paginator .p-paginator-pages .p-paginator-page {
+    border-radius: 50%;
 }
 
 /* Book Management */

@@ -48,6 +48,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
+import { SpreadSheetsModule } from '@grapecity/spread-sheets-angular';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -100,7 +101,8 @@ import { BookChapterInfoEditComponent } from './books-management/book-chapter/bo
     GalleriaModule,
     AvatarModule,
     NgbModule,
-    TooltipModule
+    TooltipModule,
+    SpreadSheetsModule
   ]
 })
 export class FeatureModule { }

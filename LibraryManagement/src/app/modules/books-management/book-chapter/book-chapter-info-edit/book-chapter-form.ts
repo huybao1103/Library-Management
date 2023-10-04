@@ -1,4 +1,5 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
+import { BookChapterStatus } from "src/app/enums/book-chapter-status";
 import { KeyFilterType } from "src/app/enums/p-key-filter.type";
 import { FORMLY_CHECKBOX, FORMLY_DATETIME_PICKER, FORMLY_INPUT, FORMLY_SELECT } from "src/app/formly/formly.config";
 
@@ -42,8 +43,9 @@ export function BookChapterDetailFields(): FormlyFieldConfig[] {
               label: 'Status',
               required: true,
               options: [
-                {label: "free", value: 0},
-                {label: "borrowed", value: 1},
+                {label: BookChapterStatus[BookChapterStatus.Free], value: BookChapterStatus.Free},
+                {label: BookChapterStatus[BookChapterStatus.Borrowed], value: BookChapterStatus.Borrowed},
+                {label: BookChapterStatus[BookChapterStatus.Destroyed], value: BookChapterStatus.Destroyed},
               ]
             },
           },
