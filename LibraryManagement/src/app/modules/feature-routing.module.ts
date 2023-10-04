@@ -16,6 +16,7 @@ import { LibraryCardEditComponent } from './library-card-management/library-card
 import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
+import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
 
 const routes: Routes = [
   {
@@ -45,7 +46,12 @@ const routes: Routes = [
         path: 'bookchapter/:id',
         component: BookChapterComponent 
       },
-
+      {
+        path: 'bookchapter/edit/:id',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: BookChapterInfoEditComponent}
+      },
       {
         path: 'author',
         component: AuthorsManagementComponent

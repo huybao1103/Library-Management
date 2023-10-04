@@ -47,6 +47,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
+import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -73,6 +74,7 @@ import { BookChapterComponent } from './books-management/book-chapter/book-chapt
     LibraryCardEditComponent,
     LibraryCardDetailComponent,
     BookChapterComponent,
+    BookChapterInfoEditComponent,
   ],
   imports: [
     DialogModule,

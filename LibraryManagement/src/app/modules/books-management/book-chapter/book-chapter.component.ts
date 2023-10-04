@@ -30,11 +30,12 @@ export class BookChapterComponent implements OnInit {
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
     private activatedRoute: ActivatedRoute,
-    private bookService: BookService
+    private bookService: BookService,
     ) {}
 
   ngOnInit(): void {
     this.bookId = this.activatedRoute.snapshot.paramMap.get('id');
+    this.bookChapterService.setCurrentBookId(this.bookId);
     this.getBook();
   }
 
@@ -45,13 +46,18 @@ export class BookChapterComponent implements OnInit {
   getBook() {
     this.book$ = this.bookService.getBookById(this.bookId);
   }
-
+  // getBookChapter() {
+  //   this.book$ = this.bookChapterService.getBookChapterByBookId(this.bookId);
+  // }
   getData() {
     // this.bookchapter$ = this.bookChapterService.getAll(this.bookId);
   }
 
   edit(id?: string) {
     this.route.navigate([{ outlets: { modal: ['bookchapter', 'edit', id] } }]);
+  }
+  editBook(id?: string) {
+    this.route.navigate([{ outlets: { modal: ['book', 'edit', id] } }]);
   }
 
   deleteBookChapter(bookchapter: IBookChapter) {
