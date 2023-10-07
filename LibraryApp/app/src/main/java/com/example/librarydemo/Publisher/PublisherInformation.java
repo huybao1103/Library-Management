@@ -46,7 +46,7 @@
 //        private List<String> publishersToRemove = new ArrayList<>();
         private Collection<?> publishersToRemove = new ArrayList<>();
         private ImageView PubImage, deleteAllButton;
-        private TextView textViewSearch;
+        private EditText edSearch;
 
 
 
@@ -66,7 +66,7 @@
             listView.setAdapter(publisherAdapter);
             checkBoxAll = findViewById(R.id.checkBoxAll);
             checkBox = findViewById(R.id.checkBox);
-            TextView SearchPublisher = findViewById(R.id.textViewSearch);
+//            EditText edSearch = findViewById(R.id.edSearch);
             publishersToRemove = new ArrayList<>();
 
 
@@ -144,15 +144,22 @@
             });
 
             //bấm search tìm ds NXB
-            textViewSearch = findViewById(R.id.textViewSearch);
-            textViewSearch.setOnClickListener(new View.OnClickListener() {
+            edSearch = findViewById(R.id.edSearch);
+            edSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(PublisherInformation.this, PublisherInformation.class);
-                    startActivity(intent);
-                    showPublisherList();
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        // Khi EditText được focus, xóa văn bản "Search"
+                        edSearch.setText("");
+                    } else {
+                        // Khi EditText không còn focus và rỗng, đặt lại văn bản "Search"
+                        if (edSearch.getText().toString().trim().isEmpty()) {
+                            edSearch.setText("Search");
+                        }
+                    }
                 }
             });
+
 
 
 
@@ -234,10 +241,10 @@
 
             });
 
-            textViewSearch.setOnClickListener(new View.OnClickListener() {
+            edSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String searchQuery = SearchPublisher.getText().toString().trim().toLowerCase();
+                    String searchQuery = edSearch.getText().toString().trim().toLowerCase();
                     filterPublishers(searchQuery);
                 }
 

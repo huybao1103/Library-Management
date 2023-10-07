@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,5 +44,8 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(MainActivity.this, Login.class);
         startActivity(intent);
     }
-
+    public void onSearchClick(View view) {
+        EditText edSearch = findViewById(R.id.edSearch);
+        edSearch.setText(""); // Xóa văn bản "Search"
+    }
 }

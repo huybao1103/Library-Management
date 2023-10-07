@@ -1,7 +1,6 @@
 package com.example.librarydemo.Publisher;
 
 import android.content.Intent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,8 +18,6 @@ public class AddPublisher extends AppCompatActivity {
     private EditText editTextPublisherMail;
     private EditText editTextPublisherAddress;
     private String publisher;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +40,15 @@ public class AddPublisher extends AppCompatActivity {
                 String publisherMail = editTextPublisherMail.getText().toString();
                 String publisherAddress = editTextPublisherAddress.getText().toString();
 
-                // Kiểm tra số điện thoại có đủ 10 số không
-                if (publisherPhone.length() != 10) {
-                    Toast.makeText(AddPublisher.this, "Phone number must have 10 digits", Toast.LENGTH_SHORT).show();
+                if (publisherName.isEmpty() || publisherPhone.isEmpty() || publisherMail.isEmpty() || publisherAddress.isEmpty()) {
+                    // Thông báo yêu cầu nhập đủ thông tin
+                    Toast.makeText(AddPublisher.this, "Please enter complete information", Toast.LENGTH_SHORT).show();
+                    return; // Ngừng xử lý và không thực hiện thêm Publisher
+                }
+
+                // Kiểm tra số điện thoại phải có đúng 10 chữ số và không chứa ký tự hay chữ cái
+                if (!publisherPhone.matches("[0-9]{10}")) {
+                    Toast.makeText(AddPublisher.this, "Phone number must have exactly 10 digits and contain only digits", Toast.LENGTH_SHORT).show();
                     return; // Ngừng xử lý và không thực hiện thêm Publisher
                 }
 
@@ -55,17 +58,13 @@ public class AddPublisher extends AppCompatActivity {
                     return; // Ngừng xử lý và không thực hiện thêm Publisher
                 }
 
-                if (!publisherName.isEmpty() && !publisherPhone.isEmpty() && !publisherMail.isEmpty() && !publisherAddress.isEmpty()) {
-                    // Thêm thông báo thêm thành công
-                    Toast.makeText(AddPublisher.this, "Added successfully", Toast.LENGTH_SHORT).show();
+                // Nếu tất cả điều kiện được đáp ứng, thực hiện thêm Publisher và hiển thị thông báo
+                // Thêm thông báo thêm thành công
+                Toast.makeText(AddPublisher.this, "Added successfully", Toast.LENGTH_SHORT).show();
 
-                    // Quay lại danh sách Publisher
-                    Intent intent = new Intent(AddPublisher.this, PublisherInformation.class);
-                    startActivity(intent);
-                } else {
-                    // Thông báo nếu có trường nào đó chưa được nhập
-                    Toast.makeText(AddPublisher.this, "Please enter complete information", Toast.LENGTH_SHORT).show();
-                }
+                // Quay lại danh sách Publisher
+                Intent intent = new Intent(AddPublisher.this, PublisherInformation.class);
+                startActivity(intent);
             }
         });
 
@@ -81,5 +80,3 @@ public class AddPublisher extends AppCompatActivity {
     public void notifyDataSetChanged() {
     }
 }
-
-

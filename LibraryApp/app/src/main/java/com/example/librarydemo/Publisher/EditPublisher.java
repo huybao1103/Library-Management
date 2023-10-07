@@ -18,8 +18,6 @@ public class EditPublisher extends AppCompatActivity {
     private EditText editTextPublisherMail;
     private EditText editTextPublisherAddress;
     private Button btnSave;
-
-
     private Button btnCancel;
 
     @Override
@@ -43,28 +41,29 @@ public class EditPublisher extends AppCompatActivity {
                 String publisherMail = editTextPublisherMail.getText().toString();
                 String publisherAddress = editTextPublisherAddress.getText().toString();
 
-                // Kiểm tra không để trống
                 if (publisherName.isEmpty() || publisherPhone.isEmpty() || publisherMail.isEmpty() || publisherAddress.isEmpty()) {
+                    // Thông báo yêu cầu nhập đủ thông tin
                     Toast.makeText(EditPublisher.this, "Please enter complete information", Toast.LENGTH_SHORT).show();
-                    return;
+                    return; // Ngừng xử lý và không thực hiện thêm Publisher
                 }
 
-                // Kiểm tra số điện thoại có đủ 10 số không
-                if (publisherPhone.length() != 10) {
-                    Toast.makeText(EditPublisher.this, "Phone number must have 10 digits", Toast.LENGTH_SHORT).show();
-                    return;
+                // Kiểm tra số điện thoại phải có đúng 10 chữ số và không chứa ký tự hay chữ cái
+                if (!publisherPhone.matches("[0-9]{10}")) {
+                    Toast.makeText(EditPublisher.this, "Phone number must have exactly 10 digits and contain only digits", Toast.LENGTH_SHORT).show();
+                    return; // Ngừng xử lý và không thực hiện thêm Publisher
                 }
 
-                // Sử dụng biểu thức chính quy để kiểm tra định dạng email
-                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+com";
-
-                if (!publisherMail.matches(emailPattern)) {
-                    Toast.makeText(EditPublisher.this, "Invalid email address", Toast.LENGTH_SHORT).show();
-                    return;
+                // Kiểm tra định dạng email là .com
+                if (!publisherMail.endsWith(".com")) {
+                    Toast.makeText(EditPublisher.this, "Email address must end with .com", Toast.LENGTH_SHORT).show();
+                    return; // Ngừng xử lý và không thực hiện thêm Publisher
                 }
 
-                // Lưu thông báo thêm thành công và quay lại danh sách Publisher
-                Toast.makeText(EditPublisher.this, "Saved successfully", Toast.LENGTH_SHORT).show();
+                // Nếu tất cả điều kiện được đáp ứng, thực hiện thêm Publisher và hiển thị thông báo
+                // Thêm thông báo thêm thành công
+                Toast.makeText(EditPublisher.this, "Added successfully", Toast.LENGTH_SHORT).show();
+
+                // Quay lại danh sách Publisher
                 Intent intent = new Intent(EditPublisher.this, PublisherInformation.class);
                 startActivity(intent);
             }
