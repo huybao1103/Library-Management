@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.librarydemo.ArrayLog;
-import com.example.librarydemo.BookInformation;
+import com.example.librarydemo.Author.AuthorListActivity;
 import com.example.librarydemo.ChangPass;
 import com.example.librarydemo.Login;
 import com.example.librarydemo.Models.Book.BookModel;
+
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
@@ -23,23 +24,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.DBBook.BookAdapter;
 import com.example.librarydemo.DBUser.User;
-import com.example.librarydemo.Database.SQLSever;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
@@ -209,6 +201,11 @@ public class LayOutAndLisView extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+         if (id == R.id.nav_tacgia) {
+             Intent intent = new Intent(this, AuthorListActivity.class);
+             startActivity(intent);
+         }
+
         if (id == R.id.nav_camera) {
             Intent intent = new Intent(this, UserInformation.class);
             startActivity(intent);

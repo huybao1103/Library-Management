@@ -5,6 +5,7 @@ public class AuthorModel {
     private String name;
     private String mail;
     private String phone;
+    private String address;
     private String bookAuthorId;
 
     public AuthorModel() {

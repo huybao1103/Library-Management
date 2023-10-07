@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RelativeLayout android:background="#d6edfb" tools:context=".MainActivity" android:padding="16dp" android:layout_height="match_parent" android:layout_width="match_parent" xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListView android:layout_height="510dp" android:layout_width="match_parent" android:layout_marginTop="200dp" android:id="@+id/listView"/>
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="10dp" android:id="@+id/textViewTitle" android:layout_centerHorizontal="true" android:layout_alignParentTop="true" android:textStyle="bold" android:textSize="24sp" android:text="AUTHOR LIST"/>
+
+    <ImageView android:layout_height="50dp" android:layout_width="30dp" android:layout_marginTop="210dp" android:id="@+id/EditAu" android:contentDescription="TODO" android:src="@drawable/baseline_edit_24" android:layout_marginLeft="300dp"/>
+
+    <ImageView android:layout_height="70dp" android:layout_width="30dp" android:layout_marginTop="200dp" android:id="@+id/DeleteAu" android:contentDescription="TODO" android:src="@drawable/baseline_delete_24" android:layout_marginLeft="340dp"/>
+
+    <Button android:background="#ff8c00" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginTop="70dp" android:id="@+id/buttonAddAuthor" android:text="+ New Author" android:layout_marginLeft="220dp" tools:ignore="TextContrastCheck" android:textColor="@color/white"/>
+
+    <EditText android:background="@drawable/search" android:layout_height="40dp" android:layout_width="200dp" android:layout_marginTop="80dp" android:id="@+id/SearchAu" android:textSize="16sp" android:hint="Search" android:gravity="center_vertical" android:drawablePadding="8dp" android:drawableLeft="@drawable/baseline_search_24"/>
+
+</RelativeLayout>

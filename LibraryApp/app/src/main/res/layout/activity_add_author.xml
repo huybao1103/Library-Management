@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <TextView
+        android:id="@+id/AuthorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author Name"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:id="@+id/edAuthorName"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/AuthorName"
+        android:layout_marginTop="15dp"
+        android:hint="Enter Author Name"
+        android:textStyle="italic" />
+    <TextView
+        android:id="@+id/AuthorPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author Phone"
+        android:layout_below="@id/edAuthorName"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="25dp"/>
+    <EditText
+        android:id="@+id/edAuthorPhone"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/AuthorPhone"
+        android:layout_marginTop="4dp"
+        android:hint="Enter Author Phone"
+        android:textStyle="italic"
+        />
+    <TextView
+        android:id="@+id/AuthorMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author Mail"
+        android:layout_below="@id/edAuthorPhone"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="25dp"/>
+    <EditText
+        android:id="@+id/edAuthorMail"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/AuthorMail"
+        android:layout_marginTop="4dp"
+        android:hint="Enter Author Mail"
+        android:textStyle="italic"
+        />
+
+    <Button
+        android:id="@+id/AddAuthor"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="90dp"
+        android:layout_marginTop="350dp"
+
+        android:text="ADD" />
+
+    <Button
+        android:id="@+id/CancelAuthor"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="350dp"
+        android:text="CANCEL" />
+
+
+
+</RelativeLayout>
