@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".MainActivity"
+    android:background="#d6edfb"
+    >
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="350dp"
+        android:layout_height="510dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="200dp" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PUBLISHER LIST"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <ImageView
+        android:id="@+id/ButtonEdit"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="260dp"
+        android:src="@drawable/baseline_edit_24"
+        android:layout_marginTop="210dp"
+        android:contentDescription="TODO" />
+
+    <ImageView
+        android:id="@+id/ButtonDelete"
+        android:layout_width="30dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="300dp"
+        android:src="@drawable/baseline_delete_24"
+        android:layout_marginTop="200dp"
+        android:contentDescription="TODO" />
+
+    <Button
+        android:id="@+id/buttonAddPub"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="70dp"
+        android:background="#ff8c00"
+        android:text="+ New Publisher"
+        android:textColor="@color/white"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+    android:id="@+id/textViewSearch"
+    android:layout_width="140dp"
+    android:layout_height="40dp"
+    android:drawableLeft="@drawable/baseline_search_24"
+    android:drawablePadding="8dp"
+    android:text="Search"
+    android:gravity="center_vertical"
+    android:layout_marginTop="80dp"
+    android:textSize="16sp"
+    android:background="@drawable/search" />
+
+    <ImageView
+        android:id="@+id/ButtonDeleteAll"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="300dp"
+        android:src="@drawable/baseline_delete_24"
+        android:layout_marginTop="75dp"
+        android:contentDescription="TODO" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTitle"
+        android:layout_marginTop="170dp"
+       android:layout_marginLeft="-8dp"
+
+        android:checked="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click all"
+        android:layout_marginTop="170dp"
+        android:layout_marginLeft="20dp"/>
+    <CheckBox
+        android:id="@+id/checkBoxAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTitle"
+        android:layout_marginTop="113dp"
+        android:layout_marginLeft="70dp"
+        android:checked="false" />
+
+    <ImageView
+        android:id="@+id/PubImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/pub"
+        android:layout_marginTop="210dp"
+        android:layout_marginLeft="50dp"
+        />
+
+
+</RelativeLayout>

@@ -5,17 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_QLNXB"
             android:icon="@drawable/iconsuser"
-            android:title="Thông Tin Của Tôi" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/icon_password"
-            android:title="Đổi Mật Khẩu" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/icons_out"
-            android:title="Đăng Xuất" />
+            android:title="Quản lý NXB" />
+
     </group>
 
 </menu>

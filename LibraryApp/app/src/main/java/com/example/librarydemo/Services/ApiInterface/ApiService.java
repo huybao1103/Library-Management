@@ -2,6 +2,7 @@ package com.example.librarydemo.Services.ApiInterface;
 
 import com.example.librarydemo.Models.Book.BookModel;
 import com.example.librarydemo.Models.SpinnerModel;
+import com.example.librarydemo.Publisher.ListPublisher;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -43,4 +44,7 @@ public interface ApiService {
     // Delete a item by its ID
     @DELETE("api/{controller}/delete/{id}")
     Call<Void> delete(@Path("controller") String controller, @Path("id") String id);
-}
+
+    }
+
+
