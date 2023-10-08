@@ -9,11 +9,13 @@ namespace LibraryAPI.MappingProfile
         public LibraryCardMappingProfile() 
         {
             CreateMap<LibraryCard, LibraryCardModel>();
-            CreateMap<LibraryCardModel, LibraryCard>();
+            CreateMap<LibraryCardModel, LibraryCard>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
 
             CreateMap<StudentImage, StudentImageModel>();
             CreateMap<StudentImageModel, StudentImage>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
         }
     }
 }

@@ -9,7 +9,8 @@ namespace LibraryAPI.MappingProfile
         public BookChapterMappingProfile() 
         {
             CreateMap<BookChapter, BookChapterModel>();
-            CreateMap<BookChapterModel, BookChapter>();
+            CreateMap<BookChapterModel, BookChapter>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
         }
     }
 }

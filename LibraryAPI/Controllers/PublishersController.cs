@@ -117,6 +117,23 @@ namespace LibraryAPI.Controllers
             return publishersList.Select(cate => new Option { Value = cate.Id, Label = cate.Name }).ToList(); // Get author option list
         }
 
+        [HttpGet("advance-option")]
+        public async Task<ActionResult<IEnumerable<Option>>> GetPublishersAdvanceOption()
+        {
+            if (_context.Publishers == null)
+            {
+                return NotFound();
+            }
+            var publishersList = await _context.Publishers.ToListAsync(); // Get author list
+
+            return publishersList.Select(publisher => 
+            new Option 
+            { 
+                Value = publisher.Id, 
+                Label = $"{publisher.Name}, {publisher.Mail}, {publisher.Phone}"
+            }).ToList(); // Get author option list
+        }
+
         private bool PublisherExists(Guid id)
         {
             return (_context.Publishers?.Any(e => e.Id == id)).GetValueOrDefault();
@@ -124,11 +141,12 @@ namespace LibraryAPI.Controllers
 
         private void RequestSavePublisherValidate(PublisherRequest publisherRequestModel)
         {
-            if (_context.Publishers.Any(a => a.Name == publisherRequestModel.Name && a.Id != publisherRequestModel.Id))
+            Publisher publisher = new Publisher();
+            if (_context.Publishers.Any(a => a.Name == publisher.Name && a.Id != publisher.Id))
             {
                 throw new CustomApiException(500, "This publisher name is existed.", "This publisher name is existed.");
             }
-            if (_context.Publishers.Any(a => ((a.Mail != null && a.Mail == publisherRequestModel.Mail) || (a.Phone != null && a.Phone == publisherRequestModel.Phone)) && a.Id != publisherRequestModel.Id))
+            if (_context.Publishers.Any(a => ((a.Mail != null && a.Mail == publisher.Mail) || (a.Phone != null && a.Phone == publisher.Phone)) && a.Id != publisher.Id))
             {
                 throw new CustomApiException(500, "The publisher with this email or phone number is existed.", "The publisher with this email or phone number is existed.");
             }

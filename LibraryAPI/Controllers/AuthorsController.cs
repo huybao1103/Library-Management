@@ -115,13 +115,33 @@ namespace LibraryAPI.Controllers
             return authorList.Select(author => new Option { Value = author.Id, Label = author.Name }).ToList(); // Get author option list
         }
 
+        [HttpGet("advance-option")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
+        public async Task<ActionResult<IEnumerable<Option>>> GetAuthorsAdvanceOption()
+        {
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+            var authorList = await _context.Authors.ToListAsync(); // Get author list
+
+            return authorList.Select(author => 
+            new Option 
+            { 
+                Value = author.Id, 
+                Label = $"{author.Name}, {author.Mail}, {author.Phone}"
+            }).ToList(); // Get author option list
+        }
+
         private bool AuthorExists(Guid id)
         {
             return (_context.Authors?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        private void RequestSaveAuthorValidate(AuthorRequest author)
+        private void RequestSaveAuthorValidate(AuthorRequest authorModel)
         {
+            Author author = _mapper.Map<Author>(authorModel);
+
             if (_context.Authors.Any(a => a.Name == author.Name && a.Id != author.Id))
             {
                 throw new CustomApiException(500, "This author name is existed.", "This author name is existed.");
