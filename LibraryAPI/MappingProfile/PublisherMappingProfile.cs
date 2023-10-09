@@ -9,8 +9,11 @@ namespace LibraryAPI.MappingProfile
     {
         public PublisherMappingProfile() 
         {
-            CreateMap<PublisherRequest, Publisher>();
-            CreateMap<PublisherModel, Publisher>();
+            CreateMap<PublisherRequest, Publisher>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
+
+            CreateMap<PublisherModel, Publisher>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
             CreateMap<Publisher, PublisherModel>();
         }
     }

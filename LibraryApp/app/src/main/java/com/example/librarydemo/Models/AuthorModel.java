@@ -49,4 +49,15 @@ public class AuthorModel {
     public void setBookAuthorId(String bookAuthorId) {
         this.bookAuthorId = bookAuthorId;
     }
+
+    @Override
+    public String toString() {
+        return "AuthorModel{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                ", phone='" + phone + '\'' +
+                ", bookAuthorId='" + bookAuthorId + '\'' +
+                '}';
+    }
 }
