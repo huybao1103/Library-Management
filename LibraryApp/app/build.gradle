@@ -8,7 +8,12 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+<<<<<<< Updated upstream
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+=======
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        vectorDrawables.useSupportLibrary = true
+>>>>>>> Stashed changes
     }
     buildTypes {
         release {
@@ -16,6 +21,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+<<<<<<< Updated upstream
+=======
+    sourceSets {
+        main {
+            java {
+                srcDirs += 'src/main/java'
+            }
+        }
+    }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+    namespace 'com.example.librarydemo'
+>>>>>>> Stashed changes
 }
 
 dependencies {

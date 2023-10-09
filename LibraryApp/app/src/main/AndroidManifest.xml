@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.librarydemo">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,6 +12,24 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity
+<<<<<<< Updated upstream
+=======
+            android:name=".Author.UpdateAuthor"
+            android:exported="false"
+            android:parentActivityName=".Author.AuthorList"/>
+        <activity
+            android:name=".Author.AddAuthor"
+            android:exported="false"
+            android:label="Add Author"
+            android:parentActivityName=".Author.AuthorList" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.Books.BookDetail"
+            android:exported="false" />
+        <activity
+>>>>>>> Stashed changes
             android:name=".Sample.SampleActivity"
             android:exported="false" />
         <activity android:name=".Login" />
@@ -31,7 +48,14 @@
             android:name=".LayOutAndLisView"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SignUp" />
+<<<<<<< Updated upstream
         <activity android:name=".MainActivity">
+=======
+        <activity
+            android:name=".Author.AuthorList"
+            android:exported="true"
+            android:label="Author List">
+>>>>>>> Stashed changes
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
