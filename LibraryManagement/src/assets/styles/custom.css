@@ -1,4 +1,8 @@
 /* General */
+.text-global {
+    color: #FF7849 !important;
+}
+
 .bg-global {
     background-color: #FF7849;
 }
