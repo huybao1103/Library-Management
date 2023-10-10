@@ -78,7 +78,7 @@
                 </td>
                 <td>{{ card.studentId }}</td>
                 <td>{{ card.class }}</td>
-                <td>{{ card.expirydate }}</td>
+                <td>{{ card.expiryDate | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ LibraryCardStatus[card.status] }}</td>
                 <td style="text-align: center;">
                     <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(card.id)"></button>
