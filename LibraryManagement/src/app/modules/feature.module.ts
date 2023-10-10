@@ -43,6 +43,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
 
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
@@ -102,6 +103,7 @@ import { SpreadSheetsModule } from '@grapecity/spread-sheets-angular';
     NgbModule,
     TooltipModule,
     SpreadSheetsModule
+    DatePipe,
   ]
 })
 export class FeatureModule { }
