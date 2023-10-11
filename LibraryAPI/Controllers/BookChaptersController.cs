@@ -10,6 +10,7 @@ using AutoMapper;
 using LibraryAPI.ViewModels.Book;
 using LibraryAPI.CustomException;
 using LibraryAPI.RequestModels;
+using LibraryAPI.PubSub;
 
 namespace LibraryAPI.Controllers
 {
@@ -101,6 +102,19 @@ namespace LibraryAPI.Controllers
             return NoContent();
         }
 
+        [HttpGet("option/{bookId}")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
+        public async Task<ActionResult<IEnumerable<Option>>> GetBooksOption(Guid bookId)
+        {
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+            var bookList = await _context.BookChapters.Where(x => x.BookId == bookId).ToListAsync(); // Get book list
+
+            return bookList.Select(book => new Option { Value = book.Id, Label = book.Chapter.ToString() }).ToList(); // Get book option list
+        }
+
         private bool BookChapterExists(Guid id)
         {
             return (_context.BookChapters?.Any(e => e.Id == id)).GetValueOrDefault();
@@ -122,11 +136,11 @@ namespace LibraryAPI.Controllers
             {
                 throw new CustomApiException(500, "Book Chapter status must not be null.", "Book Chapter status must not be null");
             }
-            if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.IdentifyId == bookChapter.IdentifyId))
+            if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.Id != bookChapter.Id && a.IdentifyId == bookChapter.IdentifyId))
             {
                 throw new CustomApiException(500, "This book chapter Identify ID is existed.", "This book chapter Identify ID is existed.");
             }
-            if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.Chapter == bookChapter.Chapter))
+            if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.Id != bookChapter.Id && a.Chapter == bookChapter.Chapter))
             {
                 throw new CustomApiException(500, "This book chapter number is existed.", "This book chapter number is existed.");
             }

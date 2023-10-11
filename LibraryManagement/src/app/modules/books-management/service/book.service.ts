@@ -63,6 +63,10 @@ export class BookService {
     );
   }
 
+  getBookOption() {
+    return this.httpService.getOption<IComboboxOption[]>({ controller: 'Books' });
+  }
+
   private updateBookState(res?: IBook, deletedBookId?: string, ) {
     let old = this.books$.value;
   

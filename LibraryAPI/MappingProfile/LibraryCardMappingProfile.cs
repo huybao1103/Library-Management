@@ -8,6 +8,8 @@ namespace LibraryAPI.MappingProfile
     {
         public LibraryCardMappingProfile() 
         {
+            CreateMap<LibraryCard, LibraryCardBasicInfoModel>();
+
             CreateMap<LibraryCard, LibraryCardModel>();
             CreateMap<LibraryCardModel, LibraryCard>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));

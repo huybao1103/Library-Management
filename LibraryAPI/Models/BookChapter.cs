@@ -18,4 +18,6 @@ public partial class BookChapter
     public int? Chapter { get; set; }
 
     public virtual Book? Book { get; set; }
+
+    public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
 }

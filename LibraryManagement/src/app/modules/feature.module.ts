@@ -48,7 +48,7 @@ import { DatePipe } from '@angular/common';
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
-import { SpreadSheetsModule } from '@grapecity/spread-sheets-angular';
+import { NewHistoryRecordComponent } from './library-card-management/new-history-record/new-history-record.component';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -76,6 +76,7 @@ import { SpreadSheetsModule } from '@grapecity/spread-sheets-angular';
     LibraryCardDetailComponent,
     BookChapterComponent,
     BookChapterInfoEditComponent,
+    NewHistoryRecordComponent,
   ],
   imports: [
     DialogModule,
@@ -102,7 +103,6 @@ import { SpreadSheetsModule } from '@grapecity/spread-sheets-angular';
     AvatarModule,
     NgbModule,
     TooltipModule,
-    SpreadSheetsModule
     DatePipe,
   ]
 })

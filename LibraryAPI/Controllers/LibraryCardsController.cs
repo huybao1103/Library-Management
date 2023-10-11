@@ -94,6 +94,7 @@ namespace LibraryAPI.Controllers
             {
                 return NotFound();
             }
+            libraryCard.StudentImages.Clear();
 
             libraryCard.StudentImages.Clear();
 
@@ -127,6 +128,9 @@ namespace LibraryAPI.Controllers
             return _context.LibraryCards
                     .Include(c => c.StudentImages)
                         .ThenInclude(c => c.File)
+                    .Include(c => c.BorrowHistories)
+                        .ThenInclude(c => c.BookChapter)
+                            .ThenInclude(c => c.Book)
                     .FirstOrDefault(book => book.Id == cardId);
         }
 

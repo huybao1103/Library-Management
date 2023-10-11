@@ -1,4 +1,5 @@
 import { LibraryCardStatus } from "../enums/library-card-status";
+import { IBorrowHistoryInfo } from "./borrow-history.model";
 import { IBaseImage } from "./uploadFile.model";
 
 export interface ILibraryCardInfo {
@@ -6,10 +7,11 @@ export interface ILibraryCardInfo {
     name: string;
     class: string;
     expiryDate: string;
-    status?: LibraryCardStatus;
+    status: LibraryCardStatus;
     description?: string;
-    studentId?: string;
+    studentId: string;
     studentImages?: IStudentImage[];
+    borrowHistories?: IBorrowHistoryInfo[];
 }
 
 export interface IStudentImage extends IBaseImage {

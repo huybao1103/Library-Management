@@ -1,6 +1,6 @@
 export enum BookChapterStatus {
-    Free,
     Borrowed,
-    Destroyed,
-
+    Free,
+    Lost,
+    Destroyed
 }
