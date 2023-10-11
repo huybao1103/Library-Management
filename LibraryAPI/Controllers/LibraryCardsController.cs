@@ -53,7 +53,6 @@ namespace LibraryAPI.Controllers
         }
 
         // POST: api/LibraryCards
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("save")]
         public async Task<ActionResult<LibraryCardModel>> PostLibraryCard(LibraryCardModel libraryCardModel)
         {
