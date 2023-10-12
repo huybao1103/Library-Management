@@ -108,19 +108,25 @@ namespace LibraryAPI.Controllers
 
         private void RequestSaveChapterValidate(BookChapterModel bookChapterModel)
         {
-            if(!bookChapterModel.Chapter.HasValue)
+            BookChapter bookChapter = _mapper.Map<BookChapter>(bookChapterModel);
+
+            if (!bookChapter.BookId.HasValue)
+            {
+                throw new CustomApiException(500, "Book ID must not be null.", "Book ID must not be null");
+            }
+            if (!bookChapter.Chapter.HasValue)
             {
                 throw new CustomApiException(500, "Book Chapter number must not be null.", "Book Chapter number must not be null");
             }
-            if (!bookChapterModel.Status.HasValue)
+            if (!bookChapter.Status.HasValue)
             {
                 throw new CustomApiException(500, "Book Chapter status must not be null.", "Book Chapter status must not be null");
             }
-            if (_context.BookChapters.Any(a => a.BookId == bookChapterModel.BookId && a.IdentifyId == bookChapterModel.IdentifyId))
+            if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.IdentifyId == bookChapter.IdentifyId))
             {
                 throw new CustomApiException(500, "This book chapter Identify ID is existed.", "This book chapter Identify ID is existed.");
             }
-            if (_context.BookChapters.Any(a => a.BookId == bookChapterModel.BookId && a.Chapter == bookChapterModel.Chapter))
+            if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.Chapter == bookChapter.Chapter))
             {
                 throw new CustomApiException(500, "This book chapter number is existed.", "This book chapter number is existed.");
             }

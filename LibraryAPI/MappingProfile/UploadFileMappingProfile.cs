@@ -10,7 +10,8 @@ namespace LibraryAPI.MappingProfile
         {
             CreateMap<UploadFile, UploadFileModel>();
             CreateMap<UploadFileModel, UploadFile>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
         }
     }
 }

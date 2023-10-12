@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
@@ -102,6 +103,26 @@ public class LocalDateTimeConvert {
             DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate date = LocalDate.parse(IsoDateString, inputFormatter);
             return date.format(outputFormatter);
+        }
+        return null;
+    }
+
+    /**
+     * Convert custom date format to ISO datetime format
+     * @param dateString
+     * @return ISODateFormat
+     */
+    public String convertToISODateTime(String dateString) {
+        DateTimeFormatter inputFormatter = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            LocalDate date = LocalDate.parse(dateString, inputFormatter);
+
+            // Convert to LocalDateTime at the start of the day (00:00:00)
+            LocalDateTime dateTime = date.atStartOfDay();
+
+            return dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         }
         return null;
     }

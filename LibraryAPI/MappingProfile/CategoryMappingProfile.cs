@@ -9,9 +9,11 @@ namespace LibraryAPI.MappingProfile
     {
         public CategoryMappingProfile() 
         {
-            CreateMap<CategoryRequest, Category>();
+            CreateMap<CategoryRequest, Category>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
 
-            CreateMap<CategoryModel, Category>();
+            CreateMap<CategoryModel, Category>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
             CreateMap<Category, CategoryModel>();
         }
     }

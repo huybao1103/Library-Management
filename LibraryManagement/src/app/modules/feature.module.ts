@@ -31,7 +31,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DockModule } from 'primeng/dock';
-import { CategoryManagementComponent } from './category-management/category-management.component';
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
 import { ConfirmDialogService } from '../services/confirm-dialog.service';
@@ -44,8 +43,12 @@ import { AvatarModule } from 'primeng/avatar';
 import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
 
 
+import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
+import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
+import { SpreadSheetsModule } from '@grapecity/spread-sheets-angular';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -70,7 +73,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     BookPublisherEditComponent,
     LibraryCardManagementComponent,
     LibraryCardEditComponent,
-    LibraryCardDetailComponent
+    LibraryCardDetailComponent,
+    BookChapterComponent,
+    BookChapterInfoEditComponent,
   ],
   imports: [
     DialogModule,
@@ -96,7 +101,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     GalleriaModule,
     AvatarModule,
     NgbModule,
-    TooltipModule
+    TooltipModule,
+    SpreadSheetsModule
+    DatePipe,
   ]
 })
 export class FeatureModule { }

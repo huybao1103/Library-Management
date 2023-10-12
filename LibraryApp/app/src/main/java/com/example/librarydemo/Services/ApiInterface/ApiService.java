@@ -20,27 +20,72 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiService {
-    // Fetch all
+    /**
+     * Fetch all
+     * @param controller as name of the controller
+     * @return JsonArray
+     */
     @GET("api/{controller}")
     Call<JsonArray> getAll(@Path("controller") String controller);
 
-    // Fetch spinner
+    /**
+     * Fetch spinner
+     * @param controller as name of the controller
+     * @return JsonArray
+     */
     @GET("api/{controller}/option")
     Call<JsonArray> getSpinner(@Path("controller") String controller); /* Dùng model SpinnerModel */
 
-    // Fetch a item by its ID
+    /**
+     * Fetch a item by its ID
+     * @param controller as name of the controller
+     * @param id as item id you want to get
+     * @return JsonObject
+     */
     @GET("api/{controller}/get-by-id/{id}")
     Call<JsonObject> getById(@Path("controller") String controller, @Path("id") String id);
 
-    // Save information
+    /**
+     * Save information
+     * @param controller as name of the controller
+     * @param data as an item you want to save (JSonObject)
+     * @return JsonObject
+     */
     @POST("api/{controller}/save")
     Call<JsonObject> save(@Path("controller") String controller, @Body JsonObject data);
 
-    // Search book
+    /**
+     * Search book
+     * @param controller as name of the controller
+     * @param data as the condition you want to save (JSonObject)
+     * @return JsonArray
+     */
     @POST("api/{controller}/search")
     Call<JsonArray> searchBook(@Path("controller") String controller, @Body JsonObject data);
 
-    // Delete a item by its ID
+    /**
+     * Delete a item by its ID
+     * @param controller as name of the controller
+     * @param id as an item you want to delete
+     * @return none
+     */
     @DELETE("api/{controller}/delete/{id}")
     Call<Void> delete(@Path("controller") String controller, @Path("id") String id);
+
+    /**
+     * Get list of item with a custom url
+     * @param url - as custom url ( ControllerConst )
+     * @param method - as custom url ( method name )
+     * @return JsonArray
+     */
+    @GET("api/{controller}/{method}")
+    Call<JsonArray> getAllWithCustomUrl(@Path("controller") String url, @Path("method") String method);
+
+    /**
+     * Get an item with a custom url
+     * @param url - as custom url ( {controller}/{method} )
+     * @return JsonObject
+     */
+    @GET("api/{url}")
+    Call<JsonObject> getByIdWithCustomUrl(@Path("url") String url);
 }

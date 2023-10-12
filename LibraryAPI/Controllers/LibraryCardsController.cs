@@ -52,25 +52,7 @@ namespace LibraryAPI.Controllers
             return Ok(_mapper.Map<LibraryCardModel>(libraryCard));
         }
 
-        //[HttpGet("get-card-id")]
-        //public async Task<ActionResult<LibraryCardModel>> GetCardID()
-        //{
-        //    if (_context.LibraryCards == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var libraryCard = await _context.LibraryCards.FindAsync(id);
-
-        //    if (libraryCard == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(_mapper.Map<LibraryCardModel>(libraryCard));
-        //}
-
-        // POST: api/LibraryCards
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/LibraryCards aaaaaaa
         [HttpPost("save")]
         public async Task<ActionResult<LibraryCardModel>> PostLibraryCard(LibraryCardModel libraryCardModel)
         {
@@ -104,11 +86,15 @@ namespace LibraryAPI.Controllers
             {
                 return NotFound();
             }
-            var libraryCard = await _context.LibraryCards.FindAsync(id);
+            var libraryCard = _context.LibraryCards
+                            .Include(c => c.StudentImages)
+                                .ThenInclude(a => a.File).FirstOrDefault(c => c.Id == id);
             if (libraryCard == null)
             {
                 return NotFound();
             }
+
+            libraryCard.StudentImages.Clear();
 
             _context.LibraryCards.Remove(libraryCard);
             await _context.SaveChangesAsync();
@@ -123,11 +109,13 @@ namespace LibraryAPI.Controllers
 
         private void RequestSaveCardValidate(LibraryCardModel libraryCardModel)
         {
-            if (_context.LibraryCards.Any(card => card.Name == libraryCardModel.Name && card.Id != libraryCardModel.Id))
+            LibraryCard libraryCard = _mapper.Map<LibraryCard>(libraryCardModel);
+
+            if (_context.LibraryCards.Any(card => card.Name == libraryCard.Name && card.Id != libraryCard.Id))
             {
                 throw new CustomApiException(500, "Student name is existed.", "Student name is existed.");
             }
-            if (_context.LibraryCards.Any(card => card.StudentId.ToLower() == libraryCardModel.StudentId.ToLower() && card.Id != libraryCardModel.Id))
+            if (_context.LibraryCards.Any(card => card.StudentId.ToLower() == libraryCard.StudentId.ToLower() && card.Id != libraryCard.Id))
             {
                 throw new CustomApiException(500, "Student ID is existed.", "Student ID is existed.");
             }

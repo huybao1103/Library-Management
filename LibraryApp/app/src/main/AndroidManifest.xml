@@ -23,6 +23,9 @@
         android:name=".Author.EditAuthor"
         android:exported="false"/>
         <activity
+            android:name=".Activity.Authors.AuthorManagement"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Books.BookDetail"
             android:exported="false" />
         <activity

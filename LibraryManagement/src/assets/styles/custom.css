@@ -1,4 +1,8 @@
 /* General */
+.text-global {
+    color: #FF7849 !important;
+}
+
 .bg-global {
     background-color: #FF7849;
 }
@@ -99,12 +103,22 @@
 }
 
 /* PrimeNG Button */
-.p-button.p-button-icon-only.p-button-rounded {
+.p-button {
+    border-radius: 6px;
+}
+
+.p-button-rounded {
+    border-radius: 50%;
     height: 2rem;
 }
 
 .p-button.p-button-icon-only {
     width: 2rem;
+}
+
+/* PrimeNG Paginator */
+.p-paginator .p-paginator-pages .p-paginator-page {
+    border-radius: 50%;
 }
 
 /* Book Management */
@@ -131,3 +145,19 @@
     font-weight: 700;
     font-size: 22.3px;
 }
+
+/* Profile */
+.profile {
+    background-color: #ffffff;
+}
+
+.column-border-right {
+    border-right: 1px solid #000;
+    border-right-style: dashed; 
+  }
+  .vertical-center {
+    display: flex;
+    align-items: center;
+}
+
+ 

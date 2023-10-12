@@ -37,13 +37,13 @@ export class BookService {
   
   save(data: IBookSave) {
     return this.httpService.save<IBook>({ controller: 'Books', data, op: 'author-info'}).pipe(
-      tap((res) => res ? this.updateBookrState(res) : of())
+      tap((res) => res ? this.updateBookState(res) : of())
     );
   }
 
   delete(id: string) {
     return this.httpService.delete({ controller: 'Books' }, id).pipe(
-      tap(() => this.updateBookrState(undefined, id))
+      tap(() => this.updateBookState(undefined, id))
     );
   }
 
@@ -63,7 +63,7 @@ export class BookService {
     );
   }
 
-  private updateBookrState(res?: IBook, deletedBookId?: string, ) {
+  private updateBookState(res?: IBook, deletedBookId?: string, ) {
     let old = this.books$.value;
   
     if(res) {
