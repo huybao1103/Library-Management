@@ -1,208 +1,361 @@
 package com.example.librarydemo.Author;
 
+import static java.security.AccessController.getContext;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.MultiAutoCompleteTextView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.librarydemo.Activity.Books.BookAuthor.BookAuthorAdapter;
 import com.example.librarydemo.Models.AuthorModel;
-import com.example.librarydemo.Models.Book.BookModel;
-import com.example.librarydemo.Models.SpinnerOption;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
+import com.example.librarydemo.Services.ApiResponse;
+import com.example.librarydemo.Services.ControllerConst.ControllerConst;
+import com.example.librarydemo.Services.Interface.ConfirmDialog.IConfirmDialogEventListener;
+import com.example.librarydemo.Services.Interface.TableList.ITableListEventListener;
+import com.example.librarydemo.Services.Layout.ApiRequest;
+import com.example.librarydemo.Services.Layout.ConfirmDialogService;
+import com.example.librarydemo.Services.Layout.TableListService;
+import com.example.librarydemo.Services.RetrofitClient;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class AuthorListActivity extends AppCompatActivity {
+import de.codecrafters.tableview.TableDataAdapter;
+import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.model.TableColumnDpWidthModel;
+import de.codecrafters.tableview.model.TableColumnModel;
+import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class AuthorListActivity extends AppCompatActivity implements ITableListEventListener, IConfirmDialogEventListener {
     private ArrayList<String> ListAuthor;
-    private ArrayAdapter<String> AuthorAdapter;
     private ListView listView;
-    private EditText EditTextAuthorName ;
-    private EditText editTextAuthorPhone;
-    private EditText editTextAuthorMail;
 
-    private int selectedAuthorPosition = -1;
+    TableView table_view;
     ApiService apiService;
-    MultiAutoCompleteTextView spn_category;
-    List<SpinnerOption> categories;
-    ArrayList<SpinnerOption> selectedCategories;
-    EditText edt_inputDay;
-    RecyclerView rcl_author;
-    BookAuthorAdapter bookAuthorAdapter;
-    BookModel currentBook;
-    AuthorModel[] authors;
-    EditText edt_bookName, edt_publishYear;
+    AuthorAdapter authorAdapter;
+    boolean formValid = false;
+    AlertDialog dialog;
+    // Add author form
+    TextInputEditText edt_authorName, edt_authorPhone, edt_authorEmail;
+    AuthorModel currentAuthor;
+    boolean confirmed;
 
-    EditText edit_author_name;
-    EditText add_author_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_list2);
-        // Khởi tạo danh sách nhà xuất bản và adapter cho ListView
-        ListAuthor = new ArrayList<>();
-//        publisherAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, publisherList);
-        listView = findViewById(R.id.listView);
-        listView.setAdapter(AuthorAdapter);
 
-//        // Khởi tạo các trường EditText
-//        editTextAuthorName = findViewById(R.id.editTextAuthorName);
-//        editTextAuthorPhone = findViewById(R.id.editTextAuthorPhone);
-//        editTextAuthorMail = findViewById(R.id.editTextAuthorMail);
-
-        // Thêm sự kiện click vào ListView để chọn một nhà xuất bản
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedAuthorPosition = position;
-                String selectedAuthor = ListAuthor.get(position);
-                // Hiển thị thông tin nhà xuất bản trong các trường EditText
-                displayAuthorInfo(selectedAuthor);
-            }
-        });
+        assign();
+        getAuthors();
 
         // Thêm sự kiện click vào nút "ADD" để thêm tác giả mới
         Button addButton = findViewById(R.id.buttonAddAuthor);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AuthorListActivity.this,AddAuthor.class);
-                startActivity(intent);
-            }
-        });
-
-
-        // Thêm sự kiện click vào nút "SAVE" để lưu thông tin tác giả đã chỉnh sửa
-        ImageView editButton = findViewById(R.id.EditAu);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AuthorListActivity.this,EditAuthor.class);
-                startActivity(intent);
-            }
-        });
-
-//         Thêm sự kiện click vào nút "CANCEL" để hủy chỉnh sửa thông tin nhà xuất bản
-//        Button cancelButton = findViewById(R.id.buttonCancel);
-//        cancelButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                addAuthor();
-//            }
-//        });
-
-        // Thêm sự kiện click vào nút "DELETE" để xóa tác giả
-        ImageView deleteButton = findViewById(R.id.DeleteAu);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteAuthor();
-            }
-        });
-
-        //bấm search tìm ds NXB
-        EditText editText = findViewById(R.id.SearchAu);
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AuthorListActivity.this,AuthorModel.class);
-                startActivity(intent);
-                showAuthorList();
-            }
-        });
-
+        addButton.setOnClickListener(v -> addAuthor());
     }
 
-    private void displayAuthorInfo(String AuthorInfo) {
-        // Chuyển thông tin tác giả từ chuỗi thành các trường EditText
-        String[] parts = AuthorInfo.split(", ");
-        EditTextAuthorName.setText(parts[0]);
-        editTextAuthorPhone.setText(parts[1]);
-        editTextAuthorMail.setText(parts[2]);
+    void assign() {
+        apiService = RetrofitClient.getApiService(this);
 
+        table_view = findViewById(R.id.table_view);
+        String[] headers = {"Name", "Email", "Phone"};
+        table_view.setHeaderAdapter(new SimpleTableHeaderAdapter(this, headers));
+    }
+    private void getAuthors() {
+        apiService.getAll(ControllerConst.AUTHORS).enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                List<AuthorModel> authorList = new ApiResponse<List<AuthorModel>>()
+                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                (
+                    response,
+                    new TypeToken<List<AuthorModel>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                );
+
+                if(authorList != null && authorList.size() > 0) {
+                    setAuthorAdapter(authorList);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void setAuthorAdapter(List<AuthorModel> authorList) {
+        authorAdapter = new AuthorAdapter(AuthorListActivity.this, authorList, this);
+        table_view = new TableListService(new String[]{"Name", "Email", "Phone"}, table_view, AuthorListActivity.this).setColumnModel();
+
+        table_view.setDataAdapter(new TableDataAdapter(getApplicationContext(), authorList) {
+            @Override
+            public View getCellView(int rowIndex, int columnIndex, ViewGroup parentView) {
+                AuthorModel author = (AuthorModel) getItem(rowIndex); // This gets the AuthorModel for the given row
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, // Width
+                        LinearLayout.LayoutParams.WRAP_CONTENT  // Height
+                );
+                TextView textView = new TextView(getApplicationContext());
+                textView.setMaxLines(1); // Display text in a single line
+                textView.setEllipsize(TextUtils.TruncateAt.END); // Add ellipsis at the end
+
+                textView.setLayoutParams(layoutParams);
+
+                switch (columnIndex) {
+                    case 0:
+                        textView.setText(author.getName()); // Assuming AuthorModel has a getName method
+                        break;
+                    case 1:
+                        textView.setText(author.getMail()); // Assuming AuthorModel has a getBookTitle method
+                        break;
+                    case 2:
+                        textView.setText(author.getPhone()); // Assuming AuthorModel has a getBookTitle method
+                        break;
+                    case 3:
+                        return getMenuIcon(author.getId());
+                    // Add more cases if you have more columns.
+                    default:
+                        throw new IllegalArgumentException("Invalid columnIndex: " + columnIndex);
+                }
+
+                return textView;
+            }
+
+
+        });
     }
 
     private void addAuthor() {
-        String name = EditTextAuthorName.getText().toString();
-        String phone = editTextAuthorPhone.getText().toString();
-        String mail = editTextAuthorMail.getText().toString();
+        View authorFormDialogView = LayoutInflater.from(this).inflate(R.layout.fragment_author_edit_form, null);
+        bindAuthorLayoutDialog(authorFormDialogView);
 
+        dialog = new MaterialAlertDialogBuilder(this)
+                .setView(authorFormDialogView)
+                .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }).create();
+        dialog.setCanceledOnTouchOutside(true);
+//        alertDialog.on
+        dialog.show();
 
-        if (!name.isEmpty() && !phone.isEmpty() && !mail.isEmpty()) {
-            String newAuthor = name + ", " + phone + ", " + mail;
-            ListAuthor.add(newAuthor);
-            AuthorAdapter.notifyDataSetChanged();
-            clearAuthorInfo();
-            Toast.makeText(this, "Author added successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-        }
+        Button submit_btn = authorFormDialogView.findViewById(R.id.add_author_submit);
+        submit_btn.setOnClickListener(view -> {
+            if(formValid)
+                addAuthorSubmit();
+        });
+
+        formValid = false;
+        formValidation(edt_authorName);
     }
 
-    private void editAuthor() {
-        if (selectedAuthorPosition != -1) {
-            String name = EditTextAuthorName.getText().toString();
-            String phone = editTextAuthorPhone.getText().toString();
-            String mail = editTextAuthorMail.getText().toString();
+    private void bindAuthorLayoutDialog(View authorFormDialog) {
+        edt_authorName = authorFormDialog.findViewById(R.id.edt_authorName);
+        edt_authorPhone = authorFormDialog.findViewById(R.id.edt_authorPhone);
+        edt_authorEmail = authorFormDialog.findViewById(R.id.edt_authorEmail);
 
+        if(currentAuthor != null) {
+            edt_authorName.setText(currentAuthor.getName());
+            edt_authorPhone.setText(currentAuthor.getPhone());
+            edt_authorEmail.setText(currentAuthor.getMail());
+        }
 
-            if (!name.isEmpty() && !phone.isEmpty() && !mail.isEmpty()) {
-                String updatedAuthor = name + ", " + phone + ", " + mail;
-                ListAuthor.set(selectedAuthorPosition, updatedAuthor);
-                AuthorAdapter.notifyDataSetChanged();
-                clearAuthorInfo();
-                selectedAuthorPosition = -1;
-                Toast.makeText(this, "Publisher updated successfully", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        CardView delete_btn_container = authorFormDialog.findViewById(R.id.delete_btn_container);
+        delete_btn_container.setVisibility(View.VISIBLE);
+    }
+
+    private void addAuthorSubmit() {
+        AuthorModel authorModel = new AuthorModel();
+        authorModel.setName(Objects.requireNonNull(edt_authorName.getText()).toString());
+        authorModel.setMail(Objects.requireNonNull(edt_authorEmail.getText()).toString());
+        authorModel.setPhone(Objects.requireNonNull(edt_authorPhone.getText()).toString());
+        authorModel.setId(currentAuthor != null ? currentAuthor.getId() : null);
+
+        JsonObject data = new ApiRequest().convertModelToJSONObject(authorModel);
+
+        apiService.save(ControllerConst.AUTHORS, data).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                AuthorModel authorModel = new ApiResponse<AuthorModel>().getResultFromResponse
+                        (
+                                response,
+                                new TypeToken<AuthorModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                        );
+                if(authorModel != null) {
+                    dialog.dismiss();
+                    getAuthors();
+                }
             }
-        } else {
-            Toast.makeText(this, "Please select a publisher to edit", Toast.LENGTH_SHORT).show();
-        }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
     }
 
-    private void deleteAuthor() {
-        if (selectedAuthorPosition != -1) {
-            ListAuthor.remove(selectedAuthorPosition);
-            AuthorAdapter.notifyDataSetChanged();
-            clearAuthorInfo();
-            selectedAuthorPosition = -1;
-            Toast.makeText(this, "Author deleted successfully", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Please select a Author to delete", Toast.LENGTH_SHORT).show();
-        }
+    private void formValidation(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String name = Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && name.equals("")) {
+                currentInput.setError("Name must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
     }
 
-    private void clearAuthorInfo() {
-        EditTextAuthorName.getText().clear();
-        editTextAuthorPhone.getText().clear();
-        editTextAuthorMail.getText().clear();
-
+    @Override
+    public void onEditButtonClicked(String itemId) {
+        getAuthorById(itemId);
     }
 
-    private void showAuthorList() {
-        // Xử lý để hiển thị danh sách nhà xuất bản
-        // Ở đây, bạn có thể gán dữ liệu từ danh sách nhà xuất bản của bạn vào adapter và cập nhật ListView.
-        // Ví dụ:
-        ListAuthor.clear(); // Xóa dữ liệu cũ trong danh sách
-        ListAuthor.add("Publisher 1"); // Thêm dữ liệu mới vào danh sách
-        ListAuthor.add("Publisher 2");
-        // Thêm dữ liệu cho tất cả các nhà xuất bản khác (từ dữ liệu của bạn)
-        AuthorAdapter.notifyDataSetChanged(); // Cập nhật adapter để hiển thị dữ liệu mới
+    @Override
+    public void onDeleteButtonClicked(String itemId) {
+        getAuthorById(itemId);
     }
 
+    private void getAuthorById(String itemId) {
+        apiService.getById(ControllerConst.AUTHORS, itemId).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                currentAuthor = new ApiResponse<AuthorModel>()
+                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                (
+                    response,
+                    new TypeToken<AuthorModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                );
+
+                if(currentAuthor != null)
+                    addAuthor();
+                formValid = true;
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void deleteAuthor(String itemId) {
+        new ConfirmDialogService("Are you sure you want to delete this author?", AuthorListActivity.this, this)
+            .ShowConfirmDialog()
+            .setOnDismissListener(dialogInterface -> {
+                if(confirmed)
+                    deleteConfirmed(itemId);
+            });
+    }
+
+    private void deleteConfirmed(String itemId) {
+        apiService.delete(ControllerConst.AUTHORS, itemId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if(response.isSuccessful()) {
+                    Toast.makeText(AuthorListActivity.this, "Author deleted successfully", Toast.LENGTH_SHORT).show();
+                    getAuthors();
+                }
+                else {
+                    try {
+                        Toast.makeText(AuthorListActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        Toast.makeText(AuthorListActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(AuthorListActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private FrameLayout getMenuIcon(String authorId) {
+        // Create an ImageView
+        ImageView imageView = new ImageView(AuthorListActivity.this);
+        imageView.setImageResource(R.drawable.baseline_more_vert_24);
+        imageView.setOnClickListener(v -> showPopupMenu(v, authorId));
+
+        // Create a FrameLayout and set its LayoutParams
+        FrameLayout frameLayout = new FrameLayout(AuthorListActivity.this);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.END // Align to the end
+        );
+        imageView.setLayoutParams(params);
+
+        // Add the ImageView to the FrameLayout
+        frameLayout.addView(imageView);
+
+        return frameLayout;
+    }
+
+    private void showPopupMenu(View v, String authorId) {
+        PopupMenu popup = new PopupMenu(AuthorListActivity.this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.table_list_menu_item, popup.getMenu());
+
+        // Set click listener for menu items
+        popup.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_item_edit:
+                    // Handle item 1 action
+                    getAuthorById(authorId);
+                    return true;
+                case R.id.menu_item_delete:
+                    // Handle item 2 action
+                    deleteAuthor(authorId);
+                    return true;
+                // ... more items ...
+                default:
+                    return false;
+            }
+        });
+
+        popup.show();
+    }
+
+    @Override
+    public void onYesOrNoButtonClicked(boolean isConfirmed) {
+        confirmed = isConfirmed;
+    }
 }
