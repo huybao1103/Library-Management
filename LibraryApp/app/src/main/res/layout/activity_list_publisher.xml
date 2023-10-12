@@ -9,14 +9,6 @@
     android:background="#d6edfb"
     >
 
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="350dp"
-        android:layout_height="510dp"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="200dp" />
-
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
@@ -28,92 +20,46 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp" />
 
-    <ImageView
-        android:id="@+id/ButtonEdit"
-        android:layout_width="30dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="260dp"
-        android:src="@drawable/baseline_edit_24"
-        android:layout_marginTop="210dp"
-        android:contentDescription="TODO" />
-
-    <ImageView
-        android:id="@+id/ButtonDelete"
-        android:layout_width="30dp"
-        android:layout_height="70dp"
-        android:layout_marginLeft="300dp"
-        android:src="@drawable/baseline_delete_24"
-        android:layout_marginTop="200dp"
-        android:contentDescription="TODO" />
-
-    <Button
-        android:id="@+id/buttonAddPub"
-        android:layout_width="130dp"
-        android:layout_height="60dp"
-        android:layout_marginLeft="170dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
         android:layout_marginTop="70dp"
-        android:background="#ff8c00"
-        android:text="+ New Publisher"
-        android:textColor="@color/white"
-        tools:ignore="TextContrastCheck" />
+        android:layout_alignParentRight="true">
 
-  <EditText
-    android:id="@+id/edSearch"
-    android:layout_width="150dp"
-    android:layout_height="50dp"
-    android:drawableLeft="@drawable/baseline_search_24"
-    android:drawablePadding="8dp"
-    android:text="Search"
-    android:gravity="center_vertical"
-    android:layout_marginTop="80dp"
-    android:textSize="16sp"
-    android:background="@drawable/search"
-      android:focusable="true"
-      android:clickable="true"
-      android:onClick="onSearchClick"/>
+        <Button
+            android:id="@+id/add_publisher_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+ Add Publisher"
+            android:background="#ff7849"
+            android:textColor="#fff"
+            android:textAllCaps="false"/>
+    </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/ButtonDeleteAll"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="300dp"
-        android:src="@drawable/baseline_delete_24"
-        android:layout_marginTop="75dp"
-        android:contentDescription="TODO" />
+    <EditText
+        android:background="@drawable/search"
+        android:layout_height="40dp"
+        android:layout_width="200dp"
+        android:layout_marginTop="80dp"
+        android:id="@+id/SearchAu"
+        android:textSize="16sp"
+        android:hint="Search"
+        android:gravity="center_vertical"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:visibility="invisible"/>
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
+    <de.codecrafters.tableview.TableView
+        android:id="@+id/table_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewTitle"
-        android:layout_marginTop="170dp"
-       android:layout_marginLeft="-8dp"
+        android:layout_below="@id/SearchAu"
+        app:tableView_headerColor="#d6edfb"
+        app:tableView_columnCount="5">
 
-        android:checked="false" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click all"
-        android:layout_marginTop="170dp"
-        android:layout_marginLeft="20dp"/>
-    <CheckBox
-        android:id="@+id/checkBoxAll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewTitle"
-        android:layout_marginTop="113dp"
-        android:layout_marginLeft="70dp"
-        android:checked="false" />
-
-    <ImageView
-        android:id="@+id/PubImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/pub"
-        android:layout_marginTop="210dp"
-        android:layout_marginLeft="50dp"
-        />
-
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </de.codecrafters.tableview.TableView>
 </RelativeLayout>

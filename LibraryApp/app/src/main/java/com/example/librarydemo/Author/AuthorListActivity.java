@@ -56,7 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AuthorListActivity extends AppCompatActivity implements ITableListEventListener, IConfirmDialogEventListener {
+public class AuthorListActivity extends AppCompatActivity implements IConfirmDialogEventListener {
     private ArrayList<String> ListAuthor;
     private ListView listView;
 
@@ -116,7 +116,7 @@ public class AuthorListActivity extends AppCompatActivity implements ITableListE
     }
 
     private void setAuthorAdapter(List<AuthorModel> authorList) {
-        authorAdapter = new AuthorAdapter(AuthorListActivity.this, authorList, this);
+        authorAdapter = new AuthorAdapter(AuthorListActivity.this, authorList);
         table_view = new TableListService(new String[]{"Name", "Email", "Phone"}, table_view, AuthorListActivity.this).setColumnModel();
 
         table_view.setDataAdapter(new TableDataAdapter(getApplicationContext(), authorList) {
@@ -240,16 +240,6 @@ public class AuthorListActivity extends AppCompatActivity implements ITableListE
         };
 
         currentInput.setOnFocusChangeListener(onFocusChange);
-    }
-
-    @Override
-    public void onEditButtonClicked(String itemId) {
-        getAuthorById(itemId);
-    }
-
-    @Override
-    public void onDeleteButtonClicked(String itemId) {
-        getAuthorById(itemId);
     }
 
     private void getAuthorById(String itemId) {

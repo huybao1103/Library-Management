@@ -19,12 +19,10 @@ import java.util.List;
 public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder>{
     Context context;
     List<AuthorModel> authorList;
-    ITableListEventListener tableListEventListener;
 
-    public AuthorAdapter(Context context, List<AuthorModel> authorList, ITableListEventListener tableListEventListener) {
+    public AuthorAdapter(Context context, List<AuthorModel> authorList) {
         this.context = context;
         this.authorList = authorList;
-        this.tableListEventListener = tableListEventListener;
     }
 
     @NonNull
@@ -42,8 +40,6 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
             holder.tv_name.setText(author.getName());
             holder.tv_email.setText(author.getMail());
             holder.tv_phone.setText(author.getPhone());
-
-            holder.edit_btn.setOnClickListener(v -> tableListEventListener.onEditButtonClicked(author.getId()));
         }
     }
 

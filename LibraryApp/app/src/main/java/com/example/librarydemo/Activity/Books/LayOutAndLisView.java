@@ -184,6 +184,10 @@ public class LayOutAndLisView extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        if (id == R.id.nav_tacgia) {
+            Intent intent = new Intent(this, AuthorListActivity.class);
+            startActivity(intent);
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_Search) {
@@ -208,6 +212,10 @@ public class LayOutAndLisView extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
             int id = item.getItemId();
+        if (id == R.id.nav_tacgia) {
+            Intent intent = new Intent(this, AuthorListActivity.class);
+            startActivity(intent);
+        }
             if (id == R.id.nav_QLNXB) {
                 Intent intent = new Intent(this, PublisherInformation.class);
                 startActivity(intent);

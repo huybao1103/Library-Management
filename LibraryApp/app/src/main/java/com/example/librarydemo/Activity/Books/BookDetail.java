@@ -528,7 +528,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     }
 
     private void addPublisher() {
-        View publisherFormDialogView = LayoutInflater.from(this).inflate(R.layout.publisher_edit_form, null);
+        View publisherFormDialogView = LayoutInflater.from(this).inflate(R.layout.fragment_publisher_edit_form, null);
         bindPublisherLayoutDialog(publisherFormDialogView);
 
         dialog = new MaterialAlertDialogBuilder(this)

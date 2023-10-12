@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
     public void onSearchClick(View view) {
-        EditText edSearch = findViewById(R.id.edSearch);
-        edSearch.setText(""); // Xóa văn bản "Search"
+//        EditText edSearch = findViewById(R.id.edSearch);
+//        edSearch.setText(""); // Xóa văn bản "Search"
     }
 }
