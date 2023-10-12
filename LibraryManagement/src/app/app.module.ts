@@ -16,6 +16,7 @@ import { FeatureModule } from './modules/feature.module';
 import { ToastService } from './services/toast.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmDialogService } from './services/confirm-dialog.service';
+import { SpreadSheetsModule } from '@grapecity/spread-sheets-angular';
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import { ConfirmDialogService } from './services/confirm-dialog.service';
     ToastModule,
     FeatureModule,
     FormlyModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
   ],
   providers: [
     MessageService, 

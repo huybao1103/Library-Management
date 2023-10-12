@@ -5,6 +5,7 @@ public class AuthorModel {
     private String name;
     private String mail;
     private String phone;
+    private String address;
     private String bookAuthorId;
 
     public AuthorModel() {
@@ -48,5 +49,16 @@ public class AuthorModel {
 
     public void setBookAuthorId(String bookAuthorId) {
         this.bookAuthorId = bookAuthorId;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthorModel{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                ", phone='" + phone + '\'' +
+                ", bookAuthorId='" + bookAuthorId + '\'' +
+                '}';
     }
 }

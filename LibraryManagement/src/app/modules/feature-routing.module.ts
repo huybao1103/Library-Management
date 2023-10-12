@@ -13,8 +13,10 @@ import { CategoryListComponent } from './books-management/category-list/category
 import { CategoryInfoEditComponent } from './books-management/category-list/category-info-edit/category-info-edit.component';
 import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
 import { LibraryCardEditComponent } from './library-card-management/library-card-edit/library-card-edit.component';
+import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
 
-
+import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
+import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
 
 const routes: Routes = [
   {
@@ -39,6 +41,16 @@ const routes: Routes = [
         component: ModalbaseComponent,
         outlet: 'modal',
         data: { component: BookInfoEditComponent }
+      },
+      {
+        path: 'bookchapter/:id',
+        component: BookChapterComponent 
+      },
+      {
+        path: 'bookchapter/edit/:id',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: BookChapterInfoEditComponent}
       },
       {
         path: 'author',
@@ -79,6 +91,10 @@ const routes: Routes = [
         component: ModalbaseComponent,
         outlet: 'modal',
         data: { component: LibraryCardEditComponent }
+      },
+      {
+        path: 'library-card-detail/:id',
+        component: LibraryCardDetailComponent,
       },
     ]
   },

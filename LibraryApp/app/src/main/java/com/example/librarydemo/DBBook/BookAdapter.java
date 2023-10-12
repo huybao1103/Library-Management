@@ -83,8 +83,10 @@ public class BookAdapter extends BaseAdapter {
         viewAnhXa.nxb.setText("Publisher: " + publisherName);
         viewAnhXa.theloai.setText("Category: " + categoryName);
 
-        Bitmap decodedByte = new Base64Service(context).convertBase64ToImage(book.getBookImages()[0].getBase64());
-        viewAnhXa.imgsach.setImageBitmap(decodedByte);
+        if(book.getBookImages().length > 0) {
+            Bitmap decodedByte = new Base64Service(context).convertBase64ToImage(book.getBookImages()[0].getBase64());
+            viewAnhXa.imgsach.setImageBitmap(decodedByte);
+        }
 
         return convertView;
     }

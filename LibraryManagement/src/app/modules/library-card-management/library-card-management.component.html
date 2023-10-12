@@ -65,21 +65,20 @@
                 <td>
                     <span style="vertical-align: middle;">
                         <p-avatar 
-                            *ngIf="card.studentImages"
+                            *ngIf="card.studentImages.length"
                             [image]="card.studentImages[0].base64" 
                             size="large" 
                             shape="circle"
                         >
                         </p-avatar>
                     </span>
-                    <span class="ml-1" style="vertical-align: middle;">
-
+                    <span class="ml-1 text-global fw-bold" style="vertical-align: middle; cursor: pointer;" (click)="goToDetail(card.id)">
                         {{ card.name }}
                     </span>
                 </td>
                 <td>{{ card.studentId }}</td>
                 <td>{{ card.class }}</td>
-                <td>{{ card.expirydate }}</td>
+                <td>{{ card.expiryDate | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ LibraryCardStatus[card.status] }}</td>
                 <td style="text-align: center;">
                     <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(card.id)"></button>

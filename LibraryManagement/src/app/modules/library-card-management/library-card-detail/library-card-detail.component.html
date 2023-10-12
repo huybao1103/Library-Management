@@ -1,0 +1,85 @@
+<div class="mx-4">
+    <h3 class="page-title">Library Card</h3>
+    <h4>Detail Information</h4>
+    <div class="row border p-3 profile">
+        <div class="col-2 vertical-center">
+            <div *ngIf="data.studentImages?.length">
+                <p-galleria [value]="data.studentImages" [circular]="true" [showThumbnails]="false"
+                    [containerStyle]="{ 'max-width': '500px' }">
+                    <ng-template pTemplate="item" let-item>
+                        <img [src]="item.base64" class="rsp-Image" />
+                    </ng-template>
+                </p-galleria>
+            </div>
+        </div>
+        <div class="col-3 vertical-center">
+            <div class="text-truncate" style="overflow: hidden">
+                <p>Name: {{ data.name }}</p>
+                <p>Class: {{ data.class }}</p>
+                <p>Expiry Date: {{ data.expiryDate }}</p>
+            </div>
+        </div>
+        <div class="column-border-right col-1"></div>
+        <div class="col-5 vertical-center">
+            <div class="text-truncate" style="overflow: hidden">
+                <p>Status: {{ data.status }}</p>
+                <p>Description: {{ data.description }}</p>
+                <p>student ID: {{ data.studentId }}</p>
+            </div>
+        </div>
+        <div class="col-1" style="text-align: right;">
+            <p class="la la-edit"(click)="edit(data.id)"></p>
+        </div>
+    </div>
+<!-- </div>
+<div *ngIf="libraryCard$ | async as LibraryCard">
+    <p-table #dt [value]="LibraryCard" [globalFilterFields]="['phone','name', 'mail']"
+        [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+        [scrollable]="true" scrollHeight="545px">
+        <ng-template pTemplate="caption">
+            <h3 class="page-title">History of borrowing books</h3>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="class">Class <p-sortIcon field="class"></p-sortIcon></th>
+                <th pSortableColumn="expirydate">Expiry Date <p-sortIcon field="expirydate"></p-sortIcon></th>
+                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <p-columnFilter type="text" field="name"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="class"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="expirydate"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="status"></p-columnFilter>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-card of LibraryCard>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="card"></p-tableCheckbox>
+                </td>
+                <td>{{ card.name }}</td>
+                <td>{{ card.class }}</td>
+                <td>{{ card.expirydate }}</td>
+                <td>{{ card.status }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">In total there are {{ LibraryCard?
+                LibraryCard.length : 0 }} Library Cards.</div>
+        </ng-template>
+    </p-table>
+</div> -->

@@ -1,4 +1,5 @@
 import { IAuthor } from "./author.model";
+import { IBookChapter } from "./bookchapter.model";
 import { ICategories } from "./categories.model";
 import { IPublisher } from "./publisher.model";
 import { IBaseImage, UploadFile } from "./uploadFile.model";
@@ -14,6 +15,7 @@ export interface IBook {
     bookImages?: IBookImage[];
     bookCategories?: IBookCategories[];
     bookPublishers?: IBookPublisher[];
+    bookChapters?: IBookChapter[];
 }
 
 export interface IBookAuthor {

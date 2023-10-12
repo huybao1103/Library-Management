@@ -22,9 +22,9 @@ import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
   styleUrls: ['./author-info-edit.component.css']
 })
 export class AuthorInfoEditComponent implements IDialogType, OnInit {
-  uniqueId: string = uniqueId('author-info');
+ uniqueId: string = uniqueId('author-info');
   title: string = '';
-
+ 
   addAuthorToBook: boolean = false;
 
   fields: FormlyFieldConfig[] = []; // abcxyz

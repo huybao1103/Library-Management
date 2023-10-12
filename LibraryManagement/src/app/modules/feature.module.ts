@@ -31,7 +31,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DockModule } from 'primeng/dock';
-import { CategoryManagementComponent } from './category-management/category-management.component';
 import { PublisherInfoEditComponent } from './publishers-management/publisher-info-edit/publisher-info-edit.component';
 import { PublishersManagementComponent } from './publishers-management/publishers-management.component';
 import { ConfirmDialogService } from '../services/confirm-dialog.service';
@@ -41,12 +40,21 @@ import { TooltipModule } from 'primeng/tooltip';
 import { LibraryCardManagementComponent } from './library-card-management/library-card-management.component';
 import { LibraryCardEditComponent } from './library-card-management/library-card-edit/library-card-edit.component';
 import { AvatarModule } from 'primeng/avatar';
+import { LibraryCardDetailComponent } from './library-card-management/library-card-detail/library-card-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
 
+
+import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
+import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
+import { SpreadSheetsModule } from '@grapecity/spread-sheets-angular';
 @NgModule({
   providers: [
     ConfirmationService, 
     ConfirmDialogService,
-    FilterService
+    FilterService,
+    NgbActiveModal,
   ],
   declarations: [
     MainPageComponent,
@@ -64,7 +72,10 @@ import { AvatarModule } from 'primeng/avatar';
     PublisherInfoEditComponent,
     BookPublisherEditComponent,
     LibraryCardManagementComponent,
-    LibraryCardEditComponent
+    LibraryCardEditComponent,
+    LibraryCardDetailComponent,
+    BookChapterComponent,
+    BookChapterInfoEditComponent,
   ],
   imports: [
     DialogModule,
@@ -88,8 +99,11 @@ import { AvatarModule } from 'primeng/avatar';
     ToolbarModule,
     InputTextModule,
     GalleriaModule,
+    AvatarModule,
+    NgbModule,
     TooltipModule,
-    AvatarModule
+    SpreadSheetsModule
+    DatePipe,
   ]
 })
 export class FeatureModule { }

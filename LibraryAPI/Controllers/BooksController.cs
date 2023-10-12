@@ -39,7 +39,7 @@ namespace LibraryAPI.Controllers
             {
                 query = query.Where(a => a.BookCategories.Any(b => b.CategoryId == id));
             }
-            var books = await query.ToListAsync();
+            var books = query.ToList();
 
             return Ok(_mapper.Map<List<BookModel>>(books));
         }
@@ -73,6 +73,7 @@ namespace LibraryAPI.Controllers
                 return Problem("Entity set 'LibraryManagementContext.Books'  is null.");
             }
             RequestSaveBookValidate(bookModel);
+            bookModel = RemoveDuplicateAuthorAndPublisher(bookModel);
 
             Book? book;
             if (bookModel.Id == Guid.Empty)
@@ -174,7 +175,9 @@ namespace LibraryAPI.Controllers
 
         private void RequestSaveBookValidate(BookRequest bookModel)
         {
-            if (_context.Books.Any(a => a.Name == bookModel.Name && a.Id != bookModel.Id))
+            Book book = _mapper.Map<Book>(bookModel);
+
+            if (_context.Books.Any(a => a.Name == book.Name && a.Id != book.Id))
             {
                 throw new CustomApiException(500, "This book name is existed.", "This book name is existed.");
             }
@@ -209,17 +212,6 @@ namespace LibraryAPI.Controllers
             }).ToList();
             return Task.FromResult<ICollection<BookCategory>>(bookCategories);
         }
-
-        //private async Task<ICollection<BookImage>> UpdateBookImagesAsync(Book book, BookRequest bookModel)
-        //{
-        //    ICollection<BookImage>? bookImages = null;
-        //    foreach (BookImageModel fileModel in bookModel.BookImages)
-        //    {
-        //        UploadFile file = _mapper.Map<UploadFileModel, UploadFile>(fileModel.File);
-        //        _context.UploadFiles.Add(file);
-        //    }
-        //    return bookImages;
-        //}
 
         private async Task<Book> UpdateBookRequest(Book book, BookRequest bookModel)
         {
@@ -276,6 +268,15 @@ namespace LibraryAPI.Controllers
                 .Include(a => a.BookCategories)
                     .ThenInclude(a => a.Category)
                 .Include(a => a.BookChapters).AsQueryable();
+        }
+
+        private BookRequest RemoveDuplicateAuthorAndPublisher(BookRequest bookRequest)
+        {
+            bookRequest.Authors = bookRequest.Authors?.Distinct().ToList();
+            bookRequest.Publishers = bookRequest.Publishers?.Distinct().ToList();
+            bookRequest.Categories = bookRequest.Categories?.Distinct().ToList();
+
+            return bookRequest;
         }
     }
 }

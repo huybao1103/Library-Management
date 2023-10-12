@@ -18,6 +18,7 @@ import javax.net.ssl.TrustManagerFactory;
 import java.security.cert.Certificate;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -25,6 +26,7 @@ public class RetrofitClient {
     private static final String url = "https://10.0.2.2:7082/";
     private Context context;
     private static Retrofit retrofit = null;
+
     public RetrofitClient(Context context) {
         this.context = context;
     }
@@ -69,7 +71,8 @@ public class RetrofitClient {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.sslSocketFactory(sslContext.getSocketFactory());
             builder.hostnameVerifier((hostname, session) -> true);
-
+            builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+            builder.addInterceptor(new InterceptorConfig(3, 5000));
             return builder.build();
         } catch (Exception e) {
             throw new RuntimeException(e);

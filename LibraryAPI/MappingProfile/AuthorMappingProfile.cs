@@ -10,7 +10,8 @@ namespace LibraryAPI.MappingProfile
     {
         public AuthorMappingProfile() 
         {
-            CreateMap<AuthorRequest, Author>();
+            CreateMap<AuthorRequest, Author>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
 
             CreateMap<Author, AuthorModel>();
             CreateMap<AuthorModel, Author>();

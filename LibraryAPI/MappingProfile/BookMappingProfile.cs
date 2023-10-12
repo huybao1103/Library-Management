@@ -9,7 +9,8 @@ namespace LibraryAPI.MappingProfile
     {
         public BookMappingProfile()
         {
-            CreateMap<BookRequest, Book>();
+            CreateMap<BookRequest, Book>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
             CreateMap<Book, BookRequest>()
                 .ForMember(request => request.Categories, opt => opt.MapFrom(src => src.BookCategories.Select(item => item.CategoryId)));
 
@@ -17,17 +18,21 @@ namespace LibraryAPI.MappingProfile
             CreateMap<Book, BookBasicInfoModel>();
 
             CreateMap<BookAuthor, BookAuthorModel>();
-            CreateMap<BookAuthorModel, BookAuthor>();
+            CreateMap<BookAuthorModel, BookAuthor>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
 
             CreateMap<BookImage, BookImageModel>();
             CreateMap<BookImageModel, BookImage>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
 
             CreateMap<BookCategory, BookCategoryModel>();
-            CreateMap<BookCategoryModel, BookCategory>();
+            CreateMap<BookCategoryModel, BookCategory>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
 
             CreateMap<BookPublisher, BookPublisherModel>();
-            CreateMap<BookPublisherModel, BookPublisher>();
+            CreateMap<BookPublisherModel, BookPublisher>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
         }
     }
 }

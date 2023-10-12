@@ -125,7 +125,9 @@ namespace LibraryAPI.Controllers
 
         private void RequestSaveCategoryValidate(CategoryRequest categoryRequestModel)
         {
-            if (_context.Categories.Any(a => a.Name == categoryRequestModel.Name && a.Id != categoryRequestModel.Id))
+            Category category = _mapper.Map<Category>(categoryRequestModel);
+
+            if (_context.Categories.Any(a => a.Name == category.Name && a.Id != category.Id))
             {
                 throw new CustomApiException(500, "This category name is existed.", "This book name is existed.");
             }

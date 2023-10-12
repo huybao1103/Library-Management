@@ -67,5 +67,4 @@ export class PublishersManagementComponent implements OnInit{
       console.error('category.id is undefined');
     }
   }
- 
 }

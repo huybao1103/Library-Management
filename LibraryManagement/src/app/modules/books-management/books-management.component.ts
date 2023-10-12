@@ -14,11 +14,14 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { AuthorService } from '../authors-management/service/author.service';
 import { BookSearchFields } from './book-search-field';
+import { MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-books-management',
   templateUrl: './books-management.component.html',
-  styleUrls: ['./books-management.component.css']
+  styleUrls: ['./books-management.component.css'],
+  providers: [DialogService, MessageService],
 })
 export class BooksManagementComponent implements OnInit {
   books: IBook[] = [];
@@ -55,7 +58,9 @@ export class BooksManagementComponent implements OnInit {
     private confirmDialog: ConfirmDialogService,
     private toastService: ToastService,
     private filterServive: FilterService,
-    private authorService: AuthorService
+    private authorService: AuthorService,
+    public dialogService: DialogService,
+    public messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
