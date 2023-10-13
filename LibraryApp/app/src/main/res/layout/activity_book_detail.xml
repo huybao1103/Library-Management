@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_marginRight="5dp">
 
             <TextView
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_marginLeft="5dp">
 
             <TextView
@@ -146,6 +146,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
         android:theme="@style/AppTheme">
 
         <Button
@@ -181,43 +182,34 @@
             />
     </com.google.android.material.tabs.TabLayout>
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:columnCount="3">
-        <LinearLayout
-            android:id="@+id/author_publisher"
-            android:layout_width="wrap_content"
-            android:layout_columnWeight="1"
-            android:orientation="vertical"
-            android:layout_column="0"
-            android:layout_columnSpan="2"
-            android:gravity="bottom"
-            android:layout_gravity="fill">
+        android:orientation="horizontal"
+        android:layout_margin="15dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/author_publisher_input"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/author_publisher_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:textSize="15sp"
+            android:hint="Author"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:hint="Author"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spn_author_publisher"
-                    android:inputType="none"
-                    android:maxLines="1"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                android:id="@+id/spn_author_publisher"
+                android:inputType="none"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
-            android:layout_column="2"
             android:layout_gravity="bottom"
             android:theme="@style/AppTheme"
             android:layout_marginStart="10dp"
@@ -232,7 +224,7 @@
                 android:textColor="#fff"
                 android:textAllCaps="false"/>
         </androidx.cardview.widget.CardView>
-    </GridLayout>
+    </LinearLayout>
 
     <TableLayout
         android:layout_width="match_parent"

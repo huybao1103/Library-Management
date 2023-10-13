@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -93,17 +94,21 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
 
-            assign();
-            getCategories();
-            openDatePicker();
-        }
+        assign();
+        getCategories();
+        openDatePicker();
+        setRecyclerView();
+    }
 
-        private void assign() {
-            apiService = RetrofitClient.getApiService(this);
+    private void assign() {
+        apiService = RetrofitClient.getApiService(this);
+        bookAuthorAdapter = new BookAuthorAdapter(this, new ArrayList<>(), this);
+        bookPublisherAdapter = new BookPublisherAdapter(this, new ArrayList<>(), this);
 
         author_publisher_input = findViewById(R.id.author_publisher_input);
 
         spn_author_publisher = findViewById(R.id.spn_author_publisher);
+        spn_author_publisher.setEllipsize(TextUtils.TruncateAt.END);
         spn_category = findViewById(R.id.spn_category);
 
         selectedCategories = new ArrayList<>();
@@ -223,10 +228,12 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     }
 
     private void setBookAuthorAdapter() {
-        bookAuthorAdapter = new BookAuthorAdapter(BookDetail.this, new ArrayList<>(Arrays.asList(authors)), this);
+        if(authors != null)
+            bookAuthorAdapter = new BookAuthorAdapter(BookDetail.this, new ArrayList<>(Arrays.asList(authors)), this);
     }
     private void setBookPublisherAdapter() {
-        bookPublisherAdapter = new BookPublisherAdapter(BookDetail.this, new ArrayList<>(Arrays.asList(publishers)), this);
+        if(publishers != null)
+            bookPublisherAdapter = new BookPublisherAdapter(BookDetail.this, new ArrayList<>(Arrays.asList(publishers)), this);
     }
 
     private void getCategories() {
