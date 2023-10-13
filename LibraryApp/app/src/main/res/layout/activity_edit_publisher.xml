@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+    <TextView
+        android:id="@+id/textViewPublisherName_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Publisher Name"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/editTextPublisherName_edit"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/textViewPublisherName_edit"
+        android:layout_marginTop="4dp"
+        android:hint="Enter Publisher Name"
+        android:textStyle="italic"/>
+
+
+    <TextView
+        android:id="@+id/textViewPublisherPhone_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Publisher Phone"
+        android:layout_below="@id/editTextPublisherName_edit"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="25dp"/>
+
+    <EditText
+        android:id="@+id/editTextPublisherPhone_edit"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/textViewPublisherPhone_edit"
+        android:layout_marginTop="4dp"
+        android:hint="Enter Publisher Phone"
+        android:textStyle="italic"
+        />
+
+    <!-- Năm Xuất Bản -->
+    <TextView
+        android:id="@+id/textViewPublishingMail_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Publishing Mail"
+        android:layout_below="@id/editTextPublisherPhone_edit"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="25dp"/>
+
+    <EditText
+        android:id="@+id/editTextPublisherMail_edit"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/textViewPublishingMail_edit"
+        android:layout_marginTop="4dp"
+        android:hint="Enter Publissher Mail"
+        android:textStyle="italic"
+        />
+
+    <TextView
+        android:id="@+id/textViewPublishingAddress_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Publisher Address"
+        android:layout_below="@id/editTextPublisherMail_edit"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="25dp"/>
+
+    <EditText
+        android:id="@+id/editTextPublisherAddress_edit"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/textViewPublishingMail_edit"
+        android:layout_marginTop="116dp"
+        android:hint="Enter Publisher Address"
+        android:textStyle="italic" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:text="SAVE"
+        android:layout_marginTop="460dp"
+        android:layout_marginLeft="70dp"
+        />
+
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:text="CANCEL"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="460dp"
+       />
+
+</RelativeLayout>

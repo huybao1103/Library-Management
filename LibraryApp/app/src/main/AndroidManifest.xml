@@ -43,6 +43,11 @@
         <activity android:name=".UserInformation" />
         <activity android:name=".LogInformation" />
         <activity android:name=".BookInformation" />
+
+<!--        <activity android:name=".Publisher.AddPublisher"/>-->
+<!--        <activity android:name=".Publisher.EditPublisher"/>-->
+<!--        <activity android:name=".Publisher.ListPublisher"/>-->
+
         <activity
             android:name=".Activity.Books.LayOutAndLisView"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -56,6 +61,50 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Publisher.PublisherInformation"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+
+        </activity>
+
+        <activity android:name=".Publisher.AddPublisher"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Publisher.EditPublisher"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Publisher.ListPublisher"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Publisher.PublisherDetail"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

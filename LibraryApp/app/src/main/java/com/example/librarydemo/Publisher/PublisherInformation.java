@@ -1,16 +1,9 @@
-package com.example.librarydemo.Author;
+package com.example.librarydemo.Publisher;
 
-import static java.security.AccessController.getContext;
+import static android.widget.Toast.makeText;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -20,18 +13,20 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.librarydemo.Models.AuthorModel;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import com.example.librarydemo.Models.PublisherModel;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.Interface.ConfirmDialog.IConfirmDialogEventListener;
-import com.example.librarydemo.Services.Interface.TableList.ITableListEventListener;
 import com.example.librarydemo.Services.Layout.ApiRequest;
 import com.example.librarydemo.Services.Layout.ConfirmDialogService;
 import com.example.librarydemo.Services.Layout.TableListService;
@@ -43,45 +38,39 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import de.codecrafters.tableview.TableDataAdapter;
 import de.codecrafters.tableview.TableView;
-import de.codecrafters.tableview.model.TableColumnDpWidthModel;
-import de.codecrafters.tableview.model.TableColumnModel;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AuthorListActivity extends AppCompatActivity implements IConfirmDialogEventListener {
-    private ArrayList<String> ListAuthor;
-    private ListView listView;
-
+public class PublisherInformation extends AppCompatActivity implements IConfirmDialogEventListener {
     TableView table_view;
     ApiService apiService;
-    AuthorAdapter authorAdapter;
+    PublisherAdapter publisherAdapter;
     boolean formValid = false;
     AlertDialog dialog;
-    // Add author form
-    TextInputEditText edt_authorName, edt_authorPhone, edt_authorEmail;
-    AuthorModel currentAuthor;
+    // Add publisher form
+    TextInputEditText edt_publisherName, edt_publisherPhone, edt_publisherEmail, edt_publisherAddress;
+    PublisherModel currentPublisher;
     boolean confirmed;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_author_list2);
+        setContentView(R.layout.activity_list_publisher);
 
         assign();
-        getAuthors();
+        getPublishers();
 
         // Thêm sự kiện click vào nút "ADD" để thêm tác giả mới
-        Button addButton = findViewById(R.id.buttonAddAuthor);
-        addButton.setOnClickListener(v -> addAuthor());
+        Button addButton = findViewById(R.id.add_publisher_btn);
+        addButton.setOnClickListener(v -> addPublisher());
     }
 
     void assign() {
@@ -91,19 +80,19 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
         String[] headers = {"Name", "Email", "Phone"};
         table_view.setHeaderAdapter(new SimpleTableHeaderAdapter(this, headers));
     }
-    private void getAuthors() {
-        apiService.getAll(ControllerConst.AUTHORS).enqueue(new Callback<JsonArray>() {
+    private void getPublishers() {
+        apiService.getAll(ControllerConst.PUBLISHERS).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                List<AuthorModel> authorList = new ApiResponse<List<AuthorModel>>()
-                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                (
-                    response,
-                    new TypeToken<List<AuthorModel>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                );
+                List<PublisherModel> publisherList = new ApiResponse<List<PublisherModel>>()
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<List<PublisherModel>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
 
-                if(authorList != null && authorList.size() > 0) {
-                    setAuthorAdapter(authorList);
+                if(publisherList != null && publisherList.size() > 0) {
+                    setPublisherAdapter(publisherList);
 
                 }
             }
@@ -115,14 +104,14 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
         });
     }
 
-    private void setAuthorAdapter(List<AuthorModel> authorList) {
-        authorAdapter = new AuthorAdapter(AuthorListActivity.this, authorList);
-        table_view = new TableListService(new String[]{"Name", "Email", "Phone"}, table_view, AuthorListActivity.this).setColumnModel();
+    private void setPublisherAdapter(List<PublisherModel> publisherList) {
+        publisherAdapter = new PublisherAdapter(PublisherInformation.this, publisherList);
+        table_view = new TableListService(new String[]{"Name", "Email", "Phone"}, table_view, PublisherInformation.this).setColumnModel();
 
-        table_view.setDataAdapter(new TableDataAdapter(getApplicationContext(), authorList) {
+        table_view.setDataAdapter(new TableDataAdapter(getApplicationContext(), publisherList) {
             @Override
             public View getCellView(int rowIndex, int columnIndex, ViewGroup parentView) {
-                AuthorModel author = (AuthorModel) getItem(rowIndex); // This gets the AuthorModel for the given row
+                PublisherModel publisher = (PublisherModel) getItem(rowIndex); // This gets the PublisherModel for the given row
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, // Width
@@ -136,16 +125,16 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
 
                 switch (columnIndex) {
                     case 0:
-                        textView.setText(author.getName()); // Assuming AuthorModel has a getName method
+                        textView.setText(publisher.getName()); // Assuming PublisherModel has a getName method
                         break;
                     case 1:
-                        textView.setText(author.getMail()); // Assuming AuthorModel has a getBookTitle method
+                        textView.setText(publisher.getMail()); // Assuming PublisherModel has a getBookTitle method
                         break;
                     case 2:
-                        textView.setText(author.getPhone()); // Assuming AuthorModel has a getBookTitle method
+                        textView.setText(publisher.getPhone()); // Assuming PublisherModel has a getBookTitle method
                         break;
                     case 3:
-                        return getMenuIcon(author.getId());
+                        return getMenuIcon(publisher.getId());
                     // Add more cases if you have more columns.
                     default:
                         throw new IllegalArgumentException("Invalid columnIndex: " + columnIndex);
@@ -158,12 +147,12 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
         });
     }
 
-    private void addAuthor() {
-        View authorFormDialogView = LayoutInflater.from(this).inflate(R.layout.fragment_author_edit_form, null);
-        bindAuthorLayoutDialog(authorFormDialogView);
+    private void addPublisher() {
+        View publisherFormDialogView = LayoutInflater.from(this).inflate(R.layout.fragment_publisher_edit_form, null);
+        bindPublisherLayoutDialog(publisherFormDialogView);
 
         dialog = new MaterialAlertDialogBuilder(this)
-                .setView(authorFormDialogView)
+                .setView(publisherFormDialogView)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> {
                     dialogInterface.dismiss();
                 }).create();
@@ -171,51 +160,52 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
 //        alertDialog.on
         dialog.show();
 
-        Button submit_btn = authorFormDialogView.findViewById(R.id.add_author_submit);
+        Button submit_btn = publisherFormDialogView.findViewById(R.id.add_publisher_submit);
         submit_btn.setOnClickListener(view -> {
             if(formValid)
-                addAuthorSubmit();
+                addPublisherSubmit();
         });
 
         formValid = false;
-        formValidation(edt_authorName);
+        formValidation(edt_publisherName);
     }
 
-    private void bindAuthorLayoutDialog(View authorFormDialog) {
-        edt_authorName = authorFormDialog.findViewById(R.id.edt_authorName);
-        edt_authorPhone = authorFormDialog.findViewById(R.id.edt_authorPhone);
-        edt_authorEmail = authorFormDialog.findViewById(R.id.edt_authorEmail);
+    private void bindPublisherLayoutDialog(View publisherFormDialog) {
+        edt_publisherName = publisherFormDialog.findViewById(R.id.edt_publisherName);
+        edt_publisherPhone = publisherFormDialog.findViewById(R.id.edt_publisherPhone);
+        edt_publisherEmail = publisherFormDialog.findViewById(R.id.edt_publisherEmail);
+        edt_publisherAddress = publisherFormDialog.findViewById(R.id.edt_publisherAddress);
 
-        if(currentAuthor != null) {
-            edt_authorName.setText(currentAuthor.getName());
-            edt_authorPhone.setText(currentAuthor.getPhone());
-            edt_authorEmail.setText(currentAuthor.getMail());
+
+        if(currentPublisher != null) {
+            edt_publisherName.setText(currentPublisher.getName());
+            edt_publisherPhone.setText(currentPublisher.getPhone());
+            edt_publisherEmail.setText(currentPublisher.getMail());
+            edt_publisherAddress.setText(currentPublisher.getAddress());
         }
-
-        CardView delete_btn_container = authorFormDialog.findViewById(R.id.delete_btn_container);
-        delete_btn_container.setVisibility(View.VISIBLE);
     }
 
-    private void addAuthorSubmit() {
-        AuthorModel authorModel = new AuthorModel();
-        authorModel.setName(Objects.requireNonNull(edt_authorName.getText()).toString());
-        authorModel.setMail(Objects.requireNonNull(edt_authorEmail.getText()).toString());
-        authorModel.setPhone(Objects.requireNonNull(edt_authorPhone.getText()).toString());
-        authorModel.setId(currentAuthor != null ? currentAuthor.getId() : null);
+    private void addPublisherSubmit() {
+        PublisherModel publisherModel = new PublisherModel();
+        publisherModel.setName(Objects.requireNonNull(edt_publisherName.getText()).toString());
+        publisherModel.setMail(Objects.requireNonNull(edt_publisherEmail.getText()).toString());
+        publisherModel.setPhone(Objects.requireNonNull(edt_publisherPhone.getText()).toString());
+        publisherModel.setAddress(Objects.requireNonNull(edt_publisherAddress.getText()).toString());
+        publisherModel.setId(currentPublisher != null ? currentPublisher.getId() : null);
 
-        JsonObject data = new ApiRequest().convertModelToJSONObject(authorModel);
+        JsonObject data = new ApiRequest().convertModelToJSONObject(publisherModel);
 
-        apiService.save(ControllerConst.AUTHORS, data).enqueue(new Callback<JsonObject>() {
+        apiService.save(ControllerConst.PUBLISHERS, data).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                AuthorModel authorModel = new ApiResponse<AuthorModel>().getResultFromResponse
+                PublisherModel publisherModel = new ApiResponse<PublisherModel>().getResultFromResponse
                         (
                                 response,
-                                new TypeToken<AuthorModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                new TypeToken<PublisherModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
                         );
-                if(authorModel != null) {
+                if(publisherModel != null) {
                     dialog.dismiss();
-                    getAuthors();
+                    getPublishers();
                 }
             }
 
@@ -242,19 +232,19 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
         currentInput.setOnFocusChangeListener(onFocusChange);
     }
 
-    private void getAuthorById(String itemId) {
-        apiService.getById(ControllerConst.AUTHORS, itemId).enqueue(new Callback<JsonObject>() {
+    private void getPublisherById(String itemId) {
+        apiService.getById(ControllerConst.PUBLISHERS, itemId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                currentAuthor = new ApiResponse<AuthorModel>()
-                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                (
-                    response,
-                    new TypeToken<AuthorModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                );
+                currentPublisher = new ApiResponse<PublisherModel>()
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<PublisherModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
 
-                if(currentAuthor != null)
-                    addAuthor();
+                if(currentPublisher != null)
+                    addPublisher();
                 formValid = true;
             }
 
@@ -265,47 +255,47 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
         });
     }
 
-    private void deleteAuthor(String itemId) {
-        new ConfirmDialogService("Are you sure you want to delete this author?", AuthorListActivity.this, this)
-            .ShowConfirmDialog()
-            .setOnDismissListener(dialogInterface -> {
-                if(confirmed)
-                    deleteConfirmed(itemId);
-            });
+    private void deletePublisher(String itemId) {
+        new ConfirmDialogService("Are you sure you want to delete this publisher?", PublisherInformation.this, this)
+                .ShowConfirmDialog()
+                .setOnDismissListener(dialogInterface -> {
+                    if(confirmed)
+                        deleteConfirmed(itemId);
+                });
     }
 
     private void deleteConfirmed(String itemId) {
-        apiService.delete(ControllerConst.AUTHORS, itemId).enqueue(new Callback<Void>() {
+        apiService.delete(ControllerConst.PUBLISHERS, itemId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 
                 if(response.isSuccessful()) {
-                    Toast.makeText(AuthorListActivity.this, "Author deleted successfully", Toast.LENGTH_SHORT).show();
-                    getAuthors();
+                    Toast.makeText(PublisherInformation.this, "Publisher deleted successfully", Toast.LENGTH_SHORT).show();
+                    getPublishers();
                 }
                 else {
                     try {
-                        Toast.makeText(AuthorListActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PublisherInformation.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        Toast.makeText(AuthorListActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PublisherInformation.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(AuthorListActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublisherInformation.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-    private FrameLayout getMenuIcon(String authorId) {
+    private FrameLayout getMenuIcon(String publisherId) {
         // Create an ImageView
-        ImageView imageView = new ImageView(AuthorListActivity.this);
+        ImageView imageView = new ImageView(PublisherInformation.this);
         imageView.setImageResource(R.drawable.baseline_more_vert_24);
-        imageView.setOnClickListener(v -> showPopupMenu(v, authorId));
+        imageView.setOnClickListener(v -> showPopupMenu(v, publisherId));
 
         // Create a FrameLayout and set its LayoutParams
-        FrameLayout frameLayout = new FrameLayout(AuthorListActivity.this);
+        FrameLayout frameLayout = new FrameLayout(PublisherInformation.this);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -319,8 +309,8 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
         return frameLayout;
     }
 
-    private void showPopupMenu(View v, String authorId) {
-        PopupMenu popup = new PopupMenu(AuthorListActivity.this, v);
+    private void showPopupMenu(View v, String publisherId) {
+        PopupMenu popup = new PopupMenu(PublisherInformation.this, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.table_list_menu_item, popup.getMenu());
 
@@ -329,11 +319,11 @@ public class AuthorListActivity extends AppCompatActivity implements IConfirmDia
             switch (menuItem.getItemId()) {
                 case R.id.menu_item_edit:
                     // Handle item 1 action
-                    getAuthorById(authorId);
+                    getPublisherById(publisherId);
                     return true;
                 case R.id.menu_item_delete:
                     // Handle item 2 action
-                    deleteAuthor(authorId);
+                    deletePublisher(publisherId);
                     return true;
                 // ... more items ...
                 default:

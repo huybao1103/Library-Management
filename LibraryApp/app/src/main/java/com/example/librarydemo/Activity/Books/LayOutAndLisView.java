@@ -11,6 +11,7 @@ import com.example.librarydemo.ChangPass;
 import com.example.librarydemo.Login;
 import com.example.librarydemo.Models.Book.BookModel;
 
+import com.example.librarydemo.Publisher.PublisherInformation;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
@@ -183,6 +184,10 @@ public class LayOutAndLisView extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        if (id == R.id.nav_tacgia) {
+            Intent intent = new Intent(this, AuthorListActivity.class);
+            startActivity(intent);
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_Search) {
@@ -205,47 +210,21 @@ public class LayOutAndLisView extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-         if (id == R.id.nav_tacgia) {
-             Intent intent = new Intent(this, AuthorListActivity.class);
-             startActivity(intent);
-         }
 
-        if (id == R.id.nav_camera) {
-            Intent intent = new Intent(this, UserInformation.class);
+            int id = item.getItemId();
+        if (id == R.id.nav_tacgia) {
+            Intent intent = new Intent(this, AuthorListActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(this, ChangPass.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-            AlertDialog.Builder b=new AlertDialog.Builder(LayOutAndLisView.this);
-            b.setTitle("Đăng Xuất");
-            b.setMessage("Bạn có muốn đăng xuất?");
-            b.setIcon(R.drawable.icons_out);
-            b.setPositiveButton("Yes", new DialogInterface. OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    OpenLogin();
-                    finish();
-                }});
-            b.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    dialog.cancel();
-                }
-            });
-            b.create().show();
-        } else {
+        }
+            if (id == R.id.nav_QLNXB) {
+                Intent intent = new Intent(this, PublisherInformation.class);
+                startActivity(intent);
+            }
 
+            return true;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+
     public void OpenLogin(){
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);

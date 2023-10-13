@@ -1,4 +1,4 @@
-package com.example.librarydemo.Author;
+package com.example.librarydemo.Publisher;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,19 +10,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.librarydemo.Models.AuthorModel;
+import com.example.librarydemo.Models.PublisherModel;
 import com.example.librarydemo.R;
-import com.example.librarydemo.Services.Interface.TableList.ITableListEventListener;
 
 import java.util.List;
 
-public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder>{
+public class PublisherAdapter extends RecyclerView.Adapter<PublisherAdapter.ViewHolder>{
     Context context;
-    List<AuthorModel> authorList;
+    List<PublisherModel> publisherList;
 
-    public AuthorAdapter(Context context, List<AuthorModel> authorList) {
+    public PublisherAdapter(Context context, List<PublisherModel> publisherList) {
         this.context = context;
-        this.authorList = authorList;
+        this.publisherList = publisherList;
     }
 
     @NonNull
@@ -33,9 +32,9 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AuthorAdapter.ViewHolder holder, int position) {
-        if(authorList != null & authorList.size() > 0) {
-            AuthorModel author = authorList.get(position);
+    public void onBindViewHolder(@NonNull PublisherAdapter.ViewHolder holder, int position) {
+        if(publisherList != null & publisherList.size() > 0) {
+            PublisherModel author = publisherList.get(position);
 
             holder.tv_name.setText(author.getName());
             holder.tv_email.setText(author.getMail());
@@ -45,7 +44,7 @@ public class AuthorAdapter extends RecyclerView.Adapter<AuthorAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return authorList.size();
+        return publisherList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

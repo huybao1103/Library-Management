@@ -1,4 +1,4 @@
-package com.example.librarydemo.Activity.Books;
+    package com.example.librarydemo.Activity.Books;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,9 +56,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    import retrofit2.Call;
+    import retrofit2.Callback;
+    import retrofit2.Response;
 
 public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     ApiService apiService;
@@ -93,13 +93,13 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
 
-        assign();
-        getCategories();
-        openDatePicker();
-    }
+            assign();
+            getCategories();
+            openDatePicker();
+        }
 
-    private void assign() {
-        apiService = RetrofitClient.getApiService(this);
+        private void assign() {
+            apiService = RetrofitClient.getApiService(this);
 
         author_publisher_input = findViewById(R.id.author_publisher_input);
 
@@ -117,8 +117,8 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setItemAnimator(null);
 
-        edt_bookName = findViewById(R.id.edt_bookName);
-        edt_publishYear = findViewById(R.id.edt_publishYear);
+            edt_bookName = findViewById(R.id.edt_bookName);
+            edt_publishYear = findViewById(R.id.edt_publishYear);
 
         // Kiểm tra đang thêm hay sửa thông tin
         if(getIntent().getExtras() != null) {
@@ -169,18 +169,18 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
                     bindValue();
             }
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
 
-            }
-        });
+                }
+            });
 
-    }
+        }
 
-    private void bindValue() {
-        edt_bookName.setText(currentBook.getName());
-        edt_publishYear.setText(currentBook.getPublishYear());
-        edt_inputDay.setText(new LocalDateTimeConvert().convertDate(currentBook.getInputDay()));
+        private void bindValue() {
+            edt_bookName.setText(currentBook.getName());
+            edt_publishYear.setText(currentBook.getPublishYear());
+            edt_inputDay.setText(new LocalDateTimeConvert().convertDate(currentBook.getInputDay()));
 
         for (BookCategories bookCategories: currentBook.getBookCategories()) {
             SpinnerOption spinnerOption = new SpinnerOption(bookCategories.getCategory().getName(), bookCategories.getCategoryId());
@@ -241,22 +241,22 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
                                 new TypeToken<List<SpinnerOption>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
                         );
 
-                if(categories != null && !categories.isEmpty()) {
-                    CustomSpinner customSpinner = new CustomSpinner(getApplicationContext(), (ArrayList<SpinnerOption>) categories);
+                    if(categories != null && !categories.isEmpty()) {
+                        CustomSpinner customSpinner = new CustomSpinner(getApplicationContext(), (ArrayList<SpinnerOption>) categories);
 
-                    spn_category.setAdapter(customSpinner);
-                    spn_category.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                        spn_category.setAdapter(customSpinner);
+                        spn_category.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-                    spn_category.setOnItemClickListener((adapterView, view, i, l) -> {
-                        SpinnerOption selected = (SpinnerOption) adapterView.getItemAtPosition(i);
+                        spn_category.setOnItemClickListener((adapterView, view, i, l) -> {
+                            SpinnerOption selected = (SpinnerOption) adapterView.getItemAtPosition(i);
 
-                        if( (selectedCategories != null
-                            && !selectedCategories.isEmpty()
-                            && findItem((SpinnerOption) adapterView.getItemAtPosition(i)) == null)
-                            || ((selectedCategories == null) || selectedCategories.isEmpty())
-                        ) {
-                            selectedCategories.add(selected);
-                        }
+                            if( (selectedCategories != null
+                                && !selectedCategories.isEmpty()
+                                && findItem((SpinnerOption) adapterView.getItemAtPosition(i)) == null)
+                                || ((selectedCategories == null) || selectedCategories.isEmpty())
+                            ) {
+                                selectedCategories.add(selected);
+                            }
 
                         updateSelectedCategory();
                     });
@@ -267,12 +267,12 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
                 }
             }
 
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
+                @Override
+                public void onFailure(Call<JsonArray> call, Throwable t) {
 
-            }
-        });
-    }
+                }
+            });
+        }
 
     private void getAuthors() {
         apiService = RetrofitClient.getApiService(this); /* Khai báo để gọi API */
@@ -404,9 +404,9 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         }
     }
 
-    public void openDatePicker() {
-        edt_inputDay.setOnClickListener(v -> new DatePickerService().showDatePickerDialog(BookDetail.this, edt_inputDay));
-    }
+        public void openDatePicker() {
+            edt_inputDay.setOnClickListener(v -> new DatePickerService().showDatePickerDialog(BookDetail.this, edt_inputDay));
+        }
 
     private void setRecyclerView() {
         if(isAuthorTabSelected) {
@@ -528,7 +528,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     }
 
     private void addPublisher() {
-        View publisherFormDialogView = LayoutInflater.from(this).inflate(R.layout.publisher_edit_form, null);
+        View publisherFormDialogView = LayoutInflater.from(this).inflate(R.layout.fragment_publisher_edit_form, null);
         bindPublisherLayoutDialog(publisherFormDialogView);
 
         dialog = new MaterialAlertDialogBuilder(this)
