@@ -22,6 +22,4 @@ public partial class Book
     public virtual ICollection<BookImage> BookImages { get; set; } = new List<BookImage>();
 
     public virtual ICollection<BookPublisher> BookPublishers { get; set; } = new List<BookPublisher>();
-
-    public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
 }
