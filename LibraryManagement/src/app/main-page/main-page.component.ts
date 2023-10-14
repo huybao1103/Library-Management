@@ -14,9 +14,9 @@ export class MainPageComponent implements OnInit {
     width: '95vw',
     height: '80vh'
   };
+
   constructor() {
   }
-
 
   ngOnInit(): void {
     // Minified Sidebar

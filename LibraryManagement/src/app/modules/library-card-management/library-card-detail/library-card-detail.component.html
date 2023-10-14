@@ -1,10 +1,10 @@
 <div class="mx-4">
     <h3 class="page-title">Library Card</h3>
     <h4>Detail Information</h4>
-    <div class="row border p-3 profile">
+    <div class="row border p-3 profile" *ngIf="libraryCard$ | async as libraryCard">
         <div class="col-2 vertical-center">
-            <div *ngIf="data.studentImages?.length">
-                <p-galleria [value]="data.studentImages" [circular]="true" [showThumbnails]="false"
+            <div>
+                <p-galleria [value]="libraryCard.studentImages" [circular]="true" [showThumbnails]="false"
                     [containerStyle]="{ 'max-width': '500px' }">
                     <ng-template pTemplate="item" let-item>
                         <img [src]="item.base64" class="rsp-Image" />
@@ -14,72 +14,98 @@
         </div>
         <div class="col-3 vertical-center">
             <div class="text-truncate" style="overflow: hidden">
-                <p>Name: {{ data.name }}</p>
-                <p>Class: {{ data.class }}</p>
-                <p>Expiry Date: {{ data.expiryDate }}</p>
+                <p>Name: {{ libraryCard.name }}</p>
+                <p>Class: {{ libraryCard.class }}</p>
+                <p>Expiry Date: {{ libraryCard.expiryDate | date: 'dd/MM/yyyy' }}</p>
             </div>
         </div>
         <div class="column-border-right col-1"></div>
         <div class="col-5 vertical-center">
             <div class="text-truncate" style="overflow: hidden">
-                <p>Status: {{ data.status }}</p>
-                <p>Description: {{ data.description }}</p>
-                <p>student ID: {{ data.studentId }}</p>
+                <p>Status: {{ libraryCard.status }}</p>
+                <p>Description: {{ libraryCard.description }}</p>
+                <p>student ID: {{ libraryCard.studentId }}</p>
             </div>
         </div>
         <div class="col-1" style="text-align: right;">
-            <p class="la la-edit"(click)="edit(data.id)"></p>
+            <p class="la la-edit"(click)="edit()"></p>
         </div>
     </div>
-<!-- </div>
+</div>
 <div *ngIf="libraryCard$ | async as LibraryCard">
-    <p-table #dt [value]="LibraryCard" [globalFilterFields]="['phone','name', 'mail']"
-        [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" dataKey="id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
-        [scrollable]="true" scrollHeight="545px">
+    <p-table 
+        #dt 
+        [value]="histories" 
+        [globalFilterFields]="['name','chapter', 'borrowDate', 'endDate']"
+        [tableStyle]="{ 'min-width': '75rem' }" 
+        [rowHover]="true" 
+        dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+        [showCurrentPageReport]="true"
+        [scrollable]="true" 
+        scrollHeight="545px"
+    >
         <ng-template pTemplate="caption">
-            <h3 class="page-title">History of borrowing books</h3>
+            <div class="justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="page-title">Borrow History</h3>
+                    <!-- <div class="p-input-icon-left">
+                      <i class="la la-search"></i>
+                      <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search keyword..."/>
+                    </div> -->
+                    <div>
+                        <button pButton pRipple label="New Record" icon="fa fa-plus" class="btn-primary" (click)="edit()"></button>
+                        <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                    </div>
+                </div>
+            </div>        
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 4rem">
+                <th>
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
-                <th pSortableColumn="class">Class <p-sortIcon field="class"></p-sortIcon></th>
-                <th pSortableColumn="expirydate">Expiry Date <p-sortIcon field="expirydate"></p-sortIcon></th>
+                <th pSortableColumn="bookName">Book Name <p-sortIcon field="bookName"></p-sortIcon></th>
+                <th pSortableColumn="chapter">Chapter <p-sortIcon field="chapter"></p-sortIcon></th>
+                <th pSortableColumn="borrowDate">Borrow Date <p-sortIcon field="borrowDate"></p-sortIcon></th>
+                <th pSortableColumn="endDate">End Date <p-sortIcon field="endDate"></p-sortIcon></th>
                 <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
             </tr>
-            <tr>
+            <!-- <tr>
                 <th></th>
                 <th>
-                    <p-columnFilter type="text" field="name"></p-columnFilter>
+                    <p-columnFilter type="text" field="bookName"></p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="class"></p-columnFilter>
+                    <p-columnFilter type="text" field="chapter"></p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="expirydate"></p-columnFilter>
+                    <p-columnFilter type="text" field="borrowDate"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="endDate"></p-columnFilter>
                 </th>
                 <th>
                     <p-columnFilter type="text" field="status"></p-columnFilter>
                 </th>
-            </tr>
+            </tr> -->
         </ng-template>
-        <ng-template pTemplate="body" let-card of LibraryCard>
+        <ng-template pTemplate="body" let-history of LibraryCard>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="card"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="history"></p-tableCheckbox>
                 </td>
-                <td>{{ card.name }}</td>
-                <td>{{ card.class }}</td>
-                <td>{{ card.expirydate }}</td>
-                <td>{{ card.status }}</td>
+                <td>{{ history.bookChapter.book.name }}</td>
+                <td>{{ history.bookChapter.chapter }}</td>
+                <td>{{ history.borrowDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ history.endDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ LibraryCardStatus[history.status] }}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">In total there are {{ LibraryCard?
-                LibraryCard.length : 0 }} Library Cards.</div>
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{ LibraryCard.borrowHistories?.length}} records.
+            </div>
         </ng-template>
     </p-table>
-</div> -->
+</div>

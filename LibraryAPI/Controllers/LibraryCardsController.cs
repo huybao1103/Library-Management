@@ -52,7 +52,7 @@ namespace LibraryAPI.Controllers
             return Ok(_mapper.Map<LibraryCardModel>(libraryCard));
         }
 
-        // POST: api/LibraryCards aaaaaaa
+        // POST: api/LibraryCards
         [HttpPost("save")]
         public async Task<ActionResult<LibraryCardModel>> PostLibraryCard(LibraryCardModel libraryCardModel)
         {
@@ -93,6 +93,7 @@ namespace LibraryAPI.Controllers
             {
                 return NotFound();
             }
+            libraryCard.StudentImages.Clear();
 
             libraryCard.StudentImages.Clear();
 
@@ -126,6 +127,9 @@ namespace LibraryAPI.Controllers
             return _context.LibraryCards
                     .Include(c => c.StudentImages)
                         .ThenInclude(c => c.File)
+                    .Include(c => c.BorrowHistories)
+                        .ThenInclude(c => c.BookChapter)
+                            .ThenInclude(c => c.Book)
                     .FirstOrDefault(book => book.Id == cardId);
         }
 

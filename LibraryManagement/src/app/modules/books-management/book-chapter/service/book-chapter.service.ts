@@ -47,8 +47,8 @@ export class BookChapterService {
     );
   }
 
-  getBookChapterOption() {
-    return this.httpService.getOption<IComboboxOption>({ controller: 'BookChapters' });
+  getBookChapterOption(bookId: string) {
+    return this.httpService.getWithCustomURL<IComboboxOption[]>({ controller: 'BookChapters', url: `BookChapters/option/${bookId}` });
   }
   
   delete(id: string){

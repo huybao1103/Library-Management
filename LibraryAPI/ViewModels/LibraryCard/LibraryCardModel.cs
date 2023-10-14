@@ -1,4 +1,5 @@
 ﻿using LibraryAPI.Models;
+using LibraryAPI.ViewModels.BorrowHistory;
 
 namespace LibraryAPI.ViewModels.LibraryCard
 {
@@ -18,7 +19,7 @@ namespace LibraryAPI.ViewModels.LibraryCard
 
         public string StudentId { get; set; } = null!;
 
-        //public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
+        public virtual ICollection<BorrowHistoryModel> BorrowHistories { get; set; } = new List<BorrowHistoryModel>();
 
         public virtual ICollection<StudentImageModel> StudentImages { get; set; } = new List<StudentImageModel>();
     }

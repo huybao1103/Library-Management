@@ -15,6 +15,7 @@ import { BookAuthorEditComponent } from '../../books-management/book-info-edit/b
 import { LibraryCardInfoField } from './library-card-info.form';
 import { ILibraryCardInfo, IStudentImage } from 'src/app/models/library-card.model';
 import { LibraryCardService } from '../service/library-card.service';
+import { LibraryCardStatus } from 'src/app/enums/library-card-status';
 
 @Component({
   selector: 'app-library-card-edit',
@@ -37,7 +38,10 @@ export class LibraryCardEditComponent implements IDialogType {
   data: ILibraryCardInfo = {
     name: '',
     class: '',
-    expiryDate: new Date().toISOString()
+    expiryDate: new Date().toISOString(),
+    status: LibraryCardStatus.Active,
+    description: '',
+    studentId: ''
   };
 
   studentImage: IStudentImage[] = [];

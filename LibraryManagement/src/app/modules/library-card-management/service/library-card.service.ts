@@ -3,6 +3,8 @@ import { BehaviorSubject, tap, concatMap, of } from 'rxjs';
 import { IComboboxOption } from 'src/app/models/combobox-option.model';
 import { ILibraryCardInfo } from 'src/app/models/library-card.model';
 import { HttpService } from 'src/app/services/http-service.service';
+import { CustomDatePipe } from 'src/assets/pipes/custom-date.pipe';
+import { IRecordData } from '../new-history-record/new-history-record.component';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +20,10 @@ export class LibraryCardService {
   getAll() {
     return this.httpService.getAll<ILibraryCardInfo[]>({ controller: 'LibraryCards' }).pipe(
       tap((x) => {
-        if(x?.length) 
+        if(x?.length) {
+          x.map(i => i.expiryDate = this.dateParse(i.expiryDate));
           this.libraryCard$.next(x)
+        }
       }),
       concatMap(() => this.libraryCard$ ? this.libraryCard$.asObservable() : of([]))
     );
@@ -45,6 +49,10 @@ export class LibraryCardService {
     );
   }
 
+  saveRecord(data: IRecordData[]) {
+    return this.httpService.save({ controller: 'BorrowHistories', data });
+  }
+
   private updateLibraryCardstate(res?: ILibraryCardInfo, deletedCardId?: string, ) {
     let old = this.libraryCard$.value;
   
@@ -59,5 +67,11 @@ export class LibraryCardService {
   
       this.libraryCard$.next([...old]);
     }
+  }
+
+  private dateParse(dateString: string) {
+    const date = new Date(dateString);
+
+    return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
   }
 }

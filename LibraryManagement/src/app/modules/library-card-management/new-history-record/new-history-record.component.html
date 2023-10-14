@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left" id="my-modal-title">New Borrow History Record</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="d-flex flex-row justify-content-between">
+        <div class="px-2">
+            <form [formGroup]="form" (submit)="addRecord()">
+                <formly-form [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
+                <div style="text-align: center;">
+                    <button class="btn btn-primary submit-btn " type="submit">
+                        <i class="fa fa-plus"></i>
+                        Add Record
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="px-1">
+            <div class="vr" style="width: 1px; height: 100%;"></div>
+        </div>
+
+        <div class="px-2" style="min-width: 50%;">
+            <p-table 
+                    #dt 
+                    [value]="newRecordList"
+                >
+                    <ng-template pTemplate="caption">
+                        <h4 class="fw-bold">New Record (s)</h4>     
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Book Name</th>
+                            <th>Chapter</th>
+                            <th>Borrow Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-record of newRecordList>
+                        <tr>
+                            <td>{{ record.bookName }}</td>
+                            <td>{{ record.bookChapter }}</td>
+                            <td>{{ record.borrowDate | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ record.endDate | date: 'dd/MM/yyyy' }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+        </div>
+    </div>
+    <div class="submit-section">
+        <button class="btn btn-primary submit-btn" (click)="saveRecord()">Submit</button>
+    </div>
+</div>
+

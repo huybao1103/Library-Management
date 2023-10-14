@@ -48,6 +48,7 @@ import { DatePipe } from '@angular/common';
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
+import { NewHistoryRecordComponent } from './library-card-management/new-history-record/new-history-record.component';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -75,6 +76,7 @@ import { BookChapterInfoEditComponent } from './books-management/book-chapter/bo
     LibraryCardDetailComponent,
     BookChapterComponent,
     BookChapterInfoEditComponent,
+    NewHistoryRecordComponent,
   ],
   imports: [
     DialogModule,

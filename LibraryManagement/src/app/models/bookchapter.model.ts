@@ -1,3 +1,5 @@
+import { IBook } from "./book.model";
+
 export interface IBookChapter {
     id?: string;
     identifyId?: string;
@@ -5,4 +7,5 @@ export interface IBookChapter {
     description?: string;
     bookId?: string;
     chapter?: string;
+    book?: IBook
 }
