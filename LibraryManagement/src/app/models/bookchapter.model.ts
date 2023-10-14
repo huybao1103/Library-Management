@@ -8,4 +8,5 @@ export interface IBookChapter {
     bookId?: string;
     chapter?: string;
     book?: IBook
+    lostOrDestroyedDate?: string;
 }

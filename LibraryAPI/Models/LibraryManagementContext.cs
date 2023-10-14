@@ -146,6 +146,9 @@ public partial class LibraryManagementContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("identifyId");
+            entity.Property(e => e.LostOrDestroyedDate)
+                .HasColumnType("date")
+                .HasColumnName("lostOrDestroyedDate");
             entity.Property(e => e.Status).HasColumnName("status");
 
             entity.HasOne(d => d.Book).WithMany(p => p.BookChapters)
@@ -217,9 +220,6 @@ public partial class LibraryManagementContext : DbContext
                 .HasColumnType("date")
                 .HasColumnName("endDate");
             entity.Property(e => e.LibraryCardId).HasColumnName("libraryCardId");
-            entity.Property(e => e.LostOrDestroyedDate)
-                .HasColumnType("date")
-                .HasColumnName("lostOrDestroyedDate");
             entity.Property(e => e.Status).HasColumnName("status");
 
             entity.HasOne(d => d.BookChapter).WithMany(p => p.BorrowHistories)

@@ -17,8 +17,6 @@ public partial class BorrowHistory
 
     public Guid? LibraryCardId { get; set; }
 
-    public DateTime? LostOrDestroyedDate { get; set; }
-
     public virtual BookChapter? BookChapter { get; set; }
 
     public virtual LibraryCard? LibraryCard { get; set; }

@@ -15,6 +15,8 @@ namespace LibraryAPI.ViewModels.Book
         public Guid? BookId { get; set; }
 
         public int? Chapter { get; set; }
+        public DateTime? LostOrDestroyedDate { get; set; }
+
         public virtual BookBasicInfoModel? Book { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using LibraryAPI.ViewModels.Book;
 using LibraryAPI.CustomException;
 using LibraryAPI.RequestModels;
 using LibraryAPI.PubSub;
+using LibraryAPI.Enums;
 
 namespace LibraryAPI.Controllers
 {
@@ -60,6 +61,11 @@ namespace LibraryAPI.Controllers
             {
                 bookChapter = _context.BookChapters.First(chap => chap.Id == bookChapterModel.Id);
                 bookChapter = _mapper.Map(bookChapterModel, bookChapter);
+
+                if (bookChapter.Status == (int)BookChapterStatusEnum.Destroyed || bookChapter.Status == (int)BookChapterStatusEnum.Lost)
+                {
+                    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
+                }
             }
             else
             {
@@ -115,6 +121,21 @@ namespace LibraryAPI.Controllers
             return bookList.Select(book => new Option { Value = book.Id, Label = book.Chapter.ToString() }).ToList(); // Get book option list
         }
 
+        // GET: api/BookChapters/5
+        [HttpGet("get-statistic")]
+        public async Task<ActionResult<List<BookChapterModel>>> GetBookChapterStatistic()
+        {
+            if (_context.BookChapters == null)
+            {
+                return NotFound();
+            }
+            var query = GetAllBookChapters();
+
+            query = query.Where(chapter => chapter.Book.InputDay.HasValue && chapter.Book.InputDay.Value.Year == DateTime.Today.Year);
+
+            return _mapper.Map<List<BookChapterModel>>(await query.ToListAsync());
+        }
+
         private bool BookChapterExists(Guid id)
         {
             return (_context.BookChapters?.Any(e => e.Id == id)).GetValueOrDefault();
@@ -144,6 +165,13 @@ namespace LibraryAPI.Controllers
             {
                 throw new CustomApiException(500, "This book chapter number is existed.", "This book chapter number is existed.");
             }
+        }
+    
+        private IQueryable<BookChapter> GetAllBookChapters()
+        {
+            return _context.BookChapters
+                .Include(x => x.Book)
+                .AsQueryable();
         }
     }
 }
