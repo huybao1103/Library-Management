@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+    <TextView
+        android:id="@+id/tvAuthorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author Name"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
+
+
+    <EditText
+        android:id="@+id/editAuthorName"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/tvAuthorName"
+        android:layout_marginTop="4dp"
+        android:hint="Enter Author Name"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvAuthorPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author Phone"
+        android:layout_below="@id/editAuthorName"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="25dp"/>
+
+    <EditText
+        android:id="@+id/editAuthorPhone"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/tvAuthorPhone"
+        android:layout_marginTop="4dp"
+        android:hint="Enter Author Phone"
+        android:textStyle="italic"
+        />
+
+    <!-- Năm Xuất Bản -->
+    <TextView
+        android:id="@+id/tvAuthorMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author Mail"
+        android:layout_below="@id/editAuthorPhone"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:textSize="25dp"/>
+
+    <EditText
+        android:id="@+id/editAuthorMail"
+        android:layout_width="1000dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/tvAuthorMail"
+        android:layout_marginTop="4dp"
+        android:hint="Enter Author Mail"
+        android:textStyle="italic"
+        />
+
+
+
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:layout_marginTop="350dp"
+        android:background="#ff8c00"
+        android:layout_marginLeft="90dp"
+        />
+
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CANCEL"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="350dp"
+        android:background="#FF9800"/>
+
+</RelativeLayout>

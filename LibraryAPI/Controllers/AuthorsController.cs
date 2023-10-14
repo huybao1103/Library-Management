@@ -94,6 +94,10 @@ namespace LibraryAPI.Controllers
             {
                 return NotFound();
             }
+            if(await _context.BookAuthors.AnyAsync(b => b.AuthorId == id))
+            {
+                throw new CustomApiException(500, "This author is in used", "This author name in used");
+            }
 
             _context.Authors.Remove(author);
             await _context.SaveChangesAsync();

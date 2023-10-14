@@ -46,4 +46,8 @@ public class PublisherModel {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public int getEmail() {
+        return 0;
+    }
 }
