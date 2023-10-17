@@ -7,4 +7,9 @@
     align-items: center;
 }
 
+.history-record-list {
+  .p-datatable > .p-datatable-wrapper {
+    overflow: visible !important;
+  }
+}
  
