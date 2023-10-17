@@ -38,6 +38,8 @@ export class DatetimePickerComponent implements ControlValueAccessor {
 
   onTouched!: (fn: any) => void;
 
+  filter?: (_: any) => void;
+
   constructor() {
     this.dateFormat = environment.dateFormat;
     this.datepickerFormat = environment.datepickerFormat;
@@ -81,6 +83,10 @@ export class DatetimePickerComponent implements ControlValueAccessor {
 
     if (this.onTouched) {
       this.onTouched(value);
+    }
+
+    if(this.filter) {
+      this.filter(value);
     }
   }
 }

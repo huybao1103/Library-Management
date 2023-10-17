@@ -5,6 +5,7 @@ import { ILibraryCardInfo } from 'src/app/models/library-card.model';
 import { HttpService } from 'src/app/services/http-service.service';
 import { CustomDatePipe } from 'src/assets/pipes/custom-date.pipe';
 import { IRecordData } from '../new-history-record/new-history-record.component';
+import { IBorrowHistoryInfo, IEditRecordInfo } from 'src/app/models/borrow-history.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,10 @@ export class LibraryCardService {
 
   saveRecord(data: IRecordData[]) {
     return this.httpService.save({ controller: 'BorrowHistories', data });
+  }
+
+  editRecord(data: IEditRecordInfo) {
+    return this.httpService.saveWithCustomURL({ controller: 'BorrowHistories', data, url:'BorrowHistories/edit-history-info' });
   }
 
   private updateLibraryCardstate(res?: ILibraryCardInfo, deletedCardId?: string, ) {

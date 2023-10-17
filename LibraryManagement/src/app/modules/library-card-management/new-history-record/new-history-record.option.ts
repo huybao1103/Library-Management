@@ -51,8 +51,12 @@ export function BorrowHistoryInfoField(): FormlyFieldConfig[] {
             type: FORMLY_DATETIME_PICKER.name,
             templateOptions: {
               label: 'End Date',
-              required: true
+              required: true,
             },
+            expressions: {
+              'props.maxDate': "formState.maxDate",
+              'props.minDate': "formState.minDate",
+            }
           },
           {
             className: 'col-6',

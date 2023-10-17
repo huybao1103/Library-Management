@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { FieldType } from "@ngx-formly/core";
 
 @Component({
@@ -22,5 +22,4 @@ import { FieldType } from "@ngx-formly/core";
     `
 })
 export class FormlyFieldDateTime extends FieldType {
-
 }

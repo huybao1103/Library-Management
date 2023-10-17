@@ -27,6 +27,24 @@
     opacity: 0.35;
 }
 
+.title {
+    color: #333333;
+    float: left;
+    font-weight: 700;
+    margin-right: 30px;
+    width: 30%;
+}
+
+.text {
+    color: #888888;
+    display: block;
+    overflow: hidden;
+}
+
+.min-w-100 {
+    min-width: 100%;
+}
+
 /* Header */
 .header {
     background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);

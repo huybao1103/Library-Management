@@ -7,28 +7,50 @@
                 <p-galleria [value]="libraryCard.studentImages" [circular]="true" [showThumbnails]="false"
                     [containerStyle]="{ 'max-width': '500px' }">
                     <ng-template pTemplate="item" let-item>
-                        <img [src]="item.base64" class="rsp-Image" />
+                        <img style="border-radius: 5%;" [src]="item.base64" class="rsp-Image" />
                     </ng-template>
                 </p-galleria>
             </div>
         </div>
         <div class="col-3 vertical-center">
-            <div class="text-truncate" style="overflow: hidden">
-                <p>Name: {{ libraryCard.name }}</p>
-                <p>Class: {{ libraryCard.class }}</p>
-                <p>Expiry Date: {{ libraryCard.expiryDate | date: 'dd/MM/yyyy' }}</p>
+            <div class="text-ellipsis min-w-100" style="overflow: hidden">
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Name:</div> 
+                    <div class="text">{{ libraryCard.name }}</div>
+                </div>
+
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Student ID:</div> 
+                    <div class="text">{{ libraryCard.studentId }}</div>
+                </div>
+
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Class:</div> 
+                    <div class="text">{{ libraryCard.class }}</div>
+                </div>
             </div>
         </div>
         <div class="column-border-right col-1"></div>
         <div class="col-5 vertical-center">
-            <div class="text-truncate" style="overflow: hidden">
-                <p>Status: {{ libraryCard.status }}</p>
-                <p>Description: {{ libraryCard.description }}</p>
-                <p>student ID: {{ libraryCard.studentId }}</p>
+            <div class="text-ellipsis min-w-100" style="overflow: hidden">
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Expiry Date:</div> 
+                    <div class="text">{{ libraryCard.expiryDate | date: 'dd/MM/yyyy' }}</div>
+                </div>
+
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Status:</div> 
+                    <div class="text">{{ LibraryCardStatus[libraryCard.status] }}</div>                    
+                </div>
+
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Description:</div> 
+                    <div class="text">{{ libraryCard.description }}</div>                    
+                </div>
             </div>
         </div>
         <div class="col-1" style="text-align: right;">
-            <p class="la la-edit"(click)="edit()"></p>
+            <p class="la la-edit"(click)="editLibraryCard()"></p>
         </div>
     </div>
 </div>
@@ -44,6 +66,7 @@
         [showCurrentPageReport]="true"
         [scrollable]="true" 
         scrollHeight="545px"
+        editMode="row"
     >
         <ng-template pTemplate="caption">
             <div class="justify-content-between align-items-center">
@@ -54,7 +77,7 @@
                       <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search keyword..."/>
                     </div> -->
                     <div>
-                        <button pButton pRipple label="New Record" icon="fa fa-plus" class="btn-primary" (click)="edit()"></button>
+                        <button pButton pRipple label="New Record" icon="fa fa-plus" class="btn-primary" (click)="edit(LibraryCard.status)"></button>
                         <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
                     </div>
                 </div>
@@ -62,44 +85,105 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th>
+                <th style="width: .5rem;">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="bookName">Book Name <p-sortIcon field="bookName"></p-sortIcon></th>
-                <th pSortableColumn="chapter">Chapter <p-sortIcon field="chapter"></p-sortIcon></th>
+                <th pSortableColumn="bookChapter.book.name">Book Name <p-sortIcon field="bookChapter.book.name"></p-sortIcon></th>
+                <th pSortableColumn="bookChapter.chapter">Chapter <p-sortIcon field="bookChapter.chapter"></p-sortIcon></th>
                 <th pSortableColumn="borrowDate">Borrow Date <p-sortIcon field="borrowDate"></p-sortIcon></th>
                 <th pSortableColumn="endDate">End Date <p-sortIcon field="endDate"></p-sortIcon></th>
                 <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                <th style="width: 6rem;"></th>
             </tr>
-            <!-- <tr>
+            <tr>
                 <th></th>
                 <th>
-                    <p-columnFilter type="text" field="bookName"></p-columnFilter>
+                    <p-columnFilter type="text" field="bookChapter.book.name"></p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="chapter"></p-columnFilter>
+                    <p-columnFilter type="text" field="bookChapter.chapter"></p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="borrowDate"></p-columnFilter>
+                    <p-columnFilter [showMenu]="false" field="borrowDate">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <datetime-picker (ngModelChange)="dateFilter($event, 'borrowDate')" [dateFormat]="'dd/mm/yy'" [(ngModel)]="borrowDateSort"></datetime-picker>
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="endDate"></p-columnFilter>
+                    <p-columnFilter [showMenu]="false" field="endDate">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <datetime-picker (ngModelChange)="dateFilter($event, 'endDate')" [dateFormat]="'dd/mm/yy'" [(ngModel)]="endDateSort"></datetime-picker>
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
-                <th>
-                    <p-columnFilter type="text" field="status"></p-columnFilter>
+                <th  style="max-width: 15rem; min-width: 15rem;">
+                    <p-columnFilter matchMode="in" [showMenu]="false" field="status">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-multiSelect 
+                                [ngModel]="value" 
+                                [options]="options" 
+                                (onChange)="filter($event.value)" 
+                                optionLabel="label"
+                                optionValue="value"
+                            >
+                            </p-multiSelect>
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
-            </tr> -->
+                <th></th>
+            </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-history of LibraryCard>
-            <tr>
+        <ng-template 
+            pTemplate="body" 
+            let-history
+            let-editing="editing" 
+            let-ri="rowIndex"
+        >
+            <tr [pEditableRow]="history">
                 <td>
                     <p-tableCheckbox [value]="history"></p-tableCheckbox>
                 </td>
                 <td>{{ history.bookChapter.book.name }}</td>
                 <td>{{ history.bookChapter.chapter }}</td>
-                <td>{{ history.borrowDate | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ history.endDate | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ LibraryCardStatus[history.status] }}</td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <datetime-picker [dateFormat]="'dd/mm/yy'" appendTo="body" [(ngModel)]="history.borrowDate"></datetime-picker>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ history.borrowDate | date: 'dd/MM/yyyy' }}
+                        </ng-template>
+                    </p-cellEditor>
+                    
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <datetime-picker [dateFormat]="'dd/mm/yy'" appendTo="body" [(ngModel)]="history.endDate"></datetime-picker>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ history.endDate | date: 'dd/MM/yyyy' }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <ng-select-item [options]="options" appendTo="body" [(ngModel)]="history.status"></ng-select-item>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ BorrowHistoryStatus[history.status] }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(history)" class="p-button-rounded p-button-text"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(history)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(history, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                    </div>
+                </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">

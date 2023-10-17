@@ -5,6 +5,6 @@
         Borrowed,
         Free,
         Lost,
-        Destroyed
+        Destroyed,
     }
 }

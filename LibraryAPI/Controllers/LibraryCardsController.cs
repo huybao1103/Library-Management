@@ -10,6 +10,8 @@ using LibraryAPI.ViewModels.LibraryCard;
 using AutoMapper;
 using LibraryAPI.CustomException;
 using LibraryAPI.ViewModels.Book;
+using LibraryAPI.RequestModels;
+using System.Collections.Immutable;
 
 namespace LibraryAPI.Controllers
 {
@@ -54,7 +56,7 @@ namespace LibraryAPI.Controllers
 
         // POST: api/LibraryCards
         [HttpPost("save")]
-        public async Task<ActionResult<LibraryCardModel>> PostLibraryCard(LibraryCardModel libraryCardModel)
+        public async Task<ActionResult<LibraryCardModel>> PostLibraryCard(LibraryCardRequest libraryCardModel)
         {
             if (_context.LibraryCards == null)
             {
@@ -108,7 +110,7 @@ namespace LibraryAPI.Controllers
             return (_context.LibraryCards?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        private void RequestSaveCardValidate(LibraryCardModel libraryCardModel)
+        private void RequestSaveCardValidate(LibraryCardRequest libraryCardModel)
         {
             LibraryCard libraryCard = _mapper.Map<LibraryCard>(libraryCardModel);
 
@@ -127,7 +129,7 @@ namespace LibraryAPI.Controllers
             return _context.LibraryCards
                     .Include(c => c.StudentImages)
                         .ThenInclude(c => c.File)
-                    .Include(c => c.BorrowHistories)
+                    .Include(c => c.BorrowHistories.OrderByDescending(x => x.BorrowDate))
                         .ThenInclude(c => c.BookChapter)
                             .ThenInclude(c => c.Book)
                     .FirstOrDefault(book => book.Id == cardId);

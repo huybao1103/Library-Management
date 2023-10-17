@@ -7,23 +7,53 @@
                 <p-galleria [value]="book.bookImages" [circular]="true" [showThumbnails]="false"
                     [containerStyle]="{ 'max-width': '500px' }">
                     <ng-template pTemplate="item" let-item>
-                        <img [src]="item.base64" class="rsp-Image" />
+                        <img style="border-radius: 5%;" [src]="item.base64" class="rsp-Image" />
                     </ng-template>
                 </p-galleria>
             </div>
         </div>
         <div class="col-3 vertical-center">
-            <div class="text-truncate" style="overflow: hidden">
-                <p>Name: {{ book.name }}</p>
-                <p><span *ngFor="let bookCategory of book.bookCategories">{{bookCategory.category.name}}, </span></p>
-                <p>{{ book.bookChapters?.length }} Chapters</p>
+            <div class="text-ellipsis min-w-100">
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Name:</div> 
+                    <div class="text">{{ book.name }}</div>
+                </div>
+
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Category(s)</div> 
+                    <div class="text">
+                        <span *ngFor="let bookCategory of book.bookCategories">
+                            {{bookCategory.category.name}}, 
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Chapters:</div> 
+                    <div class="text">{{ book.bookChapters?.length }} </div>
+                </div>
             </div>
         </div>
         <div class="column-border-right col-1"></div>
         <div class="col-5 vertical-center">
-            <div class="text-truncate" style="overflow: hidden">
-                <p>Author(s): <span *ngFor="let bookAuthor of book.bookAuthors">{{bookAuthor.author.name}}, </span></p>
-                <p>Publisher(es): <span *ngFor="let bookPublisher of book.bookPublishers">{{bookPublisher.publisher.name}}, </span></p>
+            <div class="text-ellipsis min-w-100">
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Author(s):</div>
+                    <div class="text">
+                        <span *ngFor="let bookAuthor of book.bookAuthors">
+                            {{bookAuthor.author.name}}, 
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="mb-3 d-flex w-100">
+                    <div class="title">Publisher(es):</div>
+                    <div class="text">
+                        <span *ngFor="let bookPublisher of book.bookPublishers">
+                            {{bookPublisher.publisher.name}}, 
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-1" style="text-align: right;">
@@ -61,7 +91,7 @@
                     </th>
                     <th pSortableColumn="chapter">Chapter <p-sortIcon field="chapter"></p-sortIcon></th>
                     <th pSortableColumn="identifyId">ID <p-sortIcon field="identifyId"></p-sortIcon></th>
-                    <th pSortableColumn="description">descriptione<p-sortIcon field="description"></p-sortIcon></th>
+                    <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
                     <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
                     <th pSortableColumn="action" style="min-width:7rem; text-align: center;">Action</th>
                 </tr>

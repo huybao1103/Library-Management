@@ -6,11 +6,17 @@ import { HttpService } from 'src/app/services/http-service.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ILibraryCardInfo } from 'src/app/models/library-card.model';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, first, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { LibraryCardStatus } from 'src/app/enums/library-card-status';
 import { Table } from 'primeng/table';
-import { IBorrowHistoryInfo } from 'src/app/models/borrow-history.model';
+import { IBorrowHistoryInfo, IEditRecordInfo } from 'src/app/models/borrow-history.model';
+import { BorrowHistoryStatus } from 'src/app/enums/borrow-history-status';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MessageType } from 'src/app/enums/toast-message.enum';
+import { error } from 'jquery';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FilterMatchMode } from 'primeng/api';
 
 @Component({
   selector: 'app-library-card-detail',
@@ -20,11 +26,24 @@ import { IBorrowHistoryInfo } from 'src/app/models/borrow-history.model';
 export class LibraryCardDetailComponent implements OnInit{
   @ViewChild('dt') dt: Table | undefined;
 
-  
+  form = new FormGroup({
+    datepicker: new FormControl()
+  });
+
+  options = [
+    { label: BorrowHistoryStatus[BorrowHistoryStatus.Active], value: BorrowHistoryStatus.Active },
+    { label: BorrowHistoryStatus[BorrowHistoryStatus.Inactive], value: BorrowHistoryStatus.Inactive },
+    { label: BorrowHistoryStatus[BorrowHistoryStatus.Expired], value: BorrowHistoryStatus.Expired },
+    { label: BorrowHistoryStatus[BorrowHistoryStatus.Returned], value: BorrowHistoryStatus.Returned },
+    { label: BorrowHistoryStatus[BorrowHistoryStatus.Destroyed], value: BorrowHistoryStatus.Destroyed },
+    { label: BorrowHistoryStatus[BorrowHistoryStatus.Lost], value: BorrowHistoryStatus.Lost },
+  ]
+
   id: string = '';
   libraryCard$?: Observable<ILibraryCardInfo | null>;
 
   histories:  IBorrowHistoryInfo[] = [];
+  currentRecord: IBorrowHistoryInfo | undefined;
 
   data: ILibraryCardInfo = {
     name: '',
@@ -37,8 +56,13 @@ export class LibraryCardDetailComponent implements OnInit{
 
   currentImange: string = '';
 
-  LibraryCardStatus = LibraryCardStatus;
+  BorrowHistoryStatus = BorrowHistoryStatus;
+  LibraryCardStatus = LibraryCardStatus
   
+  statuses: BorrowHistoryStatus[] = [];
+  borrowDateSort: Date | undefined;
+  endDateSort: Date | undefined;
+
   constructor(
     private modal: NgbActiveModal,
     private toastService: ToastService,
@@ -56,28 +80,83 @@ export class LibraryCardDetailComponent implements OnInit{
     if (this.id) {
       this.getLibraryCardById(this.id);  
     }
-    // this.getData();
   }
-  // getData() {
-  //   ///api/Categories
-  //   this.libraryCard$ = this.libraryCardService.getLibraryCardById(this.id);
-  // } 
 
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  }
+
+  dateFilter($event: any, field: string) {
+    const date = new Date($event);
+
+    this.dt?.filter(date.toISOString().substring(0, 10), field, FilterMatchMode.CONTAINS);
   }
 
   getLibraryCardById(id: string) {
     this.libraryCard$ = this.libraryCardService.getLibraryCardById(id);
     this.libraryCard$.subscribe({
       next: (res) => {
-        if(res?.borrowHistories?.length)
-        this.histories = res?.borrowHistories
+        if(res?.borrowHistories?.length) {
+          this.histories = res?.borrowHistories
+          
+        }
       }
     })
   }
   
-  edit() {
-    this.router.navigate([{ outlets: { modal: ['library-card-detail', 'new-record', this.id] } }]);
+  onRowEditInit(record: IBorrowHistoryInfo) {
+    this.currentRecord = {...record};
+  }
+
+  onRowEditSave(record: IBorrowHistoryInfo) {
+    console.log(record)
+    delete this.currentRecord;
+
+    const editRecord = {
+      id: record.id,
+      borrowDate: record.borrowDate,
+      endDate: record.endDate,
+      status: record.status,
+      bookChapterId: record.bookChapterId,
+      libraryCardId: record.libraryCardId
+    } as IEditRecordInfo;
+
+    this.libraryCardService.editRecord(editRecord)
+    .subscribe({
+      next: (resp => {
+        this.toastSerivce.show(MessageType.success, "Record information saved successfully");
+
+        if( editRecord.status === BorrowHistoryStatus.Lost || editRecord.status === BorrowHistoryStatus.Destroyed )
+          this.libraryCard$ = this.libraryCard$?.pipe(
+            map(x => {
+              if(x)
+                x.status = LibraryCardStatus.Inactive
+              return x
+            })
+          )
+      }),
+      error: (err: HttpErrorResponse) => {
+        this.toastSerivce.show(MessageType.error, err.error?.detail);
+      }
+    })
+  }
+
+  onRowEditCancel(record: IBorrowHistoryInfo, index: number) {
+    if(this.currentRecord) {
+      this.histories[index] = this.currentRecord;
+      delete this.currentRecord;
+    }
+
+  }
+
+  edit(status: LibraryCardStatus) {
+    if(status === LibraryCardStatus.Inactive)
+      this.toastSerivce.show(MessageType.error, "This library card is inactivated, please change the status to active first.")
+    else
+      this.router.navigate([{ outlets: { modal: ['library-card-detail', 'new-record', this.id] } }]);
+  }
+
+  editLibraryCard() {
+    this.router.navigate([{ outlets: { modal: ['library-card', 'edit', this.id] } }]);
   }
 }

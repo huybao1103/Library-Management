@@ -44,11 +44,14 @@ import { LibraryCardDetailComponent } from './library-card-management/library-ca
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
-
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
 import { NewHistoryRecordComponent } from './library-card-management/new-history-record/new-history-record.component';
+import { DatatimePickerModule } from '../formly/form/datetime-picker/datatime-picker.module';
+import { CalendarModule } from 'primeng/calendar';
+import { NgSelectItemModule } from '../formly/form/ng-select/ng-select.module';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -104,6 +107,10 @@ import { NewHistoryRecordComponent } from './library-card-management/new-history
     NgbModule,
     TooltipModule,
     DatePipe,
+    DatatimePickerModule,
+    CalendarModule,
+    NgSelectItemModule,
+    MultiSelectModule
   ]
 })
 export class FeatureModule { }

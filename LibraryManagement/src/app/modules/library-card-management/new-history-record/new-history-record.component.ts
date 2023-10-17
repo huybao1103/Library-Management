@@ -17,6 +17,7 @@ import { IComboboxOption } from 'src/app/models/combobox-option.model';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpError } from '@microsoft/signalr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BorrowHistoryStatus } from 'src/app/enums/borrow-history-status';
 
 @Component({
   selector: 'app-new-history-record',
@@ -37,6 +38,8 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
         book: this.bookService.getBookOption(),
         chapter: of([]),
       },
+      maxDate: undefined,
+      minDate: undefined,
       onBookSelected: this.onBookSelected.bind(this)
     }
   };
@@ -44,8 +47,8 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
   data: IBorrowHistoryInfo = {
     id: '',
     borrowDate: new Date().toISOString(),
-    endDate: new Date().toISOString(),
-    status: LibraryCardStatus.Active,
+    endDate: new Date(new Date().getTime() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+    status: BorrowHistoryStatus.Active,
     bookChapterId: '',
     libraryCardId: '',
     bookChapter: undefined
@@ -58,6 +61,9 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
   subcription: Subscription = new Subscription;
 
   currentBookId: string = "";
+  histories:  IBorrowHistoryInfo[] = [];
+  
+  remainingBookNumber: number = 3;
 
   constructor(
     private modalService: NgbModal,
@@ -76,11 +82,37 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
 
   dialogInit(para: any, routeConfig?: Route | undefined): void {
     this.data.libraryCardId = para.id;
+    this.getLibraryCardById();
 
     this.modal.update({size: 'xl'});
+
+    this.setBorrowDateRange();
     this.fields = BorrowHistoryInfoField();
 
     this.getOptionValue()
+  }
+
+  setBorrowDateRange() {
+    const currentDate = new Date();
+    this.options.formState.maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+    this.options.formState.minDate = new Date(currentDate.getTime());
+  }
+
+  getLibraryCardById() {
+    this.libraryCardService.getLibraryCardById(this.data.libraryCardId).pipe(first())
+    .subscribe({
+      next: (res) => {
+        if(res?.borrowHistories?.length) {
+          this.histories = res?.borrowHistories.filter
+          (
+            bh => bh.status === BorrowHistoryStatus.Expired 
+            || bh.status === BorrowHistoryStatus.Active
+          );
+          
+          this.remainingBookNumber = 3 - this.histories.length;
+        }
+      }
+    })
   }
 
   onBookSelected(value: string) {
@@ -99,7 +131,7 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
   }
 
   addRecord() {
-    if(this.newRecordList.length < 3) {
+    if(this.newRecordList.length < 3 && this.remainingBookNumber > 0) {
       if(!this.newRecordList.find(b => b.bookId === this.data.bookId && b.bookChapterId === this.data.bookChapterId)) {
         const bookName = this.bookOption.find(i => i.value === this.data.bookId)?.label;
         const bookChapter = this.chapterOption.find(i => i.value === this.data.bookChapterId)?.label;
@@ -112,12 +144,19 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
           borrowDate: this.data.borrowDate,
           endDate: this.data.endDate
         })
+
+        this.remainingBookNumber -= 1;
       } else {
         this._toastService.show(MessageType.error, "This book is already added!!!")
       }
     } else {
-      this._toastService.show(MessageType.error, "Can only borrow 3 books at a time!!!")
+      this._toastService.show(MessageType.error, "Out of number of books can borrow!!!")
     }
+  }
+
+  removeBook(bookChapterId: string) {
+    this.newRecordList = this.newRecordList.filter(r => r.bookChapterId !== bookChapterId);
+    this.remainingBookNumber += 1;
   }
 
   getOptionValue() {

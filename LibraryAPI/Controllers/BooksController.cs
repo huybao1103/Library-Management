@@ -9,6 +9,7 @@ using AutoMapper;
 using LibraryAPI.ViewModels.Book;
 using LibraryAPI.ViewModels.File;
 using System.Linq;
+using LibraryAPI.Enums;
 
 namespace LibraryAPI.Controllers
 {

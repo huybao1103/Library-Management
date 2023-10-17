@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LibraryAPI.Models;
+using LibraryAPI.RequestModels;
 using LibraryAPI.ViewModels.LibraryCard;
 
 namespace LibraryAPI.MappingProfile
@@ -9,6 +10,7 @@ namespace LibraryAPI.MappingProfile
         public LibraryCardMappingProfile() 
         {
             CreateMap<LibraryCard, LibraryCardBasicInfoModel>();
+            CreateMap<LibraryCardBasicInfoModel, LibraryCard>();
 
             CreateMap<LibraryCard, LibraryCardModel>();
             CreateMap<LibraryCardModel, LibraryCard>()
@@ -17,6 +19,10 @@ namespace LibraryAPI.MappingProfile
             CreateMap<StudentImage, StudentImageModel>();
             CreateMap<StudentImageModel, StudentImage>()
                 .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
+
+            CreateMap<LibraryCard, LibraryCardRequest>();
+            CreateMap<LibraryCardRequest, LibraryCard>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
         }
     }

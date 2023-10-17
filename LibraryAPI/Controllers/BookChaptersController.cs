@@ -102,6 +102,9 @@ namespace LibraryAPI.Controllers
                 return NotFound();
             }
 
+            var historyRecords = await _context.BorrowHistories.Where(bh => bh.BookChapterId == id).ToListAsync();
+            _context.BorrowHistories.RemoveRange(historyRecords);
+
             _context.BookChapters.Remove(bookChapter);
             await _context.SaveChangesAsync();
 
@@ -116,7 +119,13 @@ namespace LibraryAPI.Controllers
             {
                 return NotFound();
             }
-            var bookList = await _context.BookChapters.Where(x => x.BookId == bookId).ToListAsync(); // Get book list
+            var bookList = await _context.BookChapters
+                .Where
+                (
+                    x => x.BookId == bookId
+                    && x.Status == (int)BookChapterStatusEnum.Free
+                )
+                .ToListAsync(); // Get book list
 
             return bookList.Select(book => new Option { Value = book.Id, Label = book.Chapter.ToString() }).ToList(); // Get book option list
         }

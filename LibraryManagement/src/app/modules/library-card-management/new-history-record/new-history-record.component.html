@@ -28,7 +28,17 @@
                     [value]="newRecordList"
                 >
                     <ng-template pTemplate="caption">
-                        <h4 class="fw-bold">New Record (s)</h4>     
+                        <span class="fw-bold h4">New Record (s)</span>
+                        <span style="float: inline-end; display: flex; align-items: center;">
+                            {{ remainingBookNumber }} remaining 
+                            <i 
+                                pTooltip="Number of books that can borrow after count all borrowing books" 
+                                tooltipPosition="top" 
+                                style="margin-left: 5px;" 
+                                class="pi pi-question-circle"
+                            >
+                            </i> 
+                        </span>
                     </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
@@ -36,6 +46,7 @@
                             <th>Chapter</th>
                             <th>Borrow Date</th>
                             <th>End Date</th>
+                            <th style="width: 1rem;"></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-record of newRecordList>
@@ -44,6 +55,9 @@
                             <td>{{ record.bookChapter }}</td>
                             <td>{{ record.borrowDate | date: 'dd/MM/yyyy' }}</td>
                             <td>{{ record.endDate | date: 'dd/MM/yyyy' }}</td>
+                            <td>
+                                <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="removeBook(record.bookChapterId)"></button>
+                            </td>
                         </tr>
                     </ng-template>
                 </p-table>

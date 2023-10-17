@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LibraryAPI.Enums;
 using LibraryAPI.Models;
+using LibraryAPI.RequestModels;
 using LibraryAPI.ViewModels.BorrowHistory;
 
 namespace LibraryAPI.MappingProfile
@@ -12,16 +13,14 @@ namespace LibraryAPI.MappingProfile
             CreateMap<BorrowHistory, BorrowHistoryModel>()
                 .AfterMap((from, to) =>
                 {
-                    if(to.EndDate >= DateTime.Today)
+                    if(to.EndDate < DateTime.Today && to.Status == (int?)BorrowHistoryStatus.Active)
                     {
-                        to.Status = (int?)LibraryCardStatus.Active;
-                    }
-                    else
-                    {
-                        to.Status = (int?)LibraryCardStatus.Expired;
+                        to.Status = (int?)BorrowHistoryStatus.Expired;
                     }
                 });
             CreateMap<BorrowHistoryModel, BorrowHistory>();
+
+            CreateMap<EditHistoryInfoRequest, BorrowHistory>();
         }
     }
 }

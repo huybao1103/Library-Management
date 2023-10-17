@@ -10,6 +10,7 @@ using AutoMapper;
 using LibraryAPI.ViewModels.BorrowHistory;
 using LibraryAPI.CustomException;
 using LibraryAPI.Enums;
+using LibraryAPI.RequestModels;
 
 namespace LibraryAPI.Controllers
 {
@@ -68,7 +69,7 @@ namespace LibraryAPI.Controllers
         }
 
         [HttpPost("edit-history-info")]
-        public async Task<ActionResult<BorrowHistoryModel>> EditBorrowHistory(BorrowHistoryModel borrowHistoryModel)
+        public async Task<ActionResult<BorrowHistoryModel>> EditBorrowHistory(EditHistoryInfoRequest borrowHistoryModel)
         {
             if(!borrowHistoryModel.Id.HasValue)
             {
@@ -78,6 +79,31 @@ namespace LibraryAPI.Controllers
             var borrowHistory = await GetById((Guid)borrowHistoryModel.Id);
             borrowHistory = _mapper.Map(borrowHistoryModel, borrowHistory);
 
+            var bookChapter = await _context.BookChapters.FirstOrDefaultAsync(i => i.Id == borrowHistoryModel.BookChapterId);
+            var libraryCard = await _context.LibraryCards.FirstOrDefaultAsync(i => i.Id == borrowHistoryModel.LibraryCardId);
+
+            switch (borrowHistory.Status)
+            {
+                case (int?)BorrowHistoryStatus.Inactive:
+                case (int?)BorrowHistoryStatus.Returned:
+                    bookChapter.Status = (int?)BookChapterStatusEnum.Free;
+                    break;
+
+                case (int?)BorrowHistoryStatus.Expired:
+                case (int?)BorrowHistoryStatus.Active:
+                    bookChapter.Status = (int?)BookChapterStatusEnum.Borrowed;
+                    break;
+
+                case (int?)BorrowHistoryStatus.Lost:
+                    bookChapter.Status = (int?)BookChapterStatusEnum.Lost;
+                    libraryCard.Status = (int?)LibraryCardStatus.Inactive;
+                    break;
+
+                case (int?)BorrowHistoryStatus.Destroyed:
+                    bookChapter.Status = (int?)BookChapterStatusEnum.Destroyed;
+                    libraryCard.Status = (int?)LibraryCardStatus.Inactive;
+                    break;
+            }
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBorrowHistory", new { id = borrowHistory.Id }, _mapper.Map<BorrowHistoryModel>(borrowHistory));
@@ -123,7 +149,7 @@ namespace LibraryAPI.Controllers
                 .Include(x => x.LibraryCard)
                 .Include(x => x.BookChapter)
                     .ThenInclude(x => x.Book)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

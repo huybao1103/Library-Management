@@ -1,3 +1,4 @@
+import { error } from 'jquery';
 import { BookChapterStatus } from 'src/app/enums/book-chapter-status';
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -66,7 +67,12 @@ export class BookChapterComponent implements OnInit {
     const bookchapterId = bookchapter?.id; 
 
     if (bookchapterId !== undefined) {
-      this.confirmDialogService.showConfirmDialog('Are you sure you want to delete ' + bookchapter.chapter + '?')
+      this.confirmDialogService.showConfirmDialog(
+        `
+          Delete this chapter will also delete all borrow history records related to this chapter !!!.
+          Are you sure you want to delete chapter ${bookchapter.chapter} ?.
+        `
+      )
         .subscribe((result) => {
           if (result) {
             this.bookChapterService.delete(bookchapterId).subscribe({
@@ -75,7 +81,7 @@ export class BookChapterComponent implements OnInit {
                 this.getData();
               },
               error: (err: any) => {
-                this.toastService.show(MessageType.error, 'Error deleting BookChapter');
+                this.toastService.show(MessageType.error, err.error?.detail || 'Error deleting BookChapter');
               },
             });
           }

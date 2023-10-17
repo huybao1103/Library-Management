@@ -16,6 +16,7 @@ namespace LibraryAPI.MappingProfile
 
             CreateMap<Book, BookModel>();
             CreateMap<Book, BookBasicInfoModel>();
+            CreateMap<BookBasicInfoModel, Book>();
 
             CreateMap<BookAuthor, BookAuthorModel>();
             CreateMap<BookAuthorModel, BookAuthor>()

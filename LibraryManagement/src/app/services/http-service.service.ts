@@ -76,6 +76,18 @@ export class HttpService {
     );
   }
 
+  saveWithCustomURL<T>(query: IQueryData) {
+    return this.getDataFromResponse<T> (
+      this.http.post<T> (
+        `api/${query.url}`,
+        query.data,
+        { observe: 'response'}
+      ),
+      true,
+      query
+    );
+  }
+
   getOption<T>(query: IQueryData) {
     return this.getDataFromResponse<T> (
       this.http.get<T>(
