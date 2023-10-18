@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.Books.BookDetail"
+    tools:context=".Activity.Fragments.BookFragment.BookDetail"
     android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
 
 

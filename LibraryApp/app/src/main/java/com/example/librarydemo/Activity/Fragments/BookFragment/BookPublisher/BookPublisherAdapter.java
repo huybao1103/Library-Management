@@ -1,4 +1,4 @@
-package com.example.librarydemo.Activity.Books.BookPublisher;
+package com.example.librarydemo.Activity.Fragments.BookFragment.BookPublisher;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.librarydemo.Models.AuthorModel;
-import com.example.librarydemo.Models.PublisherModel;
 import com.example.librarydemo.Models.PublisherModel;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.CheckBoxListener;

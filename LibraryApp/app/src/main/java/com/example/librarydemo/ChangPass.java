@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.librarydemo.Activity.Books.LayOutAndLisView;
+import com.example.librarydemo.Activity.LayOutAndLisView;
 import com.example.librarydemo.DBUser.User;
 import com.example.librarydemo.Database.SQLSever;
 

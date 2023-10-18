@@ -1,4 +1,4 @@
-    package com.example.librarydemo.Activity.Books;
+    package com.example.librarydemo.Activity.Fragments.BookFragment;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,11 +15,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
-import com.example.librarydemo.Activity.Books.BookAuthor.BookAuthorAdapter;
-import com.example.librarydemo.Activity.Books.BookPublisher.BookPublisherAdapter;
+import com.example.librarydemo.Activity.Fragments.BookFragment.BookAuthor.BookAuthorAdapter;
+import com.example.librarydemo.Activity.Fragments.BookFragment.BookPublisher.BookPublisherAdapter;
 import com.example.librarydemo.Models.AuthorModel;
 import com.example.librarydemo.Models.Book.BookAuthor;
 import com.example.librarydemo.Models.Book.BookCategories;
