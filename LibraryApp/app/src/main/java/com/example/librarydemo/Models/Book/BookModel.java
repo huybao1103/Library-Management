@@ -11,6 +11,15 @@ public class BookModel {
     private BookCategories[] bookCategories;
     private BookImage[] bookImages;
     private BookPublisher[] bookPublishers;
+    private BookChapter[] bookChapters;
+
+    public BookChapter[] getBookChapters() {
+        return bookChapters;
+    }
+
+    public void setBookChapters(BookChapter[] bookChapters) {
+        this.bookChapters = bookChapters;
+    }
 
     public BookPublisher[] getBookPublishers() {
         return bookPublishers;

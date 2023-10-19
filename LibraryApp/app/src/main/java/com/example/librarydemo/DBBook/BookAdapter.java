@@ -3,29 +3,44 @@ package com.example.librarydemo.DBBook;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.librarydemo.Models.Book.BookModel;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.Base64Service;
+import com.example.librarydemo.Services.Interface.AdapterEvent.IAdapterEventListener;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BookAdapter extends BaseAdapter {
+    TextView tensach, tacgia, theloai, nxb;
+    ImageView imgsach;
+    ImageButton adapter_menu_btn;
     private Context context;
     private int layout;
     private List<BookModel> list;
+    private IAdapterEventListener listener;
 
     public BookAdapter(Context context, int layout, List<BookModel> list) {
         this.context = context;
         this.layout = layout;
         this.list = list;
+    }
+
+    public BookAdapter(Context context, int layout, List<BookModel> list, IAdapterEventListener listener) {
+        this.context = context;
+        this.layout = layout;
+        this.list = list;
+        this.listener = listener;
     }
 
     @Override
@@ -43,27 +58,17 @@ public class BookAdapter extends BaseAdapter {
         return 0;
     }
 
-    public class ViewAnhXa{
-        TextView tensach, tacgia, theloai, nxb;
-        ImageView imgsach;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewAnhXa viewAnhXa;
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout,null);
-            viewAnhXa = new ViewAnhXa();
             //Ánh Xạ View
-            viewAnhXa.tensach= (TextView) convertView.findViewById(R.id.ten_sach);
-            viewAnhXa.tacgia = (TextView) convertView.findViewById(R.id.tac_gia);
-            viewAnhXa.theloai = (TextView) convertView.findViewById(R.id.the_loai);
-            viewAnhXa.imgsach = (ImageView) convertView.findViewById(R.id.img_hinh);
-            viewAnhXa.nxb = (TextView) convertView.findViewById(R.id.nxb);
-            convertView.setTag(viewAnhXa);
-        }else{
-            viewAnhXa = (ViewAnhXa) convertView.getTag();
+            tensach= (TextView) convertView.findViewById(R.id.ten_sach);
+            tacgia = (TextView) convertView.findViewById(R.id.tac_gia);
+            theloai = (TextView) convertView.findViewById(R.id.the_loai);
+            imgsach = (ImageView) convertView.findViewById(R.id.img_hinh);
+            nxb = (TextView) convertView.findViewById(R.id.nxb);
         }
 
         //Gán Giá Trị
@@ -78,16 +83,51 @@ public class BookAdapter extends BaseAdapter {
             publisherName = Arrays.stream(book.getBookPublishers()).map(x -> x.getPublisher().getName()).collect(Collectors.joining(", "));
         }
         //Ghi giá trị vào listview
-        viewAnhXa.tensach.setText(book.getName());
-        viewAnhXa.tacgia.setText("Author: " + authorName);
-        viewAnhXa.nxb.setText("Publisher: " + publisherName);
-        viewAnhXa.theloai.setText("Category: " + categoryName);
+        tensach.setText(book.getName());
+        tensach.setOnClickListener(v -> listener.onItemNameClicked(book.getId()));
+
+        tacgia.setText("Author: " + authorName);
+        nxb.setText("Publisher: " + publisherName);
+        theloai.setText("Category: " + categoryName);
 
         if(book.getBookImages().length > 0) {
             Bitmap decodedByte = new Base64Service(context).convertBase64ToImage(book.getBookImages()[0].getBase64());
-            viewAnhXa.imgsach.setImageBitmap(decodedByte);
+            imgsach.setImageBitmap(decodedByte);
         }
 
+        bindMenuIconEvent(convertView, book.getId());
+
         return convertView;
+    }
+
+    private void bindMenuIconEvent(View view, String bookId) {
+        adapter_menu_btn = view.findViewById(R.id.adapter_menu_btn);
+
+        adapter_menu_btn.setOnClickListener(v -> showPopupMenu(v, bookId));
+    }
+
+    private void showPopupMenu(View v, String bookId) {
+        PopupMenu popup = new PopupMenu(context, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.table_list_menu_item, popup.getMenu());
+
+        // Set click listener for menu items
+        popup.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_item_edit:
+                    // Handle item 1 action
+                    listener.onEditButtonClicked(bookId);
+                    return true;
+                case R.id.menu_item_delete:
+                    // Handle item 2 action
+                    listener.onDeleteButtonClicked(bookId);
+                    return true;
+                // ... more items ...
+                default:
+                    return false;
+            }
+        });
+
+        popup.show();
     }
 }

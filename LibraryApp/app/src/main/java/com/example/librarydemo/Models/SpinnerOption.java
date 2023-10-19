@@ -6,10 +6,16 @@ public class SpinnerOption {
     private String label2;
 
     private String value;
+    private int valueInt;
 
     public SpinnerOption(String label, String value) {
         this.label = label;
         this.value = value;
+    }
+
+    public SpinnerOption(String label, int valueInt) {
+        this.label = label;
+        this.valueInt = valueInt;
     }
 
     public String getLabel() {
@@ -42,6 +48,14 @@ public class SpinnerOption {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public int getValueInt() {
+        return valueInt;
+    }
+
+    public void setValueInt(int valueInt) {
+        this.valueInt = valueInt;
     }
 
     @Override
