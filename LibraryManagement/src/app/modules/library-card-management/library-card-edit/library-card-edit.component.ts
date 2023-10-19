@@ -114,7 +114,7 @@ export class LibraryCardEditComponent implements IDialogType {
           this._toastService.show(MessageType.success, 'Add Library Card successfully');
           this.close();
         },
-        error: (err: HttpErrorResponse) => {
+        error: (err: any) => {
           this._toastService.show(MessageType.error, err.error?.detail);
         }
       })

@@ -5,9 +5,22 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_book"
-            android:icon="@drawable/book_2_filled"
-            android:title="Book Manangement " />
+            android:title="Book Management">
+            <menu>
+                <item
+                    android:id="@+id/nav_book"
+                    android:icon="@drawable/book_2_filled"
+                    android:title="Books">
+                </item>
+                <item
+                    android:id="@+id/nav_category"
+                    android:icon="@drawable/iconsuser"
+                    android:title="Categories" />
+            </menu>
+        </item>
+    </group>
+
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_tacgia"
             android:icon="@drawable/icons8_adduser"
@@ -16,7 +29,6 @@
             android:id="@+id/nav_QLNXB"
             android:icon="@drawable/iconsuser"
             android:title="Publisher Manangement" />
-
     </group>
 
 </menu>

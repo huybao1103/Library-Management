@@ -27,6 +27,7 @@ namespace LibraryAPI.Controllers
 
         // GET: api/Authors
         [HttpGet]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
         public async Task<ActionResult<IEnumerable<AuthorModel>>> GetAuthors()
         {
             var temp = await _context.Authors.ToListAsync();
@@ -35,6 +36,7 @@ namespace LibraryAPI.Controllers
 
         // GET: api/Authors/5
         [HttpGet("get-by-id/{id}")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
         public async Task<ActionResult<AuthorModel>> GetAuthor(Guid id)
         {
           if (_context.Authors == null)
@@ -54,6 +56,7 @@ namespace LibraryAPI.Controllers
         // POST: api/Authors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("save")]
+        [PubSub(PubSubConstas.AUTHOR_INFO)]
         public async Task<ActionResult<AuthorModel>> PostAuthor(AuthorRequest authorRequestModel)
         {
             if (_context.Authors == null)

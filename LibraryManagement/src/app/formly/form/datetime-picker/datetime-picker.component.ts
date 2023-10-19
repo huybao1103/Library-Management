@@ -20,8 +20,8 @@ export class DatetimePickerComponent implements ControlValueAccessor {
   @HostBinding('class.form-control-host') defaultClass = true;
   uniqueId = uniqueId('date-time-');
   disabled = false;
-  value: any;
   datepickerFormat: string;
+  @Input() value: any;
   @Input() label: string = "";
   @Input() required: boolean = false;
   @Input() showWeekNumbers: boolean = false;

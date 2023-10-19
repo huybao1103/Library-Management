@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.example.librarydemo.Activity.Fragments.AuthorFragment.AuthorFragment;
 import com.example.librarydemo.Activity.Fragments.BookFragment.BookDetail;
 import com.example.librarydemo.Activity.Fragments.BookFragment.BookFragment;
+import com.example.librarydemo.Activity.Fragments.CategoriesFragment.CategoriesFragment;
 import com.example.librarydemo.Activity.Fragments.PublisherFragment.PublisherFragment;
 import com.example.librarydemo.ArrayLog;
 import com.example.librarydemo.Author.AuthorListActivity;
@@ -220,6 +221,9 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.nav_QLNXB:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PublisherFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                break;
+            case R.id.nav_category:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CategoriesFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
                 break;
         }
 

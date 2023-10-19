@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.Fragments.CategoriesFragment.CategoriesFragment">
+    android:padding="16dp"
+    tools:context=".MainActivity"
+    android:background="#d6edfb"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CATEGORIES LIST"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
 
-</FrameLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentRight="true">
+
+        <Button
+            android:id="@+id/add_category_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+ Add Category"
+            android:background="#ff7849"
+            android:textColor="#fff"
+            android:textAllCaps="false"/>
+    </androidx.cardview.widget.CardView>
+
+    <EditText
+        android:background="@drawable/search"
+        android:layout_height="40dp"
+        android:layout_width="200dp"
+        android:layout_marginTop="80dp"
+        android:id="@+id/SearchAu"
+        android:textSize="16sp"
+        android:hint="Search"
+        android:gravity="center_vertical"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:visibility="invisible"/>
+
+    <de.codecrafters.tableview.TableView
+        android:id="@+id/table_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SearchAu"
+        app:tableView_headerColor="#d6edfb"
+        app:tableView_columnCount="3">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </de.codecrafters.tableview.TableView>
+</RelativeLayout>

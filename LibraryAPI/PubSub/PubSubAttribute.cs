@@ -61,35 +61,8 @@ namespace LibraryAPI.PubSub
 
         public override void OnResultExecuted(ResultExecutedContext context)
         {
-            if (this.paths != null && this.paths.Length > 0)
-            {
-                var result = context.Result;
-                List<string> m_topics = new List<string>();
-
-                foreach (var item in this.paths)
-                {
-                    if (item == ".")
-                    {
-                        m_topics.Add(this.rootTopic);
-                        continue;
-                    }
-
-                    var subTopic = GetTopic(item, result);
-                    if (!string.IsNullOrEmpty(subTopic))
-                        m_topics.Add(subTopic);
-                }
-
-                if (m_topics.Any())
-                {
-                    var pubSubService = context.HttpContext.RequestServices.GetService(typeof(IPubSubService)) as IPubSubService;
-                    pubSubService?.SendToAll(m_topics, "changed");
-                }
-            }
-            else if (Topic.Any())
-            {
-                var pubSubService = context.HttpContext.RequestServices.GetService(typeof(IPubSubService)) as IPubSubService;
-                pubSubService?.SendToAll(this.Topic, "changed");
-            }
+            var pubSubService = context.HttpContext.RequestServices.GetService(typeof(IPubSubService)) as IPubSubService;
+            pubSubService?.SendToAll(this.Topic, context.Result);
         }
 
         private string GetTopic(string fullPath, IActionResult? result)

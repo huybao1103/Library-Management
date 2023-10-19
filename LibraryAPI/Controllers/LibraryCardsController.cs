@@ -67,7 +67,8 @@ namespace LibraryAPI.Controllers
             LibraryCard? card;
             if (libraryCardModel.Id.HasValue)
             {
-                card = _context.LibraryCards.First(chap => chap.Id == libraryCardModel.Id);
+                card = GetCardByIdAsync((Guid)libraryCardModel.Id);
+                //card.StudentImages.Clear();
                 card = _mapper.Map(libraryCardModel, card);
             }
             else
