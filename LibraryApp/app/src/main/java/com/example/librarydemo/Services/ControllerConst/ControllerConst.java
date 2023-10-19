@@ -5,4 +5,5 @@ public class ControllerConst {
     public static final String AUTHORS = "Authors";
     public static final String PUBLISHERS = "Publishers";
     public static final String CATEGORIES = "Categories";
+    public static final String BOOKCHAPTERS = "BookChapters";
 }

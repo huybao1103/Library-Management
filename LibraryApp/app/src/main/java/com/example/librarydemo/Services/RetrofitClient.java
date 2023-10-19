@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
+import com.example.librarydemo.Services.ConverterFactory.EnumConverter.EnumConverterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -85,6 +86,7 @@ public class RetrofitClient {
                     .baseUrl(url)
                     .client(getOkHttpClient(context))
                     .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(new EnumConverterFactory())
                     .build();
         }
         return retrofit.create(ApiService.class);

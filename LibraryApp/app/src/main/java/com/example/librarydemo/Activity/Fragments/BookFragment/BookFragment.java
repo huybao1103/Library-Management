@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.librarydemo.Activity.Fragments.BookChapterFragment.BookChapterFragment;
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.DBBook.BookAdapter;
 import com.example.librarydemo.DBUser.User;
@@ -18,6 +20,7 @@ import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
+import com.example.librarydemo.Services.Interface.AdapterEvent.IAdapterEventListener;
 import com.example.librarydemo.Services.RetrofitClient;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
@@ -34,7 +37,7 @@ import retrofit2.Response;
  * Use the {@link BookFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookFragment extends Fragment {
+public class BookFragment extends Fragment implements IAdapterEventListener {
     private ListView lv;
 
     public static ArrayList<Book> Book_Deefault;
@@ -129,15 +132,8 @@ public class BookFragment extends Fragment {
                                         new TypeToken<List<BookModel>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
                                 );
 
-                if(bookModels != null) {
-                    adapter = new BookAdapter(requireContext(), R.layout.elemen_book, bookModels);
-                    lv.setAdapter(adapter);
-                    lv.setOnItemClickListener((parent, view, position, id) -> {
-                        BookModel bookModel = (BookModel) parent.getItemAtPosition(position);
-
-                        OpenThongTinSach(bookModel.getId());
-                    });
-                }
+                if(bookModels != null)
+                    setAdapter(bookModels);
             }
 
             @Override
@@ -147,9 +143,31 @@ public class BookFragment extends Fragment {
         });
     }
 
+    private void setAdapter(List<BookModel> bookModels) {
+        adapter = new BookAdapter(requireContext(), R.layout.elemen_book, bookModels, this);
+        lv.setAdapter(adapter);
+
+    }
+
     public void OpenThongTinSach(String bookId){
         Intent intent = new Intent(requireContext(), BookDetail.class);
         intent.putExtra("bookId", bookId);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemNameClicked(String itemId) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, new BookChapterFragment(itemId)).commit();
+    }
+
+    @Override
+    public void onEditButtonClicked(String itemId) {
+        OpenThongTinSach(itemId);
+    }
+
+    @Override
+    public void onDeleteButtonClicked(String itemId) {
+
     }
 }

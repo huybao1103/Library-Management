@@ -7,9 +7,10 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/book_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        
+        android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/img_hinh"
             android:layout_margin="5dp"
@@ -58,4 +59,51 @@
             android:layout_below="@id/nxb"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:background="#d6edfb"
+        >
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Book Chapter"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="15dp"
+            android:layout_alignParentRight="true">
+
+            <Button
+                android:id="@+id/add_chapter_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+ Add Chapter"
+                android:background="#ff7849"
+                android:textColor="#fff"
+                android:textAllCaps="false"/>
+        </androidx.cardview.widget.CardView>
+
+        <de.codecrafters.tableview.TableView
+            android:id="@+id/table_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewTitle"
+            app:tableView_headerColor="#d6edfb"
+            android:layout_marginTop="20dp"
+            app:tableView_columnCount="4">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </de.codecrafters.tableview.TableView>
+    </RelativeLayout>
 </LinearLayout>
