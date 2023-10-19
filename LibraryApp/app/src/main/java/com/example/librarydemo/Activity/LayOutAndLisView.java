@@ -1,13 +1,15 @@
-package com.example.librarydemo.Activity.Books;
+package com.example.librarydemo.Activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.librarydemo.Activity.Fragments.AuthorFragment.AuthorFragment;
+import com.example.librarydemo.Activity.Fragments.BookFragment.BookDetail;
+import com.example.librarydemo.Activity.Fragments.BookFragment.BookFragment;
+import com.example.librarydemo.Activity.Fragments.CategoriesFragment.CategoriesFragment;
+import com.example.librarydemo.Activity.Fragments.PublisherFragment.PublisherFragment;
 import com.example.librarydemo.ArrayLog;
 import com.example.librarydemo.Author.AuthorListActivity;
-import com.example.librarydemo.ChangPass;
 import com.example.librarydemo.Login;
 import com.example.librarydemo.Models.Book.BookModel;
 
@@ -18,7 +20,6 @@ import com.example.librarydemo.Services.ApiResponse;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.RetrofitClient;
 import com.example.librarydemo.UpdateBook;
-import com.example.librarydemo.UserInformation;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -43,9 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LayOutAndLisView extends AppCompatActivity
-
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class LayOutAndLisView extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView lv;
 
@@ -85,7 +84,7 @@ public class LayOutAndLisView extends AppCompatActivity
         setContentView(R.layout.activity_lay_out_and_lis_view);
 
         AnhXa();
-        ArrayBook();
+//        ArrayBook();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -102,7 +101,7 @@ public class LayOutAndLisView extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        ArrayBook();
+//        ArrayBook();
     }
 
     /**
@@ -182,8 +181,8 @@ public class LayOutAndLisView extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
+
         if (id == R.id.nav_tacgia) {
             Intent intent = new Intent(this, AuthorListActivity.class);
             startActivity(intent);
@@ -210,16 +209,23 @@ public class LayOutAndLisView extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-            int id = item.getItemId();
-        if (id == R.id.nav_tacgia) {
-            Intent intent = new Intent(this, AuthorListActivity.class);
-            startActivity(intent);
+        switch (id)
+        {
+            case R.id.nav_book:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BookFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                break;
+            case R.id.nav_tacgia:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AuthorFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                break;
+            case R.id.nav_QLNXB:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PublisherFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                break;
+            case R.id.nav_category:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CategoriesFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                break;
         }
-            if (id == R.id.nav_QLNXB) {
-                Intent intent = new Intent(this, PublisherInformation.class);
-                startActivity(intent);
-            }
 
             return true;
         }

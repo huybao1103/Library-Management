@@ -1,4 +1,7 @@
-﻿namespace LibraryAPI.RequestModels
+﻿using LibraryAPI.ViewModels.Book;
+using LibraryAPI.ViewModels.LibraryCard;
+
+namespace LibraryAPI.RequestModels
 {
     public class LibraryCardRequest
     {
@@ -15,5 +18,6 @@
         public string? Description { get; set; }
 
         public string StudentId { get; set; } = null!;
+        public virtual ICollection<StudentImageModel> StudentImages { get; set; } = new List<StudentImageModel>();
     }
 }

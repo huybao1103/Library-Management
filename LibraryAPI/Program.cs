@@ -5,6 +5,7 @@ using LibraryAPI.CustomException;
 using LibraryAPI.PubSub;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,11 +27,12 @@ builder.Services.AddCors(options =>
     builder =>
     {
         builder.WithOrigins(
-                            "http://localhost:4200"
-                            )
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-    });
+                    "http://localhost:4200"
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+});
 });
 
 // Allow CORS Android Studio
@@ -49,6 +51,11 @@ builder.WebHost.UseKestrel();
 builder.WebHost.UseUrls("https://10.0.2.2:7082");
 
 builder.AddPubSub((config) => { });
+
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<CustomExceptionFilter>();
+});
 
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 var app = builder.Build();

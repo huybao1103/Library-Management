@@ -16,12 +16,12 @@ export function BorrowHistoryInfoField(): FormlyFieldConfig[] {
               required: true,
             },
             expressions: {
-                'props.options': "formState.optionList.book",
-                'props.change': (field: FormlyFieldConfig) => {
-                    if(field.key === 'bookId') {
-                        return field.options?.formState.onBookSelected(field.formControl?.value)
-                    }
+              'props.options': "formState.optionList.book",
+              'props.change': (field: FormlyFieldConfig) => {
+                if(field.key === 'bookId') {
+                    return field.options?.formState.onBookSelected(field.formControl?.value)
                 }
+              }
             }
           },
           {
@@ -44,6 +44,13 @@ export function BorrowHistoryInfoField(): FormlyFieldConfig[] {
               label: 'Borrow Date',
               required: true
             },
+            expressions: {
+              'props.change': (field: FormlyFieldConfig) => {
+                if(field.key === 'borrowDate') {
+                    return field.options?.formState.onBorrowDateSelect()
+                }
+              }
+            }
           },
           {
             className: 'col-6',

@@ -253,7 +253,7 @@ namespace LibraryAPI.Controllers
                     .ThenInclude(a => a.File)
                 .Include(a => a.BookCategories)
                     .ThenInclude(a => a.Category)
-                .Include(a => a.BookChapters)
+                .Include(a => a.BookChapters.OrderBy(bc => bc.Chapter))
             .FirstOrDefault(book => book.Id == bookId);
         }
 

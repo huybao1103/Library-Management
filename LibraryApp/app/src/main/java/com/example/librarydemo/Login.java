@@ -9,9 +9,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.librarydemo.Activity.Books.LayOutAndLisView;
+import com.example.librarydemo.Activity.LayOutAndLisView;
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.DBLog.Log;
 import com.example.librarydemo.DBUser.User;

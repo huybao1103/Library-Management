@@ -40,7 +40,8 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
       },
       maxDate: undefined,
       minDate: undefined,
-      onBookSelected: this.onBookSelected.bind(this)
+      onBookSelected: this.onBookSelected.bind(this),
+      onBorrowDateSelect: this.setBorrowDateRange.bind(this),
     }
   };
   
@@ -92,10 +93,15 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
     this.getOptionValue()
   }
 
-  setBorrowDateRange() {
-    const currentDate = new Date();
-    this.options.formState.maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
-    this.options.formState.minDate = new Date(currentDate.getTime());
+  setBorrowDateRange(value?: string) {
+    const currentDate = new Date(this.data.borrowDate);
+      this.options.formState.maxDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000);
+      this.options.formState.minDate = new Date(currentDate.getTime());
+      
+      this.data.endDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000).toISOString();
+  
+      // this.fields = BorrowHistoryInfoField();
+      this.cdr.detectChanges();
   }
 
   getLibraryCardById() {
@@ -186,6 +192,7 @@ export class NewHistoryRecordComponent implements IDialogType, OnDestroy {
     ).subscribe({
       next: () => {
         this._toastService.show(MessageType.success, "New records save successfully");
+        this.close();
       },
       error: (err: HttpErrorResponse) => {
         this._toastService.show(MessageType.error, err.error?.detail);

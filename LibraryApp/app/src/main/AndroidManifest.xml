@@ -26,7 +26,7 @@
             android:name=".Activity.Authors.AuthorManagement"
             android:exported="false" />
         <activity
-            android:name=".Activity.Books.BookDetail"
+            android:name=".Activity.Fragments.BookFragment.BookDetail"
             android:exported="false" />
         <activity
             android:name=".Sample.SampleActivity"
@@ -49,7 +49,7 @@
 <!--        <activity android:name=".Publisher.ListPublisher"/>-->
 
         <activity
-            android:name=".Activity.Books.LayOutAndLisView"
+            android:name=".Activity.LayOutAndLisView"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SignUp" />
         <activity

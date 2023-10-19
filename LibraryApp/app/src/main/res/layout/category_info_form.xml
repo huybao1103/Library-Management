@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Author"
+        android:text="Add Category"
         android:textColor="#fff"
         android:textSize="18sp"
         android:padding="15dp"
@@ -35,7 +35,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Author Name: "
+                    android:text="Category Name: "
                     android:textColor="#000"
                     android:textStyle="bold"
                     android:drawableRight="@drawable/asterisk_required" />
@@ -44,9 +44,9 @@
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Author name..."
+                    android:hint="Category name..."
                     android:textSize="15sp"
-                    app:startIconDrawable="@drawable/ic_person_24"
+                    app:startIconDrawable="@drawable/abc_fill1_wght400_grad0_opsz24"
                     app:endIconMode="clear_text"
                     app:errorEnabled="true"
                     app:counterEnabled="true"
@@ -55,7 +55,7 @@
                     app:helperTextTextColor="#FF0000"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_authorName"
+                        android:id="@+id/edt_categoryName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"/>
@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Phone number: "
+                    android:text="Description: "
                     android:textColor="#000"
                     android:textStyle="bold"
                     android:layout_centerVertical="true"/>
@@ -80,52 +80,20 @@
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Author phone number..."
-                    app:startIconDrawable="@drawable/ic_local_phone_24"
+                    android:hint="Category description..."
+                    app:startIconDrawable="@drawable/abc_fill1_wght400_grad0_opsz24"
                     app:counterEnabled="true"
                     app:counterMaxLength="11"
                     android:textSize="15sp"
                     app:endIconMode="clear_text"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_authorPhone"
+                        android:id="@+id/edt_categoryDes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="12"
-                        android:inputType="phone"/>
+                        android:maxLength="12"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Email: "
-                    android:textColor="#000"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Author email..."
-                    app:startIconDrawable="@drawable/ic_alternate_email_24"
-                    android:textSize="15sp"
-                    app:endIconMode="clear_text"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_authorEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"/>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -143,34 +111,12 @@
                     android:theme="@style/AppTheme">
 
                     <Button
-                        android:id="@+id/add_author_submit"
+                        android:id="@+id/add_publisher_submit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Submit"
                         android:textSize="18dp"
                         android:background="#ff7849"
-                        android:textColor="#fff"
-                        android:textAllCaps="false"/>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/delete_btn_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="5dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:theme="@style/AppTheme"
-                    android:visibility="gone">
-
-                    <Button
-                        android:id="@+id/delete_author"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Delete"
-                        android:textSize="18dp"
-                        android:background="#7b7e82"
                         android:textColor="#fff"
                         android:textAllCaps="false"/>
                 </androidx.cardview.widget.CardView>
