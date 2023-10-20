@@ -14,16 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activity.Fragments.LibraryCardFragment.NewRecordDetail"
+            android:exported="false" />
+        <activity
             android:name=".Author.AuthorListActivity"
             android:exported="false" />
         <activity
             android:name=".Author.AddAuthor"
             android:exported="false" />
         <activity
-        android:name=".Author.EditAuthor"
-        android:exported="false"/>
-        <activity
-            android:name=".Activity.Authors.AuthorManagement"
+            android:name=".Author.EditAuthor"
             android:exported="false" />
         <activity
             android:name=".Activity.Fragments.BookFragment.BookDetail"
@@ -42,12 +42,9 @@
         <activity android:name=".ChangPass" />
         <activity android:name=".UserInformation" />
         <activity android:name=".LogInformation" />
-        <activity android:name=".BookInformation" />
-
-<!--        <activity android:name=".Publisher.AddPublisher"/>-->
-<!--        <activity android:name=".Publisher.EditPublisher"/>-->
-<!--        <activity android:name=".Publisher.ListPublisher"/>-->
-
+        <activity android:name=".BookInformation" /> <!-- <activity android:name=".Publisher.AddPublisher"/> -->
+        <!-- <activity android:name=".Publisher.EditPublisher"/> -->
+        <!-- <activity android:name=".Publisher.ListPublisher"/> -->
         <activity
             android:name=".Activity.LayOutAndLisView"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -61,50 +58,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Publisher.PublisherInformation"
+        <activity
+            android:name=".Publisher.PublisherInformation"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
-
         </activity>
-
-        <activity android:name=".Publisher.AddPublisher"
+        <activity
+            android:name=".Publisher.AddPublisher"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Publisher.EditPublisher"
+        <activity
+            android:name=".Publisher.EditPublisher"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Publisher.ListPublisher"
+        <activity
+            android:name=".Publisher.PublisherDetail"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Publisher.PublisherDetail"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
     </application>
 
 </manifest>

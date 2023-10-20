@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Book Management"
+            android:text="Library Card Management"
             android:textColor="#000"
             android:textSize="18sp"
             android:layout_marginLeft="15dp"
@@ -33,18 +33,19 @@
             android:layout_alignParentRight="true">
 
             <Button
+                android:id="@+id/add_card_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+ Add Book"
+                android:text="+ Add Card"
                 android:background="#ff7849"
                 android:textColor="#fff"
-                android:onClick="bookDetail"
                 android:textAllCaps="false"/>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/arraybook"
+        android:id="@+id/lv_card"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"/>
 </LinearLayout>

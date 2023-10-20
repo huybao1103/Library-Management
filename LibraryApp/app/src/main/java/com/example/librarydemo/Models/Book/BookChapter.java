@@ -1,7 +1,5 @@
 package com.example.librarydemo.Models.Book;
 
-import com.example.librarydemo.Enum.BookChapterStatus;
-
 public class BookChapter {
     private String id;
     private String identifyId;
@@ -10,7 +8,7 @@ public class BookChapter {
     private String bookId;
     private int chapter;
     private String lostOrDestroyedDate;
-    BookModel BookObject;
+    BookModel book;
 
     public BookChapter() {
     }
@@ -46,7 +44,7 @@ public class BookChapter {
     }
 
     public BookModel getBook() {
-        return BookObject;
+        return book;
     }
 
     // Setter Methods
@@ -80,6 +78,6 @@ public class BookChapter {
     }
 
     public void setBook(BookModel bookObject) {
-        this.BookObject = bookObject;
+        this.book = bookObject;
     }
 }

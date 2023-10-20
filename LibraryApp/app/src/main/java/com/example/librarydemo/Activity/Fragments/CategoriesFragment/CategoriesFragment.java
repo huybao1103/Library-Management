@@ -146,7 +146,6 @@ public class CategoriesFragment extends Fragment implements IConfirmDialogEventL
 
     private void setPublisherAdapter(List<CategoryModel> publisherList) {
         table_view = new TableListService(new String[]{"Name", "Description"}, table_view, (AppCompatActivity) requireActivity()).setColumnModel();
-
         table_view.setDataAdapter(new TableDataAdapter(requireContext(), publisherList) {
             @Override
             public View getCellView(int rowIndex, int columnIndex, ViewGroup parentView) {

@@ -53,6 +53,8 @@ public interface ApiService {
      */
     @POST("api/{controller}/save")
     Call<JsonObject> save(@Path("controller") String controller, @Body JsonObject data);
+    @POST("api/{controller}/save")
+    Call<JsonArray> save(@Path("controller") String controller, @Body JsonArray data);
 
     /**
      * Search book
@@ -88,4 +90,7 @@ public interface ApiService {
      */
     @GET("api/{url}")
     Call<JsonObject> getByIdWithCustomUrl(@Path("url") String url);
+
+    @GET("api/BookChapters/option/{bookId}")
+    Call<JsonArray> getBookChapterSpinner(@Path("bookId") String bookId);
 }
