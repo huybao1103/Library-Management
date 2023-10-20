@@ -4,36 +4,46 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.librarydemo.Activity.Fragments.BookFragment.BookDetail;
+import com.example.librarydemo.Enum.BorrowHistoryStatus;
 import com.example.librarydemo.Enum.LibraryCardStatus;
-import com.example.librarydemo.Models.Book.BookModel;
+import com.example.librarydemo.Models.CategoryModel;
 import com.example.librarydemo.Models.LibraryCard.BorrowHistory;
 import com.example.librarydemo.Models.LibraryCard.LibraryCard;
+import com.example.librarydemo.Models.SpinnerOption;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
 import com.example.librarydemo.Services.Base64Service;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.Interface.AdapterEvent.IAdapterEventListener;
+import com.example.librarydemo.Services.Layout.ApiRequest;
+import com.example.librarydemo.Services.Layout.CustomSpinner;
+import com.example.librarydemo.Services.Layout.DatePickerService;
 import com.example.librarydemo.Services.LocalDateTimeConvert;
 import com.example.librarydemo.Services.RetrofitClient;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,6 +61,10 @@ public class BorrowHistoryFragment extends Fragment implements IAdapterEventList
     ListView lv_card;
     LibraryCard currentCard;
     BorrowHistoryAdapter adapter;
+    AlertDialog dialog;
+    private ArrayList<SpinnerOption> chapterStatusList = new ArrayList<>();
+    BorrowHistory currentRecord;
+    LocalDateTimeConvert localDateTimeConvert;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -121,6 +135,7 @@ public class BorrowHistoryFragment extends Fragment implements IAdapterEventList
         apiService = RetrofitClient.getApiService(requireContext());
 
         lv_card = view.findViewById(R.id.lv_card);
+        localDateTimeConvert = new LocalDateTimeConvert();
     }
 
     private void getLibraryCardById() {
@@ -182,11 +197,114 @@ public class BorrowHistoryFragment extends Fragment implements IAdapterEventList
 
     @Override
     public void onEditButtonClicked(String itemId) {
-
+        getHistoryRecordById(itemId);
     }
 
+    private void getHistoryRecordById(String itemId) {
+        apiService.getById(ControllerConst.BORROWHISTORIES, itemId).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                currentRecord = new ApiResponse<BorrowHistory>()
+                .getResultFromResponse
+                (
+                    response,
+                    new TypeToken<BorrowHistory  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>() {
+                    }.getType()
+                );
+
+                if(currentRecord != null) {
+                    openBorrowHistoryForm();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {}
+        });
+    }
+
+    private void openBorrowHistoryForm()
+    {
+        View recordFormDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.borrow_history_info_form, null);
+        bindLayoutDialog(recordFormDialogView);
+
+        dialog = new MaterialAlertDialogBuilder(requireContext())
+                .setView(recordFormDialogView)
+                .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }).create();
+        dialog.setCanceledOnTouchOutside(true);
+//        alertDialog.on
+        dialog.show();
+
+        Button submit_btn = recordFormDialogView.findViewById(R.id.edit_record_submit);
+        submit_btn.setOnClickListener(view -> {
+//            if(formValid)
+                editRecordSubmit();
+        });
+    }
+
+    private void bindLayoutDialog(View formDialog) {
+        AutoCompleteTextView spn_status = formDialog.findViewById(R.id.spn_status);
+
+        TextInputEditText edt_borrowDate = formDialog.findViewById(R.id.edt_borrowDate);
+        TextInputEditText edt_endDay = formDialog.findViewById(R.id.edt_endDate);
+
+        edt_borrowDate.setOnClickListener(v -> {
+            new DatePickerService().showDatePickerDialog(requireContext(), edt_borrowDate);
+            currentRecord.setBorrowDate(edt_borrowDate.getText().toString());
+        });
+        edt_endDay.setOnClickListener(v -> {
+            new DatePickerService().showDatePickerDialog(requireContext(), edt_endDay);
+            currentRecord.setEndDate(edt_endDay.getText().toString());
+        });
+
+        for (BorrowHistoryStatus status: BorrowHistoryStatus.values()) {
+            SpinnerOption spinnerOption = new SpinnerOption(status.name(), status.getCode());
+
+            chapterStatusList.add(spinnerOption);
+            if(currentRecord != null && status.getCode() == currentRecord.getStatus())
+                spn_status.setText(status.name());
+        }
+        CustomSpinner customSpinner = new CustomSpinner(requireContext(), chapterStatusList);
+
+        spn_status.setAdapter(customSpinner);
+
+        spn_status.setOnItemClickListener((adapterView, view, i, l) -> {
+            SpinnerOption option = (SpinnerOption) adapterView.getItemAtPosition(i);
+            currentRecord.setStatus(option.getValueInt());
+        });
+
+        if(currentRecord != null) {
+            edt_borrowDate.setText(localDateTimeConvert.convertDate(currentRecord.getBorrowDate()));
+            edt_endDay.setText(localDateTimeConvert.convertDate(currentRecord.getEndDate()));
+        }
+    }
+
+    private void editRecordSubmit() {
+        currentRecord.setBorrowDate(localDateTimeConvert.convertToISODateTime(currentRecord.getBorrowDate()));
+        currentRecord.setEndDate(localDateTimeConvert.convertToISODateTime(currentRecord.getEndDate()));
+
+        JsonObject data = new ApiRequest().convertModelToJSONObject(currentRecord);
+
+        apiService.saveAllWithCustomUrl(ControllerConst.BORROWHISTORIES, "edit-history-info", data).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                if(response.isSuccessful()) {
+                    dialog.dismiss();
+                    getLibraryCardById();
+                }
+                else {
+                    Toast.makeText(requireContext(), Objects.requireNonNull(response.errorBody()).toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+    }
     @Override
-    public void onDeleteButtonClicked(String itemId) {
-
-    }
+    public void onDeleteButtonClicked(String itemId) {}
 }
