@@ -7,6 +7,7 @@ import com.example.librarydemo.Activity.Fragments.AuthorFragment.AuthorFragment;
 import com.example.librarydemo.Activity.Fragments.BookFragment.BookDetail;
 import com.example.librarydemo.Activity.Fragments.BookFragment.BookFragment;
 import com.example.librarydemo.Activity.Fragments.CategoriesFragment.CategoriesFragment;
+import com.example.librarydemo.Activity.Fragments.LibraryCardFragment.LibraryCardFragment;
 import com.example.librarydemo.Activity.Fragments.PublisherFragment.PublisherFragment;
 import com.example.librarydemo.ArrayLog;
 import com.example.librarydemo.Author.AuthorListActivity;
@@ -84,7 +85,7 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_lay_out_and_lis_view);
 
         AnhXa();
-//        ArrayBook();
+//        getCard();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -101,7 +102,7 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
     @Override
     protected void onResume() {
         super.onResume();
-//        ArrayBook();
+//        getCard();
     }
 
     /**
@@ -214,16 +215,19 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
         switch (id)
         {
             case R.id.nav_book:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BookFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BookFragment()).commit();
                 break;
             case R.id.nav_tacgia:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AuthorFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AuthorFragment()).commit();
                 break;
             case R.id.nav_QLNXB:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PublisherFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PublisherFragment()).commit();
                 break;
             case R.id.nav_category:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CategoriesFragment()).commit();//1 fragment mac dinh se thay the vao mot fragment container để hien thi nd
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CategoriesFragment()).commit();
+                break;
+            case R.id.nav_library_card:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LibraryCardFragment()).commit();
                 break;
         }
 

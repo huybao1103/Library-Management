@@ -45,10 +45,6 @@ public class BookFragment extends Fragment implements IAdapterEventListener {
     public static ArrayList<Book> getBook_Deefault() {
         return Book_Deefault;
     }
-
-    public static void setBook_Deefault(ArrayList<Book> book_Deefault) {
-        Book_Deefault = book_Deefault;
-    }
     private BookAdapter adapter;
     //---------------User hiện tại------------------------------------
     public static User user_pro;

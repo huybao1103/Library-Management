@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/img_hinh"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/adapter_menu_btn"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/student_name"
+            android:text="Student name"
+            android:textStyle="bold"
+            android:textColor="#FF7849"
+            android:textSize="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/img_hinh"
+            android:layout_below="@id/adapter_menu_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/student_Id"
+            android:text="21DH110150"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/expiry_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="19/10/2023"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Active"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:gravity="end" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/adapter_menu_btn"
+        android:layout_width="0dp"
+        android:layout_weight="0.1"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/baseline_more_vert_24"
+        android:background="@color/transparent"
+        android:layout_alignParentRight="true"/>
+</LinearLayout>
