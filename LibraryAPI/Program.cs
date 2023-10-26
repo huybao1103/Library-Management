@@ -6,6 +6,7 @@ using LibraryAPI.PubSub;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
+using LibraryAPI.InitData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,9 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
+
+new AccountAndRoleInit();
+
 var app = builder.Build();
 app.UseCors("AllowAngularOrigins");
 app.UseCors("AllowAndroiStudioOrigins");

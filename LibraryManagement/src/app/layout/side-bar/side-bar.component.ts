@@ -1,6 +1,7 @@
+import { HttpService } from 'src/app/services/http-service.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, first } from 'rxjs';
 import { MenuItem } from 'src/app/models/menu';
 import * as $ from "jquery";
 
@@ -25,71 +26,13 @@ export class SideBarComponent implements OnInit {
     settings: false,
   };
 
-  menus: MenuItem[] = [
-    {
-      name: 'Book Managements',
-      code: 'book',
-      icon: 'fa fa-book',
-      subMenus: [
-        {
-          name: 'Books',
-          code: 'book',
-          icon: 'fa fa-book',
-          route: 'book'
-        },
-        {
-          name: 'Categories',
-          code: 'book',
-          icon: 'la la-border-all',
-          route: 'category'
-        }
-      ]
-    },
-    {
-      name: 'Author Managements',
-      code: 'author',
-      icon: 'fa fa-user',
-      subMenus: [
-        {
-          name: 'Authors',
-          code: 'author',
-          icon: 'fa fa-user',
-          route: 'author'
-        }
-      ]
-    },
-    {
-      name: 'Publisher Managements',
-      code: 'publisher',
-      icon: 'fa fa-address-book',
-      subMenus: [
-        {
-          name: 'Publishers',
-          code: 'publisher',
-          icon: 'fa fa-address-book',
-          route: 'publisher'
-        }
-      ]
-    },
-    {
-      name: 'Readers Managements',
-      code: 'reader',
-      icon: 'la la-book-reader',
-      subMenus: [
-        {
-          name: 'Library Cards',
-          code: 'library-card',
-          icon: 'fa fa-address-card',
-          route: 'library-card'
-        }
-      ]
-    },
-  ];
+  menus: MenuItem[] = [];
 
   subscriptions = new Subscription();
 
   constructor(
     private router: Router,
+    private httpService: HttpService
   ) {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
@@ -100,7 +43,19 @@ export class SideBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sidebarAnimation();
+    this.httpService.saveWithCustomURL<MenuItem[]>(
+    { 
+      controller: "Data", 
+      url: "Data/menu"
+    })
+    .pipe(first())
+    .subscribe({
+      next: (res) => {
+        if(res)
+          this.menus = res;
+        this.sidebarAnimation();
+      }
+    })
   }
 
   sidebarAnimation() {

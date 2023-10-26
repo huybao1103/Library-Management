@@ -52,6 +52,10 @@ import { NewHistoryRecordComponent } from './library-card-management/new-history
 import { DatatimePickerModule } from '../formly/form/datetime-picker/datatime-picker.module';
 import { CalendarModule } from 'primeng/calendar';
 import { NgSelectItemModule } from '../formly/form/ng-select/ng-select.module';
+import { ReaderAccountListComponent } from './account-management/reader/reader-account-list/reader-account-list.component';
+import { EmployeeAccountListComponent } from './account-management/employee/employee-account-list/employee-account-list.component';
+import { ReaderAccountDetailComponent } from './account-management/reader/reader-account-detail/reader-account-detail.component';
+import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -80,6 +84,10 @@ import { NgSelectItemModule } from '../formly/form/ng-select/ng-select.module';
     BookChapterComponent,
     BookChapterInfoEditComponent,
     NewHistoryRecordComponent,
+    ReaderAccountListComponent,
+    EmployeeAccountListComponent,
+    ReaderAccountDetailComponent,
+    EmployeeAccountDetailComponent,
   ],
   imports: [
     DialogModule,

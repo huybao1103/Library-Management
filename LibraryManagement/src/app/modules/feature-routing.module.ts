@@ -18,6 +18,10 @@ import { LibraryCardDetailComponent } from './library-card-management/library-ca
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
 import { NewHistoryRecordComponent } from './library-card-management/new-history-record/new-history-record.component';
+import { ReaderAccountDetailComponent } from './account-management/reader/reader-account-detail/reader-account-detail.component';
+import { ReaderAccountListComponent } from './account-management/reader/reader-account-list/reader-account-list.component';
+import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
+import { EmployeeAccountListComponent } from './account-management/employee/employee-account-list/employee-account-list.component';
 
 const routes: Routes = [
   {
@@ -102,6 +106,26 @@ const routes: Routes = [
         component: ModalbaseComponent,
         outlet: 'modal',
         data: { component: NewHistoryRecordComponent }
+      },
+      {
+        path: 'reader-account-list',
+        component: ReaderAccountListComponent,
+      },
+      {
+        path: 'reader-account-list/edit/:id',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: ReaderAccountDetailComponent }
+      },
+      {
+        path: 'employee-account-list',
+        component: EmployeeAccountListComponent,
+      },
+      {
+        path: 'employee-account-list/edit/:id',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: EmployeeAccountDetailComponent }
       },
     ]
   },

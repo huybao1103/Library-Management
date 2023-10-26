@@ -1,20 +1,45 @@
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAuthor } from '../models/author.model';
-import { Observable, map, tap } from 'rxjs';
+import { forEach, get } from 'lodash';
+import { Observable, Subject, map, of, tap } from 'rxjs';
 import { IQueryData } from '../models/query.model';
-import { MessageType } from '../enums/toast-message.enum';
+import { IPubSubMessage, PubsubService } from './pubsub.service';
 import { ToastService } from './toast.service';
+
+export interface IWatchData extends IPubSubMessage { }
+
+interface IOpStorage {
+  [op: string]: any;
+}
+
+export interface IResponseStationInfo {
+  broadcaster: Subject<any>;
+  observable: Observable<any>;
+}
+
+export interface IResponseBroadcaster {
+  op: string;
+  data: any;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
+  private _responseStation: { [op: string]: IResponseStationInfo } = {};
+  private opStorage: IOpStorage = {};
+  private _responseBroadcaster: Subject<IResponseBroadcaster> | undefined;
 
   constructor(
     private http: HttpClient,
-    private toastSevice: ToastService
-  ) { }
+    private toastSevice: ToastService,
+    private pubSubService: PubsubService
+  ) {
+    this.pubSubService.receiveMessage()?.pipe()
+        .subscribe((data: IPubSubMessage) => this.handleQueryWatchData(data));
+
+    this.getResponseReceiver().subscribe((response) => this._broadcastResult(response))
+  }
 
   getAll<T>(query: IQueryData, id?: string) {
     // api/Authors
@@ -114,4 +139,35 @@ export class HttpService {
       })
     );
   }
+
+  handleQueryWatchData(data: IPubSubMessage): void {
+    (data.topic || []).forEach((item) => {
+        forEach(this._responseStation, (key, data) => {
+          if (data.startsWith(item)) {
+            let storage = get(this.opStorage, data)
+            if (storage) {
+              this.getAll(storage)
+                  .subscribe({
+                      next: (_) => _,
+                      error: (_) => {}
+                  })
+            }
+          }
+        });
+    });
+  }
+
+  public getResponseReceiver(): Observable<IResponseBroadcaster> {
+    return this._responseBroadcaster ? this._responseBroadcaster.asObservable() : of();
+  }
+
+  private _broadcastResult(response: IResponseBroadcaster): void {
+    const responseStation = this._responseStation[response.op];
+    if (!responseStation) {
+      return;
+    }
+
+    responseStation.broadcaster.next(response.data);
+  }
+  
 }

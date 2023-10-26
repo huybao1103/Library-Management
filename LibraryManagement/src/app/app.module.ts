@@ -16,11 +16,15 @@ import { FeatureModule } from './modules/feature.module';
 import { ToastService } from './services/toast.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmDialogService } from './services/confirm-dialog.service';
+import { LoginComponent } from './login-register/login/login.component';
+import { RegisterComponent } from './login-register/register/register.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

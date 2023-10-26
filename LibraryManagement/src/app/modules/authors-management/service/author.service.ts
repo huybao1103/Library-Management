@@ -30,7 +30,7 @@ export class AuthorService {
   }
 
   getAuthorById(id: string) {
-    return this.httpService.getById<IAuthor>({controller: 'Authors'}, id);
+    return this.httpService.getById<IAuthor>({controller: 'Authors', op: 'author-info'}, id);
   }
 
   save(data: IAuthor) {

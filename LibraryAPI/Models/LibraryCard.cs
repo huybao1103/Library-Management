@@ -19,6 +19,8 @@ public partial class LibraryCard
 
     public string StudentId { get; set; } = null!;
 
+    public Guid? AccountId { get; set; }
+
     public virtual ICollection<BorrowHistory> BorrowHistories { get; set; } = new List<BorrowHistory>();
 
     public virtual ICollection<StudentImage> StudentImages { get; set; } = new List<StudentImage>();

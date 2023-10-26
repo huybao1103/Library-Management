@@ -23,34 +23,34 @@ export class PubsubService {
   }
 
   private _init() {
-      this.ngZone.runOutsideAngular(() => {
-          this._hub = new signalR.HubConnectionBuilder()
-              .withUrl(environment.pubSubHost)
-              .withAutomaticReconnect()
-              .configureLogging(signalR.LogLevel.Error)
-              .build();
+    this.ngZone.runOutsideAngular(() => {
+      this._hub = new signalR.HubConnectionBuilder()
+        .withUrl(environment.pubSubHost)
+        .withAutomaticReconnect()
+        .configureLogging(signalR.LogLevel.Error)
+        .build();
 
-          this._hub
-              .start()
-              .then((_) => {
-                console.log('[Pub Sub] Connection started');
-              })
-              .catch((err: any) => console.log('[Pub Sub] Error while starting connection: ' + err))
-      });
+      this._hub
+        .start()
+        .then((_) => {
+          console.log('[Pub Sub] Connection started');
+        })
+        .catch((err: any) => console.log('[Pub Sub] Error while starting connection: ' + err))
+    });
   }
 
   private _initMessageReceiver() {
-      this._messageSubject = new Subject<IPubSubMessage>();
-      this.ngZone.runOutsideAngular(() => {
-          this._hub?.on("PubSub", (data: any) => {
-              this.ngZone.run(() => {
-                  this._messageSubject?.next(data as IPubSubMessage);
-              });
-          });
+    this._messageSubject = new Subject<IPubSubMessage>();
+    this.ngZone.runOutsideAngular(() => {
+      this._hub?.on("PubSub", (data: any) => {
+        this.ngZone.run(() => {
+          this._messageSubject?.next(data as IPubSubMessage);
+        });
       });
+    });
   }
 
   receiveMessage() {
-      return this._messageSubject?.asObservable();
+    return this._messageSubject?.asObservable();
   }
 }

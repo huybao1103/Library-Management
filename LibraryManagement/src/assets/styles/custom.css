@@ -45,6 +45,15 @@
     min-width: 100%;
 }
 
+.header .has-arrow .dropdown-toggle:after {
+    border-bottom: 2px solid #fff !important;
+    border-right: 2px solid #fff !important;
+}
+
+.page-header-custom {
+    margin: 5.5rem 1rem !important;
+}
+
 /* Header */
 .header {
     background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);

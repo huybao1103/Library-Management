@@ -2,58 +2,61 @@
     <div class="mx-4">
         <h3 class="page-title">Library Card</h3>
         <h4>Detail Information</h4>
-        <div class="row border p-3 profile" *ngIf="libraryCard$ | async as libraryCard">
-            <div class="col-2 vertical-center">
-                <div>
-                    <p-galleria [value]="libraryCard.studentImages" [circular]="true" [showThumbnails]="false"
-                        [containerStyle]="{ 'max-width': '500px' }">
-                        <ng-template pTemplate="item" let-item>
-                            <img style="border-radius: 5%;" [src]="item.base64" class="rsp-Image" />
-                        </ng-template>
-                    </p-galleria>
-                </div>
-            </div>
-            <div class="col-3 vertical-center">
-                <div class="text-ellipsis min-w-100" style="overflow: hidden">
-                    <div class="mb-3 d-flex w-100">
-                        <div class="title">Name:</div> 
-                        <div class="text">{{ libraryCard.name }}</div>
-                    </div>
-    
-                    <div class="mb-3 d-flex w-100">
-                        <div class="title">Student ID:</div> 
-                        <div class="text">{{ libraryCard.studentId }}</div>
-                    </div>
-    
-                    <div class="mb-3 d-flex w-100">
-                        <div class="title">Class:</div> 
-                        <div class="text">{{ libraryCard.class }}</div>
+        <div class="card border border-light border-2 card-file">
+            <div class="row m-3 profile" *ngIf="libraryCard$ | async as libraryCard">
+                <div class="col-2 vertical-center">
+                    <div>
+                        <p-galleria [value]="libraryCard.studentImages" [circular]="true" [showThumbnails]="false"
+                            [containerStyle]="{ 'max-width': '500px' }">
+                            <ng-template pTemplate="item" let-item>
+                                <img style="border-radius: 5%;" [src]="item.base64" class="rsp-Image" />
+                            </ng-template>
+                        </p-galleria>
                     </div>
                 </div>
-            </div>
-            <div class="column-border-right col-1"></div>
-            <div class="col-5 vertical-center">
-                <div class="text-ellipsis min-w-100" style="overflow: hidden">
-                    <div class="mb-3 d-flex w-100">
-                        <div class="title">Expiry Date:</div> 
-                        <div class="text">{{ libraryCard.expiryDate | date: 'dd/MM/yyyy' }}</div>
-                    </div>
-    
-                    <div class="mb-3 d-flex w-100">
-                        <div class="title">Status:</div> 
-                        <div class="text">{{ LibraryCardStatus[libraryCard.status] }}</div>                    
-                    </div>
-    
-                    <div class="mb-3 d-flex w-100">
-                        <div class="title">Description:</div> 
-                        <div class="text">{{ libraryCard.description }}</div>                    
+                <div class="col-3 vertical-center">
+                    <div class="text-ellipsis min-w-100" style="overflow: hidden">
+                        <div class="mb-3 d-flex w-100">
+                            <div class="title">Name:</div> 
+                            <div class="text">{{ libraryCard.name }}</div>
+                        </div>
+        
+                        <div class="mb-3 d-flex w-100">
+                            <div class="title">Student ID:</div> 
+                            <div class="text">{{ libraryCard.studentId }}</div>
+                        </div>
+        
+                        <div class="mb-3 d-flex w-100">
+                            <div class="title">Class:</div> 
+                            <div class="text">{{ libraryCard.class }}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-1" style="text-align: right;">
-                <p class="la la-edit"(click)="editLibraryCard()"></p>
+                <div class="column-border-right col-1"></div>
+                <div class="col-5 vertical-center">
+                    <div class="text-ellipsis min-w-100" style="overflow: hidden">
+                        <div class="mb-3 d-flex w-100">
+                            <div class="title">Expiry Date:</div> 
+                            <div class="text">{{ libraryCard.expiryDate | date: 'dd/MM/yyyy' }}</div>
+                        </div>
+        
+                        <div class="mb-3 d-flex w-100">
+                            <div class="title">Status:</div> 
+                            <div class="text">{{ LibraryCardStatus[libraryCard.status] }}</div>                    
+                        </div>
+        
+                        <div class="mb-3 d-flex w-100">
+                            <div class="title">Description:</div> 
+                            <div class="text">{{ libraryCard.description }}</div>                    
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1" style="text-align: right;">
+                    <p class="la la-edit"(click)="editLibraryCard()"></p>
+                </div>
             </div>
         </div>
+        
     </div>
     <div class="history-record-list" *ngIf="libraryCard$ | async as LibraryCard">
         <p-table 
