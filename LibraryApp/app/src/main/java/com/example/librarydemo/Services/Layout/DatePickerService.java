@@ -16,7 +16,7 @@ public class DatePickerService {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 context, 
-                (datePicker, year1, month1, day) -> edt_date.setText(String.format("%02d/%02d/%02d", day, month1, year1)),
+                (datePicker, year1, month1, day) -> edt_date.setText(String.format("%02d/%02d/%02d", day, month1 + 1, year1)),
                 year, month, dayOfMonth
         );
         datePickerDialog.show();

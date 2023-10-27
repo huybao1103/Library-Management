@@ -114,7 +114,7 @@ public class LocalDateTimeConvert {
      */
     public String convertToISODateTime(String dateString) {
         DateTimeFormatter inputFormatter = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (!dateString.contains(":") && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             LocalDate date = LocalDate.parse(dateString, inputFormatter);
@@ -124,6 +124,6 @@ public class LocalDateTimeConvert {
 
             return dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         }
-        return null;
+        return dateString;
     }
 }
