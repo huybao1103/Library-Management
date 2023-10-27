@@ -100,6 +100,12 @@ namespace LibraryAPI.Controllers
 
             libraryCard.StudentImages.Clear();
 
+            if(libraryCard.AccountId.HasValue)
+            {
+                Account account = await _context.Accounts.FindAsync(libraryCard.AccountId.Value);
+                _context.Accounts.Remove(account);
+            }
+
             _context.LibraryCards.Remove(libraryCard);
             await _context.SaveChangesAsync();
 

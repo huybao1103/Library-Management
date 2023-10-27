@@ -3,6 +3,7 @@ using LibraryAPI.Models;
 using LibraryAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Extensions;
 using System.Collections.Generic;
 
 namespace LibraryAPI.InitData
@@ -32,9 +33,9 @@ namespace LibraryAPI.InitData
         {
             List<Role> roleList = new List<Role>
             {
-                new Role { Name = "Admin" },
-                new Role { Name = "Librarian" },
-                new Role { Name = "Reader" },
+                new Role { Name = DefaultRoleEnum.Admin.GetDisplayName(), NormalizedName = DefaultRoleEnum.Admin.GetDisplayName().ToLower() },
+                new Role { Name = DefaultRoleEnum.Librarian.GetDisplayName(), NormalizedName = DefaultRoleEnum.Librarian.GetDisplayName().ToLower() },
+                new Role { Name = DefaultRoleEnum.Reader.GetDisplayName(), NormalizedName = DefaultRoleEnum.Reader.GetDisplayName().ToLower() },
             };
             await _context.Roles.AddRangeAsync(roleList);
             await _context.SaveChangesAsync();
