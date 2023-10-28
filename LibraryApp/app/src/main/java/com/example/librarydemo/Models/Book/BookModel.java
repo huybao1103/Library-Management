@@ -84,4 +84,7 @@ public class BookModel {
     public void setInputDay(String inputDay) {
         inputDay = inputDay;
     }
+
+    public void setImageUrl(String imagePath) {
+    }
 }

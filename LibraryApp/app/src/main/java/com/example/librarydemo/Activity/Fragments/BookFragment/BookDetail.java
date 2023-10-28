@@ -1,19 +1,25 @@
     package com.example.librarydemo.Activity.Fragments.BookFragment;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
@@ -46,6 +52,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -60,6 +67,9 @@ import java.util.stream.Collectors;
     import retrofit2.Response;
 
 public class BookDetail extends AppCompatActivity implements CheckBoxListener {
+    private static final int PICK_IMAGE = 2;
+    private static final int PICK_IMAGE_REQUEST = 0;
+    private static final int YOUR_REQUEST_CODE = 1;
     ApiService apiService;
     MultiAutoCompleteTextView spn_category;
     AutoCompleteTextView spn_author_publisher;
@@ -82,15 +92,33 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
 
     // Add publisher form
     TextInputEditText edt_publisherName, edt_publisherPhone, edt_publisherEmail, edt_publisherAddress;
+    ImageView selectedImageView;
+    Button chooseImageButton;
 
     // Tab
     TabLayout author_publisher_tab;
     boolean isAuthorTabSelected = true;
     boolean formValid = false;
+    private String imagePath;
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+        selectedImageView = findViewById(R.id.selected_image_view);
+        chooseImageButton = findViewById(R.id.choose_image_button);
+
+        chooseImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Mở hộp thoại chọn ảnh
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            }
+        });
 
         assign();
         getCategories();
@@ -655,4 +683,50 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             }
         }
     }
+    public void onChooseImageClick(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == YOUR_REQUEST_CODE) { // YOUR_REQUEST_CODE là mã yêu cầu mà bạn đã sử dụng khi khởi động Intent
+                // Xử lý hình ảnh ở đây
+                if (data != null) {
+                    // Kiểm tra xem dữ liệu (data) có dấu mục tiêu (target) không
+                    if (data.getData() != null) {
+                        Uri selectedImage = data.getData();
+                        // Sử dụng selectedImage để hiển thị hoặc xử lý hình ảnh
+                    } else {
+                        // Xử lý trường hợp data.getData() trả về null
+                    }
+                }
+            }
+        } else {
+            // Xử lý trường hợp người dùng không chọn hình ảnh
+        }
+    }
+
+
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+
+        if (cursor == null) {
+            return null;
+        }
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String path = cursor.getString(column_index);
+        cursor.close();
+
+        return path;
+    }
 }
+
+

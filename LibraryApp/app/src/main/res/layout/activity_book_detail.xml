@@ -9,6 +9,9 @@
     android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
 
 
+
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,12 +29,15 @@
         android:layout_margin="15dp"
         android:orientation="vertical">
 
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Book Name: "
             android:textColor="#000"
             android:textStyle="bold"/>
+
 
         <com.google.android.material.textfield.TextInputLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -138,6 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
     </LinearLayout>
 
@@ -149,14 +156,34 @@
         android:layout_marginBottom="15dp"
         android:theme="@style/AppTheme">
 
+
+        <Button
+            android:id="@+id/choose_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Choose Image"
+            android:layout_marginLeft="85dp"
+            android:onClick="onChooseImageClick"
+            tools:ignore="OnClick" />
+
+
+        <ImageView
+            android:id="@+id/selected_image_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="50dp"
+             />
+
         <Button
             android:id="@+id/submit_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Submit"
+            android:layout_marginStart="-10dp"
             android:background="#ff7849"
             android:textColor="#fff"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:layout_marginLeft="-20dp" />
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.tabs.TabLayout

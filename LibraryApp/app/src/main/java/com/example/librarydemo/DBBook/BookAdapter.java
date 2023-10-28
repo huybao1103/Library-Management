@@ -58,20 +58,22 @@ public class BookAdapter extends BaseAdapter {
         return 0;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(layout,null);
-            //Ánh Xạ View
-            tensach= (TextView) convertView.findViewById(R.id.ten_sach);
-            tacgia = (TextView) convertView.findViewById(R.id.tac_gia);
-            theloai = (TextView) convertView.findViewById(R.id.the_loai);
-            imgsach = (ImageView) convertView.findViewById(R.id.img_hinh);
-            nxb = (TextView) convertView.findViewById(R.id.nxb);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(layout, null);
         }
 
-        //Gán Giá Trị
+        // Ánh xạ View
+        tensach = convertView.findViewById(R.id.ten_sach);
+        tacgia = convertView.findViewById(R.id.tac_gia);
+        theloai = convertView.findViewById(R.id.the_loai);
+        imgsach = convertView.findViewById(R.id.selected_image_view);
+        nxb = convertView.findViewById(R.id.nxb);
+
+        // Gán giá trị
         BookModel book = list.get(position);
         String authorName = "";
         String categoryName = "";
@@ -82,7 +84,8 @@ public class BookAdapter extends BaseAdapter {
             categoryName = Arrays.stream(book.getBookCategories()).map(x -> x.getCategory().getName()).collect(Collectors.joining(", "));
             publisherName = Arrays.stream(book.getBookPublishers()).map(x -> x.getPublisher().getName()).collect(Collectors.joining(", "));
         }
-        //Ghi giá trị vào listview
+
+        // Ghi giá trị vào ListView
         tensach.setText(book.getName());
         tensach.setOnClickListener(v -> listener.onItemNameClicked(book.getId()));
 
@@ -90,15 +93,18 @@ public class BookAdapter extends BaseAdapter {
         nxb.setText("Publisher: " + publisherName);
         theloai.setText("Category: " + categoryName);
 
-        if(book.getBookImages().length > 0) {
+        // Hiển thị hình ảnh sách nếu có
+        if (book.getBookImages().length > 0) {
             Bitmap decodedByte = new Base64Service(context).convertBase64ToImage(book.getBookImages()[0].getBase64());
             imgsach.setImageBitmap(decodedByte);
+            imgsach.setVisibility(View.VISIBLE); // Hiển thị ImageView
         }
 
         bindMenuIconEvent(convertView, book.getId());
 
         return convertView;
     }
+
 
     private void bindMenuIconEvent(View view, String bookId) {
         adapter_menu_btn = view.findViewById(R.id.adapter_menu_btn);
