@@ -10,8 +10,9 @@
         PublisherManagement,
         LibraryCardManagement,
         LibraryCardDetail,
+        Dashboard,
         AccountManagement,
         EmployeeManagement,
-        Statistic
+        ReaderAccountManagement
     }
 }

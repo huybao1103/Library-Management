@@ -58,6 +58,36 @@ namespace LibraryAPI.InitData
                     RoleId = roleList[0].Id
                 });
             }
+            foreach (int item in Enum.GetValues(typeof(AdminModuleEnum)))
+            {
+                if (
+                    item == (int)AdminModuleEnum.AccountManagement
+                    || item == (int)AdminModuleEnum.EmployeeManagement
+                    || item == (int)AdminModuleEnum.ReaderAccountManagement
+                ) {
+                    permissions.Add(new RoleModulePermission
+                    {
+                        Module = item,
+                        Access = false,
+                        Delete = false,
+                        Create = false,
+                        Detail = false,
+                        Edit = false,
+                        RoleId = roleList[1].Id
+                    });
+                    continue;
+                }
+                permissions.Add(new RoleModulePermission
+                {
+                    Module = item,
+                    Access = true,
+                    Delete = true,
+                    Create = true,
+                    Detail = true,
+                    Edit = true,
+                    RoleId = roleList[1].Id
+                });
+            }
             await _context.RoleModulePermissions.AddRangeAsync(permissions);
         }
 
