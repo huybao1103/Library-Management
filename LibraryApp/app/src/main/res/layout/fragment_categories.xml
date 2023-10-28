@@ -56,7 +56,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/SearchAu"
         app:tableView_headerColor="#d6edfb"
-        app:tableView_columnCount="3">
+        app:tableView_columnCount="3"
+        tools:ignore="MissingClass">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
