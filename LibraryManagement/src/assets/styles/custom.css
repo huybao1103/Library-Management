@@ -181,4 +181,10 @@
     align-items: center;
 }
 
- 
+.new-role-tooptip.p-tooltip {
+    max-width: fit-content;
+    .p-tooltip-text {
+        height: auto;
+        background: #fff;
+    }
+}

@@ -1,0 +1,19 @@
+.role-container {
+    .file-wrap .file-sidebar {
+        position: relative;
+        width: auto;
+        border: none;
+    }
+
+    .add-role-btn {
+        background-color: #FF7849;
+        border: 1px solid #FF7849;
+        border-radius: 50px;
+        color: #fff;
+        font-weight: 500;
+    }
+}
+
+.new-role-tooptip {
+    max-width: none !important;
+}
