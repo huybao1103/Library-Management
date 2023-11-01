@@ -8,6 +8,9 @@ import { IComboboxOption } from 'src/app/models/combobox-option.model';
   providedIn: 'root'
 })
 export class EmployeeService {
+  addEmployee(data: IEmployee) {
+    throw new Error('Method not implemented.');
+  }
   private employees$: BehaviorSubject<IEmployee[]> = new BehaviorSubject<IEmployee[]>([]);
 
   constructor(
@@ -22,13 +25,13 @@ export class EmployeeService {
     return this.httpService.getById<IEmployee>({controller: 'Accounts', op: 'employee-info'}, empId);
   }
 
- /* saveEmployee(data: IEmployee) {
+ saveEmployee(data: IEmployee) {
     return this.httpService.saveWithCustomURL<IEmployee>({ controller: 'Accounts', data, url: `Accounts/save-employee-account`})
-  }*/
+  }
 
-  /*getEmployeeOption() {
+  getEmployeeOption() {
     return this.httpService.getOption<IComboboxOption[]>({ controller: 'Accounts' });
-  }*/
+  }
 
   search(data: IEmployee) {
     return this.httpService.search<IEmployee[]>({ controller: 'Accounts', data}).pipe(
@@ -42,11 +45,11 @@ export class EmployeeService {
 
   remove(empId: string){
     return this.httpService.delete<IEmployee>({controller: 'Accounts'}, empId).pipe(
-      //tap(() => this.updateEmployeeState(undefined, empId))
+      tap(() => this.updateEmployeeState(undefined, empId))
     );
   }
 
-  /*private updateEmployeeState(res?: IEmployee, deletedEmployeeId?: string, ) {
+  private updateEmployeeState(res?: IEmployee, deletedEmployeeId?: string, ) {
     let old = this.employees$.value;
   
     if(res) {
@@ -60,6 +63,6 @@ export class EmployeeService {
   
       this.employees$.next([...old]);
     }
-  }*/
+  }
 
 }
