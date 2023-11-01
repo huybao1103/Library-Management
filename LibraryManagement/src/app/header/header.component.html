@@ -57,8 +57,7 @@
 
         <li>
             <a class="report-btn">
-                <span class="material-icons-outlined">
-                    text_snippet
+                <span class="">
                 </span>
             </a>
         </li>
@@ -66,12 +65,12 @@
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="javascript:" class="dropdown-toggle nav-link" style="color: #fff !important; " data-bs-toggle="dropdown">
                 <span class="user-img"><img src="assets/img/profiles/avatar-21.jpg" alt=""></span>
-                <span>Admin</span>
+                <span>{{ currentAccountPermission.email }}</span>
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" routerLink="/layout/employees/employeeprofile">My Profile</a>
                 <a class="dropdown-item" routerLink="/layout/settings/company-settings">Settings</a>
-                <a class="dropdown-item" routerLink="/login">Logout</a>
+                <a class="dropdown-item" (click)="logout()">Logout</a>
             </div>
         </li>
         

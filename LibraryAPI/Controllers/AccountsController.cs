@@ -216,7 +216,7 @@ namespace LibraryAPI.Controllers
             await _context.SaveChangesAsync();
             request.Id = account.Id;
 
-            return CreatedAtAction("GetEmployeeAccountById", new { id = account.Id }, request);
+            return CreatedAtAction("GetEmployeeAccountById", new { empId = account.Id }, request);
         }
 
         [HttpPost("log-in")]

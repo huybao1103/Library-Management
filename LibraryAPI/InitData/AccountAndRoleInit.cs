@@ -64,6 +64,7 @@ namespace LibraryAPI.InitData
                     item == (int)AdminModuleEnum.AccountManagement
                     || item == (int)AdminModuleEnum.EmployeeManagement
                     || item == (int)AdminModuleEnum.ReaderAccountManagement
+                    || item == (int)AdminModuleEnum.RolePermissionManagement
                 ) {
                     permissions.Add(new RoleModulePermission
                     {

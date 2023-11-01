@@ -3,17 +3,20 @@
     "name": "Book Management",
     "code": "book",
     "icon": "fa fa-book",
+    "moduleEnum": "BookManagement",
     "subMenus": [
       {
         "name": "Books",
         "code": "book",
         "icon": "fa fa-book",
+        "moduleEnum": "BookList",
         "route": "book"
       },
       {
         "name": "Categories",
         "code": "category",
         "icon": "la la-border-all",
+        "moduleEnum": "CategoryManagement",
         "route": "category"
       }
     ]
@@ -22,6 +25,7 @@
     "name": "Author Management",
     "code": "author",
     "icon": "fa fa-user",
+    "moduleEnum": "AuthorManagement",
     "subMenus": [
       {
         "name": "Authors",
@@ -35,6 +39,7 @@
     "name": "Publisher Management",
     "code": "publisher",
     "icon": "fa fa-address-book",
+    "moduleEnum": "PublisherManagement",
     "subMenus": [
       {
         "name": "Publishers",
@@ -48,6 +53,7 @@
     "name": "Reader Management",
     "code": "reader",
     "icon": "la la-book-reader",
+    "moduleEnum": "LibraryCardManagement",
     "subMenus": [
       {
         "name": "Library Cards",
@@ -61,17 +67,20 @@
     "name": "Account Management",
     "code": "account",
     "icon": "bi bi-people-fill",
+    "moduleEnum": "AccountManagement",
     "subMenus": [
       {
         "name": "Reader Accounts",
         "code": "reader-account",
         "icon": "fa fa-user",
+        "moduleEnum": "ReaderAccountManagement",
         "route": "reader-account-list"
       },
       {
         "name": "Employee Accounts",
         "code": "employee-account",
         "icon": "la la-user-tie",
+        "moduleEnum": "EmployeeManagement",
         "route": "employee-account-list"
       }
     ]
@@ -80,13 +89,14 @@
     "name": "Roles & Permissions",
     "code": "role-permission",
     "icon": "la la-key",
+    "moduleEnum": "RolePermissionManagement",
     "subMenus": [
       {
         "name": "Roles & Permissions",
         "code": "role-permission",
         "icon": "la la-key",
         "route": "role-permission"
-      },
+      }
     ]
   }
 ]

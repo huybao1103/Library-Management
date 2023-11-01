@@ -13,13 +13,16 @@ import { FormlyFieldCheckbox } from "./type/checkbox.type";
 import { CheckBoxModule } from "./form/checkbox/checkbox.module";
 import { FormlyFieldDateTime } from "./type/datetime-picker.type";
 import { DatatimePickerModule } from "./form/datetime-picker/datatime-picker.module";
+import { FormlyFieldInputPassword } from "./type/input-password.type";
+import { InputPasswordModule } from "./form/input-password/input-password.module";
 
 @NgModule({
     declarations: [
       FormlyFieldInput,
       FormlyFieldNgSelect,
       FormlyFieldCheckbox,
-      FormlyFieldDateTime
+      FormlyFieldDateTime,
+      FormlyFieldInputPassword
     ],
     imports: [
       CommonModule,
@@ -31,7 +34,8 @@ import { DatatimePickerModule } from "./form/datetime-picker/datatime-picker.mod
       NgSelectItemModule,
       NgSelectModule,
       CheckBoxModule,
-      DatatimePickerModule
+      DatatimePickerModule,
+      InputPasswordModule
     ]
   })
   

@@ -13,6 +13,7 @@
         Dashboard,
         AccountManagement,
         EmployeeManagement,
-        ReaderAccountManagement
+        ReaderAccountManagement,
+        RolePermissionManagement
     }
 }
