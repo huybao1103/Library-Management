@@ -13,7 +13,6 @@ import { ToastService } from 'src/app/services/toast.service';
 export class AuthorService {
   private author$: BehaviorSubject<IAuthor[]> = new BehaviorSubject<IAuthor[]>([]);
 
-
   constructor(
     private httpService: HttpService,
     private toastService: ToastService

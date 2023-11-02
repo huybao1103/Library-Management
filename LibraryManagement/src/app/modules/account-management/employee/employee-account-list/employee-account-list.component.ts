@@ -2,14 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IEmployee } from 'src/app/models/employee-account';
 import { IComboboxOption } from 'src/app/models/combobox-option.model';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { EmployeeService } from '../service/employee-service.service';
-import { EmployeeSearch } from './employee-search';
-import { Observable, filter, first, map, of, tap } from 'rxjs';
+import { Observable} from 'rxjs';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { FilterMatchMode, FilterService } from 'primeng/api';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { MessageService } from 'primeng/api';
 import { DialogService} from 'primeng/dynamicdialog';
@@ -21,10 +17,7 @@ import { Table } from 'primeng/table';
   providers: [DialogService, MessageService],
 })
 export class EmployeeAccountListComponent implements OnInit {
-  ngOnInit(): void {
-    this.loadData();
-    //this.getRoles();
-  }
+
   responsiveOptions: any[] = [
     {
         breakpoint: '1024px',
@@ -41,6 +34,7 @@ export class EmployeeAccountListComponent implements OnInit {
   ];
 
   @ViewChild('dt') dt: Table | undefined;
+
   employee: IEmployee[] = [
     {
       name: 'John Doe',
@@ -48,6 +42,7 @@ export class EmployeeAccountListComponent implements OnInit {
       phone: '123456789',
       joinDate: '01/01/2023',
       roleId: 'Admin',
+      accountId:'john@yahoo.com.vn'
     },
     {
       name: 'Jane Smith',
@@ -55,34 +50,11 @@ export class EmployeeAccountListComponent implements OnInit {
       phone: '987654321',
       joinDate: '02/01/2023',
       roleId: 'User',
+      accountId: 'jane@gmail.com'
     },
   ];
-  roles: IComboboxOption[] = [
-    {
-      value: 'Admin',
-      label: 'Admin',
-    },
-    {
-      value: 'User',
-      label: 'User',
-    },
-  ];
-  allRoles: IComboboxOption[] = [];
-  selectedRole: string = "";
-
-  roleSearchName: string = "All";
 
   employees$?: Observable<IEmployee[] | null>;
-
-  /*fields: FormlyFieldConfig[] = [];
-  form = new FormGroup({});
-  options: FormlyFormOptions = {
-    formState: {
-      optionList: {
-        roles: this.employeeService.getEmployeeOption(),
-      }
-    }
-  };*/
 
   data: IEmployee = {
     name: '',
@@ -95,53 +67,16 @@ export class EmployeeAccountListComponent implements OnInit {
     
   constructor(
     private router: Router,
-    private filterServive: FilterService,
     private toastService: ToastService,
     private employeeService: EmployeeService,
     private confirmDialogService: ConfirmDialogService,
 
   ) {}
 
-  /*applyFilterGlobal($event: any, stringVal: any) {
-    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
-  }*/
-
-  loadData() {
-    this.employees$ = this.employeeService.getEmployeeList(this.selectedRole);
-    //this.fields = EmployeeSearch();
+  ngOnInit(): void {
+    this.getData();
   }
 
-  /*getRoles() {
-    this.employeeService.getEmployeeOption().subscribe({
-      next: (res) => {
-        if(res) {
-          this.roles = [...this.allRoles] = [{ value: '', label: 'All' }, ...res];
-        }
-      }
-    })
-  }
-
-  roleChange(roleId: string) {
-    if(roleId === 'all') {
-      this.selectedRole = '';
-      this.loadData();
-    } else if(roleId !== this.selectedRole) {
-      this.selectedRole = roleId;
-      this.loadData();
-    }
-  }
-
-  roleSearch(text: string) {
-    this.roles = [...this.allRoles];
-    if(text) {
-      this.roleSearchName = text.trim();
-
-      this.roles = this.allRoles.filter(role => {
-        return this.filterServive.filters[FilterMatchMode.CONTAINS](role.label, this.roleSearchName) ? role : ''
-      });
-    }
-  }*/
-  
   editItem(itemId: string) {
     this.router.navigate([{ outlets: { modal: ['employee-account-list', 'edit', itemId] } }]);
   }
@@ -164,17 +99,17 @@ export class EmployeeAccountListComponent implements OnInit {
           if (result) {
             this.employeeService.remove(employeeId).subscribe({
               next: () => {
-                this.toastService.show(MessageType.success, 'Delete Publisher Successfully');
+                this.toastService.show(MessageType.success, 'Delete Employee Account Successfully');
                 this.getData();
               },
               error: (err: any) => {
-                this.toastService.show(MessageType.error, 'Error deleting publisher');
+                this.toastService.show(MessageType.error, 'Error deleting employee account');
               },
             });
           }
         });
     } else {
-      console.error('category.id is undefined');
+      console.error('employee.id is undefined');
     }
   }
 }

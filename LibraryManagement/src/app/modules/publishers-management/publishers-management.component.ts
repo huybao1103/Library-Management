@@ -64,7 +64,7 @@ export class PublishersManagementComponent implements OnInit{
           }
         });
     } else {
-      console.error('category.id is undefined');
+      console.error('publisher.id is undefined');
     }
   }
 }

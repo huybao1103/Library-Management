@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IEmployee } from 'src/app/models/employee-account';
 import { HttpService } from 'src/app/services/http-service.service';
-import { BehaviorSubject, concatMap, map, of, tap } from 'rxjs';
-import { IComboboxOption } from 'src/app/models/combobox-option.model';
+import { BehaviorSubject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,21 +13,13 @@ export class EmployeeService {
     private httpService: HttpService
   ) { }
 
-  getEmployeeList(id?: string) {
-    return this.httpService.getWithCustomURL<IEmployee[]>({ controller: 'Accounts', url: `Accounts/employee-account/get-list/${id}` })
+  getEmployeeList() {
+    return this.httpService.getWithCustomURL<IEmployee[]>({ controller: 'Accounts', url: `Accounts/employee-account/get-list/` })
   }
 
   getEmployeeById(empId: string) {
     return this.httpService.getById<IEmployee>({controller: 'Accounts', op: 'employee-info'}, empId);
   }
-
- /* saveEmployee(data: IEmployee) {
-    return this.httpService.saveWithCustomURL<IEmployee>({ controller: 'Accounts', data, url: `Accounts/save-employee-account`})
-  }*/
-
-  /*getEmployeeOption() {
-    return this.httpService.getOption<IComboboxOption[]>({ controller: 'Accounts' });
-  }*/
 
   search(data: IEmployee) {
     return this.httpService.search<IEmployee[]>({ controller: 'Accounts', data}).pipe(
@@ -42,24 +33,11 @@ export class EmployeeService {
 
   remove(empId: string){
     return this.httpService.delete<IEmployee>({controller: 'Accounts'}, empId).pipe(
-      //tap(() => this.updateEmployeeState(undefined, empId))
+      tap(() => {
+        const employees = this.employees$.getValue();
+        const updatedEmployees = employees.filter(employee => employee.id !== empId);
+        this.employees$.next(updatedEmployees);
+      })
     );
   }
-
-  /*private updateEmployeeState(res?: IEmployee, deletedEmployeeId?: string, ) {
-    let old = this.employees$.value;
-  
-    if(res) {
-      const updated = old.find(p => p.id === res.id);
-      
-      old = updated ? old.filter(p => p.id !== updated.id) : old;
-  
-      this.employees$.next([res, ...old]);
-    } else if(deletedEmployeeId) {
-      old = old.filter(p => p.id !== deletedEmployeeId);
-  
-      this.employees$.next([...old]);
-    }
-  }*/
-
 }

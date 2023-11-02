@@ -1,5 +1,4 @@
-<div>
-<!--<div *ngIf="employees$ | async as Employees">--> 
+<div *ngIf="employees$ | async as Employees">
     <p-table
         #dt
         [rows]="7"
@@ -23,45 +22,7 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="row">
-                <div class="col">
-                    <h3 class="page-title font-weight-bold">Employee</h3>
-                </div>
-                <div class="col-auto float-end ms-auto">
-                    <a 
-                        href="javascript:" 
-                        class="btn add-btn" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#add_employee" 
-                        (click)="editItem('')"
-                    >
-                        <i class="fa fa-plus"></i> 
-                        Add Employee
-                    </a>
-                </div>
-            </div>  
-            <div class="row">
-                <div class="m-3">
-                    <div class="p-input-left ">
-                        <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Employee Name" style="width: 25rem;"/>
-                        <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Phone" style="width: 15rem; margin-left: 25px;"/>
-                        <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Mail" style="width: 15rem; margin-left: 25px"/>
-                        <input pInputText type="options" (options)="applyFilterGlobal($event, 'contains')" placeholder="Role" style="width: 25rem; margin-left: 25px"/>
-                    </div>
-                    <form [formGroup]="form" class="row" (submit)="search()">
-                        <formly-form class="col-10" [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
-                        <div class="col-2 d-flex align-items-center">
-                            <button class="btn btn-primary w-75 mb-3" 
-                                style="height: 49.8px; margin-bottom: 0px !important; margin-top: 11.9px;" 
-                                type="submit"
-                            >
-                                <i class="fa fa-search"></i>
-                                Search
-                            </button>
-                        </div>
-                    </form>
-                </div>    
-            </div>-->   
+            
         </ng-template>
         <ng-template pTemplate="header">    
             <tr>
