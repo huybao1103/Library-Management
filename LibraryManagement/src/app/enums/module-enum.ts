@@ -11,7 +11,9 @@ export enum ModuleEnum {
     AccountManagement,
     EmployeeManagement,
     ReaderAccountManagement,
-    RolePermissionManagement
+    RolePermissionManagement,
+    BookSearch,
+    BookCategory,
 }
 
 export const ModuleString: {[key in any]: string } = {
@@ -27,5 +29,7 @@ export const ModuleString: {[key in any]: string } = {
     [ModuleEnum.AccountManagement]: 'Account Management',
     [ModuleEnum.EmployeeManagement]: 'Employee Management',
     [ModuleEnum.ReaderAccountManagement]: 'Reader Account Management',
-    [ModuleEnum.RolePermissionManagement]: 'Role Permission Management'
+    [ModuleEnum.RolePermissionManagement]: 'Role Permission Management',
+    [ModuleEnum.BookSearch]: 'Book Search',
+    [ModuleEnum.BookCategory]: 'Book Category'
 }

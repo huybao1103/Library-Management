@@ -1,6 +1,6 @@
 ﻿namespace LibraryAPI.Enums
 {
-    public enum AdminModuleEnum
+    public enum ModuleEnum
     {
         BookManagement,
         BookList,
@@ -14,6 +14,8 @@
         AccountManagement,
         EmployeeManagement,
         ReaderAccountManagement,
-        RolePermissionManagement
+        RolePermissionManagement,
+        BookSearch,
+        BookCategory
     }
 }

@@ -9,18 +9,18 @@
               >
                 <ng-content *ngIf="item.subMenus && item.subMenus.length > 0; then thenBlock else elseBlock"></ng-content>
                 <ng-template #thenBlock>
-                  <a class="icon-arrow-container" href="#"><i [class]="item.icon"></i> 
+                  <a *ngIf="item?.name" class="icon-arrow-container" href="#"><i [class]="item.icon"></i> 
                     <span> {{item.name}}</span> 
                     <span class="icon-arrow la la-angle-down"></span>
                   </a>
                   <ul style="display: none;" class="subdrop" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                     <li *ngFor="let subItem of item.subMenus" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                      <a [routerLink]="subItem.route"><i class="subdrop-icon" [class]="subItem.icon"></i>{{subItem.name}}</a>
+                      <a *ngIf="subItem?.name" [routerLink]="subItem.route"><i class="subdrop-icon" [class]="subItem.icon"></i>{{subItem.name}}</a>
                     </li>
                   </ul>
                 </ng-template>
                 <ng-template #elseBlock>
-                  <a [routerLink]="item.route">
+                  <a *ngIf="item?.name" [routerLink]="item.route">
                     <i [class]="item.icon"></i><span>{{item.name}}</span>
                   </a>
                 </ng-template>

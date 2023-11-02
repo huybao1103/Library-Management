@@ -51,23 +51,38 @@ export class SideBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpService.saveWithCustomURL<MenuItem[]>(
+    const loggedInAccount = this.sessionService.getCurrentAccount();
+    const loggedInAccountId = this.sessionService.getCurrentAccount()?.id;
+
+    this.httpService.getWithCustomURL<MenuItem[]>(
     { 
       controller: "Data", 
-      url: "Data/menu"
+      url: `Data/menu/${loggedInAccountId}`,
     })
     .pipe(first())
     .subscribe({
       next: (res) => {
-        if(res) {
-          const currentAccountPermission = this.sessionService.getCurrentAccount()?.role.roleModulePermissions;
+        if(res?.length) {
+          const currentAccountPermission = loggedInAccount?.role.roleModulePermissions;
           if(!currentAccountPermission)
-            this.router.navigate(['/login'])
+            this.router.navigate(['/login']);
 
           this.menus = res.map(menuItem => {
             if(currentAccountPermission) {
               const module = currentAccountPermission.find(module => ModuleEnum[module.module] === menuItem.moduleEnum);
-              
+              if ( 
+                loggedInAccount?.role.name === "Reader"
+                &&
+                (
+                  menuItem.moduleEnum === ModuleEnum[ModuleEnum.BookSearch]
+                  ||
+                  menuItem.moduleEnum === ModuleEnum[ModuleEnum.BookCategory]
+                )
+              ) 
+              {
+                return menuItem;
+              }
+
               if(module?.access) {
                 if(menuItem.subMenus) {
                   menuItem.subMenus = menuItem.subMenus.map(subMenuItem => {
@@ -85,7 +100,11 @@ export class SideBarComponent implements OnInit {
             return this.emptyItem;
           });
 
+          if(loggedInAccount?.role.name === "Reader") {
+            this.router.navigate(["book-search"])
+          }
         }
+        
         this.sidebarAnimation();
       }
     })

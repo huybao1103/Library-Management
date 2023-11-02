@@ -2,7 +2,7 @@ import { ModuleEnum, ModuleString } from './../../../enums/module-enum';
 import { Component, OnInit } from '@angular/core';
 import { RolePermissionService } from './service/role-permission.service';
 import { IComboboxOption } from 'src/app/models/combobox-option.model';
-import { Role } from 'src/app/models/role-permission.model';
+import { Role, RoleModulePermission } from 'src/app/models/role-permission.model';
 import { first } from 'rxjs';
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
@@ -26,6 +26,12 @@ export class RolePermissionComponent implements OnInit {
 
   roleName: string = "";
 
+  childModule: ModuleEnum[] = [
+    ModuleEnum.BookList,
+    ModuleEnum.BookDetail,
+    ModuleEnum.ReaderAccountManagement,
+    ModuleEnum.EmployeeManagement,
+  ]
   constructor(
     private roleService: RolePermissionService,
     private toastService: ToastService
@@ -62,6 +68,12 @@ export class RolePermissionComponent implements OnInit {
             .map(rmp => {
               return {
                 ...rmp,
+                parentModule: this.getParentModule(rmp),
+                parent_access: this.getParentModule(rmp) ? !rmp.access : false,
+                parent_detail: this.getParentModule(rmp) ? !rmp.detail : false,
+                parent_create: this.getParentModule(rmp) ? !rmp.create : false,
+                parent_edit: this.getParentModule(rmp) ? !rmp.edit : false,
+                parent_delete: this.getParentModule(rmp) ? !rmp.delete : false,
                 all:  rmp.access === true 
                       && rmp.detail === true 
                       && rmp.delete === true 
@@ -75,10 +87,61 @@ export class RolePermissionComponent implements OnInit {
     })
   }
 
-  selectedAllChange(moduleId: string) {
+  getParentModule(childModule: RoleModulePermission) {
+    const childModuleEnum = this.childModule.find(m => m === childModule.module);
+
+    if(childModuleEnum) {
+      switch (childModuleEnum) {
+        case ModuleEnum.BookDetail:
+        case ModuleEnum.BookList:
+          return this.selectedRole.roleModulePermissions.find(parent => parent.module === ModuleEnum.BookManagement);
+
+        case ModuleEnum.ReaderAccountManagement:
+        case ModuleEnum.EmployeeManagement:
+          return this.selectedRole.roleModulePermissions.find(parent => parent.module === ModuleEnum.AccountManagement);
+      }
+    }
+    return undefined;
+  }
+
+  selectedChange(checked: boolean, module: RoleModulePermission, field: string) {
+    if (
+      module.module === ModuleEnum.BookManagement
+      ||
+      module.module === ModuleEnum.AccountManagement
+    )
+    {
+      this.selectedRole.roleModulePermissions = this.selectedRole.roleModulePermissions
+      .map(rmp => {
+        switch (module.module) {
+          case ModuleEnum.BookManagement:
+            if(rmp.module === ModuleEnum.BookDetail || rmp.module === ModuleEnum.BookList) {
+              return {
+                ...rmp,
+                [field]: checked,
+                [`parent_${field}`]: !checked
+              }
+            }
+            break;
+          case ModuleEnum.AccountManagement:
+            if(rmp.module === ModuleEnum.ReaderAccountManagement || rmp.module === ModuleEnum.EmployeeManagement) {
+              return {
+                ...rmp,
+                [field]: checked,
+                [`parent_${field}`]: !checked
+              }
+            }
+            break;
+        }
+        return rmp
+      })
+    }
+  }
+
+  selectedAllChange(module: RoleModulePermission) {
     this.selectedRole.roleModulePermissions = this.selectedRole.roleModulePermissions
       .map(rmp => {
-        if(rmp.id === moduleId) {
+        if(rmp.id === module.id) {
           return {
             ...rmp,
             all: !rmp.all,
