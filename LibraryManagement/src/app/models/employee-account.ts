@@ -1,3 +1,5 @@
+import { IAccountInfo } from "./account.model";
+
   export interface IEmployee {
     id?: string;
     name: string;
@@ -8,5 +10,6 @@
     joinDate?: string;
     accountId?: string;
     roleId?: string;
-    passWord?: string
+    passWord?: string;
+    account?: IAccountInfo;
 }

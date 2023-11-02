@@ -3,7 +3,7 @@ import { EmployeeService } from './../service/employee-service.service';
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Route } from '@angular/router';
-import { MessageType } from '@microsoft/signalr';
+import { MessageType } from 'src/app/enums/toast-message.enum';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { ICategory } from 'src/app/models/category.model';
@@ -12,6 +12,7 @@ import { IDialogType } from 'src/app/models/modal/dialog';
 import { EmployeeAccountField } from './employee-account-form';
 import { HttpService } from 'src/app/services/http-service.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { IAccountInfo } from 'src/app/models/account.model';
 
 @Component({
   selector: 'app-employee-account-detail',
@@ -38,15 +39,9 @@ export class EmployeeAccountDetailComponent implements IDialogType {
   };
   
   data: IEmployee = {
-    name: '',
-    phone: '',
-    citizenId: '',
-    birthDate: '',
-    joinDate: '',
-    accountId: '',
-    passWord: '',
-    email: '',
+    name: ''
   };
+
   constructor(
     private modal: NgbActiveModal,
     private toastService: ToastService,
