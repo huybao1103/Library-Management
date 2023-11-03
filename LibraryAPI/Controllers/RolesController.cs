@@ -111,7 +111,7 @@ namespace LibraryAPI.Controllers
             Role newRole = new Role { Name = roleName, NormalizedName = roleName.ToLower() };
 
             List<RoleModulePermission> permissions = new List<RoleModulePermission>();
-            foreach (int item in Enum.GetValues(typeof(AdminModuleEnum)))
+            foreach (int item in Enum.GetValues(typeof(ModuleEnum)))
             {
                 permissions.Add(new RoleModulePermission
                 {

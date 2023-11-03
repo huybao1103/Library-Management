@@ -1,9 +1,11 @@
+import { SessionService } from 'src/app/services/session.service';
 import { HttpService } from 'src/app/services/http-service.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, first } from 'rxjs';
 import { MenuItem } from 'src/app/models/menu';
 import * as $ from "jquery";
+import { ModuleEnum } from 'src/app/enums/module-enum';
 
 @Component({
   selector: 'app-side-bar',
@@ -27,12 +29,18 @@ export class SideBarComponent implements OnInit {
   };
 
   menus: MenuItem[] = [];
-
+  emptyItem: MenuItem = {
+    code: '',
+    icon: '',
+    name: '',
+    moduleEnum: ''
+  }
   subscriptions = new Subscription();
 
   constructor(
     private router: Router,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private sessionService: SessionService
   ) {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
@@ -43,16 +51,60 @@ export class SideBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpService.saveWithCustomURL<MenuItem[]>(
+    const loggedInAccount = this.sessionService.getCurrentAccount();
+    const loggedInAccountId = this.sessionService.getCurrentAccount()?.id;
+
+    this.httpService.getWithCustomURL<MenuItem[]>(
     { 
       controller: "Data", 
-      url: "Data/menu"
+      url: `Data/menu/${loggedInAccountId}`,
     })
     .pipe(first())
     .subscribe({
       next: (res) => {
-        if(res)
-          this.menus = res;
+        if(res?.length) {
+          const currentAccountPermission = loggedInAccount?.role.roleModulePermissions;
+          if(!currentAccountPermission)
+            this.router.navigate(['/login']);
+
+          this.menus = res.map(menuItem => {
+            if(currentAccountPermission) {
+              const module = currentAccountPermission.find(module => ModuleEnum[module.module] === menuItem.moduleEnum);
+              if ( 
+                loggedInAccount?.role.name === "Reader"
+                &&
+                (
+                  menuItem.moduleEnum === ModuleEnum[ModuleEnum.BookSearch]
+                  ||
+                  menuItem.moduleEnum === ModuleEnum[ModuleEnum.BookCategory]
+                )
+              ) 
+              {
+                return menuItem;
+              }
+
+              if(module?.access) {
+                if(menuItem.subMenus) {
+                  menuItem.subMenus = menuItem.subMenus.map(subMenuItem => {
+                    const subModule = currentAccountPermission.find(module => ModuleEnum[module.module] === subMenuItem.moduleEnum);
+                    
+                    if(subModule) {
+                      return subModule?.access ? subMenuItem : this.emptyItem;
+                    }
+                    return subMenuItem;
+                  })
+                }
+                return menuItem;
+              } 
+            }
+            return this.emptyItem;
+          });
+
+          if(loggedInAccount?.role.name === "Reader") {
+            this.router.navigate(["book-search"])
+          }
+        }
+        
         this.sidebarAnimation();
       }
     })

@@ -1,24 +1,20 @@
 import { Component, EventEmitter, HostBinding, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { uniqueId } from 'lodash';
-import { KeyFilterPattern } from 'primeng/keyfilter';
-import { INPUT_TEXT_TYPE } from 'src/app/enums/input-text.type';
-import { KeyFilterType } from 'src/app/enums/p-key-filter.type';
 
 @Component({
-  selector: 'input-text',
-  templateUrl: './input-text.component.html',
-  styleUrls: ['./input-text.component.css'],
+  selector: 'input-password',
+  templateUrl: './input-password.component.html',
+  styleUrls: ['./input-password.component.css'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => InputTextComponent),
+    useExisting: forwardRef(() => InputPasswordComponent),
     multi: true
   }]
 })
-export class InputTextComponent implements ControlValueAccessor {
-
+export class InputPasswordComponent implements ControlValueAccessor {
   @HostBinding('class.form-control-host') defaultClass = true;
-  uniqueId = uniqueId('input-text-');
+  uniqueId = uniqueId('input-password-');
   @Input() inline = false;
   @Input() label: string | undefined;
   @Input() required: boolean = false;
@@ -26,19 +22,12 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() readonly = false;
   @Input() autocomplete = false;
   @Input() placeholder = '';
-  @Input() testId!: string;
-  @Input() maxlength!: number;
-  @Input() minlength!: number;
+  @Input() updateOnBlur = false;
   @Input() step!: number;
   @Input() min!: number;
   @Input() max!: number;
-  @Input() type: INPUT_TEXT_TYPE = INPUT_TEXT_TYPE.TEXT;
-  @Input() updateOnBlur = false;
-  @Input() numberFormat!: string;
-  @Input() calculated = false;
-  @Input() showIcon: boolean = false;
-  @Input() keyFilter: KeyFilterPattern = KeyFilterType.text_number
-  @Input() iconClass: string = 'pi pi-eye-slash';
+  @Input() maxlength!: number;
+  @Input() minlength!: number;
 
   @Output() keyup: EventEmitter<any> = new EventEmitter<any>();
 
@@ -46,10 +35,7 @@ export class InputTextComponent implements ControlValueAccessor {
 
   @Input() disabled = false;
   formCls: string = "";
-  showPassword: boolean = false;
 
-  
-  TEXT_FIELD_TYPE = INPUT_TEXT_TYPE;
   onChange?: (value: string) => void
 
   onTouched?: (fn: any) => void;
@@ -94,12 +80,5 @@ export class InputTextComponent implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
-  }
-
-  changeMode() {
-    this.showPassword = !this.showPassword;
-
-    this.type = this.showPassword ? INPUT_TEXT_TYPE.TEXT : INPUT_TEXT_TYPE.PASSWORD;
-    this.iconClass = this.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash';
   }
 }

@@ -54,6 +54,11 @@
     margin: 5.5rem 1rem !important;
 }
 
+/* Form */
+.p-input-icon-left, .p-input-icon-right {
+    position: relative;
+    display: block;
+}
 /* Header */
 .header {
     background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
@@ -181,6 +186,7 @@
     align-items: center;
 }
 
+/* New Role  */
 .new-role-tooptip.p-tooltip {
     max-width: fit-content;
     .p-tooltip-text {

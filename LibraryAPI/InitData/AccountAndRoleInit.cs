@@ -44,49 +44,49 @@ namespace LibraryAPI.InitData
 
         private static async Task CreateRoleModulePermission(List<Role> roleList)
         {
+            List<ModuleEnum> adminModuleEnums = new List<ModuleEnum>
+            {
+                ModuleEnum.AccountManagement,
+                ModuleEnum.EmployeeManagement,
+                ModuleEnum.ReaderAccountManagement,
+                ModuleEnum.RolePermissionManagement
+            }; 
+            List<ModuleEnum> readerModuleEnums = new List<ModuleEnum>
+            {
+                ModuleEnum.BookSearch,
+                ModuleEnum.BookCategory,
+            };
+
             List<RoleModulePermission> permissions = new List<RoleModulePermission>();
-            foreach (int item in Enum.GetValues(typeof(AdminModuleEnum)))
+            for(int i = 0; i < roleList.Count; i++)
             {
-                permissions.Add(new RoleModulePermission
+                bool permitted = false;
+                foreach (int item in Enum.GetValues(typeof(ModuleEnum)))
                 {
-                    Module = item,
-                    Access = true,
-                    Delete = true,
-                    Create = true,
-                    Detail = true,
-                    Edit = true,
-                    RoleId = roleList[0].Id
-                });
-            }
-            foreach (int item in Enum.GetValues(typeof(AdminModuleEnum)))
-            {
-                if (
-                    item == (int)AdminModuleEnum.AccountManagement
-                    || item == (int)AdminModuleEnum.EmployeeManagement
-                    || item == (int)AdminModuleEnum.ReaderAccountManagement
-                ) {
+                    switch (i)
+                    {
+                        case 0: // Admin 
+                            permitted = true;
+                            break;
+                        case 1: // Librarian
+                            permitted =
+                            adminModuleEnums.Contains((ModuleEnum)item)
+                            ||
+                            readerModuleEnums.Contains((ModuleEnum)item)
+                            ? false : true;
+                            break;
+                    }
                     permissions.Add(new RoleModulePermission
                     {
                         Module = item,
-                        Access = false,
-                        Delete = false,
-                        Create = false,
-                        Detail = false,
-                        Edit = false,
-                        RoleId = roleList[1].Id
+                        Access = permitted,
+                        Delete = permitted,
+                        Create = permitted,
+                        Detail = permitted,
+                        Edit = permitted,
+                        RoleId = roleList[i].Id
                     });
-                    continue;
                 }
-                permissions.Add(new RoleModulePermission
-                {
-                    Module = item,
-                    Access = true,
-                    Delete = true,
-                    Create = true,
-                    Detail = true,
-                    Edit = true,
-                    RoleId = roleList[1].Id
-                });
             }
             await _context.RoleModulePermissions.AddRangeAsync(permissions);
         }
