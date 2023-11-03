@@ -7,7 +7,7 @@
           <div class="d-flex justify-content-center align-items-center">
             <img src="../../../assets/img/logo.png" class="logo"/>
           </div>
-          <h5 class="fs-3 fw-bold text-center my-2">Register</h5>
+          <h3 class="account-title">Register</h3>
           <h6 class="fs-6 text-muted text-center fw-semibold mb-3">Welcome to HUFLIT Library</h6>
           <div class="form-group my-2 row">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
@@ -23,6 +23,16 @@
               <div *ngIf="registerForm.get('clazz')?.hasError('required') && registerForm.get('clazz')?.touched">
                 <span class="text-danger small">Class is required</span>
               </div>
+            </div>
+          </div>
+          <div class="form-group my-2">
+            <label class="fw-bold fs-6 text-black">Name*</label>
+            <input formControlName="name" type="name" class="form-control bg-muted py-2"/>
+            <div *ngIf="registerForm.get('name')?.hasError('required') && registerForm.get('name')?.touched">
+              <span class="text-danger small">Name is required</span>
+            </div>
+            <div *ngIf="registerForm.get('name')?.hasError('pattern') && registerForm.get('name')?.touched">
+              <span class="text-danger small">Please enter your name</span>
             </div>
           </div>
           <div class="form-group my-2">
@@ -56,7 +66,7 @@
             </div>
           </div>
           <button type="submit" class="btn btn-register my-3 py-2 text-white fw-bold border-0 outline-0">REGISTER</button>
-          <p class="fw-bold fs-6 text-center text-black">Do you have an account ? <a routerLink="/login" class="text-decoration-none text-info">login</a></p>
+          <p class="fw-bold fs-6 text-center text-black">Already have an account ? <a routerLink="/login" class="text-decoration-none text-info">login</a></p>
         </form>
       </div>
       <div class="col-12 col-md-2 col-lg-4 col-lx-4"></div>

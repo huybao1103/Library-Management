@@ -236,6 +236,39 @@ namespace LibraryAPI.Controllers
             throw new CustomApiException(500, "Wrong email or password", "Wrong email or password");
         }
 
+        [HttpPost("register")]
+        public async Task<bool> Register(RegisterRequest request)
+        {
+            string passwordHash = _hashService.ConvertStringToHash(request.Password);
+
+            if (await _context.Accounts.AnyAsync(a => a.Email.Equals(request.Email)))
+                throw new CustomApiException(500, "This email is already existed", "This email is already existed");
+            if (await _context.LibraryCards.AnyAsync(a => a.StudentId.Equals(request.Id)))
+                throw new CustomApiException(500, "This Student ID is already existed", "This Student ID is already existed");
+
+
+            Role readerRole = await _context.Roles.FirstOrDefaultAsync(r => r.NormalizedName == DefaultRoleEnum.Reader.GetDisplayName().ToLower());
+
+
+            Account account = new Account();
+            account.Email = request.Email;
+            account.PasswordHash = passwordHash;
+            account.RoleId = readerRole.Id;
+            await _context.Accounts.AddAsync(account);
+
+            await _context.SaveChangesAsync();
+
+            LibraryCard libraryCard = new LibraryCard();
+            libraryCard.StudentId = request.Id;
+            libraryCard.Name = request.Name;
+            libraryCard.Class = request.Clazz;
+            libraryCard.AccountId = account.Id;
+            await _context.LibraryCards.AddAsync(libraryCard);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         // DELETE: api/Accounts/5
         [HttpDelete("employee-account/remove/{empId}")]
         public async Task<IActionResult> DeleteEmployeeAccount(Guid empId)
