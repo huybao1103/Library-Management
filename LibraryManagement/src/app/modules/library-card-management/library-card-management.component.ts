@@ -9,6 +9,9 @@ import { HttpService } from 'src/app/services/http-service.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { LibraryCardService } from './service/library-card.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
+import { RoleModulePermission } from 'src/app/models/role-permission.model';
+import { SessionService } from 'src/app/services/session.service';
+import { ModuleEnum } from 'src/app/enums/module-enum';
 
 @Component({
   selector: 'app-library-card-management',
@@ -24,6 +27,9 @@ export class LibraryCardManagementComponent {
 
   LibraryCardStatus = LibraryCardStatus;
   categoryById: ILibraryCardInfo[] | undefined;
+  libarycardPermission: RoleModulePermission | undefined;
+  libraryDetailPermission: RoleModulePermission | undefined;
+
 
   constructor(
     private httpService: HttpService,
@@ -32,11 +38,20 @@ export class LibraryCardManagementComponent {
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
     private router: Router,
+    private sessionService : SessionService,
   ) {
   }
   ngOnInit(): void {
+    this.getPermission();
     this.getData();
   }
+
+  getPermission() {
+    this.libarycardPermission = this.sessionService.getModulePermission(ModuleEnum.LibraryCardManagement);
+    this.libraryDetailPermission = this.sessionService.getModulePermission(ModuleEnum.LibraryCardDetail);
+  }
+
+
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
@@ -70,7 +85,12 @@ export class LibraryCardManagementComponent {
       console.error('libraryCard id is undefined');
     }
   }
-  goToDetail(id: string) {
-    this.router.navigate(['/library-card-detail', id]);
+  // goToDetail(id: string) {
+  //   this.router.navigate(['/library-card-detail', id]);
+  // }
+
+  libraryCardDeatil(id: string){
+    if(this.libraryDetailPermission?.access && id)
+      this.router.navigate([`/library-card-detail/${id}`]);
   }
 }

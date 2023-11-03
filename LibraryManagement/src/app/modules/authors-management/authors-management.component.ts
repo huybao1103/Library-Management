@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
+import { RoleModulePermission } from 'src/app/models/role-permission.model';
+import { ModuleEnum } from 'src/app/enums/module-enum';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-authors-management',
@@ -24,17 +27,26 @@ export class AuthorsManagementComponent implements OnInit {
 
   categoryById: IAuthor[] | undefined;
 
+  authorPermission: RoleModulePermission | undefined;
+
   constructor(
     private httpService: HttpService,
     private route: Router,
     private authorService: AuthorService,
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
+    private sessionService : SessionService,
   ) {
   }
   ngOnInit(): void {
+    this.getPermission();
     this.getData();
   }
+
+  getPermission() {
+    this.authorPermission = this.sessionService.getModulePermission(ModuleEnum.AuthorManagement);
+  }
+
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
