@@ -14,7 +14,7 @@ export class EmployeeService {
   ) { }
 
   getEmployeeList() {
-    return this.httpService.getWithCustomURL<IEmployee[]>({ controller: 'Accounts', url: `Accounts/employee-account/get-list/` })
+    return this.httpService.getWithCustomURL<IEmployee[]>({ controller: 'Accounts', url: `Accounts/employee-account/get-list` })
   }
 
   getEmployeeById(empId: string) {

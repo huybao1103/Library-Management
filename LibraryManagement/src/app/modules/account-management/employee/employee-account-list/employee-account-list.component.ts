@@ -81,11 +81,6 @@ export class EmployeeAccountListComponent implements OnInit {
     this.router.navigate([{ outlets: { modal: ['employee-account-list', 'edit', itemId] } }]);
   }
 
-  search() {
-    console.log('here')
-    this.employees$ = this.employeeService.search(this.data);
-  }
-
   getData() {
     this.employees$ = this.employeeService.getEmployeeList();
   }
