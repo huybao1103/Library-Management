@@ -56,6 +56,9 @@ import { ReaderAccountListComponent } from './account-management/reader/reader-a
 import { EmployeeAccountListComponent } from './account-management/employee/employee-account-list/employee-account-list.component';
 import { ReaderAccountDetailComponent } from './account-management/reader/reader-account-detail/reader-account-detail.component';
 import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
+import { RolePermissionComponent } from './role-permission/role-permission/role-permission.component';
+import { CheckboxModule } from 'primeng/checkbox';
+
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -88,6 +91,7 @@ import { EmployeeAccountDetailComponent } from './account-management/employee/em
     EmployeeAccountListComponent,
     ReaderAccountDetailComponent,
     EmployeeAccountDetailComponent,
+    RolePermissionComponent,
   ],
   imports: [
     DialogModule,
@@ -118,7 +122,8 @@ import { EmployeeAccountDetailComponent } from './account-management/employee/em
     DatatimePickerModule,
     CalendarModule,
     NgSelectItemModule,
-    MultiSelectModule
+    MultiSelectModule,
+    CheckboxModule
   ]
 })
 export class FeatureModule { }

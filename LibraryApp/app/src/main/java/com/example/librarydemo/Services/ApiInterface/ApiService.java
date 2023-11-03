@@ -83,6 +83,11 @@ public interface ApiService {
     @GET("api/{controller}/{method}")
     Call<JsonArray> getAllWithCustomUrl(@Path("controller") String url, @Path("method") String method);
 
+    @POST("api/{controller}/{method}")
+    Call<JsonObject> saveAllWithCustomUrl(@Path("controller") String url, @Path("method") String method, @Body JsonObject data);
+    @POST("api/{controller}/{method}")
+    Call<JsonArray> saveAllWithCustomUrl(@Path("controller") String url, @Path("method") String method, @Body JsonArray data);
+
     /**
      * Get an item with a custom url
      * @param url - as custom url ( {controller}/{method} )

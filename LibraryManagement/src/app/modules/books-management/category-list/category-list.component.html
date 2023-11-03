@@ -11,7 +11,7 @@
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [showCurrentPageReport]="true"
         >
-            <ng-template pTemplate="caption">
+            <ng-template pTemplate="caption" let-category of categories>
                 <div class="justify-content-between align-items-center">
                     <h3 class=>Category List</h3>
                     <div class="d-flex justify-content-between align-items-center">
@@ -20,8 +20,8 @@
                             <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search..." style="width: 30rem;"/>
                         </div>
                         <div>
-                            <button pButton pRipple label="New Category" icon="fa fa-plus" class="btn-primary" (click)="edit('')"></button>
-                            <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                            <button  *ngIf="categoryPermission?.create" (click)="edit('')" pButton pRipple label="New Category" icon="fa fa-plus" class="btn-primary"></button>
+                            <button *ngIf="categoryPermission?.delete" (click)="deleteCategory(category.id || '')" pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
                         </div>
                     </div>
                 </div>
@@ -44,8 +44,8 @@
                     <td>{{ category.name }}</td>
                     <td>{{ category.description }}</td>
                     <td style="text-align: center;">
-                        <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(category.id)"></button>
-                        <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteCategory(category)"></button>
+                        <button *ngIf="categoryPermission?.edit" (click)="edit(category.id || '')" pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(category.id)"></button>
+                        <button *ngIf="categoryPermission?.delete" (click)="deleteCategory(category.id || '')" pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteCategory(category)"></button>
                     </td>
                     <!-- deleteCategory(category) -->
                 </tr>

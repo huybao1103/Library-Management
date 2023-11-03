@@ -1,0 +1,122 @@
+<div class="content container-fluid">
+    <div class="row role-container">
+        <div class="file-wrap">
+            <div class="d-flex border">
+                <div class="col-sm-3 border">
+                    <div class="file-sidebar">
+                        <div class="file-header justify-content-between">
+                            <span></span>
+                            <h3 class="page-title font-weight-bold">Roles</h3>
+                            <a href="javascript:void(0);" class="btn add-role-btn" [pTooltip]="newRoleTooltip"
+                                [autoHide]="false" tooltipStyleClass="new-role-tooptip">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                        <div class="file-pro-list">
+                            <div class="file-scroll">
+                                <ul class="file-menu">
+                                    <li [class]="role.value === selectedRoleId ? 'bg-global' : '' "
+                                        *ngFor="let role of roles">
+                                        <a [class]="role.value === selectedRoleId ? 'text-light font-weight-bold' : ''"
+                                            href="javascript:void(0);" (click)="roleChange(role.value)">
+                                            {{role.label}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-9 border">
+                    <div class="file-cont-wrap">
+                        <div class="file-cont-inner">
+                            <div class="file-cont-header">
+                                <div class="page-header my-2 w-100">
+                                    <div class="row align-items-center ">
+                                        <div class="col">
+                                            <h3 class="page-title font-weight-bold" style="text-align: center;">Module
+                                                Permission</h3>
+                                        </div>
+                                        <div class="col-auto float-end ms-auto">
+                                            <a href="javascript:" class="btn add-btn" (click)="saveChanges()">
+                                                <i class="la la-save"></i>Save Changes
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="file-content">
+                                <p-table [value]="selectedRole.roleModulePermissions"
+                                    [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-striped">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>Module Name</th>
+                                            <!-- <th>All</th> -->
+                                            <th>Access</th>
+                                            <th>Detail</th>
+                                            <th>Create</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-module as RoleModulePermission>
+                                        <tr>
+                                            <td class="fw-bold">{{ ModuleString[module.module] }}</td>
+                                            <!-- <td>
+                                                <p-checkbox (ngModelChange)="selectedAllChange(module)" [binary]="true"
+                                                    inputId="binary" [ngModel]="module.all"></p-checkbox>
+                                            </td> -->
+                                            <td>
+                                                <p-checkbox (ngModelChange)="selectedChange($event, module, 'access')"
+                                                    [binary]="true" inputId="binary"
+                                                    [(ngModel)]="module.access"
+                                                    [disabled]="module.parentModule && module.parent_access"></p-checkbox>
+                                            </td>
+                                            <td>
+                                                <p-checkbox (ngModelChange)="selectedChange($event, module, 'detail')"
+                                                    [binary]="true" inputId="binary"
+                                                    [disabled]="module.parentModule && module.parent_detail" [(ngModel)]="module.detail"
+                                                ></p-checkbox>
+                                            </td>
+                                            <td>
+                                                <p-checkbox (ngModelChange)="selectedChange($event, module, 'create')"
+                                                    [binary]="true" inputId="binary"
+                                                    [disabled]="module.parentModule && module.parent_create" [(ngModel)]="module.create"
+                                                ></p-checkbox>
+                                            </td>
+                                            <td>
+                                                <p-checkbox (ngModelChange)="selectedChange($event, module, 'edit')"
+                                                    [binary]="true" inputId="binary"
+                                                    [disabled]="module.parentModule && module.parent_edit" [(ngModel)]="module.edit"
+                                                ></p-checkbox>
+                                            </td>
+                                            <td>
+                                                <p-checkbox (ngModelChange)="selectedChange($event, module, 'delete')"
+                                                    [binary]="true" inputId="binary"
+                                                    [disabled]="module.parentModule && module.parent_delete" [(ngModel)]="module.delete"
+                                                ></p-checkbox>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #newRoleTooltip>
+    <div class="d-flex align-items-center flex-row">
+        <span class="p-float-label">
+            <input pInputText id="role" placeholder="role name..." [(ngModel)]="roleName" />
+            <label htmlFor="role">New Role</label>
+        </span>
+        <a href="javascript:" style="margin-left: 15px; font-size: 20px;" (click)="newRole()">
+            <i class="fa fa-check"></i>
+        </a>
+    </div>
+</ng-template>

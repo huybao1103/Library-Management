@@ -13,5 +13,7 @@ public partial class Account
 
     public Guid? RoleId { get; set; }
 
+    public bool? Status { get; set; }
+
     public virtual Role? Role { get; set; }
 }

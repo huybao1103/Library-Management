@@ -36,8 +36,9 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() updateOnBlur = false;
   @Input() numberFormat!: string;
   @Input() calculated = false;
-  @Input() showIcon = true;
+  @Input() showIcon: boolean = false;
   @Input() keyFilter: KeyFilterPattern = KeyFilterType.text_number
+  @Input() iconClass: string = 'pi pi-eye-slash';
 
   @Output() keyup: EventEmitter<any> = new EventEmitter<any>();
 
@@ -45,7 +46,9 @@ export class InputTextComponent implements ControlValueAccessor {
 
   @Input() disabled = false;
   formCls: string = "";
+  showPassword: boolean = false;
 
+  
   TEXT_FIELD_TYPE = INPUT_TEXT_TYPE;
   onChange?: (value: string) => void
 
@@ -91,5 +94,12 @@ export class InputTextComponent implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+  }
+
+  changeMode() {
+    this.showPassword = !this.showPassword;
+
+    this.type = this.showPassword ? INPUT_TEXT_TYPE.TEXT : INPUT_TEXT_TYPE.PASSWORD;
+    this.iconClass = this.showPassword ? 'pi pi-eye' : 'pi pi-eye-slash';
   }
 }

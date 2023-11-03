@@ -1,3 +1,4 @@
+import { SessionService } from 'src/app/services/session.service';
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { HttpService } from '../services/http-service.service';
@@ -21,11 +22,13 @@ export class HeaderComponent implements OnInit {
 
     selectedCity!: ISidebarItem;
     
+    currentAccountPermission: any;
     // httpService: HttpService | undefined;
     constructor(
         private httpService: HttpService,
         private toastService: ToastService,
-        private router: Router
+        private router: Router,
+        private sessionService: SessionService
     ) {}
 
     ngOnInit() {
@@ -152,20 +155,8 @@ export class HeaderComponent implements OnInit {
                 icon: 'pi pi-fw pi-power-off'
             }
         ];
-
-        this.cities = [
-            { name: 'Dashboard', code: 'dashboard', icon: 'fa fa-book' },
-            { name: 'Books Management', code: 'book', icon: 'fa fa-book' },
-            { name: 'Authors Management', code: 'author', icon: 'fa fa-user' },
-            { name: 'Publishers Management', code: 'publisher', icon: 'fa fa-address-book' },
-        ];
-
-        let temp;
-        this.httpService.getAll({ controller: 'Authors' }).subscribe({
-            next: (resp) => {
-                temp = resp;
-            }
-        });
+        
+        this.currentAccountPermission = this.sessionService.getCurrentAccount();
     }
 
   sidebarToggle() {
@@ -175,5 +166,10 @@ export class HeaderComponent implements OnInit {
   sidebarClick(event: ListboxClickEvent) {
     this.router.navigate([`${event.option.code}`]);
     this.sidebarToggle();
+  }
+
+  logout() {
+    this.sessionService.clearSession();
+    this.router.navigate(['login']);
   }
 }

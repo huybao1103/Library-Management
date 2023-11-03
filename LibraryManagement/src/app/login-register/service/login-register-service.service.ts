@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IRegisterModel } from 'src/app/models/register.model';
-import { tap } from 'rxjs';
+import { IAccountInfo } from 'src/app/models/account.model';
 import { HttpService } from 'src/app/services/http-service.service';
 
 @Injectable({
@@ -13,11 +12,7 @@ export class LoginRegisterService {
     private httpService: HttpService
   ) { }
 
-  save(data: IRegisterModel) {
-    return this.httpService.save<IRegisterModel>({ url: '', controller: '', op: '', data }).pipe(
-      tap((res) => {
-        // handle here when res success
-      })
-    );
+  login(data: any) {
+    return this.httpService.saveWithCustomURL<IAccountInfo>({ controller: 'Accounts', url: 'Accounts/log-in', data })
   }
 }
