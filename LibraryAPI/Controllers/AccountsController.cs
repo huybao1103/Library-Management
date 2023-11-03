@@ -263,6 +263,7 @@ namespace LibraryAPI.Controllers
             libraryCard.Name = request.Name;
             libraryCard.Class = request.Clazz;
             libraryCard.AccountId = account.Id;
+            libraryCard.Status = (int?)LibraryCardStatus.Inactive;
             await _context.LibraryCards.AddAsync(libraryCard);
 
             await _context.SaveChangesAsync();
