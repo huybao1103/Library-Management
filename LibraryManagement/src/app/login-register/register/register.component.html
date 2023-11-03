@@ -11,8 +11,8 @@
           <h6 class="fs-6 text-muted text-center fw-semibold mb-3">Welcome to HUFLIT Library</h6>
           <div class="form-group my-2 row">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-              <label class="fw-bold fs-6 text-black">ID*</label>
-              <input formControlName="id" type="number" class="form-control bg-muted py-2"/>
+              <label class="fw-bold fs-6 text-black">Student ID*</label>
+              <input formControlName="id" type="input text" class="form-control bg-muted py-2"/>
               <div *ngIf="registerForm.get('id')?.hasError('required') && registerForm.get('id')?.touched">
                 <span class="text-danger small">ID is required</span>
               </div>
