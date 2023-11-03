@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Route } from '@angular/router';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { of } from 'rxjs';
+import { first, of } from 'rxjs';
 import { IAuthor } from 'src/app/models/author.model';
 import { IDialogType } from 'src/app/models/modal/dialog';
 import { ToastService } from 'src/app/services/toast.service';
@@ -63,7 +63,9 @@ export class BookAuthorEditComponent implements IDialogType, OnInit {
   }
 
   getAuthors() {
-    this.authorService.getAll().subscribe({
+    this.authorService.getAll()
+    .pipe(first())
+    .subscribe({
       next: (resp) => {
         if(resp)
           this.allAuthors = resp;
@@ -93,7 +95,7 @@ export class BookAuthorEditComponent implements IDialogType, OnInit {
           this.authorService.save(this.newAuthor).subscribe({
             next: (resp) => {
               if(resp) {
-                this.allAuthors = [...this.allAuthors, resp];
+                this.allAuthors = [resp, ...this.allAuthors];
                 this.selectedAuthors = [...this.selectedAuthors, resp];
               }
               this.toastService.show(MessageType.success, 'Author info save success');

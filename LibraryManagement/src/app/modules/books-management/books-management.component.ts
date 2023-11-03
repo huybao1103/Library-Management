@@ -1,3 +1,4 @@
+import { SessionService } from 'src/app/services/session.service';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from './service/book.service';
@@ -16,6 +17,8 @@ import { AuthorService } from '../authors-management/service/author.service';
 import { BookSearchFields } from './book-search-field';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { RoleModulePermission } from 'src/app/models/role-permission.model';
+import { ModuleEnum } from 'src/app/enums/module-enum';
 
 @Component({
   selector: 'app-books-management',
@@ -51,9 +54,13 @@ export class BooksManagementComponent implements OnInit {
     publishYear: '',
   };
   
+  //*
+  perrmission: RoleModulePermission | undefined;
+  bookDetailPermission: RoleModulePermission | undefined;
+
   constructor(
     private router: Router,
-    private activatedRoute : ActivatedRoute,
+    private sessionService : SessionService,
     private bookService: BookService,
     private confirmDialog: ConfirmDialogService,
     private toastService: ToastService,
@@ -64,9 +71,11 @@ export class BooksManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getPermission();
     this.loadData();
     this.getCagories();
   }
+
   responsiveOptions: any[] = [
     {
         breakpoint: '1024px',
@@ -81,6 +90,13 @@ export class BooksManagementComponent implements OnInit {
         numVisible: 1
     }
   ];
+
+  //*
+  getPermission() {
+    this.perrmission = this.sessionService.getModulePermission(ModuleEnum.BookList);
+    this.bookDetailPermission = this.sessionService.getModulePermission(ModuleEnum.BookDetail);
+  }
+
   loadData() {
     this.books$ = this.bookService.getAll(this.selectedCategory);
     this.fields = BookSearchFields();
@@ -142,7 +158,12 @@ export class BooksManagementComponent implements OnInit {
   }
 
   search() {
-    console.log('here')
     this.books$ = this.bookService.search(this.data);
+  }
+
+  //*
+  bookChapter(bookId: string) {
+    if(this.bookDetailPermission?.access && bookId)
+      this.router.navigate([`/bookchapter/${bookId}`]);
   }
 }

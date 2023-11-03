@@ -22,24 +22,27 @@ namespace LibraryAPI.Controllers
             _context = context;
         }
 
-        [HttpPost("menu")]
+        [HttpGet("menu/{loggedInAccountId}")]
         public List<MenuModel> GetMenu(Guid? loggedInAccountId)
         {
             string fileName = "AdminMenu.json";
 
-            //Account? account = _context.Accounts
-            //    .Include(x => x.Role)
-            //        .ThenInclude(x => x.RoleModulePermissions)
-            //    .First(a => a.Id == loggedInAccountId);
+            if(loggedInAccountId.HasValue)
+            {
+                Account? account = _context.Accounts
+                    .Include(x => x.Role)
+                        .ThenInclude(x => x.RoleModulePermissions)
+                    .First(a => a.Id == loggedInAccountId);
 
-            //if(account == null)
-            //{
-            //    throw new CustomApiException(500, "Cannot find this account, may be it was deleted.", "Cannot find this account, may be it was deleted.");
-            //}
+                if (account == null)
+                {
+                    throw new CustomApiException(500, "Cannot find this account, may be it was deleted.", "Cannot find this account, may be it was deleted.");
+                }
 
-            //fileName = account.Role.Name.Equals("Admin")
-            //    ? "AdminMenu.json"
-            //    : "LibrarianMenu.json";
+                fileName = account.Role.Name.Equals("Reader")
+                    ? "ReaderMenu.json"
+                    : "AdminMenu.json";
+            }
 
             var rootPath = _webHostEnvironment.ContentRootPath;
 

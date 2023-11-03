@@ -11,6 +11,12 @@ using LibraryAPI.Services;
 using AutoMapper;
 using LibraryAPI.RequestModels.Account;
 using LibraryAPI.CustomException;
+using LibraryAPI.ViewModels.Book;
+using LibraryAPI.Enums;
+using Microsoft.OpenApi.Extensions;
+using LibraryAPI.ViewModels.LibraryCard;
+using System.Security.Cryptography.Xml;
+using LibraryAPI.ViewModels.Employee;
 
 namespace LibraryAPI.Controllers
 {
@@ -32,47 +38,188 @@ namespace LibraryAPI.Controllers
         }
 
         // GET: api/Accounts
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AccountModel>>> GetAccounts()
+        [HttpGet("reader-account/get-list")]
+        public async Task<ActionResult<IEnumerable<LibraryCardModel>>> GetReaderAccount()
         {
-            var res = await GetAllAccounts().ToListAsync();
-            return Ok(_mapper.Map<List<AccountModel>>(res));
+            List<LibraryCard> libraryCard = await _context.LibraryCards
+                .Where(x => x.AccountId.HasValue)
+                .Include(x => x.StudentImages)
+                    .ThenInclude(x => x.File)
+                .ToListAsync();
+
+            List<LibraryCardModel> res = _mapper.Map<List<LibraryCardModel>>(libraryCard);
+
+            List<AccountModel> accountList = _mapper.Map<List<AccountModel>>(await _context.Accounts.ToListAsync());
+
+            res.ForEach(x => x.Account = accountList.FirstOrDefault(acc => acc.Id == x.AccountId));
+
+            return Ok(res);
         }
 
         // GET: api/Accounts/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Account>> GetAccount(Guid id)
+        [HttpGet("reader-account/get-by-id/{id}")]
+        public async Task<ActionResult<ReaderAccountSaveRequest>> GetReaderAccountById(Guid id)
         {
-          if (_context.Accounts == null)
-          {
-              return NotFound();
-          }
-            var account = await _context.Accounts.FindAsync(id);
+            if (_context.Accounts == null)
+            {
+                return NotFound();
+            }
+            Account account = await GetAccountById(id);
 
             if (account == null)
             {
                 return NotFound();
             }
+            ReaderAccountSaveRequest model = _mapper.Map<ReaderAccountSaveRequest>(account);
 
-            return account;
+            LibraryCard libraryCard = await _context.LibraryCards.FirstOrDefaultAsync(c => c.AccountId == id);
+
+            if(libraryCard == null)
+            {
+                throw new CustomApiException(500, "Cannot find the Library Card related to this Account.", "Cannot find the Library Card related to this Account.");
+            }
+            model.LibraryCardId = libraryCard.Id;
+
+            return Ok(model);
         }
 
         // POST: api/Accounts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Account>> PostAccount(Account account)
+        [HttpPost("save-reader-account")]
+        public async Task<ActionResult<ReaderAccountSaveRequest>> PostAccount(ReaderAccountSaveRequest request)
         {
-          if (_context.Accounts == null)
-          {
-              return Problem("Entity set 'LibraryManagementContext.Accounts'  is null.");
-          }
-            _context.Accounts.Add(account);
-            await _context.SaveChangesAsync();
+            if(request.LibraryCardId == Guid.Empty)
+            {
+                throw new CustomApiException(500, "Reader Account must be related to a Library Card.", "Reader Account must be related to a Library Card");
+            }
 
-            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+            LibraryCard libraryCard = await _context.LibraryCards.FindAsync(request.LibraryCardId);
+            if (libraryCard == null)
+            {
+                throw new CustomApiException(500, "Cannot find this Library Card.", "Cannot find this Library Card.");
+            }
+
+            RequestSaveReaderAccountValidate(request);
+
+            Role role = await _context.Roles.FirstOrDefaultAsync(r => r.NormalizedName == DefaultRoleEnum.Reader.GetDisplayName().ToLower());
+            Account? account;
+
+            if(!request.Id.HasValue)
+            {
+                account = _mapper.Map<Account>(request);
+                account.PasswordHash = _hashService.ConvertStringToHash(request.Password);
+                account.RoleId = role.Id;
+
+                _context.Accounts.Add(account);
+                await _context.SaveChangesAsync();
+
+                libraryCard.AccountId = account.Id;
+            }
+            else
+            {
+                LibraryCard oldLibraryCard = await _context.LibraryCards.FirstOrDefaultAsync(c => c.AccountId == request.Id);
+                if(oldLibraryCard.Id != libraryCard.Id)
+                {
+                    oldLibraryCard.AccountId = null;
+                }
+                libraryCard.AccountId = request.Id;
+
+                account = await _context.Accounts.FindAsync(request.Id);
+                account = _mapper.Map(request, account);
+
+            }
+            await _context.SaveChangesAsync();
+            request.Id = account.Id;
+
+            return CreatedAtAction("GetReaderAccountById", new { id = account.Id }, request);
         }
 
-        [HttpPost("sign-in")]
+        [HttpGet("employee-account/get-list")]
+        public async Task<ActionResult<IEnumerable<EmployeeModel>>> GetEmployeeAccount()
+        {
+            List<Employee> employees = await _context.Employees
+                .Where(x => x.AccountId.HasValue)
+                .ToListAsync();
+
+            List<EmployeeModel> res = _mapper.Map<List<EmployeeModel>>(employees);
+
+            List<AccountModel> accountList = _mapper.Map<List<AccountModel>>(await _context.Accounts.ToListAsync());
+
+            res.ForEach(x => x.Account = accountList.FirstOrDefault(acc => acc.Id == x.AccountId));
+
+            return Ok(res);
+        }
+
+        [HttpGet("employee-account/get-by-id/{empId}")]
+        public async Task<ActionResult<EmployeeAccountSaveRequest>> GetEmployeeAccountById(Guid empId)
+        {
+            Employee employees = await _context.Employees
+                .FirstOrDefaultAsync(x => x.Id == empId);
+            if(employees == null)
+            {
+                throw new CustomApiException(500, "Cannot find this Employee.", "Cannot find this Employee.");
+            }
+
+            EmployeeAccountSaveRequest res = _mapper.Map<EmployeeAccountSaveRequest>(employees);
+
+            if(res.AccountId.HasValue)
+            {
+                res = _mapper.Map(await _context.Accounts.FindAsync(res.AccountId), res);
+            }
+
+            return Ok(res);
+        }
+
+        [HttpPost("save-employee-account")]
+        public async Task<ActionResult<EmployeeAccountSaveRequest>> SaveEmployee(EmployeeAccountSaveRequest request)
+        {
+
+            RequestSaveEmployeeAccountValidate(request);
+
+            Account? account = null;
+            Employee? employee;
+
+            if (!request.Id.HasValue)
+            {
+                if(request.Email != null)
+                {
+                    account = _mapper.Map<Account>(request);
+                    account.PasswordHash = _hashService.ConvertStringToHash(request.Password);
+
+                    _context.Accounts.Add(account);
+                    await _context.SaveChangesAsync();
+                }
+
+                employee = _mapper.Map<Employee>(request);
+                employee.AccountId = account != null ? account.Id : null; 
+
+                _context.Employees.Add(employee);
+            }
+            else
+            {
+                employee = await _context.Employees.FirstAsync(e => e.Id == request.Id);
+                if (request.AccountId.HasValue)
+                {
+                    account = await _context.Accounts.FirstAsync(a => a.Id == request.AccountId);
+                    account.Email = request.Email;
+                }
+                else if (request.Email != null)
+                {
+                    account = _mapper.Map<Account>(request);
+                    account.PasswordHash = _hashService.ConvertStringToHash(request.Password);
+
+                    _context.Accounts.Add(account);
+                }
+
+                employee = _mapper.Map(request, employee);
+            }
+            await _context.SaveChangesAsync();
+            request.Id = account.Id;
+
+            return CreatedAtAction("GetEmployeeAccountById", new { empId = account.Id }, request);
+        }
+
+        [HttpPost("log-in")]
         public async Task<AccountModel> SignIn(LoginRequest request)
         {
             string password = _hashService.ConvertStringToHash(request.Password);
@@ -90,20 +237,49 @@ namespace LibraryAPI.Controllers
         }
 
         // DELETE: api/Accounts/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAccount(Guid id)
+        [HttpDelete("employee-account/remove/{empId}")]
+        public async Task<IActionResult> DeleteEmployeeAccount(Guid empId)
         {
             if (_context.Accounts == null)
             {
                 return NotFound();
             }
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null)
+
+            Employee employee = await _context.Employees.FindAsync(empId);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            if(employee.AccountId.HasValue)
+            {
+                Account account = await _context.Accounts.FindAsync(employee.AccountId.Value);
+                _context.Accounts.Remove(account);
+            }
+
+            _context.Employees.Remove(employee);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("reader-account/remove/{accountId}")]
+        public async Task<IActionResult> DeleteReaderAccount(Guid accountId)
+        {
+            if (_context.Accounts == null)
+            {
+                return NotFound();
+            }
+
+            Account account = await _context.Accounts.FindAsync(accountId);
+            if(account == null)
             {
                 return NotFound();
             }
 
             _context.Accounts.Remove(account);
+
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -120,6 +296,34 @@ namespace LibraryAPI.Controllers
                 .Include(x => x.Role)
                     .ThenInclude(x => x.RoleModulePermissions)
                 .AsQueryable();
+        }
+
+        private async Task<Account> GetAccountById(Guid id)
+        {
+            return await _context.Accounts
+                .Where(a => a.Id == id)
+                .Include(x => x.Role)
+                    .ThenInclude(x => x.RoleModulePermissions)
+                .FirstAsync();
+        }
+
+        private void RequestSaveReaderAccountValidate(ReaderAccountSaveRequest request)
+        {
+            Account account = _mapper.Map<Account>(request);
+
+            if (_context.Accounts.Any(account => account.Email == request.Email))
+            {
+                throw new CustomApiException(500, "This email is already existed.", "This email is already existed.");
+            }
+        }
+        private void RequestSaveEmployeeAccountValidate(EmployeeAccountSaveRequest request)
+        {
+            Account account = _mapper.Map<Account>(request);
+
+            if (_context.Accounts.Any(account => account.Email == request.Email))
+            {
+                throw new CustomApiException(500, "This email is already existed.", "This email is already existed.");
+            }
         }
     }
 }

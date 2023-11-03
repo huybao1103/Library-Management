@@ -14,6 +14,15 @@ const routes: Routes = [
     loadChildren: () => import('./modules/feature.module').then(m => m.FeatureModule)
   },
   {
+    path: 'reader',
+    redirectTo: 'reader',
+    pathMatch: 'full'
+  },
+  {
+    path: 'reader',
+    loadChildren: () => import('./reader-modules/reader-module.module').then(m => m.ReaderModule)
+  },
+  {
     path: 'login',
     component: LoginComponent
   },

@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 
 public class MainActivity extends Activity {
 
-    private static int SPLASH_TIME_OUT= 3250;
+    private static int SPLASH_TIME_OUT= 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
