@@ -104,12 +104,13 @@ export class BookInfoEditComponent implements IDialogType {
     modalRef.componentInstance.selectedAuthors = [...this.authors.map(x => x.author)];
 
     modalRef.result.then((res: IAuthor[]) => {
-      this.authors = res.map(i => {
-        return {
-          authorId: i.id,
-          author: {...i}
-        }
-      })
+      if(res)
+        this.authors = res.map(i => {
+          return {
+            authorId: i.id,
+            author: {...i}
+          }
+        })
     });
   }
 
@@ -131,13 +132,13 @@ export class BookInfoEditComponent implements IDialogType {
     modalRef.componentInstance.selectedPublishers = [...this.publishers.map(x => x.publisher)];
 
     modalRef.result.then((res: IPublisher[]) => {
-      this.publishers = res.map(i => {
-        return {
-          publisherId: i.id,
-          publisher: {...i}
-        }
-      })
-      console.log(this.publishers)
+      if(res)
+        this.publishers = res.map(i => {
+          return {
+            publisherId: i.id,
+            publisher: {...i}
+          }
+        })
     });
   }
 

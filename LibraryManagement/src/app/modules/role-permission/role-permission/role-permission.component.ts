@@ -66,14 +66,16 @@ export class RolePermissionComponent implements OnInit {
           this.selectedRole = resp;
           this.selectedRole.roleModulePermissions = this.selectedRole.roleModulePermissions
             .map(rmp => {
+              const parentModule = this.getParentModule(rmp);
               return {
                 ...rmp,
-                parentModule: this.getParentModule(rmp),
-                parent_access: this.getParentModule(rmp) ? !rmp.access : false,
-                parent_detail: this.getParentModule(rmp) ? !rmp.detail : false,
-                parent_create: this.getParentModule(rmp) ? !rmp.create : false,
-                parent_edit: this.getParentModule(rmp) ? !rmp.edit : false,
-                parent_delete: this.getParentModule(rmp) ? !rmp.delete : false,
+                parentModule: parentModule,
+                parent_access: parentModule ? !rmp.access : false,
+                parent_detail: parentModule ? !rmp.detail : false,
+                parent_create: parentModule ? !rmp.create : false,
+                parent_edit: parentModule ? !rmp.edit : false,
+                parent_delete: parentModule ? !rmp.delete : false,
+                parent_all: parentModule ? !rmp.all: false,
                 all:  rmp.access === true 
                       && rmp.detail === true 
                       && rmp.delete === true 

@@ -17,6 +17,7 @@ export interface RoleModulePermission {
     edit: boolean;
     delete: boolean;
     roleId: string;
+    parent_all: boolean;
     parent_access: boolean;
     parent_detail: boolean;
     parent_create: boolean;

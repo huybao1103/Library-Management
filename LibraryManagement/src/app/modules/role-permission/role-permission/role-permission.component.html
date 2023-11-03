@@ -52,7 +52,7 @@
                                     <ng-template pTemplate="header">
                                         <tr>
                                             <th>Module Name</th>
-                                            <th>All</th>
+                                            <!-- <th>All</th> -->
                                             <th>Access</th>
                                             <th>Detail</th>
                                             <th>Create</th>
@@ -63,10 +63,10 @@
                                     <ng-template pTemplate="body" let-module as RoleModulePermission>
                                         <tr>
                                             <td class="fw-bold">{{ ModuleString[module.module] }}</td>
-                                            <td>
+                                            <!-- <td>
                                                 <p-checkbox (ngModelChange)="selectedAllChange(module)" [binary]="true"
                                                     inputId="binary" [ngModel]="module.all"></p-checkbox>
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <p-checkbox (ngModelChange)="selectedChange($event, module, 'access')"
                                                     [binary]="true" inputId="binary"
