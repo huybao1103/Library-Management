@@ -1,1 +1,38 @@
-<p>book-cart works!</p>
+<div class="modal-header">
+    <h4 class="modal-title pull-left" id="my-modal-title">{{ book?.name }}</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <p-pickList 
+        [source]="book.bookChapter" 
+        [target]="targetProducts" 
+        sourceHeader="Available" 
+        targetHeader="Selected"
+        [dragdrop]="true" 
+        [responsive]="true" 
+        [sourceStyle]="{ height: '30rem' }" 
+        [targetStyle]="{ height: '30rem' }"
+        breakpoint="1400px"
+    >
+        <ng-template let-product pTemplate="item">
+            <div class="flex flex-wrap p-2 align-items-center gap-3">
+                <img class="w-4rem shadow-2 flex-shrink-0 border-round"
+                    src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
+                    alt="{item.name}" />
+                <div class="flex-1 flex flex-column gap-2">
+                    <span class="font-bold">{{ product.name }}</span>
+                    <div class="flex align-products-center gap-2">
+                        <i class="pi pi-tag text-sm"></i>
+                        <span>{{ product.category }}</span>
+                    </div>
+                </div>
+                <span class="font-bold text-900">{{ '$' + product.price }}</span>
+            </div>
+        </ng-template>
+    </p-pickList>
+    <div class="submit-section">
+        <button class="btn btn-primary submit-btn" (click)="close()">Done</button>
+    </div>
+</div>

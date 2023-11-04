@@ -60,6 +60,7 @@ import { RolePermissionComponent } from './role-permission/role-permission/role-
 import { CheckboxModule } from 'primeng/checkbox';
 import { BookSearchComponent } from '../reader-modules/book-search/book-search/book-search.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { PickListModule } from 'primeng/picklist';
 
 @NgModule({
   providers: [
@@ -127,7 +128,8 @@ import { DialogService } from 'primeng/dynamicdialog';
     CalendarModule,
     NgSelectItemModule,
     MultiSelectModule,
-    CheckboxModule
+    CheckboxModule,
+    PickListModule
   ]
 })
 export class FeatureModule { }
