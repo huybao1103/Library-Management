@@ -39,13 +39,8 @@ export class ReaderAccountListComponent {
   ];
 
   edit(cardId: string) {
-    // Find the reader account with the specified cardId
-    const readerAccount = this.readerAccounts.find(account => account.cardId === cardId);
+    this.router.navigate([{ outlets: { modal: ['reader-account-list', 'edit', cardId] } }]);
 
-    if (readerAccount) {
-      // Perform edit logic here, such as navigating to the edit page with the cardId
-      this.router.navigate(['/edit', cardId]);
-    }
   }
 
   deleteReaderAccount(card: any) {
@@ -58,10 +53,6 @@ export class ReaderAccountListComponent {
     }
   }
 
-  goToDetail(cardId: number) {
-    // Perform navigation logic here, such as navigating to the detail page with the cardId
-    this.router.navigate(['/detail', cardId]);
-  }
   search() {
     // Perform search logic here, such as filtering the readerAccounts array based on the searchQuery
     // For example, you can filter by name or cardId

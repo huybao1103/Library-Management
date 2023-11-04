@@ -1,7 +1,6 @@
 import { RolePermissionComponent } from './role-permission/role-permission/role-permission.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboardComponent';
 import { MainPageComponent } from '../main-page/main-page.component';
 import { BooksManagementComponent } from './books-management/books-management.component';
 import { ModalbaseComponent } from '../layout/modalbase/modalbase.component';
@@ -24,6 +23,7 @@ import { ReaderAccountListComponent } from './account-management/reader/reader-a
 import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
 import { EmployeeAccountListComponent } from './account-management/employee/employee-account-list/employee-account-list.component';
 import { BookSearchComponent } from '../reader-modules/book-search/book-search/book-search.component';
+import { DashboardComponent } from './dashboard/dashboardComponent';
 
 const routes: Routes = [
   {

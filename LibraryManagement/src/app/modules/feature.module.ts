@@ -14,7 +14,6 @@ import { AuthorInfoEditComponent } from './authors-management/author-info-edit/a
 import { AuthorsManagementComponent } from './authors-management/authors-management.component';
 import { BookInfoEditComponent } from './books-management/book-info-edit/book-info.edit.component';
 import { BooksManagementComponent } from './books-management/books-management.component';
-import { DashboardComponent } from './dashboard/dashboardComponent';
 import { FeatureRoutingModule } from './feature-routing.module';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
@@ -61,6 +60,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 
 import { MultiSelectModule } from 'primeng/multiselect';
 import {StyleClassModule} from 'primeng/styleclass';
+import { DashboardComponent } from './dashboard/dashboardComponent';
 @NgModule({
   providers: [
     ConfirmationService, 
