@@ -57,6 +57,8 @@ import { ReaderAccountDetailComponent } from './account-management/reader/reader
 import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
 import { RolePermissionComponent } from './role-permission/role-permission/role-permission.component';
 import { CheckboxModule } from 'primeng/checkbox';
+import { BookSearchComponent } from '../reader-modules/book-search/book-search/book-search.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 import { MultiSelectModule } from 'primeng/multiselect';
 import {StyleClassModule} from 'primeng/styleclass';
@@ -67,6 +69,7 @@ import { DashboardComponent } from './dashboard/dashboardComponent';
     ConfirmDialogService,
     FilterService,
     NgbActiveModal,
+    DialogService
   ],
   declarations: [
     MainPageComponent,
@@ -95,6 +98,7 @@ import { DashboardComponent } from './dashboard/dashboardComponent';
     ReaderAccountDetailComponent,
     EmployeeAccountDetailComponent,
     RolePermissionComponent,
+    BookSearchComponent
   ],
   imports: [
     DialogModule,

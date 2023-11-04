@@ -5,6 +5,7 @@ import { ReaderMainPageComponent } from './reader-main-page/reader-main-page.com
 import { ReaderHeaderComponent } from './reader-header/reader-header.component';
 import { ReaderRoutingModule } from './reader-module-routing';
 import { RouterModule } from '@angular/router';
+import { BookCartComponent } from './book-cart/book-cart.component';
 
 
 
@@ -12,7 +13,8 @@ import { RouterModule } from '@angular/router';
   declarations: [
     // BookSearchComponent,
     ReaderMainPageComponent,
-    ReaderHeaderComponent
+    ReaderHeaderComponent,
+    BookCartComponent
   ],
   imports: [
     CommonModule,
