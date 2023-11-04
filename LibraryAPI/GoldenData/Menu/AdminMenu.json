@@ -1,5 +1,12 @@
 [
   {
+    "name": "Dashboard",
+    "code": "dashboard",
+    "icon": "fa fa-home",
+    "moduleEnum": "Dashboard",
+    "route": ""
+  },
+  {
     "name": "Book Management",
     "code": "book",
     "icon": "fa fa-book",
