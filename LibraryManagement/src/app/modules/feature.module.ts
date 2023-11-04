@@ -45,6 +45,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
@@ -123,7 +124,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     CalendarModule,
     NgSelectItemModule,
     MultiSelectModule,
-    CheckboxModule
+    CheckboxModule,
+    OverlayPanelModule,
   ]
 })
 export class FeatureModule { }

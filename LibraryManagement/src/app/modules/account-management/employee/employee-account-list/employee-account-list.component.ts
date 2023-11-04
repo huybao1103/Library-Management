@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IEmployee } from 'src/app/models/employee-account';
-import { IComboboxOption } from 'src/app/models/combobox-option.model';
 import { EmployeeService } from '../service/employee-service.service';
 import { Observable} from 'rxjs';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
@@ -10,12 +9,15 @@ import { MessageType } from 'src/app/enums/toast-message.enum';
 import { MessageService } from 'primeng/api';
 import { DialogService} from 'primeng/dynamicdialog';
 import { Table } from 'primeng/table';
+import { OverlayPanel } from 'primeng/overlaypanel';
+
 @Component({
   selector: 'app-employee-account-list',
   templateUrl: './employee-account-list.component.html',
   styleUrls: ['./employee-account-list.component.css'],
   providers: [DialogService, MessageService],
 })
+
 export class EmployeeAccountListComponent implements OnInit {
 
   responsiveOptions: any[] = [
@@ -34,6 +36,8 @@ export class EmployeeAccountListComponent implements OnInit {
   ];
 
   @ViewChild('dt') dt: Table | undefined;
+
+  @ViewChild('overlayPanel') overlayPanel!: OverlayPanel;
 
   employee: IEmployee[] = [
     {
@@ -83,6 +87,14 @@ export class EmployeeAccountListComponent implements OnInit {
 
   getData() {
     this.employees$ = this.employeeService.getEmployeeList();
+  }
+
+  showOverlayPanel(event: Event) {
+    this.overlayPanel.show(event);
+  }
+  
+  hideOverlayPanel() {
+    this.overlayPanel.hide();
   }
 
   deleteEmployee(employee: IEmployee) {
