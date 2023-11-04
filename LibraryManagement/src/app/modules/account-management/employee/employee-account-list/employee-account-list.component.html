@@ -1,9 +1,9 @@
-<div *ngIf="employees$ | async as Employees">
+<div>
     <p-table
         #dt
         [rows]="7"
         [paginator]="true"
-        [value]="Employees"
+        [value]="employee"
         [globalFilterFields]="['name', 'email', 'phone', 'joinDate', 'roleId', 'accountId']"
         [tableStyle]="{ 'min-width': '75rem' }"
         [rowHover]="true"
@@ -58,8 +58,9 @@
                 <td>{{ employee.name }}</td>
                 <td>{{ employee.citizenId }}</td>
                 <td>{{ employee.joinDate | date: 'dd/MM/yyyy' }}</td>
-                <td (click)="showOverlayPanel($event)"><i [ngClass]="employee.account ? 'fa fa-check' : 'fa fa-times'"></i>
-                    <p-overlayPanel #overlayPanel >
+                <td (click)="showOverlayPanel($event)">
+                    <i [ngClass]="employee.account ? 'fa fa-check' : 'fa fa-times'" (click)="hideOverlayPanel()"></i>
+                    <p-overlayPanel #overlayPanel>
                         <ng-template pTemplate="content">
                             <tr><b>Email: </b>{{ employee.account?.email || 'No account' }}</tr>
                             <tr><b>Phone: </b>{{ employee.phone }}</tr>
