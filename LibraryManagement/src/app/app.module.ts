@@ -20,6 +20,7 @@ import { LoginComponent } from './login-register/login/login.component';
 import { RegisterComponent } from './login-register/register/register.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
