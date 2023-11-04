@@ -133,6 +133,7 @@ import { DashboardComponent } from './dashboard/dashboardComponent';
     CheckboxModule,
     ChartModule,
     MultiSelectModule,
+    CheckboxModule,
     StyleClassModule,
   ]
 })

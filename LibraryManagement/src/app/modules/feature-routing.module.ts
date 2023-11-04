@@ -24,6 +24,7 @@ import { EmployeeAccountDetailComponent } from './account-management/employee/em
 import { EmployeeAccountListComponent } from './account-management/employee/employee-account-list/employee-account-list.component';
 import { BookSearchComponent } from '../reader-modules/book-search/book-search/book-search.component';
 import { DashboardComponent } from './dashboard/dashboardComponent';
+import { BookCartComponent } from '../reader-modules/book-cart/book-cart.component';
 
 const routes: Routes = [
   {
@@ -141,6 +142,12 @@ const routes: Routes = [
       {
         path: 'book-search',
         component: BookSearchComponent,
+      },
+      {
+        path: 'book-search/add-chapter-to-cart/:bookId',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: BookCartComponent }
       },
     ]
   },
