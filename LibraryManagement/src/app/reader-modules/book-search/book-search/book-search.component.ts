@@ -129,5 +129,7 @@ export class BookSearchComponent implements OnInit {
 
   //*
   bookChapter(bookId: string) {
+    if(bookId)
+      this.router.navigate([`/bookchapter/${bookId}`]);
   }
 }
