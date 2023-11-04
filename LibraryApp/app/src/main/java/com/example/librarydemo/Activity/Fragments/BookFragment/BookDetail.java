@@ -1,4 +1,4 @@
-    package com.example.librarydemo.Activity.Fragments.BookFragment;
+package com.example.librarydemo.Activity.Fragments.BookFragment;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,6 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +19,8 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
@@ -30,6 +37,7 @@ import com.example.librarydemo.Models.SpinnerOption;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
+import com.example.librarydemo.Services.Base64Service;
 import com.example.librarydemo.Services.CheckBoxListener;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.Layout.ApiRequest;
@@ -55,9 +63,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-    import retrofit2.Call;
-    import retrofit2.Callback;
-    import retrofit2.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     ApiService apiService;
@@ -73,7 +81,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     AuthorModel[] authors;
     PublisherModel[] publishers;
     EditText edt_bookName, edt_publishYear;
-    Button submit_btn, openDialog;
+    Button submit_btn, openDialog, cancelimage;
     String bookId;
     TextInputLayout author_publisher_input;
     AlertDialog dialog;
@@ -87,16 +95,139 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     TabLayout author_publisher_tab;
     boolean isAuthorTabSelected = true;
     boolean formValid = false;
+    private int PICK_IMAGE_REQUEST = 1;
+    private Base64Service base64Service;
+    private ImageView selectedImageView;
+    Button chooseImageButton, submitButton;
+    private String base64Image;
+    private boolean isImageSelected;
+    private View cancelImageButton;
+    private com.example.librarydemo.Models.Book.BookRequestModel BookRequestModel;
+    private String getimage;
+    private ImageSwitcher sselectedImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
 
+
+
+        selectedImageView = findViewById(R.id.book_image_view);
+        chooseImageButton = findViewById(R.id.chooseimage);
+
+        chooseImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Mở hộp thoại chọn ảnh
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            }
+        });
+
+        cancelImageButton = findViewById(R.id.cancel_button);
+        cancelImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isImageSelected) {
+                    new AlertDialog.Builder(BookDetail.this)
+                            .setTitle("CONFIRM")
+                            .setMessage("Are you sure want to remove this photo?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Gỡ ảnh và đặt isImageSelected về false
+                                    selectedImageView.setImageResource(0);
+                                    isImageSelected = false;
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Đóng hộp thoại
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
+
+
         assign();
         getCategories();
         openDatePicker();
         setRecyclerView();
+
+        // Lấy chuỗi Base64 từ Intent
+//        String base64Image = getIntent().getStringExtra("base64Image");
+
+        //Get image
+//        int imageResource = R.drawable.avatar1;
+
+
+//        ImageView selectedImageView = findViewById(R.id.book_image_view);
+//
+//        // lấy id ảnh
+//        int imageResource = R.drawable.avatar1; // Thay thế "your_image" bằng tên tài nguyên hình ảnh thực tế
+//
+//        // Đặt ảnh vào ImageView
+//        selectedImageView.setImageResource(imageResource);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String savedBase64Image = sharedPreferences.getString("base64Image", "");
+
+
+
+
+
+        // Kiểm tra xem chuỗi Base64 không phải là null hoặc trống
+        if (base64Image != null && !base64Image.isEmpty()) {
+            // Chuyển chuỗi Base64 trở lại thành một đối tượng Bitmap
+            Bitmap imageBitmap = base64Service.convertBase64ToImage(base64Image);
+
+            // Hiển thị đối tượng Bitmap trong một ImageView
+            ImageView imageView = findViewById(R.id.imageView);
+            imageView.setImageBitmap(imageBitmap);
+        }
     }
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            // Lấy đối tượng Uri của hình ảnh đã chọn
+            Uri selectedImageUri = data.getData();
+            base64Service = new Base64Service(this);
+
+
+            // Chuyển đổi hình ảnh thành chuỗi Base64
+            String base64Image = base64Service.convertImageToBase64(selectedImageUri);
+
+            // Hiển thị đối tượng Bitmap trong ImageView
+            Bitmap imageBitmap = base64Service.convertBase64ToImage(base64Image);
+            selectedImageView.setImageBitmap(imageBitmap);
+
+            // Lưu base64Image khi nhấn nút "submit"
+            this.base64Image = base64Image;
+
+            // Đánh dấu là đã chọn ảnh
+            isImageSelected = true;
+
+            // Save the base64Image to SharedPreferences
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("base64Image", base64Image);
+            editor.apply();
+
+
+        }
+    }
+
 
     private void assign() {
         apiService = RetrofitClient.getApiService(this);
@@ -120,8 +251,8 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setItemAnimator(null);
 
-            edt_bookName = findViewById(R.id.edt_bookName);
-            edt_publishYear = findViewById(R.id.edt_publishYear);
+        edt_bookName = findViewById(R.id.edt_bookName);
+        edt_publishYear = findViewById(R.id.edt_publishYear);
 
         // Kiểm tra đang thêm hay sửa thông tin
         if(getIntent().getExtras() != null) {
@@ -164,26 +295,26 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 currentBook = new ApiResponse<BookModel>()
                         .getResultFromResponse
-                        (
-                            response,
-                            new TypeToken<BookModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                        );
+                                (
+                                        response,
+                                        new TypeToken<BookModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
                 if(currentBook != null)
                     bindValue();
             }
 
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
 
-                }
-            });
+            }
+        });
 
-        }
+    }
 
-        private void bindValue() {
-            edt_bookName.setText(currentBook.getName());
-            edt_publishYear.setText(currentBook.getPublishYear());
-            edt_inputDay.setText(new LocalDateTimeConvert().convertDate(currentBook.getInputDay()));
+    private void bindValue() {
+        edt_bookName.setText(currentBook.getName());
+        edt_publishYear.setText(currentBook.getPublishYear());
+        edt_inputDay.setText(new LocalDateTimeConvert().convertDate(currentBook.getInputDay()));
 
         for (BookCategories bookCategories: currentBook.getBookCategories()) {
             SpinnerOption spinnerOption = new SpinnerOption(bookCategories.getCategory().getName(), bookCategories.getCategoryId());
@@ -206,19 +337,19 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             authors = Arrays.stream(currentBook.getBookAuthors())
-                .map(x -> x.getAuthor())
-                .toArray(AuthorModel[]::new);
+                    .map(x -> x.getAuthor())
+                    .toArray(AuthorModel[]::new);
             publishers = Arrays.stream(currentBook.getBookPublishers())
                     .map(x -> x.getPublisher())
                     .toArray(PublisherModel[]::new);
 
             selectedAuthors = Arrays.stream(authors)
-            .map(i -> new SpinnerOption(i.getName(), i.getId()))
-            .collect(Collectors.toCollection(ArrayList::new));
+                    .map(i -> new SpinnerOption(i.getName(), i.getId()))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
             selectedPublishers = Arrays.stream(publishers)
-            .map(i -> new SpinnerOption(i.getName(), i.getId()))
-            .collect(Collectors.toCollection(ArrayList::new));
+                    .map(i -> new SpinnerOption(i.getName(), i.getId()))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
             setRecyclerView();
         }
@@ -241,27 +372,27 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 categories = new ApiResponse<List<SpinnerOption>>()
                         .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                        (
-                                response,
-                                new TypeToken<List<SpinnerOption>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                        );
+                                (
+                                        response,
+                                        new TypeToken<List<SpinnerOption>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
 
-                    if(categories != null && !categories.isEmpty()) {
-                        CustomSpinner customSpinner = new CustomSpinner(getApplicationContext(), (ArrayList<SpinnerOption>) categories);
+                if(categories != null && !categories.isEmpty()) {
+                    CustomSpinner customSpinner = new CustomSpinner(getApplicationContext(), (ArrayList<SpinnerOption>) categories);
 
-                        spn_category.setAdapter(customSpinner);
-                        spn_category.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                    spn_category.setAdapter(customSpinner);
+                    spn_category.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-                        spn_category.setOnItemClickListener((adapterView, view, i, l) -> {
-                            SpinnerOption selected = (SpinnerOption) adapterView.getItemAtPosition(i);
+                    spn_category.setOnItemClickListener((adapterView, view, i, l) -> {
+                        SpinnerOption selected = (SpinnerOption) adapterView.getItemAtPosition(i);
 
-                            if( (selectedCategories != null
+                        if( (selectedCategories != null
                                 && !selectedCategories.isEmpty()
                                 && findItem((SpinnerOption) adapterView.getItemAtPosition(i)) == null)
                                 || ((selectedCategories == null) || selectedCategories.isEmpty())
-                            ) {
-                                selectedCategories.add(selected);
-                            }
+                        ) {
+                            selectedCategories.add(selected);
+                        }
 
                         updateSelectedCategory();
                     });
@@ -272,12 +403,12 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
                 }
             }
 
-                @Override
-                public void onFailure(Call<JsonArray> call, Throwable t) {
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
 
-                }
-            });
-        }
+            }
+        });
+    }
 
     private void getAuthors() {
         apiService = RetrofitClient.getApiService(this); /* Khai báo để gọi API */
@@ -285,11 +416,11 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 authorList = new ApiResponse<List<SpinnerOption>>()
-                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                (
-                    response,
-                    new TypeToken<List<SpinnerOption>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                );
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<List<SpinnerOption>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
 
                 if(authorList != null && !authorList.isEmpty()) {
                     CustomSpinner customSpinner = new CustomSpinner(getApplicationContext(), (ArrayList<SpinnerOption>) authorList);
@@ -364,11 +495,11 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 AuthorModel author = new ApiResponse<AuthorModel>()
-                .getResultFromResponse
-                (
-                    response,
-                    new TypeToken<AuthorModel>(){}.getType()
-                );
+                        .getResultFromResponse
+                                (
+                                        response,
+                                        new TypeToken<AuthorModel>(){}.getType()
+                                );
 
                 bookAuthorAdapter.addItem(author);
             }
@@ -386,11 +517,11 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 PublisherModel publisher = new ApiResponse<PublisherModel>()
-                .getResultFromResponse
-                (
-                    response,
-                    new TypeToken<PublisherModel>(){}.getType()
-                );
+                        .getResultFromResponse
+                                (
+                                        response,
+                                        new TypeToken<PublisherModel>(){}.getType()
+                                );
 
                 bookPublisherAdapter.addItem(publisher);
             }
@@ -409,9 +540,9 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         }
     }
 
-        public void openDatePicker() {
-            edt_inputDay.setOnClickListener(v -> new DatePickerService().showDatePickerDialog(BookDetail.this, edt_inputDay));
-        }
+    public void openDatePicker() {
+        edt_inputDay.setOnClickListener(v -> new DatePickerService().showDatePickerDialog(BookDetail.this, edt_inputDay));
+    }
 
     private void setRecyclerView() {
         if(isAuthorTabSelected) {
@@ -442,21 +573,20 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
 
         BookRequestModel bookRequestModel = new BookRequestModel();
 
-        if(bookName.equals("")) {
+        if (bookName.equals("")) {
             Toast.makeText(this, "Book name must not be null", Toast.LENGTH_SHORT).show();
         } else if (selectedCategories == null || selectedCategories.isEmpty()) {
             Toast.makeText(this, "Book must have a category", Toast.LENGTH_SHORT).show();
         } else {
             bookRequestModel.setName(bookName);
 
-            if(!inputDay.equals(""))
+            if (!inputDay.equals(""))
                 bookRequestModel.setInputDay(new LocalDateTimeConvert().convertToISODateTime(inputDay));
 
-            if(bookId != null && !bookId.equals(""))
+            if (bookId != null && !bookId.equals(""))
                 bookRequestModel.setId(bookId);
 
             bookRequestModel.setPublishYear(publishYear);
-
 
             String[] categories = new String[selectedCategories.size()];
             for (int i = 0; i < categories.length; i++) {
@@ -476,13 +606,23 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             }
             bookRequestModel.setPublishers(bookPublisherId);
 
-            save(bookRequestModel);
-        }
+            bookRequestModel.setBase64Image(base64Image);
+            if (base64Image != null && !base64Image.isEmpty()) {
+                // lưu hình
+                save(bookRequestModel);
+            }
 
+        }
     }
+
 
     private void save(BookRequestModel bookModel) {
         JsonObject data = new ApiRequest().convertModelToJSONObject(bookModel);
+        // Thêm base64Image vào JsonObject
+
+        if (base64Image != null && !base64Image.isEmpty()) {
+            data.addProperty("base64Image", base64Image);
+        }
         apiService.save(ControllerConst.BOOKS, data).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -589,10 +729,10 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 AuthorModel authorModel = new ApiResponse<AuthorModel>().getResultFromResponse
-                (
-                    response,
-                    new TypeToken<AuthorModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                );
+                        (
+                                response,
+                                new TypeToken<AuthorModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                        );
                 if(authorModel != null) {
                     bookAuthorAdapter.addItem(authorModel);
                     dialog.dismiss();
