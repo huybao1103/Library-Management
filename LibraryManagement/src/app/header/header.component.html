@@ -57,7 +57,8 @@
 
         <li>
             <a class="report-btn">
-                <span class="">
+                <span class="report-btn" *ngIf="currentAccountPermission.role.name === 'Reader'">
+                    <i class="bi bi-cart-fill header-cart-icon"></i>
                 </span>
             </a>
         </li>
