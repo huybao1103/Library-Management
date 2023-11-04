@@ -31,14 +31,17 @@ import com.example.librarydemo.Activity.Fragments.BookFragment.BookPublisher.Boo
 import com.example.librarydemo.Models.AuthorModel;
 import com.example.librarydemo.Models.Book.BookAuthor;
 import com.example.librarydemo.Models.Book.BookCategories;
+import com.example.librarydemo.Models.Book.BookImage;
 import com.example.librarydemo.Models.Book.BookModel;
 import com.example.librarydemo.Models.Book.BookPublisher;
 import com.example.librarydemo.Models.Book.BookRequestModel;
 import com.example.librarydemo.Models.PublisherModel;
 import com.example.librarydemo.Models.SpinnerOption;
+import com.example.librarydemo.Models.UploadFile;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
+import com.example.librarydemo.Services.Base64Service;
 import com.example.librarydemo.Services.CheckBoxListener;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.Layout.ApiRequest;
@@ -55,7 +58,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -89,6 +92,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     BookModel currentBook;
     AuthorModel[] authors;
     PublisherModel[] publishers;
+    BookImage bookImages;
     EditText edt_bookName, edt_publishYear;
     Button submit_btn, openDialog;
     String bookId;
@@ -116,15 +120,10 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         selectedImageView = findViewById(R.id.selected_image_view);
         chooseImageButton = findViewById(R.id.choose_image_button);
 
-        chooseImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Mở hộp thoại chọn ảnh
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-            }
+        chooseImageButton.setOnClickListener(v -> {
+            // Mở hộp thoại chọn ảnh
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, PICK_IMAGE_REQUEST);
         });
 
         assign();
@@ -142,6 +141,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         apiService = RetrofitClient.getApiService(this);
         bookAuthorAdapter = new BookAuthorAdapter(this, new ArrayList<>(), this);
         bookPublisherAdapter = new BookPublisherAdapter(this, new ArrayList<>(), this);
+        bookImages = new BookImage();
 
         author_publisher_input = findViewById(R.id.author_publisher_input);
 
@@ -516,6 +516,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             }
             bookRequestModel.setPublishers(bookPublisherId);
 
+            bookRequestModel.setBookImages(new BookImage[]{bookImages});
             save(bookRequestModel);
         }
 
@@ -695,47 +696,63 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             }
         }
     }
-    public void onChooseImageClick(View view) {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == YOUR_REQUEST_CODE) {
+            if (requestCode == PICK_IMAGE_REQUEST) {
                 if (data != null) {
                     if (data.getData() != null) {
                         Uri selectedImage = data.getData();
 
-                        try {
-                            // Đọc dữ liệu hình ảnh từ Uri
-                            InputStream inputStream = getContentResolver().openInputStream(selectedImage);
-                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            byte[] buffer = new byte[1024];
-                            int bytesRead;
-                            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                byteArrayOutputStream.write(buffer, 0, bytesRead);
-                            }
-                            byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                            inputStream.close();
-                            byteArrayOutputStream.close();
+//                        try {
+//                            // Đọc dữ liệu hình ảnh từ Uri
+//                            InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+//                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                            byte[] buffer = new byte[1024];
+//                            int bytesRead;
+//                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                                byteArrayOutputStream.write(buffer, 0, bytesRead);
+//                            }
+//                            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+//                            inputStream.close();
+//                            byteArrayOutputStream.close();
+//
+//                            // Chuyển đổi dữ liệu hình ảnh thành chuỗi Base64
+//                            String base64Image = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+//
+//                            // Bây giờ bạn có thể sử dụng base64Image cho mục đích của mình
+//                            // Ví dụ: hiển thị nó trên ImageView
+//                            ImageView imageView = findViewById(R.id.imageView);
+//                            byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
+//                            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+//                            imageView.setImageBitmap(decodedBitmap);
+//
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
 
-                            // Chuyển đổi dữ liệu hình ảnh thành chuỗi Base64
-                            String base64Image = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                        // Chọn hình
+                        Uri imageUri = data.getData();
+                        Base64Service base64Service = new Base64Service(getApplicationContext());
 
-                            // Bây giờ bạn có thể sử dụng base64Image cho mục đích của mình
-                            // Ví dụ: hiển thị nó trên ImageView
-                            ImageView imageView = findViewById(R.id.imageView);
-                            byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
-                            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                            imageView.setImageBitmap(decodedBitmap);
+                        // Lấy tên file của hình
+                        String fileName = base64Service.getFileName(imageUri);
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        // Lấy base64
+                        String base64String = base64Service.convertImageToBase64(imageUri);
+
+                        // Set model
+                        UploadFile file = new UploadFile();
+                        file.setFileName(fileName);
+
+                        bookImages.setBase64(base64String);
+                        bookImages.setFile(file);
+                        bookImages.setBookId(bookId);
+
+                        displayImage(base64String);
                     } else {
                         // Xử lý trường hợp data.getData() trả về null
                         Toast.makeText(this, "Không thể chọn hình ảnh.", Toast.LENGTH_SHORT).show();
@@ -747,8 +764,6 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             Toast.makeText(this, "Bạn không chọn hình ảnh.", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
 
     private String getRealPathFromURI(Uri contentUri) {
@@ -765,6 +780,13 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         cursor.close();
 
         return path;
+    }
+
+    private void displayImage(String base64String) {
+        Bitmap decodedByte = new Base64Service(getApplicationContext()).convertBase64ToImage(base64String);
+
+        ImageView imageView = findViewById(R.id.selected_image_view);
+        imageView.setImageBitmap(decodedByte);
     }
 }
 

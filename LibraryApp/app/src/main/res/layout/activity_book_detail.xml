@@ -163,7 +163,6 @@
             android:layout_height="50dp"
             android:text="Choose Image"
             android:layout_marginLeft="85dp"
-            android:onClick="onChooseImageClick"
             tools:ignore="OnClick" />
 
 

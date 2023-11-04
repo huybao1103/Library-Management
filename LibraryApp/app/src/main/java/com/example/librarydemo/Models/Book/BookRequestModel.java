@@ -8,8 +8,17 @@ public class BookRequestModel {
     private String[] authors;
     private String[] publishers;
     private String[] categories;
+    private BookImage[] bookImages;
 
     public BookRequestModel() {
+    }
+
+    public BookImage[] getBookImages() {
+        return bookImages;
+    }
+
+    public void setBookImages(BookImage[] bookImages) {
+        this.bookImages = bookImages;
     }
 
     public String getId() {

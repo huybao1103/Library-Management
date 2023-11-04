@@ -70,7 +70,7 @@ public class BookAdapter extends BaseAdapter {
         tensach = convertView.findViewById(R.id.ten_sach);
         tacgia = convertView.findViewById(R.id.tac_gia);
         theloai = convertView.findViewById(R.id.the_loai);
-        imgsach = convertView.findViewById(R.id.selected_image_view);
+        imgsach = convertView.findViewById(R.id.img_hinh);
         nxb = convertView.findViewById(R.id.nxb);
 
         // Gán giá trị

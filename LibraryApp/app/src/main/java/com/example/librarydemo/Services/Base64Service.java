@@ -1,9 +1,12 @@
 package com.example.librarydemo.Services;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -26,7 +29,7 @@ public class Base64Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return base64;
+        return "data:image/jpeg;base64," + base64;
     }
 
     public Bitmap convertBase64ToImage(String base64) {
@@ -48,5 +51,28 @@ public class Base64Service {
             byteBuffer.write(buffer, 0, len);
         }
         return byteBuffer.toByteArray();
+    }
+
+    @SuppressLint("Range")
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = _context.getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 }
