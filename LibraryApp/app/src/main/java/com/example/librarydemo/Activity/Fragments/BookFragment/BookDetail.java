@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -54,6 +57,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,6 +131,11 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         getCategories();
         openDatePicker();
         setRecyclerView();
+
+        //Get Image
+        // Set Imgage
+        //String imageResource = getimage;
+        //selectedImageView.setImageResource(imageResource);
     }
 
     private void assign() {
@@ -693,22 +705,49 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == YOUR_REQUEST_CODE) { // YOUR_REQUEST_CODE là mã yêu cầu mà bạn đã sử dụng khi khởi động Intent
-                // Xử lý hình ảnh ở đây
+            if (requestCode == YOUR_REQUEST_CODE) {
                 if (data != null) {
-                    // Kiểm tra xem dữ liệu (data) có dấu mục tiêu (target) không
                     if (data.getData() != null) {
                         Uri selectedImage = data.getData();
-                        // Sử dụng selectedImage để hiển thị hoặc xử lý hình ảnh
+
+                        try {
+                            // Đọc dữ liệu hình ảnh từ Uri
+                            InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            byte[] buffer = new byte[1024];
+                            int bytesRead;
+                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                byteArrayOutputStream.write(buffer, 0, bytesRead);
+                            }
+                            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                            inputStream.close();
+                            byteArrayOutputStream.close();
+
+                            // Chuyển đổi dữ liệu hình ảnh thành chuỗi Base64
+                            String base64Image = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+                            // Bây giờ bạn có thể sử dụng base64Image cho mục đích của mình
+                            // Ví dụ: hiển thị nó trên ImageView
+                            ImageView imageView = findViewById(R.id.imageView);
+                            byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
+                            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                            imageView.setImageBitmap(decodedBitmap);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         // Xử lý trường hợp data.getData() trả về null
+                        Toast.makeText(this, "Không thể chọn hình ảnh.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         } else {
             // Xử lý trường hợp người dùng không chọn hình ảnh
+            Toast.makeText(this, "Bạn không chọn hình ảnh.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
 

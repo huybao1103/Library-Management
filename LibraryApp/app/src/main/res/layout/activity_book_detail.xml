@@ -167,12 +167,7 @@
             tools:ignore="OnClick" />
 
 
-        <ImageView
-            android:id="@+id/selected_image_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="50dp"
-             />
+
 
         <Button
             android:id="@+id/submit_btn"
@@ -185,6 +180,13 @@
             android:textAllCaps="false"
             android:layout_marginLeft="-20dp" />
     </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/selected_image_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+       android:layout_marginLeft="200dp"
+        />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/author_publisher_tab"
