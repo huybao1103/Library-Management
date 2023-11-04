@@ -1,7 +1,7 @@
 import { RolePermissionComponent } from './role-permission/role-permission/role-permission.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/dashboardComponent';
 import { MainPageComponent } from '../main-page/main-page.component';
 import { BooksManagementComponent } from './books-management/books-management.component';
 import { ModalbaseComponent } from '../layout/modalbase/modalbase.component';
@@ -35,6 +35,11 @@ const routes: Routes = [
     path: '',
     component: MainPageComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
       {
         path: 'dashboard',
         component: DashboardComponent

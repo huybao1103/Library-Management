@@ -46,6 +46,7 @@ export function BookChapterDetailFields(): FormlyFieldConfig[] {
                 {label: BookChapterStatus[BookChapterStatus.Free], value: BookChapterStatus.Free},
                 {label: BookChapterStatus[BookChapterStatus.Borrowed], value: BookChapterStatus.Borrowed},
                 {label: BookChapterStatus[BookChapterStatus.Destroyed], value: BookChapterStatus.Destroyed},
+                {label: BookChapterStatus[BookChapterStatus.Lost], value: BookChapterStatus.Lost},
               ]
             },
           },
