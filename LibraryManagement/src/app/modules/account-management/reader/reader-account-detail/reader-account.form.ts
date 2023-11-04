@@ -13,7 +13,6 @@ export function AccountDetailFields(): FormlyFieldConfig[] {
                 templateOptions: {
                   label: 'Library Card Info',
                   required: true,
-                  options: [{ value: 1, label: 'Luong Quang Huy Bao' }],
                 },
               },
               {

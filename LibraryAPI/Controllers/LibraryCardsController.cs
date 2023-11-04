@@ -12,6 +12,7 @@ using LibraryAPI.CustomException;
 using LibraryAPI.ViewModels.Book;
 using LibraryAPI.RequestModels;
 using System.Collections.Immutable;
+using LibraryAPI.PubSub;
 
 namespace LibraryAPI.Controllers
 {
@@ -112,6 +113,17 @@ namespace LibraryAPI.Controllers
             return NoContent();
         }
 
+        [HttpGet("option")]
+        public async Task<ActionResult<IEnumerable<Option>>> GetLibraryCardsOption()
+        {
+            if (_context.Books == null)
+            {
+                return NotFound();
+            }
+            var carList = await _context.LibraryCards.ToListAsync(); // Get card list
+
+            return carList.Select(card => new Option { Value = card.Id, Label = card.Name }).ToList(); // Get card option list
+        }
         private bool LibraryCardExists(Guid id)
         {
             return (_context.LibraryCards?.Any(e => e.Id == id)).GetValueOrDefault();

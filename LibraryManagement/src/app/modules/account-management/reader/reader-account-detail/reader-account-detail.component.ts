@@ -11,6 +11,7 @@ import { uniqueId } from 'lodash';
 import { HttpService } from 'src/app/services/http-service.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
+import { ReaderService } from '../service/reader-service.service';
 
 @Component({
   selector: 'app-reader-account-detail',
@@ -50,7 +51,7 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
     private modal: NgbActiveModal,
     private toastService: ToastService,
     private httpService: HttpService,
-    private accountService: AccountService,
+    private accountService: ReaderService,
   ) {
   }
 
@@ -58,7 +59,7 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
     this.title = "Add Account";
     if (para.id) {
       this.title = "Edit Account Information";
-      this.getAccountById(para.id);
+      // this.getAccountById(para.id);
       console.log(para.id);
     } else {
       this.fields = AccountDetailFields();
@@ -69,53 +70,53 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
 
   }
 
-  getAccountById(id: string) {
-    this.accountService.getAccountById(id).subscribe({
-      next: (res: IReaderAccount) => {
-        if (res)
-          this.data = res;
-          this.fields = AccountDetailFields();
-      }
-    })
-  }
+  // getAccountById(id: string) {
+  //   this.accountService.getAccountById(id).subscribe({
+  //     next: (res: IReaderAccount) => {
+  //       if (res)
+  //         this.data = res;
+  //         this.fields = AccountDetailFields();
+  //     }
+  //   })
+  // }
 
-  loadData(id: string) {
-    this.accountService.getPublisherById(id).subscribe({
-      next: (res: IReaderAccount) => {
-        if(res)
-          this.data = res;
-        this.fields = AccountDetailFields();
-      } 
-    })
-  }
+  // loadData(id: string) {
+  //   this.accountService.getPublisherById(id).subscribe({
+  //     next: (res: IReaderAccount) => {
+  //       if(res)
+  //         this.data = res;
+  //       this.fields = AccountDetailFields();
+  //     } 
+  //   })
+  // }
 
   submit() {
-    this.accountService.save(this.data).subscribe({
-      next: (resp: any) => {
-        this.toastService.show(MessageType.success, 'Account info save success');
-        this.close();
-      },
-      error: (err: HttpErrorResponse) => {
-        this.toastService.show(MessageType.error, err.error?.detail);
-      }
-    })
+    // this.accountService.save(this.data).subscribe({
+    //   next: (resp: any) => {
+    //     this.toastService.show(MessageType.success, 'Account info save success');
+    //     this.close();
+    //   },
+    //   error: (err: HttpErrorResponse) => {
+    //     this.toastService.show(MessageType.error, err.error?.detail);
+    //   }
+    // })
   }
 
 
 
   close() { this.modal.close() }
 
-  private addPublisherConfirmed() {
-    this.accountService.save(this.data).subscribe({
-      next: (resp: any) => {
-        console.log(resp);
-        this.toastService.show(MessageType.success, 'Account info save success');
+  // private addPublisherConfirmed() {
+  //   this.accountService.save(this.data).subscribe({
+  //     next: (resp: any) => {
+  //       console.log(resp);
+  //       this.toastService.show(MessageType.success, 'Account info save success');
 
-        this.close();
-      },
-      error: (err: HttpErrorResponse) => {
-        this.toastService.show(MessageType.error, err.error?.detail);
-      }
-    })
-  }
+  //       this.close();
+  //     },
+  //     error: (err: HttpErrorResponse) => {
+  //       this.toastService.show(MessageType.error, err.error?.detail);
+  //     }
+  //   })
+  // }
 }
