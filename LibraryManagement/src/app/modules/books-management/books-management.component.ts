@@ -54,6 +54,7 @@ export class BooksManagementComponent implements OnInit {
     publishYear: '',
   };
   
+  //*
   perrmission: RoleModulePermission | undefined;
   bookDetailPermission: RoleModulePermission | undefined;
 
@@ -90,6 +91,7 @@ export class BooksManagementComponent implements OnInit {
     }
   ];
 
+  //*
   getPermission() {
     this.perrmission = this.sessionService.getModulePermission(ModuleEnum.BookList);
     this.bookDetailPermission = this.sessionService.getModulePermission(ModuleEnum.BookDetail);
@@ -159,6 +161,7 @@ export class BooksManagementComponent implements OnInit {
     this.books$ = this.bookService.search(this.data);
   }
 
+  //*
   bookChapter(bookId: string) {
     if(this.bookDetailPermission?.access && bookId)
       this.router.navigate([`/bookchapter/${bookId}`]);
