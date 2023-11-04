@@ -10,7 +10,7 @@
       [showCurrentPageReport]="true"
       [scrollable]="true" scrollHeight="545px"
   >
-      <ng-template pTemplate="caption">
+      <ng-template pTemplate="caption" let-author of authors>
           <div class="justify-content-between align-items-center">
               <div class="d-flex justify-content-between align-items-center">
                   <h3 class="page-title">Authors List</h3>
@@ -19,8 +19,8 @@
                       <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search keyword..."/>
                   </div> -->
                   <div>
-                      <button pButton pRipple label="New Author" icon="la la-plus" class="btn-primary" (click)="edit('')"></button>
-                      <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                      <button  *ngIf="authorPermission?.create" (click)="edit('')" pButton pRipple label="New Author" icon="la la-plus" class="btn-primary" (click)="edit('')"></button>
+                      <button *ngIf="authorPermission?.delete" (click)="deleteAuthor(author.id || '')" pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
                   </div>
               </div>
           </div>
@@ -58,8 +58,8 @@
               <td>{{ author.mail }}</td>
               <td>{{ author.phone }}</td>
               <td style="text-align: center;">
-                  <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(author.id)"></button>
-                  <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteAuthor(author)"></button>
+                  <button *ngIf="authorPermission?.create" (click)="edit('')" pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(author.id)"></button>
+                  <button *ngIf="authorPermission?.delete" (click)="deleteAuthor(author.id || '')" pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteAuthor(author)"></button>
               </td>
           </tr>
       </ng-template>

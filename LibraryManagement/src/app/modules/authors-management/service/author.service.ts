@@ -34,7 +34,7 @@ export class AuthorService {
   }
 
   save(data: IAuthor) {
-    return this.httpService.save<IAuthor>({ controller: 'Authors', data, op: 'author-info'}).pipe(
+    return this.httpService.save<IAuthor>({ controller: 'Authors', data}).pipe(
       tap((res) => res ? this.updateAuthorState(res) : of())
     );
   }

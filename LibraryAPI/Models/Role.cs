@@ -9,6 +9,8 @@ public partial class Role
 
     public string? Name { get; set; }
 
+    public string? NormalizedName { get; set; }
+
     public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
 
     public virtual ICollection<RoleModulePermission> RoleModulePermissions { get; set; } = new List<RoleModulePermission>();

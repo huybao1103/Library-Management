@@ -12,6 +12,9 @@ import { MessageType } from 'src/app/enums/toast-message.enum';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { BookService } from '../service/book.service';
 import { IBook } from 'src/app/models/book.model';
+import { RoleModulePermission } from 'src/app/models/role-permission.model';
+import { ModuleEnum } from 'src/app/enums/module-enum';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-book-chapter',
@@ -27,8 +30,10 @@ export class BookChapterComponent implements OnInit {
   @ViewChild('dt') dt: Table | undefined;
 
   BookChapterStatus = BookChapterStatus;
+  bookDetailPermission: RoleModulePermission | undefined;
   constructor(
     private route: Router,
+    private sessionService : SessionService,
     private bookChapterService: BookChapterService,
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
@@ -39,7 +44,12 @@ export class BookChapterComponent implements OnInit {
   ngOnInit(): void {
     this.bookId = this.activatedRoute.snapshot.paramMap.get('id');
     this.bookChapterService.setCurrentBookId(this.bookId);
+    this.getPermission(); 
     this.getBook();
+  }
+
+  getPermission() {
+    this.bookDetailPermission = this.sessionService.getModulePermission(ModuleEnum.BookDetail);
   }
 
   applyFilterGlobal($event: any, stringVal: any) {

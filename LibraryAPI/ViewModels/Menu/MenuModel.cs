@@ -8,6 +8,7 @@ namespace LibraryAPI.ViewModels.Menu
         public string? code { get; set; }
         public string? icon { get; set; }
         public string? route { get; set; }
+        public string? moduleEnum { get; set; }
         public MenuModel[]? subMenus { get; set; }
     }
 }

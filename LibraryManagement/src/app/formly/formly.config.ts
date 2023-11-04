@@ -3,11 +3,18 @@ import { FormlyFieldInput } from "./type/input.type";
 import { FormlyFieldNgSelect } from "./type/ng-select.type";
 import { FormlyFieldCheckbox } from "./type/checkbox.type";
 import { FormlyFieldDateTime } from "./type/datetime-picker.type";
+import { FormlyFieldInputPassword } from "./type/input-password.type";
 
 export const FORMLY_INPUT = {
     name: 'input-text',
     component: FormlyFieldInput,
     wrappers: ['form-field']
+};
+
+export const FORMLY_INPUT_PASSWORD = {
+  name: 'input-password',
+  component: FormlyFieldInputPassword,
+  wrappers: ['form-field']
 };
 
 export const FORMLY_SELECT = {
@@ -33,7 +40,8 @@ export const FORMLY_CONFIG: ConfigOption = {
       FORMLY_INPUT,
       FORMLY_SELECT,
       FORMLY_CHECKBOX,
-      FORMLY_DATETIME_PICKER
+      FORMLY_DATETIME_PICKER,
+      FORMLY_INPUT_PASSWORD
     ],
     validators: [],
     validationMessages: [],

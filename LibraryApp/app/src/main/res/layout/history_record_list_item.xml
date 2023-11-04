@@ -24,7 +24,7 @@
             android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:src="@drawable/baseline_more_vert_24"
+            android:src="@drawable/baseline_edit_24"
             android:background="@color/transparent"
             android:layout_alignParentRight="true"/>
     </LinearLayout>

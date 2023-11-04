@@ -1,3 +1,4 @@
+import { RolePermissionComponent } from './role-permission/role-permission/role-permission.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -22,6 +23,7 @@ import { ReaderAccountDetailComponent } from './account-management/reader/reader
 import { ReaderAccountListComponent } from './account-management/reader/reader-account-list/reader-account-list.component';
 import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
 import { EmployeeAccountListComponent } from './account-management/employee/employee-account-list/employee-account-list.component';
+import { BookSearchComponent } from '../reader-modules/book-search/book-search/book-search.component';
 
 const routes: Routes = [
   {
@@ -126,6 +128,14 @@ const routes: Routes = [
         component: ModalbaseComponent,
         outlet: 'modal',
         data: { component: EmployeeAccountDetailComponent }
+      },
+      {
+        path: 'role-permission',
+        component: RolePermissionComponent,
+      },
+      {
+        path: 'book-search',
+        component: BookSearchComponent,
       },
     ]
   },

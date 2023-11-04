@@ -84,31 +84,6 @@ public class BorrowHistoryAdapter extends BaseAdapter {
     private void bindMenuIconEvent(View view, String historyId) {
         adapter_menu_btn = view.findViewById(R.id.adapter_menu_btn);
 
-        adapter_menu_btn.setOnClickListener(v -> showPopupMenu(v, historyId));
-    }
-
-    private void showPopupMenu(View v, String historyId) {
-        PopupMenu popup = new PopupMenu(context, v);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.table_list_menu_item, popup.getMenu());
-
-        // Set click listener for menu items
-        popup.setOnMenuItemClickListener(menuItem -> {
-            switch (menuItem.getItemId()) {
-                case R.id.menu_item_edit:
-                    // Handle item 1 action
-                    listener.onEditButtonClicked(historyId);
-                    return true;
-                case R.id.menu_item_delete:
-                    // Handle item 2 action
-                    listener.onDeleteButtonClicked(historyId);
-                    return true;
-                // ... more items ...
-                default:
-                    return false;
-            }
-        });
-
-        popup.show();
+        adapter_menu_btn.setOnClickListener(v -> listener.onEditButtonClicked(historyId));
     }
 }
