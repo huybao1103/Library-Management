@@ -3,4 +3,5 @@ export interface IRegisterModel {
   password: string;
   ID: string;
   clazz: string;
+  name: string;
 }
