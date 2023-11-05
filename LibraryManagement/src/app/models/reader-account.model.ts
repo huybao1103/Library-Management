@@ -7,3 +7,7 @@ export interface IReaderAccount {
     pass: string;
     status?: string;
 }
+
+export interface IReaderAccountSave extends IReaderAccount {
+    IdlibraryCard?: string[];
+}

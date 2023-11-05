@@ -1,7 +1,7 @@
-<div *ngIf="readerAccounts">
+<div *ngIf="readerAccount$ | async as Account">
   <p-table
     #dt
-    [value]="readerAccounts"
+    [value]="readerAccount"
     [globalFilterFields]="['cardId','name', 'email']"
     [tableStyle]="{ 'min-width': '75rem' }"
     [rowHover]="true"
@@ -11,12 +11,13 @@
     [scrollable]="true"
     scrollHeight="545px"
   >
-    <ng-template pTemplate="caption">
+    <ng-template pTemplate="caption" let-card of card>
       <div class="justify-content-between align-items-center">
         <div class="d-flex justify-content-between align-items-center">
           <h3 class="page-title">Reader Account List</h3>
           <div>
             <button pButton pRipple label="New Reader" icon="fa fa-plus" class="btn-primary" (click)="edit('')"></button>
+            <button  pButton pRipple icon="la la-trash" class="p-button-secondary mx-2" (click)="deleteReaderAccount(card.id)"></button>
           </div>
         </div>
       </div>
@@ -46,7 +47,7 @@
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-card>
+    <ng-template pTemplate="body" let-card of card>
       <tr>
         <td>
           <span style="vertical-align: middle;">
