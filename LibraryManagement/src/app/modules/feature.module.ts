@@ -59,9 +59,6 @@ import { FormlyModule as AppFormlyModule } from '../formly/formly.module';
 import { FormlyModule } from '@ngx-formly/core';
 import { TabViewModule } from 'primeng/tabview';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-
-import { CheckboxModule } from 'primeng/checkbox';
-import {StyleClassModule} from 'primeng/styleclass';
 import { DashboardComponent } from './dashboard/dashboardComponent';
 import { EmployeeAccountPanelComponent } from './account-management/employee/employee-account-panel/employee-account-panel.component';
 @NgModule({
