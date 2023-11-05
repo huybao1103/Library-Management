@@ -6,5 +6,6 @@
         Free,
         Lost,
         Destroyed,
+        WaitingForTake
     }
 }

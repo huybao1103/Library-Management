@@ -54,6 +54,14 @@
     margin: 5.5rem 1rem !important;
 }
 
+.fa-check {
+    color: greenyellow;
+}
+
+.fa-times {
+    color: #fc6075;
+}
+
 /* Form */
 .p-input-icon-left, .p-input-icon-right {
     position: relative;

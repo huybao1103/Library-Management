@@ -7,6 +7,7 @@
         Expired,
         Returned,
         Destroyed,
-        Lost
+        Lost,
+        WaitingForTake
     }
 }

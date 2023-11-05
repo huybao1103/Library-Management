@@ -15,7 +15,8 @@ namespace LibraryAPI.MappingProfile
             CreateMap<ReaderAccountSaveRequest, Account>();
             CreateMap<Account, ReaderAccountSaveRequest>();
 
-            CreateMap<EmployeeAccountSaveRequest, Account>();
+            CreateMap<EmployeeAccountSaveRequest, Account>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null && !srcMember.Equals("")));
             CreateMap<Account, EmployeeAccountSaveRequest>();
         }
     }

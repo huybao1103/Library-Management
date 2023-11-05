@@ -100,7 +100,7 @@ namespace LibraryAPI.Controllers
         [HttpGet("option")]
         public async Task<ActionResult<IEnumerable<Option>>> GetRolesOption()
         {
-            var roleList = await _context.Roles.ToListAsync(); // Get author list
+            var roleList = await _context.Roles.Where(r => r.Name != "Reader").ToListAsync(); // Get author list
 
             return roleList.Select(role => new Option { Value = role.Id, Label = role.Name }).ToList(); // Get author option list
         }
