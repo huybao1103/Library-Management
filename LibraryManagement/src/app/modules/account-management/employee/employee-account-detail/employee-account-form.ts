@@ -71,12 +71,15 @@ export function EmployeeAccountField(): FormlyFieldConfig[] {
             className: 'col-6',
             key: 'password',
             type: FORMLY_INPUT.name,
-            templateOptions: {
+            props: {
               label: 'Password',
               required: true,
               type: 'password',
               showIcon: true
             },
+            expressions: {
+              'props.required': '!formState.isEditting'
+            }
           },
         ]
       }

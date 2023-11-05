@@ -35,7 +35,8 @@ export class EmployeeAccountDetailComponent implements IDialogType {
     formState: {
       optionList: {
         roles: this.employeeService.getRolesOption()
-      }
+      },
+      isEditting: false
     }
   };
   
@@ -57,6 +58,7 @@ export class EmployeeAccountDetailComponent implements IDialogType {
   dialogInit(para: { id: string }): void {
     this.title = 'Add Employee';
     if (para.id) {
+      this.options.formState.isEditting = true;
       this.title = 'Edit Employee Information';
       this.getEmployeeById(para.id);
     }
@@ -75,7 +77,6 @@ export class EmployeeAccountDetailComponent implements IDialogType {
   submit() {
     this.employeeService.saveEmployee(this.data).subscribe({
       next: (resp: any) => {
-        console.log(resp);
         this.toastService.show(MessageType.success, 'Employee info saved successfully');
 
         // Depending on your use case, you may want to close the modal here or do something else.

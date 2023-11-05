@@ -52,13 +52,13 @@ namespace LibraryAPI.Controllers
         // POST: api/BorrowHistories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("save")]
-        public async Task<List<BorrowHistoryModel>> PostBorrowHistory(List<BorrowHistoryModel> borrowHistoryList)
+        public async Task<List<BorrowHistoryModel>> PostBorrowHistory(List<BorrowHistoryModel> borrowHistoryList, bool isPreorder)
         {
             var borrowHistory = _mapper.Map<List<BorrowHistory>>(borrowHistoryList);
             foreach(var item in borrowHistory)
             {
                 var bookChapter = await _context.BookChapters.FirstOrDefaultAsync(i => i.Id == item.BookChapterId);
-                bookChapter.Status = (int?)BookChapterStatusEnum.Borrowed;
+                bookChapter.Status = isPreorder ? (int?)BookChapterStatusEnum.WaitingForTake : (int?)BookChapterStatusEnum.Borrowed;
                 await _context.SaveChangesAsync();
             }
             
