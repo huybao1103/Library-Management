@@ -1,9 +1,10 @@
 <div>
     <p-table
+        *ngIf="employees$ | async as employees"
         #dt
         [rows]="7"
         [paginator]="true"
-        [value]="employee"
+        [value]="employees"
         [globalFilterFields]="['name', 'email', 'phone', 'joinDate', 'roleId', 'accountId']"
         [tableStyle]="{ 'min-width': '75rem' }"
         [rowHover]="true"
@@ -50,7 +51,7 @@
               </tr>
         </ng-template>     
 
-        <ng-template pTemplate="body" let-employee of Employees>
+        <ng-template pTemplate="body" let-employee>
             <tr>
                 <td>
                     <p-tableCheckbox [value]="employee"></p-tableCheckbox>
@@ -58,15 +59,8 @@
                 <td>{{ employee.name }}</td>
                 <td>{{ employee.citizenId }}</td>
                 <td>{{ employee.joinDate | date: 'dd/MM/yyyy' }}</td>
-                <td (click)="showOverlayPanel($event)">
-                    <i [ngClass]="employee.account ? 'fa fa-check' : 'fa fa-times'" (click)="hideOverlayPanel()"></i>
-                    <p-overlayPanel #overlayPanel>
-                        <ng-template pTemplate="content">
-                            <tr><b>Email: </b>{{ employee.account?.email || 'No account' }}</tr>
-                            <tr><b>Phone: </b>{{ employee.phone }}</tr>
-                            <tr><b>Role: </b>{{ employee.account?.role.name || 'Normal employee' }}</tr>
-                        </ng-template>
-                    </p-overlayPanel>
+                <td>
+                    <employee-account-panel [employee]="employee"></employee-account-panel>
                 </td>  
                 <td style="text-align: center;">
                     <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="editItem(employee.id)"></button>

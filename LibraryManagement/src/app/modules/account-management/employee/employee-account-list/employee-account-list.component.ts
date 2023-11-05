@@ -37,29 +37,6 @@ export class EmployeeAccountListComponent implements OnInit {
 
   @ViewChild('dt') dt: Table | undefined;
 
-  @ViewChild('overlayPanel') overlayPanel!: OverlayPanel;
-
-  employee: IEmployee[] = [
-    {
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      phone: '123456789',
-      citizenId: 'cscs',
-      joinDate: '01/01/2023',
-      roleId: 'Admin',
-      accountId:'john@yahoo.com.vn'
-    },
-    {
-      name: 'Jane Smith',
-      email: 'janesmith@example.com',
-      phone: '987654321',
-      citizenId: 'cscs',
-      joinDate: '02/01/2023',
-      roleId: 'User',
-      accountId: 'jane@gmail.com'
-    },
-  ];
-
   employees$?: Observable<IEmployee[] | null>;
 
   data: IEmployee = {
@@ -89,14 +66,6 @@ export class EmployeeAccountListComponent implements OnInit {
 
   getData() {
     this.employees$ = this.employeeService.getEmployeeList();
-  }
-
-  showOverlayPanel(event: Event) {
-    this.overlayPanel.show(event);
-  }
-  
-  hideOverlayPanel() {
-    this.overlayPanel.hide();
   }
 
   deleteEmployee(employee: IEmployee) {

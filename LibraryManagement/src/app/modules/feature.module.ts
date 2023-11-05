@@ -60,10 +60,9 @@ import { ReaderAccountDetailComponent } from './account-management/reader/reader
 import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
 import { RolePermissionComponent } from './role-permission/role-permission/role-permission.component';
 import { CheckboxModule } from 'primeng/checkbox';
-
-import { MultiSelectModule } from 'primeng/multiselect';
 import {StyleClassModule} from 'primeng/styleclass';
 import { DashboardComponent } from './dashboard/dashboardComponent';
+import { EmployeeAccountPanelComponent } from './account-management/employee/employee-account-panel/employee-account-panel.component';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -98,6 +97,7 @@ import { DashboardComponent } from './dashboard/dashboardComponent';
     ReaderAccountDetailComponent,
     EmployeeAccountDetailComponent,
     RolePermissionComponent,
+    EmployeeAccountPanelComponent,
   ],
   imports: [
     DialogModule,
