@@ -15,6 +15,7 @@ export function BookChapterDetailFields(): FormlyFieldConfig[] {
             templateOptions: {
               label: 'Chapter',
               required: true,
+              keyFilter: KeyFilterType.int
             }
           },
           {

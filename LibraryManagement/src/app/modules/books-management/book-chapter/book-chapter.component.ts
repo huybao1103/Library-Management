@@ -1,3 +1,4 @@
+import { BookCartService } from './../../../reader-modules/book-search/book-search/book-cart.service';
 import { error } from 'jquery';
 import { BookChapterStatus } from 'src/app/enums/book-chapter-status';
 import { Component, OnInit, ViewChild} from '@angular/core';
@@ -22,6 +23,7 @@ import { SessionService } from 'src/app/services/session.service';
   styleUrls: ['./book-chapter.component.css']
 })
 export class BookChapterComponent implements OnInit {
+
   book$?: Observable<IBook | null>;
   selectedBookChapters!: IBookChapter[] | null;
   book: IBook | undefined;
@@ -31,6 +33,9 @@ export class BookChapterComponent implements OnInit {
 
   BookChapterStatus = BookChapterStatus;
   bookDetailPermission: RoleModulePermission | undefined;
+
+  isStudent: boolean = false;
+
   constructor(
     private route: Router,
     private sessionService : SessionService,
@@ -39,7 +44,8 @@ export class BookChapterComponent implements OnInit {
     private toastService: ToastService,
     private activatedRoute: ActivatedRoute,
     private bookService: BookService,
-    ) {}
+    private bookCartService: BookCartService
+  ) {}
 
   ngOnInit(): void {
     this.bookId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -50,6 +56,8 @@ export class BookChapterComponent implements OnInit {
 
   getPermission() {
     this.bookDetailPermission = this.sessionService.getModulePermission(ModuleEnum.BookDetail);
+
+    this.isStudent = this.sessionService.getCurrentAccount()?.role.name === 'Reader' ? true : false;
   }
 
   applyFilterGlobal($event: any, stringVal: any) {
@@ -58,12 +66,6 @@ export class BookChapterComponent implements OnInit {
 
   getBook() {
     this.book$ = this.bookService.getBookById(this.bookId);
-  }
-  // getBookChapter() {
-  //   this.book$ = this.bookChapterService.getBookChapterByBookId(this.bookId);
-  // }
-  getData() {
-    // this.bookchapter$ = this.bookChapterService.getAll(this.bookId);
   }
 
   edit(id?: string) {
@@ -88,7 +90,7 @@ export class BookChapterComponent implements OnInit {
             this.bookChapterService.delete(bookchapterId).subscribe({
               next: () => {
                 this.toastService.show(MessageType.success, 'Delete BookChapter Successfully');
-                this.getData();
+                this.getBook();
               },
               error: (err: any) => {
                 this.toastService.show(MessageType.error, err.error?.detail || 'Error deleting BookChapter');
@@ -99,5 +101,10 @@ export class BookChapterComponent implements OnInit {
     } else {
       console.error('book.id is undefined');
     }
+  }
+
+  addToCart(bookChapterId: string, bookName: string, chapter: string) {
+    this.bookCartService.addToCart({ bookName, bookChapterId, chapter });
+    this.toastService.show(MessageType.success, 'Your selected book is added to cart.')
   }
 }
