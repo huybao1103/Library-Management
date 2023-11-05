@@ -50,7 +50,6 @@ export class HeaderComponent implements OnInit {
         const bookCart = this.bookCartService.getCartFromLocalStorage();
         if(bookCart)
             this.bookCart = bookCart;
-        console.log(bookCart);
     }
 
     sidebarToggle() {
@@ -65,5 +64,12 @@ export class HeaderComponent implements OnInit {
     logout() {
         this.sessionService.clearSession();
         this.router.navigate(['login']);
+    }
+
+    removeFromCart(bookChapterId: string) {
+        if(bookChapterId) {
+            this.bookCartService.removeItemInCart(bookChapterId);
+            this.getCart();
+        }
     }
 }

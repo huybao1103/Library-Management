@@ -1,9 +1,14 @@
+import { ToastService } from 'src/app/services/toast.service';
+import { HttpService } from 'src/app/services/http-service.service';
 import { SessionService } from 'src/app/services/session.service';
 import { Injectable } from '@angular/core';
 import { IBook } from 'src/app/models/book.model';
 import { IBookChapter } from 'src/app/models/bookchapter.model';
 import { IBookCart } from 'src/app/models/cart.model';
 import { IAccountInfo } from 'src/app/models/account.model';
+import { ILibraryCardInfo } from 'src/app/models/library-card.model';
+import { first } from 'rxjs';
+import { MessageType } from 'src/app/enums/toast-message.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +16,42 @@ import { IAccountInfo } from 'src/app/models/account.model';
 export class BookCartService {
   bookCart: IBookCart[] = [];
   currentAccount: IAccountInfo | undefined;
+  libraryCardId: string = "";
 
   constructor(
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private httpService: HttpService,
+    private toastService: ToastService
   ) {
     this.getCartFromLocalStorage();
   }
 
   getCartFromLocalStorage() {
     this.currentAccount = this.sessionService.getCurrentAccount();
-
+    if(this.currentAccount)
+      this.getLibraryCardByAccountId();
+    
     const cart = localStorage.getItem(`cart_${this.currentAccount?.id}`);
     if(cart) {
       return this.bookCart = JSON.parse(cart);
     }
+  }
+
+  getLibraryCardByAccountId() {
+    const accountId = this.currentAccount?.id;
+    this.httpService.getWithCustomURL<ILibraryCardInfo>(
+      { 
+        controller: 'LibraryCards', 
+        url: `LibraryCards/get-by-account-id/${accountId}` 
+      }
+    )
+    .pipe(first())
+    .subscribe({
+      next: resp => {
+        if(resp?.id) 
+          this.libraryCardId = resp.id
+      }
+    })
   }
 
   updateLocalStorage() {
@@ -34,15 +61,24 @@ export class BookCartService {
   }
 
   addToCart(bookChapter: IBookCart) {
-    this.bookCart = [bookChapter, ...this.bookCart];
+    if(!this.bookCart.find(cart => cart.bookChapterId === bookChapter.bookChapterId)) {
+      this.bookCart = [{...bookChapter, libraryCardId: this.libraryCardId}, ...this.bookCart];
+      this.updateLocalStorage();
 
-    this.updateLocalStorage();
+      return true;
+    }
+    else {
+      this.toastService.show(MessageType.error, 'This book is already in request borrow list.!!!')
+    }
+    return false;
   }
 
-  removeItemInCart(bookChapter: IBookCart) {
-    this.bookCart = this.bookCart.filter(cart => cart.bookChapterId !== bookChapter.bookChapterId);
-
-    this.updateLocalStorage();
+  removeItemInCart(bookChapterId: string) {
+    if(bookChapterId) {
+      this.bookCart = this.bookCart.filter(cart => cart.bookChapterId !== bookChapterId);
+  
+      this.updateLocalStorage();
+    }
   }
 }
 

@@ -12,7 +12,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { BookService } from '../service/book.service';
-import { IBook } from 'src/app/models/book.model';
+import { IBook, IBookImage } from 'src/app/models/book.model';
 import { RoleModulePermission } from 'src/app/models/role-permission.model';
 import { ModuleEnum } from 'src/app/enums/module-enum';
 import { SessionService } from 'src/app/services/session.service';
@@ -103,8 +103,10 @@ export class BookChapterComponent implements OnInit {
     }
   }
 
-  addToCart(bookChapterId: string, bookName: string, chapter: string) {
-    this.bookCartService.addToCart({ bookName, bookChapterId, chapter });
-    this.toastService.show(MessageType.success, 'Your selected book is added to cart.')
+  addToCart(bookChapterId: string, bookName: string, chapter: string, bookImages: IBookImage[]) {
+    const added = this.bookCartService.addToCart({ bookName, bookChapterId, chapter, bookImageBase64: bookImages.length ? bookImages[0].base64 : '' });
+
+    if(added)
+      this.toastService.show(MessageType.success, 'Your selected book is added to cart.')
   }
 }

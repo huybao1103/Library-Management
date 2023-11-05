@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="col-1" style="text-align: right;">
-            <p class="la la-edit" (click)="editBook(book.id)"></p>
+            <p *ngIf="!isStudent" class="la la-edit" (click)="editBook(book.id)"></p>
         </div>
     </div>
     <div *ngIf="book$ | async as book">
@@ -132,7 +132,7 @@
 
                         <button *ngIf="isStudent"
                             pButton pRipple icon="bi bi-cart-check-fill" class="p-button-rounded btn-primary"
-                            (click)="addToCart(bookchapter.id || '', book.name, bookchapter.chapter)"
+                            (click)="addToCart(bookchapter.id || '', book.name, bookchapter.chapter, book.bookImages || [] )"
                         >
                         </button>
                     </td>

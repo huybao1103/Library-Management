@@ -56,10 +56,23 @@
 
 <p-overlayPanel #op>
     <ng-template pTemplate="content">
-        <div class="p-2" *ngFor="let item of bookCart">
-            <span></span>
-            <h4>{{ item.bookName }}</h4>
-            <p>Chapter {{ item.chapter }}</p>
+        <div class="row p-2" *ngFor="let item of bookCart">
+            <div class="col-2">
+                <img style="border-radius: 5%;" [src]="item.bookImageBase64" class="img-thumbnail" />
+            </div>
+            <div class="col-9">
+                <div class="cart-title">{{ item.bookName }}</div> 
+                <div class="text">Chapter {{ item.chapter }}</div>
+            </div>
+            <div class="col-1">
+                <button
+                    pButton 
+                    pRipple 
+                    icon="fa fa-trash" 
+                    class="p-button-rounded btn-primary"
+                    (click)="removeFromCart(item.bookChapterId || '')"
+                ></button>
+            </div>
         </div>
     </ng-template>
 </p-overlayPanel>

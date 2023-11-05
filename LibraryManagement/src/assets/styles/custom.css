@@ -202,3 +202,16 @@
         background: #fff;
     }
 }
+
+/* Cart */
+.cart-title {
+    color: #333333;
+    font-weight: 700;
+    margin-right: 30px;
+}
+
+.cart-rsp-Image {
+    max-width: 100%; 
+    height: 50px;
+    object-fit: contain;
+}
