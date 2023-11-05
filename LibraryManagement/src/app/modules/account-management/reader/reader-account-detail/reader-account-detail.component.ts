@@ -12,6 +12,8 @@ import { HttpService } from 'src/app/services/http-service.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { ReaderService } from '../service/reader-service.service';
+import { Observable, first } from 'rxjs';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 
 @Component({
   selector: 'app-reader-account-detail',
@@ -23,35 +25,28 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
   title: string = '';
   fields: FormlyFieldConfig[] = []; // abcxyz
   form = new FormGroup({});
+
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-      
-      }
+        librayCardList: null
+      },
+      isEditting: false
     }
   };
 
   data: IReaderAccount = {
-    name: '',
-    mail: '',
-    pass: '',
-    status: '',
-    getAccountById: function (id: string): unknown {
-      throw new Error('Function not implemented.');
-    },
-    save: function (data: IReaderAccount): unknown {
-      throw new Error('Function not implemented.');
-    }
+    email: '',
+    password: '',
+    libraryCardId: ''
   }  
-  
-   publisher: IReaderAccount[] = [];
-
 
   constructor(
     private modal: NgbActiveModal,
     private toastService: ToastService,
     private httpService: HttpService,
-    private accountService: ReaderService,
+    private readerAccountService: ReaderService,
+    private confirmDialogService: ConfirmDialogService
   ) {
   }
 
@@ -59,64 +54,58 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
     this.title = "Add Account";
     if (para.id) {
       this.title = "Edit Account Information";
-      // this.getAccountById(para.id);
-      console.log(para.id);
+
+      this.options.formState.isEditting = true;
+      this.options.formState.optionList.librayCardList = this.readerAccountService.getLibraryCardOption();
+
+      this.getReaderCardById(para.id);
     } else {
+      this.options.formState.optionList.librayCardList = this.readerAccountService.getNewLibraryCardOption();
       this.fields = AccountDetailFields();
     }
   }
 
   ngOnInit(): void {
-
   }
 
-  // getAccountById(id: string) {
-  //   this.accountService.getAccountById(id).subscribe({
-  //     next: (res: IReaderAccount) => {
-  //       if (res)
-  //         this.data = res;
-  //         this.fields = AccountDetailFields();
-  //     }
-  //   })
-  // }
-
-  // loadData(id: string) {
-  //   this.accountService.getPublisherById(id).subscribe({
-  //     next: (res: IReaderAccount) => {
-  //       if(res)
-  //         this.data = res;
-  //       this.fields = AccountDetailFields();
-  //     } 
-  //   })
-  // }
+  getReaderCardById(id: string) {
+    this.readerAccountService.getReaderAccountById(id).pipe(first())
+    .subscribe({
+      next: resp => {
+        if(resp) {
+          this.data = resp;
+          this.fields = AccountDetailFields();
+        }
+      }
+    });
+  }
 
   submit() {
-    // this.accountService.save(this.data).subscribe({
-    //   next: (resp: any) => {
-    //     this.toastService.show(MessageType.success, 'Account info save success');
-    //     this.close();
-    //   },
-    //   error: (err: HttpErrorResponse) => {
-    //     this.toastService.show(MessageType.error, err.error?.detail);
-    //   }
-    // })
+    this.readerAccountService.save(this.data).subscribe({
+      next: (resp: any) => {
+        this.toastService.show(MessageType.success, 'Reader Account save success');
+        this.close();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toastService.show(MessageType.error, err.error?.detail);
+      }
+    })
   }
-
-
 
   close() { this.modal.close() }
 
-  // private addPublisherConfirmed() {
-  //   this.accountService.save(this.data).subscribe({
-  //     next: (resp: any) => {
-  //       console.log(resp);
-  //       this.toastService.show(MessageType.success, 'Account info save success');
+  private addReaderAccountConfirmed() {
+    this.readerAccountService.save(this.data).subscribe({
+      next: (resp: any) => {
+        console.log(resp);
+        this.toastService.show(MessageType.success, 'Reader Account info save success');
 
-  //       this.close();
-  //     },
-  //     error: (err: HttpErrorResponse) => {
-  //       this.toastService.show(MessageType.error, err.error?.detail);
-  //     }
-  //   })
-  // }
+        this.close();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.toastService.show(MessageType.error, err.error?.detail);
+      }
+    })
+  }
 }
+

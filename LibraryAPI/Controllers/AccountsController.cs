@@ -127,6 +127,10 @@ namespace LibraryAPI.Controllers
                 account = await _context.Accounts.FindAsync(request.Id);
                 account = _mapper.Map(request, account);
 
+                if(request.Password != null)
+                    account.PasswordHash = _hashService.ConvertStringToHash(request.Password);
+                account.RoleId = role.Id;
+
             }
             await _context.SaveChangesAsync();
             request.Id = account.Id;
@@ -272,10 +276,14 @@ namespace LibraryAPI.Controllers
             }
 
             Account account = await _context.Accounts.FindAsync(accountId);
-            if(account == null)
+            LibraryCard libraryCard = await _context.LibraryCards.FirstOrDefaultAsync(c => c.AccountId == accountId);
+
+            if (account == null)
             {
                 return NotFound();
             }
+
+            libraryCard.AccountId = null;
 
             _context.Accounts.Remove(account);
 
@@ -310,7 +318,7 @@ namespace LibraryAPI.Controllers
         {
             Account account = _mapper.Map<Account>(request);
 
-            if (_context.Accounts.Any(account => account.Email == request.Email))
+            if (_context.Accounts.Any(account => account.Email == request.Email && account.Id != request.Id))
             {
                 throw new CustomApiException(500, "This email is already existed.", "This email is already existed.");
             }

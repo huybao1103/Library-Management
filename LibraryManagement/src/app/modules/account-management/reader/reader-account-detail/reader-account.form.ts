@@ -1,72 +1,67 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
-import { FORMLY_INPUT } from "src/app/formly/formly.config";
+import { FORMLY_INPUT, FORMLY_INPUT_PASSWORD, FORMLY_SELECT } from "src/app/formly/formly.config";
 
 export function AccountDetailFields(): FormlyFieldConfig[] {
     return [
-        {
-            fieldGroupClassName: 'row',
-            fieldGroup: [
-              {
-                className: 'col-6',
-                key: 'libraryCardInfo',
-                type: 'select',
-                templateOptions: {
-                  label: 'Library Card Info',
-                  required: true,
-                },
-              },
-              {
-                className: 'col-6',
-                key: 'userName',
-                type: 'input',
-                templateOptions: {
-                  label: 'User Name',
-                  required: true,
-                },
-              },
-            ],
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
+          {
+            className: 'col-6',
+            key: 'libraryCardId',
+            type: FORMLY_SELECT.name,
+            templateOptions: {
+              label: 'Library Card',
+              required: true,
+            },
+            expressions: {
+              'props.options': "formState.optionList.librayCardList",
+              'props.readonly': "formState.isEditting"
+            }
           },
           {
-            fieldGroupClassName: 'row',
-            fieldGroup: [
-              {
-                className: 'col-6',
-                key: 'email',
-                type: 'input',
-                templateOptions: {
-                  type: 'email',
-                  label: 'Email',
-                  required: true,
-                },
-              },
-              {
-                className: 'col-6',
-                key: 'password',
-                type: 'input',
-                templateOptions: {
-                  label: 'Password',
-                  required: true,
-                },
-              },
-            ],
+            className: 'col-6',
+            key: 'email',
+            type: FORMLY_INPUT.name,
+            templateOptions: {
+              type: 'email',
+              label: 'Email',
+              required: true,
+            },
           },
+        ],
+      },
+      {
+        fieldGroupClassName: 'row',
+        fieldGroup: [
           {
-            fieldGroupClassName: 'row',
-            fieldGroup: [
-              {
-                className: 'col-6',
-                key: 'status',
-                type: 'select',
-                templateOptions: {
-                  label: 'Status',
-                  required: true,
-                  options: [
-                    { value: 1, label: 'Active' },
-                    { value: 2, label: 'Deactivated' },
-                  ],
-                },
-              },
-            ],
-        },
+            className: 'col-12',
+            key: 'password',
+            type: FORMLY_INPUT.name,
+            templateOptions: {
+              label: 'Password',
+              required: true,
+              type: 'password',
+              showIcon: true
+            },
+            expressions: {
+              'props.required': "!formState.isEditting"
+            }
+          },
+          // {
+          //   className: 'col-6',
+          //   key: 'status',
+          //   type: 'select',
+          //   templateOptions: {
+          //     label: 'Status',
+          //     required: true,
+          //     options: [
+          //       { value: 1, label: 'Active' },
+          //       { value: 2, label: 'Deactivated' },
+          //     ],
+          //   },
+          // },
+        ],
+      },
     ]
   };
