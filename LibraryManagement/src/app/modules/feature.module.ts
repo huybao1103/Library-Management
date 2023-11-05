@@ -59,7 +59,7 @@ import { FormlyModule as AppFormlyModule } from '../formly/formly.module';
 import { FormlyModule } from '@ngx-formly/core';
 import { TabViewModule } from 'primeng/tabview';
 import { DashboardComponent } from './dashboard/dashboardComponent';
-
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   providers: [
@@ -132,6 +132,7 @@ import { DashboardComponent } from './dashboard/dashboardComponent';
     MultiSelectModule,
     CheckboxModule,
     StyleClassModule,
+    OverlayPanelModule
   ]
 })
 export class FeatureModule { }

@@ -23,7 +23,7 @@ export class BookCartService {
 
     const cart = localStorage.getItem(`cart_${this.currentAccount?.id}`);
     if(cart) {
-      this.bookCart = JSON.parse(cart);
+      return this.bookCart = JSON.parse(cart);
     }
   }
 
