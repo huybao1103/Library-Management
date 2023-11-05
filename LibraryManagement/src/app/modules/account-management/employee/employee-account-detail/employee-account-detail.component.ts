@@ -30,16 +30,17 @@ export class EmployeeAccountDetailComponent implements IDialogType {
   
   fields: FormlyFieldConfig[] = [];
   form = new FormGroup({});
+
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-         
+        roles: this.employeeService.getRolesOption()
       }
     }
   };
   
   data: IEmployee = {
-    name: ''
+
   };
 
   constructor(
@@ -61,8 +62,8 @@ export class EmployeeAccountDetailComponent implements IDialogType {
     }
   }
 
-  getEmployeeById(id: string) {
-    this.employeeService.getEmployeeById(id).subscribe({
+  getEmployeeById(empId: string) {
+    this.employeeService.getEmployeeById(empId).subscribe({
       next: (res) => {
         if (res) {
           this.data = res;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IEmployee } from 'src/app/models/employee-account';
 import { HttpService } from 'src/app/services/http-service.service';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { IComboboxOption } from 'src/app/models/combobox-option.model';
 
 @Injectable({
@@ -21,12 +21,15 @@ export class EmployeeService {
     return this.httpService.getWithCustomURL<IEmployee[]>({ controller: 'Accounts', url: `Accounts/employee-account/get-list` })
   }
 
-  getEmployeeById(empId: string) {
-    return this.httpService.getById<IEmployee>({controller: 'Accounts', op: 'employee-info'}, empId);
+  getEmployeeById(empId: string){
+    return this.httpService.getWithCustomURL<IEmployee>({ controller: 'Accounts', url: `Accounts/employee-account/get-by-id/${empId}` })
   }
 
  saveEmployee(data: IEmployee) {
-    return this.httpService.saveWithCustomURL<IEmployee>({ controller: 'Accounts', data, url: `Accounts/save-employee-account`})
+  return this.httpService.saveWithCustomURL<IEmployee>({ controller: 'Accounts', data, url: `Accounts/save-employee-account`})
+  // return this.httpService.saveAccount<IEmployee>({ controller: 'Accounts', data, op: 'account-info'}).pipe(
+  //   tap((res) => res ? this.updateEmployeeState(res) : of())
+  //   );
   }
 
   getEmployeeOption() {
@@ -43,10 +46,18 @@ export class EmployeeService {
     );
   }
 
-  remove(empId: string){
-    return this.httpService.delete<IEmployee>({controller: 'Accounts'}, empId).pipe(
+  remove(empId: string) {
+    return this.httpService.deleteWithCustomURL<IEmployee>({ controller: 'Accounts', url: `Accounts/employee-account/remove/${empId}`}).pipe(
       tap(() => this.updateEmployeeState(undefined, empId))
     );
+  }
+  // remove(empId: string){
+  //   return this.httpService.delete<IEmployee>({controller: 'Accounts'}, empId).pipe(
+  //     tap(() => this.updateEmployeeState(undefined, empId))
+  //   );
+  // }
+  getRolesOption() {
+    return this.httpService.getOption<IComboboxOption[]>({ controller: 'Roles' });
   }
 
   private updateEmployeeState(res?: IEmployee, deletedEmployeeId?: string, ) {

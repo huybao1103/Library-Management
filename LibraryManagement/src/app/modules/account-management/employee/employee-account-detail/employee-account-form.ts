@@ -19,15 +19,6 @@ export function EmployeeAccountField(): FormlyFieldConfig[] {
           },
           {
             className: 'col-6',
-            key: 'phone',
-            type: FORMLY_INPUT.name,
-            templateOptions: {
-              label: 'Employee Phone',
-              required: true,
-            }
-          },
-          {
-            className: 'col-6',
             key: 'citizenId',
             type: FORMLY_INPUT.name,
             templateOptions: {
@@ -57,6 +48,18 @@ export function EmployeeAccountField(): FormlyFieldConfig[] {
           },
           {
             className: 'col-6',
+            key: 'roleId',
+            type: FORMLY_SELECT.name,
+            templateOptions: {
+              label: 'Role',
+              required: true,
+            },
+            expressions: {
+              'props.options': "formState.optionList.roles"
+            }
+          },
+          {
+            className: 'col-6',
             key: 'email',
             type: FORMLY_INPUT.name,
             templateOptions: {
@@ -74,8 +77,6 @@ export function EmployeeAccountField(): FormlyFieldConfig[] {
               type: 'password',
               showIcon: true
             },
-            expressionProperties: {
-            }
           },
         ]
       }
