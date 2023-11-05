@@ -1,0 +1,8 @@
+<i style="cursor: pointer;" [ngClass]="employee?.account ? 'fa fa-check' : 'fa fa-times'" (click)="showOverlayPanel($event)"></i>
+<p-overlayPanel #overlayPanel>
+    <ng-template pTemplate="content">
+        <tr><b>Email: </b>{{ employee?.account?.email || 'No account' }}</tr>
+        <tr><b>Phone: </b>{{ employee?.phone }}</tr>
+        <tr><b>Role: </b>{{ employee?.account?.role?.name || 'Normal employee' }}</tr>
+    </ng-template>
+</p-overlayPanel>
