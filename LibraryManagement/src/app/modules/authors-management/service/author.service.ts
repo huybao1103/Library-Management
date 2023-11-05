@@ -13,7 +13,6 @@ import { ToastService } from 'src/app/services/toast.service';
 export class AuthorService {
   private author$: BehaviorSubject<IAuthor[]> = new BehaviorSubject<IAuthor[]>([]);
 
-
   constructor(
     private httpService: HttpService,
     private toastService: ToastService
@@ -34,7 +33,7 @@ export class AuthorService {
   }
 
   save(data: IAuthor) {
-    return this.httpService.save<IAuthor>({ controller: 'Authors', data, op: 'author-info'}).pipe(
+    return this.httpService.save<IAuthor>({ controller: 'Authors', data}).pipe(
       tap((res) => res ? this.updateAuthorState(res) : of())
     );
   }

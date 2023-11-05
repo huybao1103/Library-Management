@@ -96,11 +96,15 @@ namespace LibraryAPI.Controllers
 
                 case (int?)BorrowHistoryStatus.Lost:
                     bookChapter.Status = (int?)BookChapterStatusEnum.Lost;
+                    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
+
                     libraryCard.Status = (int?)LibraryCardStatus.Inactive;
                     break;
 
                 case (int?)BorrowHistoryStatus.Destroyed:
                     bookChapter.Status = (int?)BookChapterStatusEnum.Destroyed;
+                    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
+
                     libraryCard.Status = (int?)LibraryCardStatus.Inactive;
                     break;
             }

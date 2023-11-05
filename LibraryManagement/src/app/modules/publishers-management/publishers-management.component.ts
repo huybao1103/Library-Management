@@ -8,6 +8,9 @@ import { Table } from 'primeng/table'
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { RoleModulePermission } from 'src/app/models/role-permission.model';
+import { SessionService } from 'src/app/services/session.service';
+import { ModuleEnum } from 'src/app/enums/module-enum';
 
 @Component({
   selector: 'app-publishers-management',
@@ -20,17 +23,24 @@ export class PublishersManagementComponent implements OnInit{
   selectedPublishers!: IPublisher[] | null;
   
   @ViewChild('dt') dt: Table | undefined;
+  publisherPermission: RoleModulePermission | undefined;
 
   constructor(
     private route: Router,
     private publisherService: PublisherService,
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
+    private sessionService : SessionService,
     ) {
   }
 
   ngOnInit(): void {
+    this.getPermission();
     this.getData();
+  }
+
+  getPermission() {
+    this.publisherPermission = this.sessionService.getModulePermission(ModuleEnum.PublisherManagement);
   }
 
   applyFilterGlobal($event: any, stringVal: any) {
@@ -64,7 +74,7 @@ export class PublishersManagementComponent implements OnInit{
           }
         });
     } else {
-      console.error('category.id is undefined');
+      console.error('publisher.id is undefined');
     }
   }
 }

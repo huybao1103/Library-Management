@@ -1,7 +1,6 @@
 import { RolePermissionComponent } from './role-permission/role-permission/role-permission.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainPageComponent } from '../main-page/main-page.component';
 import { BooksManagementComponent } from './books-management/books-management.component';
 import { ModalbaseComponent } from '../layout/modalbase/modalbase.component';
@@ -23,6 +22,8 @@ import { ReaderAccountDetailComponent } from './account-management/reader/reader
 import { ReaderAccountListComponent } from './account-management/reader/reader-account-list/reader-account-list.component';
 import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
 import { EmployeeAccountListComponent } from './account-management/employee/employee-account-list/employee-account-list.component';
+import { BookSearchComponent } from '../reader-modules/book-search/book-search/book-search.component';
+import { DashboardComponent } from './dashboard/dashboardComponent';
 
 const routes: Routes = [
   {
@@ -34,6 +35,11 @@ const routes: Routes = [
     path: '',
     component: MainPageComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
       {
         path: 'dashboard',
         component: DashboardComponent
@@ -131,6 +137,10 @@ const routes: Routes = [
       {
         path: 'role-permission',
         component: RolePermissionComponent,
+      },
+      {
+        path: 'book-search',
+        component: BookSearchComponent,
       },
     ]
   },

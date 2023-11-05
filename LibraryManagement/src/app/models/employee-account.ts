@@ -1,5 +1,5 @@
-import { IAccountInfo } from "./account.model";
-
+import { IAccountInfo } from './account.model';
+import { Role } from './role-permission.model';
   export interface IEmployee {
     id?: string;
     name: string;
@@ -9,7 +9,8 @@ import { IAccountInfo } from "./account.model";
     birthDate?: string;
     joinDate?: string;
     accountId?: string;
-    roleId?: string;
-    passWord?: string;
     account?: IAccountInfo;
+    roleId?: string;
+    role?: Role
+    password?: string
 }

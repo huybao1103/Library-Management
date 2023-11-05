@@ -9,6 +9,7 @@ export interface Role {
 export interface RoleModulePermission {
     id: string;
     module: ModuleEnum;
+    parentModule?: RoleModulePermission,
     all: boolean;
     access: boolean;
     detail: boolean;
@@ -16,4 +17,11 @@ export interface RoleModulePermission {
     edit: boolean;
     delete: boolean;
     roleId: string;
+    parent_all: boolean;
+    parent_access: boolean;
+    parent_detail: boolean;
+    parent_create: boolean;
+    parent_edit: boolean;
+    parent_delete: boolean;
+    disabledByParent: boolean;
 }

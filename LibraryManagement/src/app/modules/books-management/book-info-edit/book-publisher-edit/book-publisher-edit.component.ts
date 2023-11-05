@@ -7,7 +7,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Table } from 'primeng/table';
 import { ToggleButtonChangeEvent } from 'primeng/togglebutton';
-import { of } from 'rxjs';
+import { first, of, pipe } from 'rxjs';
 import { IDialogType } from 'src/app/models/modal/dialog';
 import { AuthorDetailFields } from 'src/app/modules/authors-management/author-info-edit/author-info.form';
 import { AuthorService } from 'src/app/modules/authors-management/service/author.service';
@@ -65,7 +65,9 @@ export class BookPublisherEditComponent  implements IDialogType, OnInit {
   }
 
   getAuthors() {
-    this.publisherService.getAll()?.subscribe({
+    this.publisherService.getAll()
+    .pipe(first())
+    .subscribe({
       next: (resp) => {
         if(resp)
           this.allPublishers = resp;
@@ -95,7 +97,7 @@ export class BookPublisherEditComponent  implements IDialogType, OnInit {
           this.publisherService.save(this.newPublisher).subscribe({
             next: (resp) => {
               if(resp) {
-                this.allPublishers = [...this.allPublishers, resp];
+                this.allPublishers = [resp, ...this.allPublishers];
                 this.selectedPublishers = [...this.selectedPublishers, resp];
               }
               this.toastService.show(MessageType.success, 'Publisher info save success');

@@ -1,5 +1,12 @@
 [
   {
+    "name": "Dashboard",
+    "code": "dashboard",
+    "icon": "fa fa-home",
+    "moduleEnum": "Dashboard",
+    "route": ""
+  },
+  {
     "name": "Book Management",
     "code": "book",
     "icon": "fa fa-book",
@@ -26,42 +33,21 @@
     "code": "author",
     "icon": "fa fa-user",
     "moduleEnum": "AuthorManagement",
-    "subMenus": [
-      {
-        "name": "Authors",
-        "code": "author",
-        "icon": "fa fa-user",
-        "route": "author"
-      }
-    ]
+    "route": "author"
   },
   {
     "name": "Publisher Management",
     "code": "publisher",
     "icon": "fa fa-address-book",
     "moduleEnum": "PublisherManagement",
-    "subMenus": [
-      {
-        "name": "Publishers",
-        "code": "publisher",
-        "icon": "fa fa-address-book",
-        "route": "publisher"
-      }
-    ]
+    "route": "publisher"
   },
   {
-    "name": "Reader Management",
-    "code": "reader",
-    "icon": "la la-book-reader",
+    "name": "Library Card Management",
+    "code": "library-card",
+    "icon": "fa fa-address-card",
     "moduleEnum": "LibraryCardManagement",
-    "subMenus": [
-      {
-        "name": "Library Cards",
-        "code": "library-card",
-        "icon": "fa fa-address-card",
-        "route": "library-card"
-      }
-    ]
+    "route": "library-card"
   },
   {
     "name": "Account Management",
@@ -90,13 +76,6 @@
     "code": "role-permission",
     "icon": "la la-key",
     "moduleEnum": "RolePermissionManagement",
-    "subMenus": [
-      {
-        "name": "Roles & Permissions",
-        "code": "role-permission",
-        "icon": "la la-key",
-        "route": "role-permission"
-      }
-    ]
+    "route": "role-permission"
   }
 ]

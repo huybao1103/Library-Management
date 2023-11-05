@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Books",
+    "code": "book",
+    "icon": "fa fa-book",
+    "moduleEnum": "BookSearch",
+    "route": "book-search"
+  },
+  {
+    "name": "Categories",
+    "code": "book",
+    "icon": "la la-border-all",
+    "moduleEnum": "BookCategory",
+    "route": "student-category"
+  }
+]

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IEmployee } from 'src/app/models/employee-account';
 import { HttpService } from 'src/app/services/http-service.service';
-import { BehaviorSubject, concatMap, map, of, tap } from 'rxjs';
-import { IComboboxOption } from 'src/app/models/combobox-option.model';
+import { BehaviorSubject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +16,8 @@ export class EmployeeService {
     private httpService: HttpService
   ) { }
 
-  getEmployeeList(id?: string) {
-    return this.httpService.getWithCustomURL<IEmployee[]>({ controller: 'Accounts', url: `Accounts/employee-account/get-list/${id}` })
+  getEmployeeList() {
+    return this.httpService.getWithCustomURL<IEmployee[]>({ controller: 'Accounts', url: `Accounts/employee-account/get-list` })
   }
 
   getEmployeeById(empId: string) {

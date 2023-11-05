@@ -137,13 +137,11 @@ namespace LibraryAPI.Controllers
         [HttpGet("employee-account/get-list")]
         public async Task<ActionResult<IEnumerable<EmployeeModel>>> GetEmployeeAccount()
         {
-            List<Employee> employees = await _context.Employees
-                .Where(x => x.AccountId.HasValue)
-                .ToListAsync();
+            List<Employee> employees = await _context.Employees.ToListAsync();
 
             List<EmployeeModel> res = _mapper.Map<List<EmployeeModel>>(employees);
 
-            List<AccountModel> accountList = _mapper.Map<List<AccountModel>>(await _context.Accounts.ToListAsync());
+            List<AccountModel> accountList = _mapper.Map<List<AccountModel>>(await _context.Accounts.Include(a => a.Role).ToListAsync());
 
             res.ForEach(x => x.Account = accountList.FirstOrDefault(acc => acc.Id == x.AccountId));
 
