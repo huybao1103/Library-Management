@@ -1,19 +1,87 @@
-<div class="page-header-custom">
-    <div class="row">
-        <div class="col">
-            <h3 class="page-title font-weight-bold">Reader</h3>
+<div *ngIf="readerAccounts">
+  <p-table
+    #dt
+    [value]="readerAccounts"
+    [globalFilterFields]="['cardId','name', 'email']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+    [scrollable]="true"
+    scrollHeight="545px"
+  >
+    <ng-template pTemplate="caption">
+      <div class="justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="page-title">Reader Account List</h3>
+          <div>
+            <button pButton pRipple label="New Reader" icon="fa fa-plus" class="btn-primary" (click)="edit('')"></button>
+          </div>
         </div>
-        <div class="col-auto float-end ms-auto">
-            <a 
-                href="javascript:" 
-                class="btn add-btn" 
-                data-bs-toggle="modal" 
-                data-bs-target="#add_employee" 
-                (click)="editItem('')"
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="cardId" style="min-width:15rem">Card ID <p-sortIcon field="cardId"></p-sortIcon></th>
+        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+        <th pSortableColumn="action" style="min-width:10rem; text-align: center;">Action</th>
+      </tr>
+      <tr>
+
+        <th>
+          <p-columnFilter type="text" field="name"></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter type="text" field="cardId"></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter type="text" field="email"></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter type="text" field="status"></p-columnFilter>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-card>
+      <tr>
+        <td>
+          <span style="vertical-align: middle;">
+            <p-avatar
+              *ngIf="card.cardImages && card.cardImages.length"
+              [image]="card.cardImages[0].base64"
+              size="large"
+              shape="circle"
             >
-                <i class="fa fa-plus"></i> 
-                Add Account
-            </a>
-        </div>
-    </div>
+            </p-avatar>
+          </span>
+          <span class="ml-1 text-global fw-bold" style="vertical-align: middle; cursor: pointer;" (click)="edit(card.id)">
+            {{ card.name }}
+          </span>
+        </td>
+        <td>{{ card.cardId }}</td>
+        <td>{{ card.email }}</td>
+        <td>
+          <a class="btn btn-white btn-sm btn-rounded">
+            <i class="fa fa-dot-circle-o" [ngClass]="
+              {
+                'text-danger': card.status == 'Deactivated',
+                'text-success': card.status == 'Active',
+              }"></i>
+            {{ card.status }}
+          </a>
+        </td>
+        <td style="text-align: center;">
+          <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(card.id)"></button>
+          <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteReaderAccount(card)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">In total there are {{ readerAccounts.length }} Reader Account.</div>
+    </ng-template>
+  </p-table>
 </div>

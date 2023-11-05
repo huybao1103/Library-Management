@@ -14,7 +14,6 @@ import { AuthorInfoEditComponent } from './authors-management/author-info-edit/a
 import { AuthorsManagementComponent } from './authors-management/authors-management.component';
 import { BookInfoEditComponent } from './books-management/book-info-edit/book-info.edit.component';
 import { BooksManagementComponent } from './books-management/books-management.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { FeatureRoutingModule } from './feature-routing.module';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
@@ -49,6 +48,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 import { BookChapterComponent } from './books-management/book-chapter/book-chapter.component';
 import { BookChapterInfoEditComponent } from './books-management/book-chapter/book-chapter-info-edit/book-chapter-info-edit.component';
+import { DashboardManagementComponent } from './dashboard-management/dashboard-management.component';
+import { ChartModule } from 'primeng/chart';
 import { NewHistoryRecordComponent } from './library-card-management/new-history-record/new-history-record.component';
 import { DatatimePickerModule } from '../formly/form/datetime-picker/datatime-picker.module';
 import { CalendarModule } from 'primeng/calendar';
@@ -60,6 +61,9 @@ import { EmployeeAccountDetailComponent } from './account-management/employee/em
 import { RolePermissionComponent } from './role-permission/role-permission/role-permission.component';
 import { CheckboxModule } from 'primeng/checkbox';
 
+import { MultiSelectModule } from 'primeng/multiselect';
+import {StyleClassModule} from 'primeng/styleclass';
+import { DashboardComponent } from './dashboard/dashboardComponent';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -87,6 +91,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     LibraryCardDetailComponent,
     BookChapterComponent,
     BookChapterInfoEditComponent,
+    DashboardManagementComponent,
     NewHistoryRecordComponent,
     ReaderAccountListComponent,
     EmployeeAccountListComponent,
@@ -123,9 +128,13 @@ import { CheckboxModule } from 'primeng/checkbox';
     DatatimePickerModule,
     CalendarModule,
     NgSelectItemModule,
+
+    CheckboxModule,
+    ChartModule,
     MultiSelectModule,
     CheckboxModule,
     OverlayPanelModule,
+    StyleClassModule,
   ]
 })
 export class FeatureModule { }
