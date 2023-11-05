@@ -12,7 +12,7 @@ import { HttpService } from 'src/app/services/http-service.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { ReaderService } from '../service/reader-service.service';
-import { Observable } from 'rxjs';
+import { Observable, first } from 'rxjs';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 
 @Component({
@@ -26,39 +26,26 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
   fields: FormlyFieldConfig[] = []; // abcxyz
   form = new FormGroup({});
 
-  addReaderLibraryCard: boolean = false;
-
   options: FormlyFormOptions = {
     formState: {
       optionList: {
-      
-      }
+        librayCardList: null
+      },
+      isEditting: false
     }
   };
 
-  readerAccount$?: Observable<IReaderAccount | null>;
-
   data: IReaderAccount = {
-    name: '',
-    mail: '',
-    pass: '',
-    status: '',
-    getAccountById: function (id: string): unknown {
-      throw new Error('Function not implemented.');
-    },
-    save: function (data: IReaderAccount): unknown {
-      throw new Error('Function not implemented.');
-    }
+    email: '',
+    password: '',
+    libraryCardId: ''
   }  
-  
-   publisher: IReaderAccount[] = [];
-
 
   constructor(
     private modal: NgbActiveModal,
     private toastService: ToastService,
     private httpService: HttpService,
-    private readeraccountService: ReaderService,
+    private readerAccountService: ReaderService,
     private confirmDialogService: ConfirmDialogService
   ) {
   }
@@ -67,50 +54,34 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
     this.title = "Add Account";
     if (para.id) {
       this.title = "Edit Account Information";
-      // this.getAccountById(para.id);
-      console.log(para.id);
+
+      this.options.formState.isEditting = true;
+      this.options.formState.optionList.librayCardList = this.readerAccountService.getLibraryCardOption();
+
+      this.getReaderCardById(para.id);
     } else {
+      this.options.formState.optionList.librayCardList = this.readerAccountService.getNewLibraryCardOption();
       this.fields = AccountDetailFields();
     }
   }
 
   ngOnInit(): void {
-
   }
 
   getReaderCardById(id: string) {
-    this.readerAccount$ = this.readeraccountService.getReaderAccountById(id);
-    this.readerAccount$.subscribe({
-      next: (res) => {
-        if(res) {
-          this.data = res;
+    this.readerAccountService.getReaderAccountById(id).pipe(first())
+    .subscribe({
+      next: resp => {
+        if(resp) {
+          this.data = resp;
           this.fields = AccountDetailFields();
-          
         }
       }
-    })
+    });
   }
 
-  // loadData(readerAccountId: string) {
-  //   this.readeraccountService.getReaderAccountById(readerAccountId).subscribe({
-  //     next: (res) => {
-  //       if(res) {
-  //         this.data = {
-  //           ...res,
-  //           // categories: res.bookCategories?.map(cate => cate.categoryId)
-  //         };
-        
-  //         this.fields = AccountDetailFields();
-  //       }
-  //     }
-  //   })
-  // }
-
-  
-
-
   submit() {
-    this.readeraccountService.save(this.data).subscribe({
+    this.readerAccountService.save(this.data).subscribe({
       next: (resp: any) => {
         this.toastService.show(MessageType.success, 'Reader Account save success');
         this.close();
@@ -121,27 +92,10 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
     })
   }
 
-  // submit() {
-  //   this.addReaderLibraryCard 
-  //   ? this.confirmDialogService.showConfirmDialog(
-  //       'New Reader Account will be added to system and will be referenced to this book, do you want to continue ?',
-  //       'Add Author to new Book confirmation'
-  //     ).subscribe({
-  //       next: (confirmed) => {
-  //         if(confirmed) {
-  //           this.addAuthorConfirmed();
-  //         }
-  //       }
-  //     })
-  //   : this.addAuthorConfirmed();
-  // }
-
-
-
   close() { this.modal.close() }
 
   private addReaderAccountConfirmed() {
-    this.readeraccountService.save(this.data).subscribe({
+    this.readerAccountService.save(this.data).subscribe({
       next: (resp: any) => {
         console.log(resp);
         this.toastService.show(MessageType.success, 'Reader Account info save success');
@@ -154,3 +108,4 @@ export class ReaderAccountDetailComponent implements IDialogType, OnInit {
     })
   }
 }
+

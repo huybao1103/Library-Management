@@ -1,13 +1,7 @@
 export interface IReaderAccount {
-    getAccountById(id: string): unknown;
-    save(data: IReaderAccount): unknown;
     id?: string;
-    name: string;
-    mail?: string;
-    pass: string;
-    status?: string;
-}
-
-export interface IReaderAccountSave extends IReaderAccount {
-    IdlibraryCard?: string[];
+    libraryCardId: string;
+    name?: string;
+    email: string;
+    password: string;
 }

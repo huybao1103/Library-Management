@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, concatMap, of, tap } from 'rxjs';
 import { IComboboxOption } from 'src/app/models/combobox-option.model';
+import { ILibraryCardInfo } from 'src/app/models/library-card.model';
 import { IReaderAccount } from 'src/app/models/reader-account.model';
 import { HttpService } from 'src/app/services/http-service.service';
 
@@ -9,7 +10,7 @@ import { HttpService } from 'src/app/services/http-service.service';
 })
 export class ReaderService {
 
-  private readerAccount$: BehaviorSubject<IReaderAccount[]> = new BehaviorSubject<IReaderAccount[]>([]);
+  private readerAccount$: BehaviorSubject<ILibraryCardInfo[]> = new BehaviorSubject<ILibraryCardInfo[]>([]);
   private libraryCardId: string = "";
 
   constructor(
@@ -17,7 +18,7 @@ export class ReaderService {
   ) { }
 
   // getAll(id?: string) {
-  //   return this.httpService.getAll<IReaderAccount[]>({ controller: 'Accounts' }, id).pipe(
+  //   return this.httpService.getAll<ILibraryCardInfo[]>({ controller: 'Accounts' }, id).pipe(
   //     tap((x) => {
   //       if(x?.length) {
   //         this.readerAccount$.next(x)
@@ -28,10 +29,10 @@ export class ReaderService {
   // }
 
   getAll(id: string) {
-    return this.httpService.getWithCustomURL<IReaderAccount[]>(
+    return this.httpService.getWithCustomURL<ILibraryCardInfo[]>(
       { 
         controller: 'Accounts', 
-        url: `Accounts/reader-account/get-by-id/${id}` 
+        url: `Accounts/reader-account/get-list` 
       }
     ).pipe(
       tap((x) => {
@@ -43,67 +44,22 @@ export class ReaderService {
   }
 
   getReaderAccountById(id: string) {
-    return this.httpService.getById<IReaderAccount>({controller: 'Accounts'}, id);
+    return this.httpService.getWithCustomURL<IReaderAccount>({controller: 'Accounts', url: `Accounts/reader-account/get-by-id/${id}`});
   }
 
   getLibraryCardOption() {
     return this.httpService.getOption<IComboboxOption[]>({ controller: 'LibraryCards' });
   }
 
+  getNewLibraryCardOption() {
+    return this.httpService.getWithCustomURL<IComboboxOption[]>({ controller: 'LibraryCards', url: 'LibraryCards/option/new-reader-account' });
+  }
+
   save(data: IReaderAccount) {
-    return this.httpService.save<IReaderAccount>({ controller: 'Accounts', data, op: 'account-info'}).pipe(
-      tap((res) => res ? this.updateReaderAccountState(res) : of())
-    );
+    return this.httpService.saveWithCustomURL<IReaderAccount>({ controller: 'Accounts', data, url: 'Accounts/save-reader-account'})
   }
 
-  delete(id: string) {
-    return this.httpService.delete({ controller: 'Accounts',url: `Accounts/reader-account/get-by-id/${id}`}, id).pipe(
-      tap(() => this.updateReaderAccountState(undefined, id))
-    );
-  }
-
-  setCurrentLibraryCard(id: string) {
-    this.libraryCardId = id;
-  }
-
-  getCurrenLibraryCardID() { 
-    return this.libraryCardId;
-  }
-
-  applyCategoryFilter(accDisplay: IReaderAccount[]) {
-    this.readerAccount$.next(accDisplay);
-  }
-
-  search(data: IReaderAccount) {
-    return this.httpService.search<IReaderAccount[]>({ controller: 'Accounts', data}).pipe(
-      tap((res) => {
-        if(res?.length) {
-          // res.map(b => b.authorName = b.bookAuthors?.map(ba => ba.author.name).join(', '));
-
-          this.readerAccount$.next(res);
-        }
-      })
-    );
-  }
-
-  private updateReaderAccountState(res?: IReaderAccount, deletedRenderAccId?: string, ) {
-    let old = this.readerAccount$.value;
-  
-    if(res) {
-      const updated = old.find(p => p.id === res?.id);
-      
-      old = updated ? old.filter(p => p.id !== updated.id) : old;
-  
-      // res = {
-      //   ...res,
-      //   authorName: res.bookAuthors?.map(ba => ba.author.name).join(', ')
-      // };
-
-      this.readerAccount$.next([res, ...old]);
-    } else if(deletedRenderAccId) {
-      old = old.filter(p => p.id !== deletedRenderAccId);
-  
-      this.readerAccount$.next([...old]);
-    }
+  delete(accountId: string) {
+    return this.httpService.deleteWithCustomURL({ controller: 'Accounts',url: `Accounts/reader-account/remove/${accountId}`});
   }
 }

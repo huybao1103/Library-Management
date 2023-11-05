@@ -139,7 +139,7 @@ namespace LibraryAPI.Controllers
         [HttpGet("option")]
         public async Task<ActionResult<IEnumerable<Option>>> GetLibraryCardsOption()
         {
-            if (_context.Books == null)
+            if (_context.LibraryCards == null)
             {
                 return NotFound();
             }
@@ -147,6 +147,21 @@ namespace LibraryAPI.Controllers
 
             return carList.Select(card => new Option { Value = card.Id, Label = card.Name }).ToList(); // Get card option list
         }
+
+        [HttpGet("option/new-reader-account")]
+        public async Task<ActionResult<IEnumerable<Option>>> GetNewLibraryCardsOption()
+        {
+            if (_context.LibraryCards == null)
+            {
+                return NotFound();
+            }
+            var carList = await _context.LibraryCards.Where(c => !c.AccountId.HasValue).ToListAsync(); // Get card list
+
+            return carList.Select(card => new Option { Value = card.Id, Label = card.Name }).ToList(); // Get card option list
+        }
+
+
+
         private bool LibraryCardExists(Guid id)
         {
             return (_context.LibraryCards?.Any(e => e.Id == id)).GetValueOrDefault();
