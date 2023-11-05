@@ -7,6 +7,9 @@ import { LoginFields } from './login.form';
 import { first, pipe } from 'rxjs';
 import { SessionService } from 'src/app/services/session.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from 'src/app/services/toast.service';
+import { MessageType } from 'src/app/enums/toast-message.enum';
 
 @Component({
   selector: 'app-login',
@@ -29,10 +32,13 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
+  error: string = '';
+
   constructor(
     private loginService: LoginRegisterService,
     private session: SessionService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +53,11 @@ export class LoginComponent implements OnInit {
         if(resp) {
           this.session.updateSession(resp);
           this.router.navigate(['']);
+          this.error = '';
         }
+      },
+      error: (err: HttpErrorResponse) => {
+        this.error = 'Wrong email or password.'
       }
     })
   }

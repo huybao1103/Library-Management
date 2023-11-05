@@ -101,6 +101,17 @@ export class HttpService {
     );
   }
 
+  deleteWithCustomURL<T>(query: IQueryData) {
+    return this.getDataFromResponse<T> (
+      this.http.delete<T> (
+        `api/${query.url}`,
+        { observe: 'response'}
+      ),
+      true,
+      query
+    );
+  }
+
   saveWithCustomURL<T>(query: IQueryData) {
     return this.getDataFromResponse<T> (
       this.http.post<T> (

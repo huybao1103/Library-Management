@@ -55,6 +55,29 @@ namespace LibraryAPI.Controllers
             return Ok(_mapper.Map<LibraryCardModel>(libraryCard));
         }
 
+        [HttpGet("get-by-account-id/{accountId}")]
+        public async Task<ActionResult<LibraryCardModel>> GetLibraryCardByAccountId(Guid? accountId)
+        {
+            if (_context.LibraryCards == null)
+            {
+                return NotFound();
+            }
+            var libraryCard = _context.LibraryCards
+                    .Include(c => c.StudentImages)
+                        .ThenInclude(c => c.File)
+                    .Include(c => c.BorrowHistories.OrderByDescending(x => x.BorrowDate))
+                        .ThenInclude(c => c.BookChapter)
+                            .ThenInclude(c => c.Book)
+                    .FirstOrDefault(c => c.AccountId == accountId);
+
+            if (libraryCard == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<LibraryCardModel>(libraryCard));
+        }
+
         // POST: api/LibraryCards
         [HttpPost("save")]
         public async Task<ActionResult<LibraryCardModel>> PostLibraryCard(LibraryCardRequest libraryCardModel)
