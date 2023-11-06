@@ -127,6 +127,10 @@ namespace LibraryAPI.Controllers
                 account = await _context.Accounts.FindAsync(request.Id);
                 account = _mapper.Map(request, account);
 
+                if(request.Password != null)
+                    account.PasswordHash = _hashService.ConvertStringToHash(request.Password);
+                account.RoleId = role.Id;
+
             }
             await _context.SaveChangesAsync();
             request.Id = account.Id;
@@ -164,7 +168,7 @@ namespace LibraryAPI.Controllers
             {
                 res = _mapper.Map(await _context.Accounts.FindAsync(res.AccountId), res);
             }
-
+            res.Id = empId;
             return Ok(res);
         }
 
@@ -204,10 +208,11 @@ namespace LibraryAPI.Controllers
                 else if (request.Email != null)
                 {
                     account = _mapper.Map<Account>(request);
-                    account.PasswordHash = _hashService.ConvertStringToHash(request.Password);
 
                     _context.Accounts.Add(account);
                 }
+                if (request.Password != null)
+                    account.PasswordHash = _hashService.ConvertStringToHash(request.Password);
 
                 employee = _mapper.Map(request, employee);
             }
@@ -271,10 +276,14 @@ namespace LibraryAPI.Controllers
             }
 
             Account account = await _context.Accounts.FindAsync(accountId);
-            if(account == null)
+            LibraryCard libraryCard = await _context.LibraryCards.FirstOrDefaultAsync(c => c.AccountId == accountId);
+
+            if (account == null)
             {
                 return NotFound();
             }
+
+            libraryCard.AccountId = null;
 
             _context.Accounts.Remove(account);
 
@@ -309,7 +318,7 @@ namespace LibraryAPI.Controllers
         {
             Account account = _mapper.Map<Account>(request);
 
-            if (_context.Accounts.Any(account => account.Email == request.Email))
+            if (_context.Accounts.Any(account => account.Email == request.Email && account.Id != request.Id))
             {
                 throw new CustomApiException(500, "This email is already existed.", "This email is already existed.");
             }
@@ -318,7 +327,7 @@ namespace LibraryAPI.Controllers
         {
             Account account = _mapper.Map<Account>(request);
 
-            if (_context.Accounts.Any(account => account.Email == request.Email))
+            if (_context.Accounts.Any(account => account.Email == request.Email && account.Id != request.AccountId))
             {
                 throw new CustomApiException(500, "This email is already existed.", "This email is already existed.");
             }

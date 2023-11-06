@@ -2,7 +2,7 @@ import { IAccountInfo } from './account.model';
 import { Role } from './role-permission.model';
   export interface IEmployee {
     id?: string;
-    name: string;
+    name?: string;
     email?: string;
     phone?: string;
     citizenId?: string;
@@ -11,6 +11,6 @@ import { Role } from './role-permission.model';
     accountId?: string;
     account?: IAccountInfo;
     roleId?: string;
-    role?: Role
-    passWord?: string
+    role?: Role;
+    password?: string;
 }

@@ -1,7 +1,7 @@
-<div *ngIf="readerAccounts">
+<div>
   <p-table
     #dt
-    [value]="readerAccounts"
+    [value]="readerAccount"
     [globalFilterFields]="['cardId','name', 'email']"
     [tableStyle]="{ 'min-width': '75rem' }"
     [rowHover]="true"
@@ -17,6 +17,7 @@
           <h3 class="page-title">Reader Account List</h3>
           <div>
             <button pButton pRipple label="New Reader" icon="fa fa-plus" class="btn-primary" (click)="edit('')"></button>
+            <button  pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
           </div>
         </div>
       </div>
@@ -26,7 +27,7 @@
         <th pSortableColumn="name" style="min-width:15rem">Name <p-sortIcon field="name"></p-sortIcon></th>
         <th pSortableColumn="cardId" style="min-width:15rem">Card ID <p-sortIcon field="cardId"></p-sortIcon></th>
         <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
-        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+        <!-- <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th> -->
         <th pSortableColumn="action" style="min-width:10rem; text-align: center;">Action</th>
       </tr>
       <tr>
@@ -40,9 +41,9 @@
         <th>
           <p-columnFilter type="text" field="email"></p-columnFilter>
         </th>
-        <th>
+        <!-- <th>
           <p-columnFilter type="text" field="status"></p-columnFilter>
-        </th>
+        </th> -->
         <th></th>
       </tr>
     </ng-template>
@@ -58,13 +59,13 @@
             >
             </p-avatar>
           </span>
-          <span class="ml-1 text-global fw-bold" style="vertical-align: middle; cursor: pointer;" (click)="edit(card.id)">
+          <span class="ml-1 text-global fw-bold" style="vertical-align: middle; cursor: pointer;" (click)="edit(card.account.id)">
             {{ card.name }}
           </span>
         </td>
-        <td>{{ card.cardId }}</td>
-        <td>{{ card.email }}</td>
-        <td>
+        <td>{{ card.studentId }}</td>
+        <td>{{ card.account.email }}</td>
+        <!-- <td>
           <a class="btn btn-white btn-sm btn-rounded">
             <i class="fa fa-dot-circle-o" [ngClass]="
               {
@@ -73,15 +74,15 @@
               }"></i>
             {{ card.status }}
           </a>
-        </td>
+        </td> -->
         <td style="text-align: center;">
-          <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(card.id)"></button>
-          <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteReaderAccount(card)"></button>
+          <button pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(card.account.id)"></button>
+          <button pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteReaderAccount(card.account.id)"></button>
         </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="summary">
-      <div class="flex align-items-center justify-content-between">In total there are {{ readerAccounts.length }} Reader Account.</div>
+      <div class="flex align-items-center justify-content-between">In total there are {{ readerAccount.length }} Reader Account.</div>
     </ng-template>
   </p-table>
 </div>

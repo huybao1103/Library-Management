@@ -32,9 +32,7 @@ export class SessionService {
       this.currentAccount = JSON.parse(value);
       return this.currentAccount;
     }
-    else {
-      this.router.navigate(['/login']);
-    }
+    this.router.navigate(['/login'])
     return undefined;
   }
 

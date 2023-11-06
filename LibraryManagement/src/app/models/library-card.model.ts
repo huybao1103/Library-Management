@@ -1,4 +1,5 @@
 import { LibraryCardStatus } from "../enums/library-card-status";
+import { IAccountInfo } from "./account.model";
 import { IBorrowHistoryInfo } from "./borrow-history.model";
 import { IBaseImage } from "./uploadFile.model";
 
@@ -12,6 +13,8 @@ export interface ILibraryCardInfo {
     studentId: string;
     studentImages?: IStudentImage[];
     borrowHistories?: IBorrowHistoryInfo[];
+    accountId?: string;
+    account?: IAccountInfo;
 }
 
 export interface IStudentImage extends IBaseImage {

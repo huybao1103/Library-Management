@@ -1,68 +1,79 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, first } from 'rxjs';
+import { IReaderAccount } from 'src/app/models/reader-account.model';
+import { HttpService } from 'src/app/services/http-service.service';
+import { SessionService } from 'src/app/services/session.service';
+import { ToastService } from 'src/app/services/toast.service';
+import { ReaderService } from '../service/reader-service.service';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { MessageType } from 'src/app/enums/toast-message.enum';
+import { IComboboxOption } from 'src/app/models/combobox-option.model';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { BookSearchFields } from 'src/app/modules/books-management/book-search-field';
+import { AccountDetailFields } from '../reader-account-detail/reader-account.form';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ILibraryCardInfo } from 'src/app/models/library-card.model';
 
 @Component({
   selector: 'app-reader-account-list',
   templateUrl: './reader-account-list.component.html',
   styleUrls: ['./reader-account-list.component.css']
 })
-export class ReaderAccountListComponent {
-  constructor(private router: Router) {}
+export class ReaderAccountListComponent implements OnInit {
+  selectedLibraryCard: string = "";
+
   searchQuery: string = '';
 
-  readerAccounts: any[] = [
-    {
-      id: 1,
-      name: 'John Doe',
-      cardId: '12345',
-      email: 'abc@gmail.com',
-      status: 'Active',
-      cardImages: [
-        {
-          base64: 'image_base64_data'
-        }
-      ]
-    },
-    {
-      id: 1,
-      name: 'John Doe',
-      cardId: '12345',
-      email: 'abc@gmail.com',
-      status: 'Deactivated',
-      cardImages: [
-        {
-          base64: 'image_base64_data'
-        }
-      ]
-    },
-    // Add more dummy data here
-  ];
+  readerAccount: ILibraryCardInfo[] = [];
 
-  edit(cardId: string) {
-    this.router.navigate([{ outlets: { modal: ['reader-account-list', 'edit', cardId] } }]);
+  constructor(
+    private router: Router,
+    private httpService: HttpService,
+    private toastService: ToastService,
+    private sessionService : SessionService,
+    private renderaccountService: ReaderService,
+    private confirmDialogService: ConfirmDialogService,
+    ) {}
 
+  ngOnInit(): void {
+    this.loadData();
   }
 
-  deleteReaderAccount(card: any) {
-    // Find the index of the reader account in the array
-    const index = this.readerAccounts.findIndex(account => account.id === card.id);
-
-    if (index !== -1) {
-      // Perform delete logic here, such as removing the reader account from the array
-      this.readerAccounts.splice(index, 1);
-    }
+  loadData() {
+    this.renderaccountService.getAll(this.selectedLibraryCard)
+    .pipe(first())
+    .subscribe({
+      next: resp => {
+        if(resp)
+          this.readerAccount = resp;
+      }
+    });
   }
 
-  search() {
-    // Perform search logic here, such as filtering the readerAccounts array based on the searchQuery
-    // For example, you can filter by name or cardId
-    const filteredAccounts = this.readerAccounts.filter(account =>
-      account.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-      account.cardId.includes(this.searchQuery)
-    );
+  edit(id: string) {
+    this.router.navigate([{ outlets: { modal: ['reader-account-list', 'edit', id] } }]);
+  }
 
-    // Update the readerAccounts array with the filtered results
-    // Alternatively, you can store the filtered results in a separate variable for display
-    this.readerAccounts = filteredAccounts;
+  deleteReaderAccount(accountId: string) {
+    this.confirmDialogService.showConfirmDialog(
+      'Are you sure you want to delete this item ?',
+      'This action cannot be revert'
+    ).subscribe({
+      next: (confirmed) => {
+        if(confirmed) {
+          this.renderaccountService.delete(accountId).subscribe({
+            next: (res) => {
+              this.toastService.show(MessageType.success, 'This reader account is deleted successfully');
+              this.loadData();
+            },
+            error: (err: HttpErrorResponse) => {
+              this.toastService.show(MessageType.error, err.error?.detail || 'Delete error')
+            }
+          })
+        }
+      }
+    })
   }
 }

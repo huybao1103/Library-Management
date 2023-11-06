@@ -5,4 +5,5 @@ export interface IAccountInfo {
     email: string;
     roleId: string;
     role: Role;
+    password: string
 }
