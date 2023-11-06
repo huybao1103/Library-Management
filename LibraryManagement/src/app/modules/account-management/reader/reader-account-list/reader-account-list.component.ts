@@ -65,7 +65,8 @@ export class ReaderAccountListComponent implements OnInit {
         if(confirmed) {
           this.renderaccountService.delete(accountId).subscribe({
             next: (res) => {
-              this.toastService.show(MessageType.success, 'This reader account is deleted successfully')
+              this.toastService.show(MessageType.success, 'This reader account is deleted successfully');
+              this.loadData();
             },
             error: (err: HttpErrorResponse) => {
               this.toastService.show(MessageType.error, err.error?.detail || 'Delete error')

@@ -17,7 +17,9 @@
                     <form [formGroup]="form" (submit)="login()">
                         <formly-form [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
                         <p class="text-danger">{{ error }}</p>
-                        <button type="submit" class="btn btn-primary submit-btn" [disabled]="form.invalid">Login</button>
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn btn-primary submit-btn" [disabled]="form.invalid">Login</button>
+                        </div>
                     </form>
                     <!-- /Account Form -->
                     

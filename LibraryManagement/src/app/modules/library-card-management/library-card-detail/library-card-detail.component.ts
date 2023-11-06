@@ -160,8 +160,8 @@ export class LibraryCardDetailComponent implements OnInit{
   }
 
   edit(status: LibraryCardStatus) {
-    if(status === LibraryCardStatus.Inactive)
-      this.toastSerivce.show(MessageType.error, "This library card is inactivated, please change the status to active first.")
+    if(status === LibraryCardStatus.Inactive || status === LibraryCardStatus.Expired)
+      this.toastSerivce.show(MessageType.error, "This library card is inactivated or expired, please change the status to active first.")
     else
       this.router.navigate([{ outlets: { modal: ['library-card-detail', 'new-record', this.id] } }]);
   }
