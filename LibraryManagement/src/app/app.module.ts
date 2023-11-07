@@ -49,7 +49,7 @@ import { FormlyModule } from '@ngx-formly/core';
     ReactiveFormsModule,
   ],
   providers: [
-    MessageService, 
+    MessageService,
     ToastService,
     ConfirmDialogService,
     ConfirmationService

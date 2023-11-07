@@ -1,3 +1,75 @@
-
-<h3 class="account-title">Register</h3>
-<a routerLink="/login" style="text-align: center; display: block;">Go to login</a>
+<div class="container-fluid px-0 py-0">
+  <div class="container mx-auto">
+    <div class="row">
+      <div class="col-12 col-md-2 col-lg-4 col-lx-4"></div>
+      <div class="col-12 col-md-8 col-lg-4 col-lx-4 h-screen d-flex align-items-center">
+        <form autocomplete="off" [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="card bg-white px-4 py-4 w-100">
+          <div class="d-flex justify-content-center align-items-center">
+            <img src="../../../assets/img/logo.png" class="logo"/>
+          </div>
+          <h3 class="account-title">Register</h3>
+          <h6 class="fs-6 text-muted text-center fw-semibold mb-3">Welcome to HUFLIT Library</h6>
+          <div class="form-group my-2 row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+              <label class="fw-bold fs-6 text-black">Student ID*</label>
+              <input formControlName="id" type="input text" class="form-control bg-muted py-2"/>
+              <div *ngIf="registerForm.get('id')?.hasError('required') && registerForm.get('id')?.touched">
+                <span class="text-danger small">ID is required</span>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+              <label class="fw-bold fs-6 text-black">Class*</label>
+              <input formControlName="clazz" type="text" class="form-control bg-muted py-2"/>
+              <div *ngIf="registerForm.get('clazz')?.hasError('required') && registerForm.get('clazz')?.touched">
+                <span class="text-danger small">Class is required</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group my-2">
+            <label class="fw-bold fs-6 text-black">Name*</label>
+            <input formControlName="name" type="name" class="form-control bg-muted py-2"/>
+            <div *ngIf="registerForm.get('name')?.hasError('required') && registerForm.get('name')?.touched">
+              <span class="text-danger small">Name is required</span>
+            </div>
+            <div *ngIf="registerForm.get('name')?.hasError('pattern') && registerForm.get('name')?.touched">
+              <span class="text-danger small">Please enter your name</span>
+            </div>
+          </div>
+          <div class="form-group my-2">
+            <label class="fw-bold fs-6 text-black">Student Email*</label>
+            <input formControlName="email" type="email" class="form-control bg-muted py-2"/>
+            <div *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
+              <span class="text-danger small">Email is required</span>
+            </div>
+            <div *ngIf="registerForm.get('email')?.hasError('pattern') && registerForm.get('email')?.touched">
+              <span class="text-danger small">Please enter a valid email address</span>
+            </div>
+          </div>
+          <div class="form-group my-2">
+            <label class="fw-bold fs-6 text-black">Password*</label>
+            <input formControlName="password" type="password" class="form-control bg-muted py-2"/>
+            <div *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
+              <span class="text-danger small">Password is required</span>
+            </div>
+            <div *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
+              <span class="text-danger small">Password min length is 8</span>
+            </div>
+          </div>
+          <div class="form-group my-2">
+            <label class="fw-bold fs-6 text-black">Repeat Password*</label>
+            <input formControlName="repeatPassword" type="password" class="form-control bg-muted py-2"/>
+            <div *ngIf="registerForm.get('repeatPassword')?.hasError('required') && registerForm.get('repeatPassword')?.touched">
+              <span class="text-danger small">Repeat password is required</span>
+            </div>
+            <div *ngIf="registerForm.get('repeatPassword')?.hasError('minlength') && registerForm.get('repeatPassword')?.touched">
+              <span class="text-danger small">Repeat password min length is 8</span>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-register my-3 py-2 text-white fw-bold border-0 outline-0">REGISTER</button>
+          <p class="fw-bold fs-6 text-center text-black">Already have an account ? <a routerLink="/login" class="text-decoration-none text-info">login</a></p>
+        </form>
+      </div>
+      <div class="col-12 col-md-2 col-lg-4 col-lx-4"></div>
+    </div>
+  </div>
+</div>
