@@ -25,7 +25,8 @@ export class HeaderComponent implements OnInit {
     bookCart: IBookCart[] = [];
     
     currentAccountPermission: IAccountInfo | undefined;
-    // httpService: HttpService | undefined;
+    remaining = 0;
+    
     constructor(
         private httpService: HttpService,
         private toastService: ToastService,
@@ -50,8 +51,9 @@ export class HeaderComponent implements OnInit {
         const bookCart = this.bookCartService.getCartFromLocalStorage();
         if(bookCart)
             this.bookCart = bookCart;
+        this.remaining = this.bookCartService.getRemainingNumber();
     }
-
+    
     sidebarToggle() {
         this.sidebarVisible = !this.sidebarVisible;
     }
@@ -71,5 +73,9 @@ export class HeaderComponent implements OnInit {
             this.bookCartService.removeItemInCart(bookChapterId);
             this.getCart();
         }
+    }
+
+    request() {
+        this.router.navigate([{ outlets: { modal: ['book-search', 'book-cart'] } }]);
     }
 }

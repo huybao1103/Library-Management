@@ -86,7 +86,7 @@
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
                     <th pSortableColumn="chapter">Chapter <p-sortIcon field="chapter"></p-sortIcon></th>
-                    <th pSortableColumn="identifyId">ID <p-sortIcon field="identifyId"></p-sortIcon></th>
+                    <th *ngIf="!isStudent" pSortableColumn="identifyId">ID <p-sortIcon field="identifyId"></p-sortIcon></th>
                     <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
                     <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
                     <th pSortableColumn="action" style="min-width:7rem; text-align: center;">Action</th>
@@ -96,7 +96,7 @@
                     <th>
                         <p-columnFilter type="text" field="chapter"></p-columnFilter>
                     </th>
-                    <th>
+                    <th *ngIf="!isStudent">
                         <p-columnFilter type="text" field="identifyId"></p-columnFilter>
                     </th>
                     <th>
@@ -114,7 +114,7 @@
                         <p-tableCheckbox [value]="bookchapter"></p-tableCheckbox>
                     </td>
                     <td>{{ bookchapter.chapter }}</td>
-                    <td>{{ bookchapter.identifyId }}</td>
+                    <td *ngIf="!isStudent">{{ bookchapter.identifyId }}</td>
                     <td>{{ bookchapter.description }}</td>
                     <td>{{ BookChapterStatus[bookchapter.status] }}</td>
                     <td style="text-align: center;">
@@ -130,7 +130,7 @@
                         >
                         </button>
 
-                        <button *ngIf="isStudent"
+                        <button *ngIf="isStudent && bookchapter.status === BookChapterStatus.Free"
                             pButton pRipple icon="bi bi-cart-check-fill" class="p-button-rounded btn-primary"
                             (click)="addToCart(bookchapter.id || '', book.name, bookchapter.chapter, book.bookImages || [] )"
                         >

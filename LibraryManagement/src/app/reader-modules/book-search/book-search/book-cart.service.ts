@@ -18,6 +18,9 @@ export class BookCartService {
   currentAccount: IAccountInfo | undefined;
   libraryCardId: string = "";
 
+  max: number = 3;
+  remaining: number = 3;
+
   constructor(
     private sessionService: SessionService,
     private httpService: HttpService,
@@ -33,8 +36,28 @@ export class BookCartService {
     
     const cart = localStorage.getItem(`cart_${this.currentAccount?.id}`);
     if(cart) {
-      return this.bookCart = JSON.parse(cart);
+      this.bookCart = JSON.parse(cart);
+
+      return this.checkCartItemStatus();
     }
+    return []
+  }
+
+  checkCartItemStatus() {
+    const ids = this.bookCart.map(i => i.bookChapterId);
+    this.httpService.saveWithCustomURL<string[]>({ controller: 'BookChapters', url: 'BookChapters/check-remove-cart-item', data: ids })
+    .pipe(first())
+    .subscribe({
+      next: resp => {
+        if(resp?.length) {
+          for(const id of resp) 
+            this.bookCart = this.bookCart.filter(i => i.bookChapterId !== id);
+          
+          this.updateLocalStorage();
+        }
+      }
+    })
+    return this.bookCart;
   }
 
   getLibraryCardByAccountId() {
@@ -50,6 +73,7 @@ export class BookCartService {
       next: resp => {
         if(resp?.id) 
           this.libraryCardId = resp.id
+          this.getRemainingBook();
       }
     })
   }
@@ -61,11 +85,16 @@ export class BookCartService {
   }
 
   addToCart(bookChapter: IBookCart) {
-    if(!this.bookCart.find(cart => cart.bookChapterId === bookChapter.bookChapterId)) {
-      this.bookCart = [{...bookChapter, libraryCardId: this.libraryCardId}, ...this.bookCart];
-      this.updateLocalStorage();
-
-      return true;
+    if ( !this.bookCart.find(cart => cart.bookChapterId === bookChapter.bookChapterId) ) {
+      if ( this.bookCart.length + 1 <= this.remaining ) {
+        this.bookCart = [{...bookChapter, libraryCardId: this.libraryCardId}, ...this.bookCart];
+        this.updateLocalStorage();
+        
+        return true;
+      }
+      else {
+        this.toastService.show(MessageType.error, 'You cannot borrow any more book.')
+      }
     }
     else {
       this.toastService.show(MessageType.error, 'This book is already in request borrow list.!!!')
@@ -79,6 +108,22 @@ export class BookCartService {
   
       this.updateLocalStorage();
     }
+  }
+
+  getRemainingBook() {
+    const cardId = this.libraryCardId;
+    this.httpService.getWithCustomURL<number>({ controller: 'LibraryCards', url: `LibraryCards/get-remaining-book/${cardId}` })
+    .pipe(first())
+    .subscribe({
+      next: resp => {
+        if(resp)
+          this.remaining = resp
+      }
+    })
+  }
+
+  getRemainingNumber() {
+    return this.remaining - this.bookCart.length
   }
 }
 

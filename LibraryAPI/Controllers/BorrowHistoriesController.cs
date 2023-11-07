@@ -133,6 +133,7 @@ namespace LibraryAPI.Controllers
             return NoContent();
         }
 
+
         private bool BorrowHistoryExists(Guid id)
         {
             return (_context.BorrowHistories?.Any(e => e.Id == id)).GetValueOrDefault();

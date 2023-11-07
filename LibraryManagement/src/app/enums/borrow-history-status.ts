@@ -4,5 +4,6 @@ export enum BorrowHistoryStatus {
     Expired,
     Returned,
     Destroyed,
-    Lost
+    Lost,
+    WaitingForTake
 }

@@ -14,7 +14,6 @@ import { BookCartComponent } from './book-cart/book-cart.component';
     // BookSearchComponent,
     ReaderMainPageComponent,
     ReaderHeaderComponent,
-    BookCartComponent
   ],
   imports: [
     CommonModule,

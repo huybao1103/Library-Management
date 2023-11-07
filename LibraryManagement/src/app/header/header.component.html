@@ -54,15 +54,23 @@
 </div>
 <!-- /Header -->
 
-<p-overlayPanel #op>
+<p-overlayPanel #op (onShow)="getCart()">
     <ng-template pTemplate="content">
-        <div class="row p-2" *ngFor="let item of bookCart">
+        <div class="text-right">
+            {{ remaining }}/3
+        </div>
+        <div class="row p-1" *ngFor="let item of bookCart">
             <div class="col-2">
-                <img style="border-radius: 5%;" [src]="item.bookImageBase64" class="img-thumbnail" />
+                <p-galleria [value]="[item.bookImageBase64]" [circular]="true" [showThumbnails]="false"
+                    [containerStyle]="{ 'max-width': '200px' }">
+                    <ng-template pTemplate="item" let-item>
+                        <img style="border-radius: 5%;" [src]="item" class="cart-rsp-Image" />
+                    </ng-template>
+                </p-galleria>
             </div>
-            <div class="col-9">
-                <div class="cart-title">{{ item.bookName }}</div> 
-                <div class="text">Chapter {{ item.chapter }}</div>
+            <div class="col-9" style="max-width: 13rem;">
+                <div style="font-size: 12px;" class="cart-title">{{ item.bookName }}</div> 
+                <div style="font-size: 12px;" class="text">Chapter {{ item.chapter }}</div>
             </div>
             <div class="col-1">
                 <button
@@ -73,6 +81,10 @@
                     (click)="removeFromCart(item.bookChapterId || '')"
                 ></button>
             </div>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-primary submit-btn request-btn" (click)="request()">Request</button>
         </div>
     </ng-template>
 </p-overlayPanel>

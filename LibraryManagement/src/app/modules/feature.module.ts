@@ -61,6 +61,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DashboardComponent } from './dashboard/dashboardComponent';
 import { EmployeeAccountPanelComponent } from './account-management/employee/employee-account-panel/employee-account-panel.component';
+import { BookCartComponent } from '../reader-modules/book-cart/book-cart.component';
 @NgModule({
   providers: [
     ConfirmationService, 
@@ -97,7 +98,8 @@ import { EmployeeAccountPanelComponent } from './account-management/employee/emp
     EmployeeAccountDetailComponent,
     RolePermissionComponent,
     EmployeeAccountPanelComponent,
-    BookSearchComponent
+    BookSearchComponent,
+    BookCartComponent
   ],
   imports: [
     DialogModule,
