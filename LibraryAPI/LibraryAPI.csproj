@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GoldenData\NewFolder\**" />
     <Compile Remove="Models\NewFolder\**" />
+    <Content Remove="GoldenData\NewFolder\**" />
     <Content Remove="Models\NewFolder\**" />
+    <EmbeddedResource Remove="GoldenData\NewFolder\**" />
     <EmbeddedResource Remove="Models\NewFolder\**" />
+    <None Remove="GoldenData\NewFolder\**" />
     <None Remove="Models\NewFolder\**" />
   </ItemGroup>
 
@@ -31,7 +35,6 @@
 
   <ItemGroup>
     <Folder Include="GoldenData\Books\" />
-    <Folder Include="GoldenData\NewFolder\" />
   </ItemGroup>
 
 </Project>
