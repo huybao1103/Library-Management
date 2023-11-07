@@ -56,7 +56,8 @@ export function LibraryCardInfoField(): FormlyFieldConfig[] {
             templateOptions: {
               label: 'Expiry Date',
               showIcon: true,
-              showButtonBar: true
+              showButtonBar: true,
+              required: true
             },
           },
         ]
