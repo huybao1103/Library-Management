@@ -12,6 +12,7 @@ using LibraryAPI.CustomException;
 using LibraryAPI.ViewModels.Book;
 using LibraryAPI.RequestModels;
 using System.Collections.Immutable;
+using LibraryAPI.PubSub;
 
 namespace LibraryAPI.Controllers
 {
@@ -45,6 +46,29 @@ namespace LibraryAPI.Controllers
               return NotFound();
           }
             var libraryCard = GetCardByIdAsync((Guid)id);
+
+            if (libraryCard == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<LibraryCardModel>(libraryCard));
+        }
+
+        [HttpGet("get-by-account-id/{accountId}")]
+        public async Task<ActionResult<LibraryCardModel>> GetLibraryCardByAccountId(Guid? accountId)
+        {
+            if (_context.LibraryCards == null)
+            {
+                return NotFound();
+            }
+            var libraryCard = _context.LibraryCards
+                    .Include(c => c.StudentImages)
+                        .ThenInclude(c => c.File)
+                    .Include(c => c.BorrowHistories.OrderByDescending(x => x.BorrowDate))
+                        .ThenInclude(c => c.BookChapter)
+                            .ThenInclude(c => c.Book)
+                    .FirstOrDefault(c => c.AccountId == accountId);
 
             if (libraryCard == null)
             {
@@ -111,6 +135,32 @@ namespace LibraryAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("option")]
+        public async Task<ActionResult<IEnumerable<Option>>> GetLibraryCardsOption()
+        {
+            if (_context.LibraryCards == null)
+            {
+                return NotFound();
+            }
+            var carList = await _context.LibraryCards.ToListAsync(); // Get card list
+
+            return carList.Select(card => new Option { Value = card.Id, Label = card.Name }).ToList(); // Get card option list
+        }
+
+        [HttpGet("option/new-reader-account")]
+        public async Task<ActionResult<IEnumerable<Option>>> GetNewLibraryCardsOption()
+        {
+            if (_context.LibraryCards == null)
+            {
+                return NotFound();
+            }
+            var carList = await _context.LibraryCards.Where(c => !c.AccountId.HasValue).ToListAsync(); // Get card list
+
+            return carList.Select(card => new Option { Value = card.Id, Label = card.Name }).ToList(); // Get card option list
+        }
+
+
 
         private bool LibraryCardExists(Guid id)
         {

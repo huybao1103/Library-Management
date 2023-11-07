@@ -70,6 +70,10 @@ namespace LibraryAPI.Controllers
             else
             {
                 bookChapter = _mapper.Map<BookChapter>(bookChapterModel);
+                if (bookChapter.Status == (int)BookChapterStatusEnum.Destroyed || bookChapter.Status == (int)BookChapterStatusEnum.Lost)
+                {
+                    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
+                }
                 _context.BookChapters.Add(bookChapter);
             }
             await _context.SaveChangesAsync();
