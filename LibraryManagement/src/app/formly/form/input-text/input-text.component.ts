@@ -39,6 +39,8 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() showIcon: boolean = false;
   @Input() keyFilter: KeyFilterPattern = KeyFilterType.text_number
   @Input() iconClass: string = 'pi pi-eye-slash';
+  @Input() suffix: string = '';
+  @Input() prefix: string = '';
 
   @Output() keyup: EventEmitter<any> = new EventEmitter<any>();
 

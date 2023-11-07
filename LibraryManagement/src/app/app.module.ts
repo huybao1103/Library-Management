@@ -20,6 +20,8 @@ import { LoginComponent } from './login-register/login/login.component';
 import { RegisterComponent } from './login-register/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { ResetPasswordComponent } from './login-register/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './login-register/forgot-password/forgot-password.component';
 
 
 
@@ -29,6 +31,8 @@ import { FormlyModule } from '@ngx-formly/core';
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,

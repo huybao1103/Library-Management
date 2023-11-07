@@ -40,6 +40,7 @@ export class LibraryCardDetailComponent implements OnInit{
     { label: BorrowHistoryStatus[BorrowHistoryStatus.Returned], value: BorrowHistoryStatus.Returned },
     { label: BorrowHistoryStatus[BorrowHistoryStatus.Destroyed], value: BorrowHistoryStatus.Destroyed },
     { label: BorrowHistoryStatus[BorrowHistoryStatus.Lost], value: BorrowHistoryStatus.Lost },
+    { label: BorrowHistoryStatus[BorrowHistoryStatus.WaitingForTake], value: BorrowHistoryStatus.WaitingForTake },
   ]
 
   id: string = '';
@@ -67,6 +68,8 @@ export class LibraryCardDetailComponent implements OnInit{
   endDateSort: Date | undefined;
   libarycardDetailPermission: RoleModulePermission | undefined;
 
+  isStudent = false;
+
   constructor(
     private modal: NgbActiveModal,
     private toastService: ToastService,
@@ -84,7 +87,16 @@ export class LibraryCardDetailComponent implements OnInit{
     this.getPermission();
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
     if (this.id) {
-      this.getLibraryCardById(this.id);  
+      if(this.id === 'reader') {
+        this.isStudent = true;
+        const currentAccountId = this.sessionService.getCurrentAccount()?.id;
+        if(currentAccountId) 
+          this.id = currentAccountId;
+
+        this.getLibraryCardByAccountId(this.id);
+      }
+      else 
+        this.getLibraryCardById(this.id);  
     }
   }
 
@@ -100,6 +112,18 @@ export class LibraryCardDetailComponent implements OnInit{
     const date = new Date($event);
 
     this.dt?.filter(date.toISOString().substring(0, 10), field, FilterMatchMode.CONTAINS);
+  }
+
+  getLibraryCardByAccountId(id: string) {
+    this.libraryCard$ = this.libraryCardService.getLibraryCardByAccountId(id);
+    this.libraryCard$.subscribe({
+      next: (res) => {
+        if(res?.borrowHistories?.length) {
+          this.histories = res?.borrowHistories
+          
+        }
+      }
+    })
   }
 
   getLibraryCardById(id: string) {

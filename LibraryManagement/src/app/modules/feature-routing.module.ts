@@ -149,6 +149,10 @@ const routes: Routes = [
         outlet: 'modal',
         data: { component: BookCartComponent }
       },
+      {
+        path: 'library-card-detail/reader',
+        component: LibraryCardDetailComponent,
+      },
     ]
   },
 ];
