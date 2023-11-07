@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 
 // Add DbContext to service
 builder.Services.AddDbContext<LibraryManagementContext>(options => 
-    options.UseSqlServer("Server=HUYHUY\\HUYHUY;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True"));
+    options.UseSqlServer("Server=.;Database=LibraryManagement;Trusted_Connection=True;TrustServerCertificate=True"));
 
 // Allow CORS Angular
 builder.Services.AddCors(options =>
@@ -60,9 +60,13 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 
-new AccountAndRoleInit();
 
 var app = builder.Build();
+
+new AccountAndRoleInit();
+new BookInit(app.Services.GetRequiredService<IWebHostEnvironment>());
+new AccountAndLibraryCardInit(app.Services.GetRequiredService<IWebHostEnvironment>());
+
 app.UseCors("AllowAngularOrigins");
 app.UseCors("AllowAndroiStudioOrigins");
 
