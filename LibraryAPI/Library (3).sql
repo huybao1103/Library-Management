@@ -29,7 +29,7 @@ GO
 CREATE TABLE [Authors] (
   [id] uniqueidentifier NOT NULL DEFAULT newid() PRIMARY KEY,
   [name] nvarchar(50) UNIQUE NOT NULL,
-  [mail] varchar(20),
+  [mail] varchar(50),
   [phone] varchar(12)
 )
 GO
@@ -44,7 +44,7 @@ GO
 CREATE TABLE [Publishers] (
   [id] uniqueidentifier NOT NULL DEFAULT newid() PRIMARY KEY,
   [name] nvarchar(100) UNIQUE NOT NULL,
-  [mail] varchar(15),
+  [mail] varchar(50),
   [phone] varchar(12),
   [address] nvarchar(100)
 )
