@@ -26,6 +26,9 @@ export interface IResponseBroadcaster {
   providedIn: 'root'
 })
 export class HttpService {
+  post(arg0: string, credentials: { email: string; password: string; }): Observable<any> {
+    throw new Error('Method not implemented.');
+  }
   private _responseStation: { [op: string]: IResponseStationInfo } = {};
   private opStorage: IOpStorage = {};
   private _responseBroadcaster: Subject<IResponseBroadcaster> | undefined;

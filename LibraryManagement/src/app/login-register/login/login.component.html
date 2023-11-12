@@ -1,2 +1,30 @@
-<h3 class="account-title">Login</h3>
-<a routerLink="/register" style="text-align: center; display: block;">Go to register</a>
+<div class="login-block">
+    <h3 class="account-title">Login</h3>
+    <a style="text-align: center; opacity: 0.8;">Welcome to HUFLIT Library</a><br>
+    
+    <label class="title_input">Email Address</label>
+    <input class="txt_input" type="text" [(ngModel)]="email" id="username" />
+  
+    <div>
+      <label class="title_input password">Password</label>
+      <a class="forgot_password">Forgot password?</a>
+    </div>
+    <input class="txt_input" type="password" [(ngModel)]="password" id="password" />
+  
+    <label class="title_input">Role</label>
+    <div class="radio-buttons">
+      <input type="radio" id="student" name="choice_role" value="STUDENT" [(ngModel)]="isStudentSelected">
+      <label for="student">Student</label>
+  
+      <input type="radio" id="librarian" name="choice_role" value="LIBRARIAN" (change)="onRoleChange($event)">
+      <label for="librarian">Librarian</label>
+    </div>
+    
+    <!-- <button class="button_login" (click)="login()">Login</button> -->
+    <button class="button_login" >Login</button>
+  
+    <label style="text-align: center;" *ngIf="isStudentSelected">
+      Don't have an account yet? <a class="register" id="register-link" routerLink="/register" style="color: #3B82F6;">Register</a>
+    </label>  
+  </div>
+  
