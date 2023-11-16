@@ -1,3 +1,4 @@
+import { AbstractControl } from "@angular/forms";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { FORMLY_INPUT, FORMLY_INPUT_PASSWORD, FORMLY_SELECT } from "src/app/formly/formly.config";
 
@@ -27,7 +28,16 @@ export function AccountDetailFields(): FormlyFieldConfig[] {
               type: 'email',
               label: 'Email',
               required: true,
+              suffix: '@st.huflit.edu.vn'
             },
+            validators: {
+              email: {
+                expression: (c: AbstractControl) => {
+                    return c.value ? c.value.endsWith('@st.huflit.edu.vn') : false;
+                },
+                message: (error: any, field: FormlyFieldConfig) => 'Email must be a student email.',
+              }
+            }
           },
         ],
       },

@@ -112,6 +112,10 @@
     cursor: pointer;
 }
 
+.file-wrap .file-scroll {
+    overflow: hidden;
+}
+
 .file-wrap .file-sidebar {
     height: 100%;
 }
@@ -221,4 +225,8 @@
     height: 100px;
     object-fit: contain;
 
+}
+
+.card-file-thumb {
+    min-height: 200px;
 }

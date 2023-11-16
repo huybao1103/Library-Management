@@ -78,6 +78,10 @@ export class InputTextComponent implements ControlValueAccessor {
       this.value = this.value.trim();
       this.formCls = this.required && !this.value ? "ng-invalid" : "";
 
+      if(this.suffix)
+        this.value += this.suffix;
+      if(this.prefix)
+        this.value = this.prefix + this.value;
       this.onChange(this.value.trim());
     }
   }
