@@ -98,4 +98,10 @@ public interface ApiService {
 
     @GET("api/BookChapters/option/{bookId}")
     Call<JsonArray> getBookChapterSpinner(@Path("bookId") String bookId);
+
+    @POST("api/Accounts/log-in")
+    Call<JsonObject> Login(@Body JsonObject data);
+
+    @POST("api/Accounts/register")
+    Call<JsonObject> Register(@Body JsonObject data);
 }

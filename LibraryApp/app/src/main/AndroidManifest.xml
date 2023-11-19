@@ -31,12 +31,12 @@
         <activity
             android:name=".Sample.SampleActivity"
             android:exported="false" />
-        <activity android:name=".Login" />
+        <activity android:name=".Activity.LoginRegister.Login" />
         <activity android:name=".NewPassword" />
         <activity android:name=".CodeForgotPassword" />
         <activity
             android:name=".ForgotPassword"
-            android:parentActivityName=".Login" />
+            android:parentActivityName=".Activity.LoginRegister.Login" />
         <activity android:name=".UpdateBook" />
         <activity android:name=".ArrayLog" />
         <activity android:name=".ChangPass" />
@@ -48,7 +48,7 @@
         <activity
             android:name=".Activity.LayOutAndLisView"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SignUp" />
+        <activity android:name=".Activity.LoginRegister.SignUp" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

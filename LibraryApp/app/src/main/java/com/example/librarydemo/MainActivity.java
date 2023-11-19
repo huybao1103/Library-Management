@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.librarydemo.Activity.LoginRegister.Login;
 
 public class MainActivity extends Activity {
 

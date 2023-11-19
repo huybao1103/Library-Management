@@ -1,4 +1,4 @@
-package com.example.librarydemo;
+package com.example.librarydemo.Activity.LoginRegister;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.librarydemo.DBLog.Log;
 import com.example.librarydemo.DBUser.User;
 import com.example.librarydemo.Database.SQLSever;
+import com.example.librarydemo.R;
 
 import java.util.ArrayList;
 

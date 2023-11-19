@@ -18,16 +18,17 @@ export class SessionService {
     this.currentAccount = {...account};
 
     const value = JSON.stringify(this.currentAccount);
-    localStorage.setItem('user', value);
+    localStorage.setItem(`user_${this.currentAccount.id}`, value);
   }
 
   clearSession() {
+    localStorage.removeItem(`user_${this.currentAccount?.id}`);
     this.currentAccount = undefined;
-    localStorage.setItem('user', '');
   }
 
   getCurrentAccount() {
-    const value = localStorage.getItem('user');
+    // this.clearSession();
+    const value = localStorage.getItem(`user_${this.currentAccount?.id}`);
     if(value) {
       this.currentAccount = JSON.parse(value);
       return this.currentAccount;

@@ -62,6 +62,14 @@ export function RegisterFields(): FormlyFieldConfig[] {
               type: 'password',
               showIcon: true
             },
+            validators: {
+              password: {
+                expression: (c: AbstractControl) => {
+                    return c.value ? c.value.endsWith('@st.huflit.edu.vn') : false;
+                },
+                message: (error: any, field: FormlyFieldConfig) => 'Email must be your student email.',
+              }
+            }
           },
           {
             className: 'col-12',

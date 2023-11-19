@@ -11,10 +11,9 @@ import com.example.librarydemo.Activity.Fragments.LibraryCardFragment.LibraryCar
 import com.example.librarydemo.Activity.Fragments.PublisherFragment.PublisherFragment;
 import com.example.librarydemo.ArrayLog;
 import com.example.librarydemo.Author.AuthorListActivity;
-import com.example.librarydemo.Login;
+import com.example.librarydemo.Activity.LoginRegister.Login;
 import com.example.librarydemo.Models.Book.BookModel;
 
-import com.example.librarydemo.Publisher.PublisherInformation;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
@@ -169,7 +168,7 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
 //        TextView trangthai = (TextView) findViewById(R.id.Text_TrangThai);
 
 //        Intent intent = getIntent();
-//        final String tt_acc = intent.getStringExtra(Login.EXTRA_USER);
+//        final String tt_acc = intent.getStringExtra(LoginModel.EXTRA_USER);
 //        final SQLSever sqlSever = new SQLSever(this);
 //        User s = sqlSever.getUser(tt_acc);
 
@@ -230,9 +229,8 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LibraryCardFragment()).commit();
                 break;
         }
-
-            return true;
-        }
+        return true;
+    }
 
 
     public void OpenLogin(){
