@@ -441,4 +441,6 @@ public class BookChapterFragment extends Fragment implements IConfirmDialogEvent
     public void onYesOrNoButtonClicked(boolean isConfirmed) {
         confirmed = isConfirmed;
     }
+
+
 }

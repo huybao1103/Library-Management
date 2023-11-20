@@ -1,19 +1,28 @@
 package com.example.librarydemo.Activity.Fragments.BookFragment;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
@@ -22,14 +31,17 @@ import com.example.librarydemo.Activity.Fragments.BookFragment.BookPublisher.Boo
 import com.example.librarydemo.Models.AuthorModel;
 import com.example.librarydemo.Models.Book.BookAuthor;
 import com.example.librarydemo.Models.Book.BookCategories;
+import com.example.librarydemo.Models.Book.BookImage;
 import com.example.librarydemo.Models.Book.BookModel;
 import com.example.librarydemo.Models.Book.BookPublisher;
 import com.example.librarydemo.Models.Book.BookRequestModel;
 import com.example.librarydemo.Models.PublisherModel;
 import com.example.librarydemo.Models.SpinnerOption;
+import com.example.librarydemo.Models.UploadFile;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
+import com.example.librarydemo.Services.Base64Service;
 import com.example.librarydemo.Services.CheckBoxListener;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.Layout.ApiRequest;
@@ -47,6 +59,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +77,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BookDetail extends AppCompatActivity implements CheckBoxListener {
+    private static final int PICK_IMAGE = 2;
+    private static final int PICK_IMAGE_REQUEST = 0;
+    private static final int YOUR_REQUEST_CODE = 1;
     ApiService apiService;
     MultiAutoCompleteTextView spn_category;
     AutoCompleteTextView spn_author_publisher;
@@ -72,6 +92,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
     BookModel currentBook;
     AuthorModel[] authors;
     PublisherModel[] publishers;
+    BookImage bookImages;
     EditText edt_bookName, edt_publishYear;
     Button submit_btn, openDialog;
     String bookId;
@@ -82,26 +103,45 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
 
     // Add publisher form
     TextInputEditText edt_publisherName, edt_publisherPhone, edt_publisherEmail, edt_publisherAddress;
+    ImageView selectedImageView;
+    Button chooseImageButton;
 
     // Tab
     TabLayout author_publisher_tab;
     boolean isAuthorTabSelected = true;
     boolean formValid = false;
+    private String imagePath;
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+        selectedImageView = findViewById(R.id.selected_image_view);
+        chooseImageButton = findViewById(R.id.choose_image_button);
+
+        chooseImageButton.setOnClickListener(v -> {
+            // Mở hộp thoại chọn ảnh
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        });
 
         assign();
         getCategories();
         openDatePicker();
         setRecyclerView();
+
+        //Get Image
+        // Set Imgage
+        //String imageResource = getimage;
+        //selectedImageView.setImageResource(imageResource);
     }
 
     private void assign() {
         apiService = RetrofitClient.getApiService(this);
         bookAuthorAdapter = new BookAuthorAdapter(this, new ArrayList<>(), this);
         bookPublisherAdapter = new BookPublisherAdapter(this, new ArrayList<>(), this);
+        bookImages = new BookImage();
 
         author_publisher_input = findViewById(R.id.author_publisher_input);
 
@@ -495,6 +535,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             }
             bookRequestModel.setPublishers(bookPublisherId);
 
+            bookRequestModel.setBookImages(new BookImage[]{bookImages});
             save(bookRequestModel);
         }
     }
@@ -673,4 +714,98 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             }
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE_REQUEST) {
+                if (data != null) {
+                    if (data.getData() != null) {
+                        Uri selectedImage = data.getData();
+
+//                        try {
+//                            // Đọc dữ liệu hình ảnh từ Uri
+//                            InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+//                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                            byte[] buffer = new byte[1024];
+//                            int bytesRead;
+//                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                                byteArrayOutputStream.write(buffer, 0, bytesRead);
+//                            }
+//                            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+//                            inputStream.close();
+//                            byteArrayOutputStream.close();
+//
+//                            // Chuyển đổi dữ liệu hình ảnh thành chuỗi Base64
+//                            String base64Image = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+//
+//                            // Bây giờ bạn có thể sử dụng base64Image cho mục đích của mình
+//                            // Ví dụ: hiển thị nó trên ImageView
+//                            ImageView imageView = findViewById(R.id.imageView);
+//                            byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
+//                            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+//                            imageView.setImageBitmap(decodedBitmap);
+//
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+
+                        // Chọn hình
+                        Uri imageUri = data.getData();
+                        Base64Service base64Service = new Base64Service(getApplicationContext());
+
+                        // Lấy tên file của hình
+                        String fileName = base64Service.getFileName(imageUri);
+
+                        // Lấy base64
+                        String base64String = base64Service.convertImageToBase64(imageUri);
+
+                        // Set model
+                        UploadFile file = new UploadFile();
+                        file.setFileName(fileName);
+
+                        bookImages.setBase64(base64String);
+                        bookImages.setFile(file);
+                        bookImages.setBookId(bookId);
+
+                        displayImage(base64String);
+                    } else {
+                        // Xử lý trường hợp data.getData() trả về null
+                        Toast.makeText(this, "Không thể chọn hình ảnh.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        } else {
+            // Xử lý trường hợp người dùng không chọn hình ảnh
+            Toast.makeText(this, "Bạn không chọn hình ảnh.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+
+        if (cursor == null) {
+            return null;
+        }
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String path = cursor.getString(column_index);
+        cursor.close();
+
+        return path;
+    }
+
+    private void displayImage(String base64String) {
+        Bitmap decodedByte = new Base64Service(getApplicationContext()).convertBase64ToImage(base64String);
+
+        ImageView imageView = findViewById(R.id.selected_image_view);
+        imageView.setImageBitmap(decodedByte);
+    }
 }
+
+
