@@ -1,3 +1,4 @@
+import { SessionService } from 'src/app/services/session.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IEmployee } from 'src/app/models/employee-account';
@@ -10,6 +11,7 @@ import { MessageService } from 'primeng/api';
 import { DialogService} from 'primeng/dynamicdialog';
 import { Table } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ModuleEnum } from 'src/app/enums/module-enum';
 
 @Component({
   selector: 'app-employee-account-list',
@@ -53,10 +55,14 @@ export class EmployeeAccountListComponent implements OnInit {
     private toastService: ToastService,
     private employeeService: EmployeeService,
     private confirmDialogService: ConfirmDialogService,
+    private sessionService: SessionService
 
   ) {}
 
   ngOnInit(): void {
+    if(!this.sessionService.getModulePermission(ModuleEnum.EmployeeManagement)?.access)
+        this.router.navigate([''])
+
     this.getData();
   }
 

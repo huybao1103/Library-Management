@@ -39,8 +39,12 @@ export class AuthorsManagementComponent implements OnInit {
   ) {
   }
   ngOnInit(): void {
-    this.getPermission();
-    this.getData();
+    if(!this.sessionService.getModulePermission(ModuleEnum.AuthorManagement)?.access)
+        this.route.navigate(['']);
+    else {
+      this.getPermission();
+      this.getData();
+    }
   }
 
   getPermission() {

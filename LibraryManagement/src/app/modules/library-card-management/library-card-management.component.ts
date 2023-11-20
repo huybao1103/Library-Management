@@ -42,13 +42,17 @@ export class LibraryCardManagementComponent {
   ) {
   }
   ngOnInit(): void {
-    this.getPermission();
-    this.getData();
+    if(!this.sessionService.getModulePermission(ModuleEnum.LibraryCardManagement)?.access)
+        this.router.navigate([''])
+    else {
+      this.getPermission();
+      this.getData();
+    }
   }
 
   getPermission() {
     this.libarycardPermission = this.sessionService.getModulePermission(ModuleEnum.LibraryCardManagement);
-    this.libraryDetailPermission = this.sessionService.getModulePermission(ModuleEnum.LibraryCardDetail);
+    this.libraryDetailPermission = this.sessionService.getModulePermission(ModuleEnum.LibraryCardBorrowHistory);
   }
 
 

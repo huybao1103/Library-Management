@@ -71,9 +71,17 @@ export class BooksManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getPermission();
-    this.loadData();
-    this.getCagories();
+    if(
+      !this.sessionService.getModulePermission(ModuleEnum.BookList)?.access
+      ||
+      !this.sessionService.getModulePermission(ModuleEnum.BookManagement)?.access
+    )
+      this.router.navigate([''])
+    else {
+      this.getPermission();
+      this.loadData();
+      this.getCagories();
+    }
   }
 
   responsiveOptions: any[] = [
@@ -94,7 +102,7 @@ export class BooksManagementComponent implements OnInit {
   //*
   getPermission() {
     this.perrmission = this.sessionService.getModulePermission(ModuleEnum.BookList);
-    this.bookDetailPermission = this.sessionService.getModulePermission(ModuleEnum.BookDetail);
+    this.bookDetailPermission = this.sessionService.getModulePermission(ModuleEnum.BookChapter);
   }
 
   loadData() {
@@ -134,7 +142,8 @@ export class BooksManagementComponent implements OnInit {
   }
   
   editItem(item: string) {
-    this.router.navigate([{ outlets: { modal: ['book', 'edit', item] } }]);
+    if(this.sessionService.getModulePermission(ModuleEnum.BookList)?.detail)
+      this.router.navigate([{ outlets: { modal: ['book', 'edit', item] } }]);
   }
 
   deleteItem(item: string ) {

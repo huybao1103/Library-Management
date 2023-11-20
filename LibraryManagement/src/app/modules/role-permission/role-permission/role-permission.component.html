@@ -61,7 +61,7 @@
                                         </tr>
                                     </ng-template>
                                     <ng-template pTemplate="body" let-module as RoleModulePermission>
-                                        <tr>
+                                        <tr *ngIf="module.module !== ModuleEnum.Dashboard">
                                             <td class="fw-bold">{{ ModuleString[module.module] }}</td>
                                             <!-- <td>
                                                 <p-checkbox (ngModelChange)="selectedAllChange(module)" [binary]="true"
@@ -76,25 +76,25 @@
                                             <td>
                                                 <p-checkbox (ngModelChange)="selectedChange($event, module, 'detail')"
                                                     [binary]="true" inputId="binary"
-                                                    [disabled]="module.parentModule && module.parent_detail" [(ngModel)]="module.detail"
+                                                    [disabled]="module.parentModule && module.parent_detail || !module.access" [(ngModel)]="module.detail"
                                                 ></p-checkbox>
                                             </td>
                                             <td>
                                                 <p-checkbox (ngModelChange)="selectedChange($event, module, 'create')"
                                                     [binary]="true" inputId="binary"
-                                                    [disabled]="module.parentModule && module.parent_create" [(ngModel)]="module.create"
+                                                    [disabled]="module.parentModule && module.parent_create || !module.access" [(ngModel)]="module.create"
                                                 ></p-checkbox>
                                             </td>
                                             <td>
                                                 <p-checkbox (ngModelChange)="selectedChange($event, module, 'edit')"
                                                     [binary]="true" inputId="binary"
-                                                    [disabled]="module.parentModule && module.parent_edit" [(ngModel)]="module.edit"
+                                                    [disabled]="module.parentModule && module.parent_edit || !module.detail || !module.access" [(ngModel)]="module.edit"
                                                 ></p-checkbox>
                                             </td>
                                             <td>
                                                 <p-checkbox (ngModelChange)="selectedChange($event, module, 'delete')"
                                                     [binary]="true" inputId="binary"
-                                                    [disabled]="module.parentModule && module.parent_delete" [(ngModel)]="module.delete"
+                                                    [disabled]="module.parentModule && module.parent_delete || !module.access" [(ngModel)]="module.delete"
                                                 ></p-checkbox>
                                             </td>
                                         </tr>

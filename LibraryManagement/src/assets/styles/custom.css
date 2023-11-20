@@ -160,9 +160,9 @@
 }
 
 /* Book Management */
-.file-body {
-    overflow: auto;
-    height: 480px;
+.file-body-inner {
+    overflow: auto !important;
+    height: 480px !important;
 }
 
 .book-management.file-wrap {

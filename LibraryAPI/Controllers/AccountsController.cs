@@ -276,6 +276,22 @@ namespace LibraryAPI.Controllers
             return true;
         }
 
+        [HttpGet("reload-permission/{id}")]
+        public async Task<AccountModel> ReloadPermission(Guid id)
+        {
+
+            if (await _context.Accounts.AnyAsync(a => a.Id == id))
+            {
+                return _mapper.Map<AccountModel>(
+                    await _context.Accounts
+                        .Include(a => a.Role)
+                            .ThenInclude(r => r.RoleModulePermissions)
+                        .FirstOrDefaultAsync(a => a.Id == id)
+                    );
+            }
+            throw new CustomApiException(500, "Wrong email or password", "Wrong email or password");
+        }
+
         // DELETE: api/Accounts/5
         [HttpDelete("employee-account/remove/{empId}")]
         public async Task<IActionResult> DeleteEmployeeAccount(Guid empId)
