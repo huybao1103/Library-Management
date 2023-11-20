@@ -113,24 +113,25 @@ public class Login extends Activity {
     }
 
     public void LogIn(AccountModel accountModel) {
-        currentUser = getApplicationContext().getSharedPreferences(accountModel.getId(), MODE_PRIVATE);
-        editorCurrentUser = currentUser.edit();
-        editorCurrentUser.putString("userID", accountModel.getId());
-        editorCurrentUser.putString("userMail", accountModel.getEmail());
-        editorCurrentUser.putString("userRoleId", accountModel.getRoleId());
-        editorCurrentUser.putString("userRoleName", accountModel.getRole().getName());
-        editorCurrentUser.putBoolean("autoLogin", false);
-        editorCurrentUser.apply();
+        if(!accountModel.getRole().getName().equals("Reader")) {
+            currentUser = getApplicationContext().getSharedPreferences(accountModel.getId(), MODE_PRIVATE);
+            editorCurrentUser = currentUser.edit();
+            editorCurrentUser.putString("userID", accountModel.getId());
+            editorCurrentUser.putString("userMail", accountModel.getEmail());
+            editorCurrentUser.putString("userRoleId", accountModel.getRoleId());
+            editorCurrentUser.putString("userRoleName", accountModel.getRole().getName());
+            editorCurrentUser.putBoolean("autoLogin", false);
+            editorCurrentUser.apply();
 
-        if(accountModel.getRole().getName().equals("Reader")) {
-
+            Intent intent = new Intent( Login.this, LayOutAndLisView.class);
+            intent.putExtra("account", accountModel);
+            startActivity(intent);
+            finish();
         }
-
-
-        Intent intent = new Intent( Login.this, LayOutAndLisView.class);
-        intent.putExtra(EXTRA_USER, accountModel);
-        startActivity(intent);
-        finish();
+        else {
+            TextView error = findViewById(R.id.error);
+            error.setText("Please use admin or librarian account!!!");
+        }
     }
 
     public void OpenForgotPassword(){
@@ -138,7 +139,7 @@ public class Login extends Activity {
         startActivity(intent);
     }
 
-    public void ReaderLogin(AccountModel accountModel) {
-        Acc
-    }
+//    public void ReaderLogin(AccountModel accountModel) {
+//        Acc
+//    }
 }
