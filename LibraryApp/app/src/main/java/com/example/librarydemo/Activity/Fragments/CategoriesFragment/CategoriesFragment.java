@@ -390,4 +390,6 @@ public class CategoriesFragment extends Fragment implements IConfirmDialogEventL
     public void onYesOrNoButtonClicked(boolean isConfirmed) {
         confirmed = isConfirmed;
     }
+
+
 }

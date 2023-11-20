@@ -9,6 +9,9 @@
     android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
 
 
+
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,12 +29,15 @@
         android:layout_margin="15dp"
         android:orientation="vertical">
 
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Book Name: "
             android:textColor="#000"
             android:textStyle="bold"/>
+
 
         <com.google.android.material.textfield.TextInputLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,22 +67,22 @@
             android:textStyle="bold"
             android:layout_centerVertical="true"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+        <com.google.android.material.textfield.TextInputLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:hint="Category"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+
+            <MultiAutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:hint="Category"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+                android:id="@+id/spn_category"
+                android:inputType="none"
+                android:maxLines="1"/>
 
-                <MultiAutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spn_category"
-                    android:inputType="none"
-                    android:maxLines="1"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -138,11 +144,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
         android:layout_gravity="center"
@@ -151,13 +158,46 @@
 
         <Button
             android:id="@+id/submit_btn"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Submit"
+            android:layout_marginLeft="0dp"
             android:background="#ff7849"
-            android:textColor="#fff"
-            android:textAllCaps="false"/>
+            android:text="Submit"
+            android:textAllCaps="false"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/choose_image_button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="110dp"
+            android:background="#ff7849"
+            android:text="ChooseImage"
+            android:textAllCaps="false"
+            android:textColor="#fff" />
     </androidx.cardview.widget.CardView>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/book_image_view"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="200dp" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignTop="@id/book_image_view"
+            android:layout_marginLeft="310dp"
+            android:background="@drawable/baseline_close_24" />
+
+    </RelativeLayout>
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/author_publisher_tab"
