@@ -209,6 +209,10 @@ public class PublisherFragment extends Fragment implements IConfirmDialogEventLi
 
         formValid = false;
         formValidation(edt_publisherName);
+        formPublisherPhone(edt_publisherPhone);
+        formPEmail(edt_publisherEmail);
+        formAddress(edt_publisherAddress);
+
     }
 
     private void bindPublisherLayoutDialog(View publisherFormDialog) {
@@ -272,6 +276,52 @@ public class PublisherFragment extends Fragment implements IConfirmDialogEventLi
 
         currentInput.setOnFocusChangeListener(onFocusChange);
     }
+    private void formPublisherPhone(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String Number = Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && Number.equals("")) {
+                currentInput.setError("Phone number must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+    private void formPEmail(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String Pemail= Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && Pemail.equals("")) {
+                currentInput.setError("Email must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+    private void formAddress(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String address= Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && address.equals("")) {
+                currentInput.setError("Email must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+
 
     private void getPublisherById(String itemId) {
         apiService.getById(ControllerConst.PUBLISHERS, itemId).enqueue(new Callback<JsonObject>() {

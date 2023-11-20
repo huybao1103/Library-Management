@@ -208,6 +208,8 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
 
         formValid = false;
         formValidation(edt_authorName);
+        formPhoneNumber(edt_authorPhone);
+        formAuthorEmail(edt_authorEmail);
     }
 
     private void bindAuthorLayoutDialog(View authorFormDialog) {
@@ -270,6 +272,42 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
 
         currentInput.setOnFocusChangeListener(onFocusChange);
     }
+    private void formPhoneNumber(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String PhoneNumber= Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && PhoneNumber.equals("")) {
+                currentInput.setError("Phone number must not be null!");
+            }
+
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+
+
+
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+    private void formAuthorEmail(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String mail= Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && mail.equals("")) {
+                currentInput.setError("Email number must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+
 
     private void getAuthorById(String itemId) {
         apiService.getById(ControllerConst.AUTHORS, itemId).enqueue(new Callback<JsonObject>() {
@@ -377,4 +415,6 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
     public void onYesOrNoButtonClicked(boolean isConfirmed) {
         confirmed = isConfirmed;
     }
+
+
 }
