@@ -288,6 +288,7 @@ public class CategoriesFragment extends Fragment implements IConfirmDialogEventL
 
             if(!b && name.equals("")) {
                 currentInput.setError("Name must not be null!");
+
             }
             else {
                 currentInput.setError(null);

@@ -320,7 +320,7 @@ public class PublisherFragment extends Fragment implements IConfirmDialogEventLi
             String address= Objects.requireNonNull(currentInput.getText()).toString();
 
             if(!b && address.equals("")) {
-                currentInput.setError("Email must not be null!");
+                currentInput.setError("Address must not be null!");
             }
             else {
                 currentInput.setError(null);

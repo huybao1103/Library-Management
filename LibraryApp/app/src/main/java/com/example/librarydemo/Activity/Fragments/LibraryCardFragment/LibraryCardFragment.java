@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.librarydemo.Activity.Fragments.BookFragment.BookDetail;
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.Enum.LibraryCardStatus;
-import com.example.librarydemo.Models.AuthorModel;
 import com.example.librarydemo.Models.LibraryCard.LibraryCard;
 import com.example.librarydemo.Models.SpinnerOption;
 import com.example.librarydemo.R;
@@ -128,11 +127,11 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 List<LibraryCard> libraryCardList = new ApiResponse<List<LibraryCard>>()
-                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                (
-                    response,
-                    new TypeToken<List<LibraryCard>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                );
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<List<LibraryCard>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
 
                 if(libraryCardList != null)
                     setAdapter(libraryCardList);
@@ -150,9 +149,7 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
         lv.setAdapter(adapter);
     }
 
-
-
-    private void getCard(String itemId) {
+    private void getCardById(String itemId) {
         apiService.getById(ControllerConst.LIBRARYCARDS, itemId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -160,12 +157,11 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
                         .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
                                 (
                                         response,
-                                        new TypeToken<AuthorModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                        new TypeToken<LibraryCard  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
                                 );
 
-                if(currentCard!= null)
+                if(currentCard != null)
                     addCard();
-                confirmed = true;
             }
 
             @Override
@@ -237,76 +233,50 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
             spn_status.setText(selected.getLabel());
         });
     }
-    private void formValidation(TextInputEditText currentInput) {
-        View.OnFocusChangeListener onFocusChange = (view, b) -> {
-            String Studentname = Objects.requireNonNull(currentInput.getText()).toString();
 
-            if(!b && Studentname.equals("")) {
-                currentInput.setError("Name must not be null!");
-            }
-            else {
-                currentInput.setError(null);
-                confirmed = true;
-            }
-        };
-
-        currentInput.setOnFocusChangeListener(onFocusChange);
-    }
-
-
-
-    private void getCardById(String itemId) {
-        apiService.getById(ControllerConst.LIBRARYCARDS, itemId).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                currentCard = new ApiResponse<LibraryCard>()
-                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                                (
-                                        response,
-                                        new TypeToken<LibraryCard  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                                );
-
-                if(currentCard != null)
-                    addCard();
-                confirmed = true;
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-
-            }
-        });
-    }
     private void addCardSubmit() {
-        LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setName(Objects.requireNonNull(edt_studentName.getText()).toString());
-        libraryCard.setStudentId(Objects.requireNonNull(student_Id.getText()).toString());
-        libraryCard.setStudentClass(Objects.requireNonNull(student_class.getText()).toString());
-        libraryCard.setStatus(selectedCardStatus);
-        libraryCard.setId(currentCard != null ? currentCard.getId() : null);
+        String studentName = Objects.requireNonNull(edt_studentName.getText()).toString();
+        String studentId = Objects.requireNonNull(student_Id.getText()).toString();
+        String studentClass = Objects.requireNonNull(student_class.getText()).toString();
+        String selectedStatus = spn_status.getText().toString();
 
-        JsonObject data = new ApiRequest().convertModelToJSONObject(libraryCard);
+        if (studentName.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập tên học sinh", Toast.LENGTH_SHORT).show();
+        } else if (studentId.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập mã học sinh", Toast.LENGTH_SHORT).show();
+        } else if (studentClass.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập lớp học", Toast.LENGTH_SHORT).show();
+        } else if (selectedStatus.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng chọn trạng thái", Toast.LENGTH_SHORT).show();
+        } else {
+            // Tiếp tục thêm thẻ thư viện
+            LibraryCard libraryCard = new LibraryCard();
+            libraryCard.setName(studentName);
+            libraryCard.setStudentId(studentId);
+            libraryCard.setStudentClass(studentClass);
+            libraryCard.setStatus(selectedCardStatus);
+            libraryCard.setId(currentCard != null ? currentCard.getId() : null);
 
-        apiService.save(ControllerConst.LIBRARYCARDS, data).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                LibraryCard publisherModel = new ApiResponse<LibraryCard>().getResultFromResponse
-                        (
-                                response,
-                                new TypeToken<LibraryCard  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                        );
-                if(publisherModel != null) {
-                    dialog.dismiss();
-                    getCard();
+            JsonObject data = new ApiRequest().convertModelToJSONObject(libraryCard);
+
+            apiService.save(ControllerConst.LIBRARYCARDS, data).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    LibraryCard newLibraryCard = new ApiResponse<LibraryCard>().getResultFromResponse(response, new TypeToken<LibraryCard>(){}.getType());
+                    if (newLibraryCard != null) {
+                        dialog.dismiss();
+                        getCard();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-
-            }
-        });
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(requireContext(), "Thêm thẻ thư viện thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
+
 
     private void deleteCard(String itemId) {
         new ConfirmDialogService("Are you sure you want to delete this card?", requireContext(), this)

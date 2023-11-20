@@ -265,7 +265,7 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
             String name = Objects.requireNonNull(currentInput.getText()).toString();
 
             if(!b && name.equals("")) {
-                currentInput.setError("Phone must not be null!");
+                currentInput.setError("Name must not be null!");
             }
             else {
                 currentInput.setError(null);
@@ -281,7 +281,7 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
             String mail= Objects.requireNonNull(currentInput.getText()).toString();
 
             if(!b && mail.equals("")) {
-                currentInput.setError("Email number must not be null!");
+                currentInput.setError("Email must not be null!");
             }
             else {
                 currentInput.setError(null);
