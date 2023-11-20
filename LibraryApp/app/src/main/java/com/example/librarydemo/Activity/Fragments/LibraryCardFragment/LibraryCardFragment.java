@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.librarydemo.Activity.Fragments.BookFragment.BookDetail;
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.Enum.LibraryCardStatus;
+import com.example.librarydemo.Models.AuthorModel;
 import com.example.librarydemo.Models.LibraryCard.LibraryCard;
 import com.example.librarydemo.Models.SpinnerOption;
 import com.example.librarydemo.R;
@@ -149,19 +150,22 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
         lv.setAdapter(adapter);
     }
 
-    private void getCardById(String itemId) {
+
+
+    private void getCard(String itemId) {
         apiService.getById(ControllerConst.LIBRARYCARDS, itemId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 currentCard = new ApiResponse<LibraryCard>()
-                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                (
-                    response,
-                    new TypeToken<LibraryCard  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                );
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<AuthorModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
 
-                if(currentCard != null)
+                if(currentCard!= null)
                     addCard();
+                confirmed = true;
             }
 
             @Override
@@ -233,7 +237,46 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
             spn_status.setText(selected.getLabel());
         });
     }
+    private void formValidation(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String Studentname = Objects.requireNonNull(currentInput.getText()).toString();
 
+            if(!b && Studentname.equals("")) {
+                currentInput.setError("Name must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                confirmed = true;
+            }
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+
+
+
+    private void getCardById(String itemId) {
+        apiService.getById(ControllerConst.LIBRARYCARDS, itemId).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                currentCard = new ApiResponse<LibraryCard>()
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<LibraryCard  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
+
+                if(currentCard != null)
+                    addCard();
+                confirmed = true;
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+    }
     private void addCardSubmit() {
         LibraryCard libraryCard = new LibraryCard();
         libraryCard.setName(Objects.requireNonNull(edt_studentName.getText()).toString());

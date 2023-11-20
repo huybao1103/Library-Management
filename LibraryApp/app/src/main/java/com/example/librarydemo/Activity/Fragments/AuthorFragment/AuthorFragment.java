@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -75,6 +76,7 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
 
     public AuthorFragment() {
         // Required empty public constructor
@@ -197,7 +199,7 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
                     dialogInterface.dismiss();
                 }).create();
         dialog.setCanceledOnTouchOutside(true);
-//        alertDialog.on
+//       alertDialog.on
         dialog.show();
 
         Button submit_btn = authorFormDialogView.findViewById(R.id.add_author_submit);
@@ -208,6 +210,9 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
 
         formValid = false;
         formValidation(edt_authorName);
+
+        formAuthorEmail(edt_authorEmail);
+
     }
 
     private void bindAuthorLayoutDialog(View authorFormDialog) {
@@ -260,7 +265,7 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
             String name = Objects.requireNonNull(currentInput.getText()).toString();
 
             if(!b && name.equals("")) {
-                currentInput.setError("Name must not be null!");
+                currentInput.setError("Phone must not be null!");
             }
             else {
                 currentInput.setError(null);
@@ -270,6 +275,24 @@ public class AuthorFragment extends Fragment implements IConfirmDialogEventListe
 
         currentInput.setOnFocusChangeListener(onFocusChange);
     }
+
+    private void formAuthorEmail(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String mail= Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && mail.equals("")) {
+                currentInput.setError("Email number must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+
 
     private void getAuthorById(String itemId) {
         apiService.getById(ControllerConst.AUTHORS, itemId).enqueue(new Callback<JsonObject>() {

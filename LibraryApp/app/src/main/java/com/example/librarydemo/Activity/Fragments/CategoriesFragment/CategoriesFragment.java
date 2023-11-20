@@ -20,6 +20,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.librarydemo.Models.AuthorModel;
 import com.example.librarydemo.Models.CategoryModel;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
@@ -295,6 +296,30 @@ public class CategoriesFragment extends Fragment implements IConfirmDialogEventL
         };
 
         currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+
+
+    private void getCategoriesById(String itemId) {
+        apiService.getById(ControllerConst.CATEGORIES, itemId).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                currentCategory = new ApiResponse<CategoryModel>()
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<CategoryModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
+
+                if(currentCategory != null)
+                    addCategory();
+                formValid = true;
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
     }
 
     private void addCategorySubmit() {

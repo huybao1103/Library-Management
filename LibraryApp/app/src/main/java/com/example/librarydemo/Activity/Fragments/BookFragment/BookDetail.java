@@ -3,11 +3,13 @@
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsMessage;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -158,27 +160,40 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         });
     }
 
-    private void getBookById(String bookId) {
-        apiService.getById(ControllerConst.BOOKS, bookId).enqueue(new Callback<JsonObject>() {
+
+
+
+    private void getBookById(String itemId) {
+        BookModel bookModel = new BookModel();
+        bookModel.setName(Objects.requireNonNull(edt_bookName.getText()).toString());
+
+        bookModel.setInputDay(Objects.requireNonNull(edt_inputDay.getText()).toString());
+        bookModel.setId(currentBook != null ? currentBook.getId() : null);
+        apiService.getById(ControllerConst.BOOKS, itemId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 currentBook = new ApiResponse<BookModel>()
-                        .getResultFromResponse
-                        (
-                            response,
-                            new TypeToken<BookModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                        );
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<BookModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
+
                 if(currentBook != null)
-                    bindValue();
+
+                dialog.dismiss();
+
+                formValid = true;
             }
 
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
 
-                }
-            });
+            }
+        });
+    }
 
-        }
+
 
         private void bindValue() {
             edt_bookName.setText(currentBook.getName());
@@ -561,6 +576,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
         edt_publisherAddress = publisherFormDialogView.findViewById(R.id.edt_publisherAddress);
     }
 
+
     private void formValidation(TextInputEditText currentInput) {
         View.OnFocusChangeListener onFocusChange = (view, b) -> {
             String name = Objects.requireNonNull(currentInput.getText()).toString();
@@ -576,6 +592,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
 
         currentInput.setOnFocusChangeListener(onFocusChange);
     }
+
 
     private void addAuthorSubmit() {
         AuthorModel authorModel = new AuthorModel();
@@ -635,6 +652,7 @@ public class BookDetail extends AppCompatActivity implements CheckBoxListener {
             }
         });
     }
+
 
     @Override
     public void onCheckBoxChange(ArrayList<?> arrayList, Type type) {
