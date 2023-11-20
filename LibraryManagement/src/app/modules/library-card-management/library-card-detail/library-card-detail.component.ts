@@ -84,24 +84,28 @@ export class LibraryCardDetailComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.getPermission();
-    this.id = this.route.snapshot.paramMap.get('id') ?? '';
-    if (this.id) {
-      if(this.id === 'reader') {
-        this.isStudent = true;
-        const currentAccountId = this.sessionService.getCurrentAccount()?.id;
-        if(currentAccountId) 
-          this.id = currentAccountId;
-
-        this.getLibraryCardByAccountId(this.id);
+    if(!this.sessionService.getModulePermission(ModuleEnum.LibraryCardBorrowHistory)?.access)
+        this.router.navigate(['library-card'])
+    else {
+      this.getPermission();
+      this.id = this.route.snapshot.paramMap.get('id') ?? '';
+      if (this.id) {
+        if(this.id === 'reader') {
+          this.isStudent = true;
+          const currentAccountId = this.sessionService.getCurrentAccount()?.id;
+          if(currentAccountId) 
+            this.id = currentAccountId;
+  
+          this.getLibraryCardByAccountId(this.id);
+        }
+        else 
+          this.getLibraryCardById(this.id);  
       }
-      else 
-        this.getLibraryCardById(this.id);  
     }
   }
 
   getPermission() {
-    this.libarycardDetailPermission = this.sessionService.getModulePermission(ModuleEnum.LibraryCardDetail);
+    this.libarycardDetailPermission = this.sessionService.getModulePermission(ModuleEnum.LibraryCardBorrowHistory);
   }
 
   applyFilterGlobal($event: any, stringVal: any) {

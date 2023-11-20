@@ -35,8 +35,12 @@ export class PublishersManagementComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.getPermission();
-    this.getData();
+    if(!this.sessionService.getModulePermission(ModuleEnum.PublisherManagement)?.access)
+        this.route.navigate([''])
+    else {
+      this.getPermission();
+      this.getData();
+    }
   }
 
   getPermission() {

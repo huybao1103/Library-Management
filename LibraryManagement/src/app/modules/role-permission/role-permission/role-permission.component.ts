@@ -6,6 +6,8 @@ import { Role, RoleModulePermission } from 'src/app/models/role-permission.model
 import { first } from 'rxjs';
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
+import { SessionService } from 'src/app/services/session.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-role-permission',
@@ -28,17 +30,22 @@ export class RolePermissionComponent implements OnInit {
 
   childModule: ModuleEnum[] = [
     ModuleEnum.BookList,
-    ModuleEnum.BookDetail,
+    ModuleEnum.BookChapter,
     ModuleEnum.ReaderAccountManagement,
     ModuleEnum.EmployeeManagement,
   ]
   constructor(
     private roleService: RolePermissionService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private sessionService: SessionService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.getRoles();
+    if(!this.sessionService.getModulePermission(ModuleEnum.RolePermissionManagement)?.access)
+      this.router.navigate([''])
+    else
+      this.getRoles();
   }
 
   getRoles() {
@@ -61,7 +68,7 @@ export class RolePermissionComponent implements OnInit {
     this.roleService.getRoleById(this.selectedRoleId)
     .pipe(first())
     .subscribe({
-      next: (resp) => {
+      next: (resp) => {``
         if(resp) {
           this.selectedRole = resp;
           this.selectedRole.roleModulePermissions = this.selectedRole.roleModulePermissions
@@ -94,7 +101,7 @@ export class RolePermissionComponent implements OnInit {
 
     if(childModuleEnum) {
       switch (childModuleEnum) {
-        case ModuleEnum.BookDetail:
+        case ModuleEnum.BookChapter:
         case ModuleEnum.BookList:
           return this.selectedRole.roleModulePermissions.find(parent => parent.module === ModuleEnum.BookManagement);
 
@@ -117,7 +124,7 @@ export class RolePermissionComponent implements OnInit {
       .map(rmp => {
         switch (module.module) {
           case ModuleEnum.BookManagement:
-            if(rmp.module === ModuleEnum.BookDetail || rmp.module === ModuleEnum.BookList) {
+            if(rmp.module === ModuleEnum.BookChapter || rmp.module === ModuleEnum.BookList) {
               return {
                 ...rmp,
                 [field]: checked,

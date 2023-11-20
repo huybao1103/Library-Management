@@ -15,6 +15,7 @@ import { BookSearchFields } from 'src/app/modules/books-management/book-search-f
 import { AccountDetailFields } from '../reader-account-detail/reader-account.form';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ILibraryCardInfo } from 'src/app/models/library-card.model';
+import { ModuleEnum } from 'src/app/enums/module-enum';
 
 @Component({
   selector: 'app-reader-account-list',
@@ -38,6 +39,9 @@ export class ReaderAccountListComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
+    if(!this.sessionService.getModulePermission(ModuleEnum.ReaderAccountManagement)?.access)
+        this.router.navigate([''])
+    else 
     this.loadData();
   }
 
