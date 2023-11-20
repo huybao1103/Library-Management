@@ -9,6 +9,7 @@ public class BookRequestModel {
     private String[] publishers;
     private String[] categories;
     private BookImage[] bookImages;
+    private String base64Image;
 
     public BookRequestModel() {
     }
@@ -75,5 +76,14 @@ public class BookRequestModel {
 
     public void setCategories(String[] categories) {
         this.categories = categories;
+    }
+
+    // Getter và Setter cho thuộc tính base64Image
+    public String getBase64Image() {
+        return base64Image;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
     }
 }

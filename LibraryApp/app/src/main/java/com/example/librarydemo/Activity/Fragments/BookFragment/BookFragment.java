@@ -1,6 +1,8 @@
 package com.example.librarydemo.Activity.Fragments.BookFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.librarydemo.Activity.Fragments.BookChapterFragment.BookChapterFragment;
@@ -19,6 +22,7 @@ import com.example.librarydemo.Models.Book.BookModel;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
+import com.example.librarydemo.Services.Base64Service;
 import com.example.librarydemo.Services.ControllerConst.ControllerConst;
 import com.example.librarydemo.Services.Interface.AdapterEvent.IAdapterEventListener;
 import com.example.librarydemo.Services.RetrofitClient;
@@ -32,6 +36,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link BookFragment#newInstance} factory method to
@@ -41,6 +47,7 @@ public class BookFragment extends Fragment implements IAdapterEventListener {
     private ListView lv;
 
     public static ArrayList<Book> Book_Deefault;
+    private Base64Service base64Service;
 
     public static ArrayList<Book> getBook_Deefault() {
         return Book_Deefault;
@@ -97,16 +104,34 @@ public class BookFragment extends Fragment implements IAdapterEventListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_book, container, false);
 
-        lv= (ListView) view.findViewById(R.id.arraybook);
+        lv = (ListView) view.findViewById(R.id.arraybook);
+
+        // Tìm ImageView
+        ImageView imghinh = view.findViewById(R.id.img_hinh);
+
+        // Kiểm tra xem hình ảnh đã được chọn từ `BookDetailActivity`
+        String base64Image = getActivity().getIntent().getStringExtra("base64Image");
+
+        // Kiểm tra xem base64Image có giá trị
+        if (base64Image != null && !base64Image.isEmpty()) {
+            // Chuyển base64Image thành Bitmap
+            Bitmap imageBitmap = base64Service.convertBase64ToImage(base64Image);
+
+            // Hiển thị hình ảnh trong ImageView
+            imghinh.setImageBitmap(imageBitmap);
+        }
 
         ArrayBook();
         return view;
     }
+
 
     @Override
     public void onResume() {
