@@ -187,7 +187,7 @@
             android:layout_height="20dp"
             android:layout_alignTop="@id/book_image_view"
             android:layout_marginLeft="310dp"
-            android:background="@drawable/baseline_cancel_24" />
+            android:background="@drawable/baseline_close_24" />
 
     </RelativeLayout>
 
