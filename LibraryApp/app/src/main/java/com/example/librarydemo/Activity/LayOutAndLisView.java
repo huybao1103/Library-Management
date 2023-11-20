@@ -1,6 +1,8 @@
 package com.example.librarydemo.Activity;
 
+import android.accounts.Account;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.librarydemo.Activity.Fragments.AuthorFragment.AuthorFragment;
@@ -11,10 +13,10 @@ import com.example.librarydemo.Activity.Fragments.LibraryCardFragment.LibraryCar
 import com.example.librarydemo.Activity.Fragments.PublisherFragment.PublisherFragment;
 import com.example.librarydemo.ArrayLog;
 import com.example.librarydemo.Author.AuthorListActivity;
-import com.example.librarydemo.Login;
+import com.example.librarydemo.Activity.LoginRegister.Login;
+import com.example.librarydemo.Models.Account.AccountModel;
 import com.example.librarydemo.Models.Book.BookModel;
 
-import com.example.librarydemo.Publisher.PublisherInformation;
 import com.example.librarydemo.R;
 import com.example.librarydemo.Services.ApiInterface.ApiService;
 import com.example.librarydemo.Services.ApiResponse;
@@ -31,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.DBBook.BookAdapter;
@@ -78,7 +81,7 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
         Bookid = bookid;
     }
 
-
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,6 +152,8 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
     }
     public void AnhXa(){
         lv= (ListView) findViewById(R.id.arraybook);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
     }
     @Override
     public void onBackPressed() {
@@ -164,18 +169,15 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.lay_out_and_lis_view, menu);
-//        TextView ten = (TextView) findViewById(R.id.Text_Name);
-//        TextView email = (TextView) findViewById(R.id.Text_Gmail);
-//        TextView trangthai = (TextView) findViewById(R.id.Text_TrangThai);
+        TextView ten = (TextView) findViewById(R.id.Text_Name);
+        TextView email = (TextView) findViewById(R.id.Text_Gmail);
 
-//        Intent intent = getIntent();
-//        final String tt_acc = intent.getStringExtra(Login.EXTRA_USER);
-//        final SQLSever sqlSever = new SQLSever(this);
-//        User s = sqlSever.getUser(tt_acc);
+        Intent intent = getIntent();
+        AccountModel account = (AccountModel) intent.getParcelableExtra("account");
 
-//        ten.setText(s.getFullname());
-//        email.setText(s.getGmail());
-//        trangthai.setText(s.getStatus());
+        sharedPreferences = getApplicationContext().getSharedPreferences(account.getId(), MODE_PRIVATE);
+        ten.setText(sharedPreferences.getString("userMail", ""));
+        email.setText(sharedPreferences.getString("userRoleName", ""));
 //        this.setUser(s);
         return true;
     }
@@ -184,23 +186,10 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_tacgia) {
-            Intent intent = new Intent(this, AuthorListActivity.class);
-            startActivity(intent);
-        }
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_Search) {
-            return true;
-        }
-        if (id == R.id.action_Log) {
-            Intent intent = new Intent(this, ArrayLog.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.action_UpdateBook) {
-            Intent intent = new Intent(this, UpdateBook.class);
-            startActivity(intent);
+            startActivity(new Intent(LayOutAndLisView.this, Login.class));
+            finish();
             return true;
         }
 
@@ -230,9 +219,8 @@ public class LayOutAndLisView extends AppCompatActivity implements NavigationVie
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LibraryCardFragment()).commit();
                 break;
         }
-
-            return true;
-        }
+        return true;
+    }
 
 
     public void OpenLogin(){

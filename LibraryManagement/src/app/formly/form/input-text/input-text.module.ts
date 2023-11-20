@@ -4,6 +4,7 @@ import { InputTextComponent } from './input-text.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule as PrimengInput } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { KeyFilterModule } from 'primeng/keyfilter';
     FormsModule,
     ReactiveFormsModule,
     PrimengInput,
-    KeyFilterModule
+    KeyFilterModule,
+    InputNumberModule
   ],
   declarations: [InputTextComponent],
   exports: [InputTextComponent]

@@ -4,16 +4,6 @@
     <item
         android:id="@+id/action_Search"
         android:orderInCategory="100"
-        android:title="Tìm Kiếm Sách"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_Log"
-        android:orderInCategory="100"
-        android:title="Sách Đã Đăng Ký Mượn"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_UpdateBook"
-        android:orderInCategory="100"
-        android:title="Update Book"
+        android:title="Logout"
         app:showAsAction="never" />
 </menu>

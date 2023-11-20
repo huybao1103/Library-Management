@@ -23,6 +23,7 @@ import { ReaderAccountListComponent } from './account-management/reader/reader-a
 import { EmployeeAccountDetailComponent } from './account-management/employee/employee-account-detail/employee-account-detail.component';
 import { EmployeeAccountListComponent } from './account-management/employee/employee-account-list/employee-account-list.component';
 import { BookSearchComponent } from '../reader-modules/book-search/book-search/book-search.component';
+import { BookCartComponent } from '../reader-modules/book-cart/book-cart.component';
 import { DashboardComponent } from './dashboard/dashboardComponent';
 
 const routes: Routes = [
@@ -141,6 +142,16 @@ const routes: Routes = [
       {
         path: 'book-search',
         component: BookSearchComponent,
+      },
+      {
+        path: 'book-search/book-cart',
+        component: ModalbaseComponent,
+        outlet: 'modal',
+        data: { component: BookCartComponent }
+      },
+      {
+        path: 'library-card-detail/reader',
+        component: LibraryCardDetailComponent,
       },
     ]
   },

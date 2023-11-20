@@ -17,7 +17,9 @@ import { INPUT_TEXT_TYPE } from "src/app/enums/input-text.type";
         [readonly]="props.readonly || false"
         [placeholder]="to.placeholder || ''"
         [keyFilter]="props['keyFilter']"
-        [showIcon]="props['showIcon']">
+        [showIcon]="props['showIcon']"
+        [suffix]="props['suffix']"
+        [prefix]="props['prefix']">
       </input-text>
     `,
 })

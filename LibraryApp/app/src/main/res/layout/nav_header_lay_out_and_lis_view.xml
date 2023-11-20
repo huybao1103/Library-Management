@@ -33,12 +33,4 @@
         android:layout_height="wrap_content"
         android:text="Dglonely69@gmail.com" />
 
-    <TextView
-        android:id="@+id/Text_TrangThai"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Độc Giả"
-        android:textColor="#FFFF00"
-        android:textStyle="italic"/>
-
 </LinearLayout>

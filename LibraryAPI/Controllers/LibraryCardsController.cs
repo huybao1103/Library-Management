@@ -13,6 +13,7 @@ using LibraryAPI.ViewModels.Book;
 using LibraryAPI.RequestModels;
 using System.Collections.Immutable;
 using LibraryAPI.PubSub;
+using LibraryAPI.Enums;
 
 namespace LibraryAPI.Controllers
 {
@@ -160,7 +161,22 @@ namespace LibraryAPI.Controllers
             return carList.Select(card => new Option { Value = card.Id, Label = card.Name }).ToList(); // Get card option list
         }
 
-
+        [HttpGet("get-remaining-book/{cardId}")]
+        public async Task<int> GetRemainingBookCanBorrow(Guid cardId)
+        {
+            LibraryCard libraryCard = GetCardByIdAsync(cardId);
+            if(libraryCard == null)
+            {
+                throw new CustomApiException(500, "Cannot find this library card.", "Cannot find this library card.");
+            }
+            int remaningBookCanBorrow = libraryCard.BorrowHistories
+                .Where(record => 
+                    record.Status == (int)BorrowHistoryStatus.WaitingForTake
+                    ||
+                    record.Status == (int)BorrowHistoryStatus.Active
+                ).Count();
+            return 3 - remaningBookCanBorrow;
+        }
 
         private bool LibraryCardExists(Guid id)
         {

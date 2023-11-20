@@ -1,0 +1,11 @@
+.header-cart-icon {
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.submit-btn.request-btn {
+    min-width: 150px;
+    padding: 5px 10px;
+    font-size: 16px;
+}

@@ -30,4 +30,19 @@ public class ApiResponse<T> {
         }
         return null;
     }
+
+    public T getErrorFromResponse(Response<?> response, Type type) {
+        if(response.isSuccessful() && response.errorBody() != null) {
+            String responseType = response.errorBody().getClass().getName();
+
+            if(responseType.equals(JSON_ARRAY_TYPE)) {
+                JsonArray jsonArray = (JsonArray) response.body();
+                return new Gson().fromJson(jsonArray.getAsJsonArray(), type);
+            } else if (responseType.equals(JSON_OBJ_TYPE)) {
+                JsonObject jsonObject = (JsonObject) response.body();
+                return new Gson().fromJson(jsonObject.getAsJsonObject(), type);
+            }
+        }
+        return null;
+    }
 }

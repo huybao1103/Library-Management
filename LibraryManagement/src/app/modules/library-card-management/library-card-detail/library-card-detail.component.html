@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="col-1" style="text-align: right;">
-                    <p class="la la-edit" (click)="editLibraryCard()"></p>
+                    <p *ngIf="!isStudent" class="la la-edit" (click)="editLibraryCard()"></p>
                 </div>
             </div>
         </div>

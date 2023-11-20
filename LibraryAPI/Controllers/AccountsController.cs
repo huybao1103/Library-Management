@@ -27,14 +27,17 @@ namespace LibraryAPI.Controllers
         private readonly LibraryManagementContext _context;
         private readonly HashService _hashService = new HashService();
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
 
         public AccountsController(
             LibraryManagementContext context,
-            IMapper mapper
+            IMapper mapper,
+            IEmailService emailService
             )
         {
             _context = context;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
         // GET: api/Accounts
@@ -324,6 +327,41 @@ namespace LibraryAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPost("send-reset-password-mail")]
+        public async Task<bool> SendResetPasswordMail(LoginRequest data)
+        {
+            Account account = await _context.Accounts.FirstOrDefaultAsync(a => a.Email.Equals(data.Email));
+            if(account == null)
+            {
+                throw new CustomApiException(500, "This email is not exist.", "This email is not exist.");
+            }
+
+            string resetPasswordLink = $"http://localhost:4200/reset-password/{account.Id}/{account.Email}";
+
+            var replacements = new Dictionary<string, string>
+            {
+                { "Subject", "Forgot Password " },
+                { "ResetPasswordLink", resetPasswordLink }
+            };
+            await _emailService.SendResetPasswordEmailAsync(data.Email, "Test Subject", replacements);
+            return true;
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<bool> ResetPassword(ResetPasswordRequest request)
+        {
+            Account account = await _context.Accounts.FindAsync(request.AccountId);
+            if (account == null)
+            {
+                throw new CustomApiException(500, "This email is not exist.", "This email is not exist.");
+            }
+            string passwordHash = _hashService.ConvertStringToHash(request.Password);
+            account.PasswordHash = passwordHash;
+
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         private bool AccountExists(Guid id)

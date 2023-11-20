@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left" id="my-modal-title">Book Borrow Request Confirmation</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="form" (submit)="request()">
+        <formly-form [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
+        <div class="row p-1" *ngFor="let item of bookCart">
+            <div class="col-2">
+                <p-galleria [value]="[item.bookImageBase64]" [circular]="true" [showThumbnails]="false"
+                    [containerStyle]="{ 'max-width': '500px' }">
+                    <ng-template pTemplate="item" let-item>
+                        <img style="border-radius: 5%;" [src]="item" class="request rsp-Image" />
+                    </ng-template>
+                </p-galleria>
+            </div>
+            <div class="col-9">
+                <div class="cart-title">{{ item.bookName }}</div> 
+                <div class="text">Chapter {{ item.chapter }}</div>
+            </div>
+        </div>
+        <div class="submit-section">
+            <button class="btn btn-primary submit-btn" (click)="close()">Done</button>
+        </div>
+    </form>
+    
+</div>

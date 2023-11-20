@@ -32,8 +32,6 @@ namespace LibraryAPI.InitData
             if (_context.Books.IsNullOrEmpty())
             {
                 CreateBook();
-                //await CreateRoleModulePermission(roleList);
-                //await CreateAccount(roleList);
             }
             //await _context.SaveChangesAsync();
         }

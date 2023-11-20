@@ -149,6 +149,24 @@ namespace LibraryAPI.Controllers
             return _mapper.Map<List<BookChapterModel>>(await query.ToListAsync());
         }
 
+        [HttpPost("check-remove-cart-item")]
+        public async Task<List<Guid>> CheckStatusToRemoveCartItem(List<Guid> ids)
+        {
+            List<BookChapter> allBookChapter = GetAllBookChapters().ToList();
+
+            List<Guid> chapterIdToBeRemove = new List<Guid>();
+
+            foreach(Guid id in ids)
+            {
+                BookChapter bookChapter = allBookChapter.FirstOrDefault(chapter => chapter.Id == id);
+                if (
+                    bookChapter.Status != (int)BookChapterStatusEnum.Free
+                ) {
+                    chapterIdToBeRemove.Add(id);
+                }
+            }
+            return chapterIdToBeRemove;
+        }
         private bool BookChapterExists(Guid id)
         {
             return (_context.BookChapters?.Any(e => e.Id == id)).GetValueOrDefault();

@@ -7,10 +7,10 @@
     "route": "book-search"
   },
   {
-    "name": "Categories",
-    "code": "book",
-    "icon": "la la-border-all",
+    "name": "My Library Card",
+    "code": "library-card",
+    "icon": "fa fa-address-card",
     "moduleEnum": "BookCategory",
-    "route": "student-category"
+    "route": "library-card-detail/reader"
   }
 ]

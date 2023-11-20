@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.librarydemo.Activity.Fragments.BookFragment.BookDetail;
 import com.example.librarydemo.DBBook.Book;
 import com.example.librarydemo.Enum.LibraryCardStatus;
+import com.example.librarydemo.Models.ErrorModel;
 import com.example.librarydemo.Models.LibraryCard.LibraryCard;
 import com.example.librarydemo.Models.SpinnerOption;
 import com.example.librarydemo.R;
@@ -330,6 +331,8 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
                     if (newLibraryCard != null) {
                         dialog.dismiss();
                         getCard();
+                    } else {
+                        Toast.makeText(requireContext(), "Thêm thẻ thư viện thất bại", Toast.LENGTH_SHORT).show();
                     }
                 }
 

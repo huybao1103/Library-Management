@@ -58,6 +58,10 @@ export class LibraryCardService {
     return this.httpService.saveWithCustomURL({ controller: 'BorrowHistories', data, url:'BorrowHistories/edit-history-info' });
   }
 
+  getLibraryCardByAccountId(accountId: string) {
+    return this.httpService.getWithCustomURL<ILibraryCardInfo>({controller: 'LibraryCards', url: `LibraryCards/get-by-account-id/${accountId}`});
+  }
+
   private updateLibraryCardstate(res?: ILibraryCardInfo, deletedCardId?: string, ) {
     let old = this.libraryCard$.value;
   

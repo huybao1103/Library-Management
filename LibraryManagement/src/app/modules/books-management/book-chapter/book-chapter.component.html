@@ -20,16 +20,16 @@
                 </div>
 
                 <div class="mb-3 d-flex w-100">
-                    <div class="title">Category(s)</div> 
+                    <div class="title">Category(s)</div>
                     <div class="text">
                         <span *ngFor="let bookCategory of book.bookCategories">
-                            {{bookCategory.category.name}}, 
+                            {{bookCategory.category.name}},
                         </span>
                     </div>
                 </div>
 
                 <div class="mb-3 d-flex w-100">
-                    <div class="title">Chapters:</div> 
+                    <div class="title">Chapters:</div>
                     <div class="text">{{ book.bookChapters?.length }} </div>
                 </div>
             </div>
@@ -41,48 +41,44 @@
                     <div class="title">Author(s):</div>
                     <div class="text">
                         <span *ngFor="let bookAuthor of book.bookAuthors">
-                            {{bookAuthor.author.name}}, 
+                            {{bookAuthor.author.name}},
                         </span>
                     </div>
                 </div>
-                
+
                 <div class="mb-3 d-flex w-100">
                     <div class="title">Publisher(es):</div>
                     <div class="text">
                         <span *ngFor="let bookPublisher of book.bookPublishers">
-                            {{bookPublisher.publisher.name}}, 
+                            {{bookPublisher.publisher.name}},
                         </span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-1" style="text-align: right;">
-            <p class="la la-edit"(click)="editBook(book.id)"></p>
+            <p *ngIf="!isStudent" class="la la-edit" (click)="editBook(book.id)"></p>
         </div>
     </div>
     <div *ngIf="book$ | async as book">
-        <p-table
-            #dt
-            [value]="book?.bookChapters || []"
-            [rows]="7"
-            [paginator]="true"
+        <p-table #dt [value]="book?.bookChapters || []" [rows]="7" [paginator]="true"
             [globalFilterFields]="['chapter', 'identifyId', 'description', 'status']"
-            [tableStyle]="{ 'min-width': '75rem' }"
-            [rowHover]="true"
-            dataKey="id"
+            [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" dataKey="id"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [showCurrentPageReport]="true"
-        >
+            [showCurrentPageReport]="true">
             <ng-template pTemplate="caption" let-bookchapter of bookChapters>
                 <div class="justify-content-between align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <h3 class="page-title">Book Chapter</h3>
                         <div>
-                            <button (click)="edit('')" *ngIf="bookDetailPermission?.create" pButton pRipple label="New Chapter" icon="fa fa-plus" class="btn-primary" (click)="edit('')"></button>
-                            <button *ngIf="bookDetailPermission?.delete" (click)="deleteBookChapter(bookchapter.id || '')" pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                            <button (click)="edit('')" *ngIf="bookDetailPermission?.create" pButton pRipple
+                                label="New Chapter" icon="fa fa-plus" class="btn-primary" (click)="edit('')"></button>
+                            <button *ngIf="bookDetailPermission?.delete"
+                                (click)="deleteBookChapter(bookchapter.id || '')" pButton pRipple icon="la la-trash"
+                                class="p-button-secondary mx-2"></button>
                         </div>
                     </div>
-                </div>          
+                </div>
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
@@ -90,7 +86,7 @@
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
                     <th pSortableColumn="chapter">Chapter <p-sortIcon field="chapter"></p-sortIcon></th>
-                    <th pSortableColumn="identifyId">ID <p-sortIcon field="identifyId"></p-sortIcon></th>
+                    <th *ngIf="!isStudent" pSortableColumn="identifyId">ID <p-sortIcon field="identifyId"></p-sortIcon></th>
                     <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
                     <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
                     <th pSortableColumn="action" style="min-width:7rem; text-align: center;">Action</th>
@@ -98,19 +94,19 @@
                 <tr>
                     <th></th>
                     <th>
-                      <p-columnFilter type="text" field="chapter"></p-columnFilter>
+                        <p-columnFilter type="text" field="chapter"></p-columnFilter>
                     </th>
-                    <th>
+                    <th *ngIf="!isStudent">
                         <p-columnFilter type="text" field="identifyId"></p-columnFilter>
                     </th>
                     <th>
-                      <p-columnFilter type="text" field="description"></p-columnFilter>
+                        <p-columnFilter type="text" field="description"></p-columnFilter>
                     </th>
                     <th>
                         <p-columnFilter type="text" field="status"></p-columnFilter>
                     </th>
                     <th></th>
-                  </tr>
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-bookchapter of bookChapters>
                 <tr>
@@ -118,12 +114,27 @@
                         <p-tableCheckbox [value]="bookchapter"></p-tableCheckbox>
                     </td>
                     <td>{{ bookchapter.chapter }}</td>
-                    <td>{{ bookchapter.identifyId }}</td>
+                    <td *ngIf="!isStudent">{{ bookchapter.identifyId }}</td>
                     <td>{{ bookchapter.description }}</td>
                     <td>{{ BookChapterStatus[bookchapter.status] }}</td>
                     <td style="text-align: center;">
-                        <button *ngIf="bookDetailPermission?.edit" (click)="edit(bookchapter.id || '')" pButton pRipple icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;" (click)="edit(bookchapter.id)"></button>
-                        <button *ngIf="bookDetailPermission?.delete" (click)="deleteBookChapter(bookchapter.id || '')" pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary" (click)="deleteBookChapter(bookchapter)"></button>
+                        <button *ngIf="bookDetailPermission?.edit" (click)="edit(bookchapter.id || '')" pButton pRipple
+                            icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;"
+                            (click)="edit(bookchapter.id)"
+                        >
+                        </button>
+
+                        <button *ngIf="bookDetailPermission?.delete" (click)="deleteBookChapter(bookchapter.id || '')"
+                            pButton pRipple icon="la la-trash" class="p-button-rounded p-button-secondary"
+                            (click)="deleteBookChapter(bookchapter)"
+                        >
+                        </button>
+
+                        <button *ngIf="isStudent && bookchapter.status === BookChapterStatus.Free"
+                            pButton pRipple icon="bi bi-cart-check-fill" class="p-button-rounded btn-primary"
+                            (click)="addToCart(bookchapter.id || '', book.name, bookchapter.chapter, book.bookImages || [] )"
+                        >
+                        </button>
                     </td>
                 </tr>
             </ng-template>
