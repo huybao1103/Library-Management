@@ -1,16 +1,21 @@
 package com.example.librarydemo.Activity.Fragments.LibraryCardFragment;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,6 +42,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,6 +58,7 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class LibraryCardFragment extends Fragment implements IAdapterEventListener, IConfirmDialogEventListener {
+    private static final int REQUEST_IMAGE_PICKER =1 ;
     private ListView lv;
     View view;
     public static ArrayList<Book> Book_Deefault;
@@ -67,11 +75,16 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
     AlertDialog dialog;
     TextInputEditText edt_studentName, student_Id, student_class, edt_inputDay;
     AutoCompleteTextView spn_status;
+
     int selectedCardStatus;
     boolean confirmed = false;
 
     private String mParam1;
     private String mParam2;
+    private Uri selectedImageUri;
+
+
+    ImageView imgLibraryCard;
 
     public LibraryCardFragment() {
         // Required empty public constructor
@@ -98,11 +111,15 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,11 +144,11 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 List<LibraryCard> libraryCardList = new ApiResponse<List<LibraryCard>>()
-                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                (
-                    response,
-                    new TypeToken<List<LibraryCard>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                );
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<List<LibraryCard>  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
 
                 if(libraryCardList != null)
                     setAdapter(libraryCardList);
@@ -154,11 +171,11 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 currentCard = new ApiResponse<LibraryCard>()
-                .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
-                (
-                    response,
-                    new TypeToken<LibraryCard  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                );
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<LibraryCard  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
 
                 if(currentCard != null)
                     addCard();
@@ -174,6 +191,7 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
     private void addCard() {
         View cardFormView = LayoutInflater.from(requireContext()).inflate(R.layout.library_card_form, null);
         bindCardLayoutDialog(cardFormView);
+        imgLibraryCard = cardFormView.findViewById(R.id.imglibraryCard); // Tham chiếu đến ImageView
 
         dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setView(cardFormView)
@@ -181,18 +199,64 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
                     dialogInterface.dismiss();
                 }).create();
         dialog.setCanceledOnTouchOutside(true);
-//        alertDialog.on
         dialog.show();
 
         Button submit_btn = cardFormView.findViewById(R.id.submit_btn);
         submit_btn.setOnClickListener(view -> {
-//            if(formValid)
-            addCardSubmit();
+            // Check for form validation before calling addCardSubmit
+            if (isFormValid()) {
+                addCardSubmit();
+                dialog.dismiss(); // Close the dialog after submitting
+            }
         });
 
-//        formValid = false;
-//        formValidation(edt_categoryName);
+        imgLibraryCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open the image picker dialog
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_IMAGE_PICKER);
+            }
+        });
     }
+
+    private boolean isFormValid() {
+        // Lấy giá trị từ các trường dữ liệu
+        String studentName = edt_studentName.getText().toString();
+        String studentId = student_Id.getText().toString();
+        String studentClass = student_class.getText().toString();
+        String inputDay = edt_inputDay.getText().toString();
+
+        // Kiểm tra các trường dữ liệu
+        if (studentName.isEmpty()) {
+            edt_studentName.setError("Student Name is required");
+            return false;
+        }
+
+        if (studentId.isEmpty()) {
+            student_Id.setError("Student ID is required");
+            return false;
+        }
+
+        if (studentClass.isEmpty()) {
+            student_class.setError("Student Class is required");
+            return false;
+        }
+
+        if (inputDay.isEmpty()) {
+            edt_inputDay.setError("Input Day is required");
+            return false;
+        }
+
+        // Thêm các điều kiện kiểm tra khác nếu cần
+        // Ví dụ: kiểm tra tính hợp lệ của ngày theo định dạng cụ thể
+
+        return true; // Trả về true nếu tất cả các kiểm tra thành công
+    }
+
+
 
     private void bindCardLayoutDialog(View cardFormView) {
         CustomSpinner customSpinner;
@@ -235,35 +299,48 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
     }
 
     private void addCardSubmit() {
-        LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setName(Objects.requireNonNull(edt_studentName.getText()).toString());
-        libraryCard.setStudentId(Objects.requireNonNull(student_Id.getText()).toString());
-        libraryCard.setStudentClass(Objects.requireNonNull(student_class.getText()).toString());
-        libraryCard.setStatus(selectedCardStatus);
-        libraryCard.setId(currentCard != null ? currentCard.getId() : null);
+        String studentName = Objects.requireNonNull(edt_studentName.getText()).toString();
+        String studentId = Objects.requireNonNull(student_Id.getText()).toString();
+        String studentClass = Objects.requireNonNull(student_class.getText()).toString();
+        String selectedStatus = spn_status.getText().toString();
 
-        JsonObject data = new ApiRequest().convertModelToJSONObject(libraryCard);
+        if (studentName.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập tên học sinh", Toast.LENGTH_SHORT).show();
+        } else if (studentId.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập mã học sinh", Toast.LENGTH_SHORT).show();
+        } else if (studentClass.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập lớp học", Toast.LENGTH_SHORT).show();
+        } else if (selectedStatus.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng chọn trạng thái", Toast.LENGTH_SHORT).show();
+        } else {
+            // Tiếp tục thêm thẻ thư viện
+            LibraryCard libraryCard = new LibraryCard();
+            libraryCard.setName(studentName);
+            libraryCard.setStudentId(studentId);
+            libraryCard.setStudentClass(studentClass);
+            libraryCard.setStatus(selectedCardStatus);
+            libraryCard.setId(currentCard != null ? currentCard.getId() : null);
 
-        apiService.save(ControllerConst.LIBRARYCARDS, data).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                LibraryCard publisherModel = new ApiResponse<LibraryCard>().getResultFromResponse
-                        (
-                                response,
-                                new TypeToken<LibraryCard  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
-                        );
-                if(publisherModel != null) {
-                    dialog.dismiss();
-                    getCard();
+            JsonObject data = new ApiRequest().convertModelToJSONObject(libraryCard);
+
+            apiService.save(ControllerConst.LIBRARYCARDS, data).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    LibraryCard newLibraryCard = new ApiResponse<LibraryCard>().getResultFromResponse(response, new TypeToken<LibraryCard>(){}.getType());
+                    if (newLibraryCard != null) {
+                        dialog.dismiss();
+                        getCard();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-
-            }
-        });
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(requireContext(), "Thêm thẻ thư viện thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
+
 
     private void deleteCard(String itemId) {
         new ConfirmDialogService("Are you sure you want to delete this card?", requireContext(), this)
@@ -298,6 +375,34 @@ public class LibraryCardFragment extends Fragment implements IAdapterEventListen
             }
         });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_IMAGE_PICKER && resultCode == Activity.RESULT_OK && data != null) {
+            Uri selectedImageUri = data.getData();
+            try {
+                // Chuyển hình ảnh thành mã base64
+                String base64Image = encodeImageToBase64(selectedImageUri);
+
+                // Hiển thị mã base64 trong một trường TextView hoặc EditText
+                BreakIterator edt_base64_image = null;
+                edt_base64_image.setText(base64Image); // Thay thế edt_base64_image bằng id của trường bạn muốn hiển thị
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String encodeImageToBase64(Uri imageUri) throws IOException {
+        InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
+        byte[] bytes = new byte[inputStream.available()];
+        inputStream.read(bytes);
+        inputStream.close();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
 
     @Override
     public void onItemNameClicked(String itemId) {

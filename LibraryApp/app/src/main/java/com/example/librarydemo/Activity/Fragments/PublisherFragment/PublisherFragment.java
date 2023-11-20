@@ -20,6 +20,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.librarydemo.Models.AuthorModel;
 import com.example.librarydemo.Models.PublisherModel;
 import com.example.librarydemo.Publisher.PublisherAdapter;
 import com.example.librarydemo.Publisher.PublisherInformation;
@@ -188,6 +189,29 @@ public class PublisherFragment extends Fragment implements IConfirmDialogEventLi
         });
     }
 
+
+    private void getPublishersById(String itemId) {
+        apiService.getById(ControllerConst.PUBLISHERS, itemId).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                currentPublisher = new ApiResponse<PublisherModel>()
+                        .getResultFromResponse /* Ép kiểu và chuyển từ Json sang model để dùng */
+                                (
+                                        response,
+                                        new TypeToken<PublisherModel  /* ĐƯA VÀO CHO ĐÚNG KIỂU DỮ LIỆU */>(){}.getType()
+                                );
+
+                if(currentPublisher != null)
+                    addPublisher();
+                formValid = true;
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+    }
     private void addPublisher() {
         View publisherFormDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_publisher_edit_form, null);
         bindPublisherLayoutDialog(publisherFormDialogView);
@@ -209,6 +233,9 @@ public class PublisherFragment extends Fragment implements IConfirmDialogEventLi
 
         formValid = false;
         formValidation(edt_publisherName);
+
+        formPEmail(edt_publisherEmail);
+        formAddress(edt_publisherAddress);
     }
 
     private void bindPublisherLayoutDialog(View publisherFormDialog) {
@@ -263,6 +290,37 @@ public class PublisherFragment extends Fragment implements IConfirmDialogEventLi
 
             if(!b && name.equals("")) {
                 currentInput.setError("Name must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+
+    private void formPEmail(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String Pemail= Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && Pemail.equals("")) {
+                currentInput.setError("Email must not be null!");
+            }
+            else {
+                currentInput.setError(null);
+                formValid = true;
+            }
+        };
+
+        currentInput.setOnFocusChangeListener(onFocusChange);
+    }
+    private void formAddress(TextInputEditText currentInput) {
+        View.OnFocusChangeListener onFocusChange = (view, b) -> {
+            String address= Objects.requireNonNull(currentInput.getText()).toString();
+
+            if(!b && address.equals("")) {
+                currentInput.setError("Address must not be null!");
             }
             else {
                 currentInput.setError(null);

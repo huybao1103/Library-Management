@@ -1,19 +1,29 @@
 [
   {
+    "name": "Dashboard",
+    "code": "dashboard",
+    "icon": "fa fa-home",
+    "moduleEnum": "Dashboard",
+    "route": ""
+  },
+  {
     "name": "Book Management",
     "code": "book",
     "icon": "fa fa-book",
+    "moduleEnum": "BookManagement",
     "subMenus": [
       {
         "name": "Books",
         "code": "book",
         "icon": "fa fa-book",
+        "moduleEnum": "BookList",
         "route": "book"
       },
       {
         "name": "Categories",
         "code": "category",
         "icon": "la la-border-all",
+        "moduleEnum": "CategoryManagement",
         "route": "category"
       }
     ]
@@ -22,56 +32,41 @@
     "name": "Author Management",
     "code": "author",
     "icon": "fa fa-user",
-    "subMenus": [
-      {
-        "name": "Authors",
-        "code": "author",
-        "icon": "fa fa-user",
-        "route": "author"
-      }
-    ]
+    "moduleEnum": "AuthorManagement",
+    "route": "author"
   },
   {
     "name": "Publisher Management",
     "code": "publisher",
     "icon": "fa fa-address-book",
-    "subMenus": [
-      {
-        "name": "Publishers",
-        "code": "publisher",
-        "icon": "fa fa-address-book",
-        "route": "publisher"
-      }
-    ]
+    "moduleEnum": "PublisherManagement",
+    "route": "publisher"
   },
   {
-    "name": "Reader Management",
-    "code": "reader",
-    "icon": "la la-book-reader",
-    "subMenus": [
-      {
-        "name": "Library Cards",
-        "code": "library-card",
-        "icon": "fa fa-address-card",
-        "route": "library-card"
-      }
-    ]
+    "name": "Library Card Management",
+    "code": "library-card",
+    "icon": "fa fa-address-card",
+    "moduleEnum": "LibraryCardManagement",
+    "route": "library-card"
   },
   {
     "name": "Account Management",
     "code": "account",
     "icon": "bi bi-people-fill",
+    "moduleEnum": "AccountManagement",
     "subMenus": [
       {
         "name": "Reader Accounts",
         "code": "reader-account",
         "icon": "fa fa-user",
+        "moduleEnum": "ReaderAccountManagement",
         "route": "reader-account-list"
       },
       {
         "name": "Employee Accounts",
         "code": "employee-account",
         "icon": "la la-user-tie",
+        "moduleEnum": "EmployeeManagement",
         "route": "employee-account-list"
       }
     ]
@@ -80,13 +75,7 @@
     "name": "Roles & Permissions",
     "code": "role-permission",
     "icon": "la la-key",
-    "subMenus": [
-      {
-        "name": "Roles & Permissions",
-        "code": "role-permission",
-        "icon": "la la-key",
-        "route": "role-permission"
-      },
-    ]
+    "moduleEnum": "RolePermissionManagement",
+    "route": "role-permission"
   }
 ]

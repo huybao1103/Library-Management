@@ -11,13 +11,17 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ToastModule } from 'primeng/toast';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormlyModule } from './formly/formly.module';
+import { FormlyModule as AppFormlyModule } from './formly/formly.module';
 import { FeatureModule } from './modules/feature.module';
 import { ToastService } from './services/toast.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmDialogService } from './services/confirm-dialog.service';
 import { LoginComponent } from './login-register/login/login.component';
 import { RegisterComponent } from './login-register/register/register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormlyModule } from '@ngx-formly/core';
+
+
 
 
 @NgModule({
@@ -38,11 +42,14 @@ import { RegisterComponent } from './login-register/register/register.component'
     FontAwesomeModule,
     ToastModule,
     FeatureModule,
-    FormlyModule,
+    FormlyModule.forChild({}),
     ConfirmDialogModule,
+    FormsModule,
+    AppFormlyModule,
+    ReactiveFormsModule,
   ],
   providers: [
-    MessageService, 
+    MessageService,
     ToastService,
     ConfirmDialogService,
     ConfirmationService

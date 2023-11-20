@@ -30,7 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GoldenData\Menu\" />
+    <Folder Include="GoldenData\Books\" />
+    <Folder Include="GoldenData\NewFolder\" />
   </ItemGroup>
 
 </Project>

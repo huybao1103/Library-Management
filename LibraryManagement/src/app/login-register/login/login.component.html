@@ -1,2 +1,30 @@
-<h3 class="account-title">Login</h3>
-<a routerLink="/register" style="text-align: center; display: block;">Go to register</a>
+<div class="main-wrapper">
+    <div class="account-content">
+        <div class="container">
+        
+            <!-- Account Logo -->
+            <div class="account-logo">
+                <a href="admin-dashboard.html"><img src="assets/img/logo.png" alt="Dreamguy's Technologies"></a>
+            </div>
+            <!-- /Account Logo -->
+            
+            <div class="account-box">
+                <div class="account-wrapper">
+                    <h3 class="account-title">Login</h3>
+                    <p class="account-subtitle">Access to our dashboard</p>
+                    
+                    <!-- Account Form -->
+                    <form [formGroup]="form" (submit)="login()">
+                        <formly-form [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
+                        <p class="text-danger">{{ error }}</p>
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn btn-primary submit-btn" [disabled]="form.invalid">Login</button>
+                        </div>
+                    </form>
+                    <!-- /Account Form -->
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

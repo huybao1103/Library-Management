@@ -72,7 +72,7 @@ public class NewRecordDetail extends AppCompatActivity {
     }
 
     void assign() {
-        apiService = RetrofitClient.getApiService(this);
+        apiService = RetrofitClient.getApiService(this); 
         dateConverter = new LocalDateTimeConvert();
 
         spn_book = findViewById(R.id.spn_book);

@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="col-1" style="text-align: right;">
-                    <p class="la la-edit"(click)="editLibraryCard()"></p>
+                    <p class="la la-edit" (click)="editLibraryCard()"></p>
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@
             [showCurrentPageReport]="true"
             editMode="row"
         >
-            <ng-template pTemplate="caption">
+            <ng-template pTemplate="caption" let-card of LibraryCard>
                 <div class="justify-content-between align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <h3 class="page-title">Borrow History</h3>
@@ -81,8 +81,8 @@
                           <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search keyword..."/>
                         </div> -->
                         <div>
-                            <button pButton pRipple label="New Record" icon="fa fa-plus" class="btn-primary" (click)="edit(LibraryCard.status)"></button>
-                            <button pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
+                            <button *ngIf="libarycardDetailPermission?.create" (click)="edit(card.id || '')" pButton pRipple label="New Record" icon="fa fa-plus" class="btn-primary" (click)="edit(LibraryCard.status)"></button>
+                            <button *ngIf="libarycardDetailPermission?.delete" (click)="deleteBorrowHistory(card.id || '')" pButton pRipple icon="la la-trash" class="p-button-secondary mx-2"></button>
                         </div>
                     </div>
                 </div>        
@@ -143,6 +143,7 @@
                 let-history
                 let-editing="editing" 
                 let-ri="rowIndex"
+                let-card of LibraryCard
             >
                 <tr [pEditableRow]="history">
                     <td>
@@ -185,7 +186,7 @@
                     </td>
                     <td>
                         <div class="flex align-items-center justify-content-center gap-2">
-                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(history)" class="p-button-rounded p-button-text"></button>
+                            <button *ngIf="!editing && libarycardDetailPermission?.edit" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(history)" class="p-button-rounded p-button-text"></button>
                             <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(history)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
                             <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(history, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                         </div>

@@ -60,9 +60,13 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 
-new AccountAndRoleInit();
 
 var app = builder.Build();
+
+new AccountAndRoleInit();
+new BookInit(app.Services.GetRequiredService<IWebHostEnvironment>());
+new AccountAndLibraryCardInit(app.Services.GetRequiredService<IWebHostEnvironment>());
+
 app.UseCors("AllowAngularOrigins");
 app.UseCors("AllowAndroiStudioOrigins");
 

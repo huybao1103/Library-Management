@@ -8,6 +8,9 @@ import { Table } from 'primeng/table'
 import { ToastService } from 'src/app/services/toast.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
+import { RoleModulePermission } from 'src/app/models/role-permission.model';
+import { SessionService } from 'src/app/services/session.service';
+import { ModuleEnum } from 'src/app/enums/module-enum';
 
 @Component({
   selector: 'app-category-list',
@@ -23,16 +26,27 @@ export class CategoryListComponent implements OnInit{
   selectedCategories!: ICategory[] | null;
   @ViewChild('dt') dt: Table | undefined;
 
+  perrmission: RoleModulePermission | undefined;
+  categoryPermission: RoleModulePermission | undefined;
+
   constructor(
     private route: Router,
+    private sessionService : SessionService,
     private categoryService: CategoryService,
     private confirmDialogService: ConfirmDialogService,
     private toastService: ToastService,
   ) {
   }
   ngOnInit(): void {
+    this.getPermission();
     this.getData();
   }
+
+  getPermission() {
+    // this.perrmission = this.sessionService.getModulePermission(ModuleEnum.BookList);
+    this.categoryPermission = this.sessionService.getModulePermission(ModuleEnum.CategoryManagement);
+  }
+
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }

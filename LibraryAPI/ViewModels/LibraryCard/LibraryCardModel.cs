@@ -1,4 +1,5 @@
 ﻿using LibraryAPI.Models;
+using LibraryAPI.ViewModels.Account;
 using LibraryAPI.ViewModels.BorrowHistory;
 
 namespace LibraryAPI.ViewModels.LibraryCard
@@ -18,6 +19,10 @@ namespace LibraryAPI.ViewModels.LibraryCard
         public string? Description { get; set; }
 
         public string StudentId { get; set; } = null!;
+
+        public Guid? AccountId { get; set; }
+
+        public virtual AccountModel? Account { get; set; }
 
         public virtual ICollection<BorrowHistoryModel> BorrowHistories { get; set; } = new List<BorrowHistoryModel>();
 

@@ -30,16 +30,16 @@ namespace LibraryAPI.Controllers
         }
 
         // GET: api/Books
-        [HttpGet("{id?}")]
+        [HttpGet]
         [PubSub(PubSubConstas.AUTHOR_INFO)]
-        public async Task<ActionResult<IEnumerable<BookModel>>> GetBooks(Guid? id)
+        public async Task<ActionResult<IEnumerable<BookModel>>> GetBooks()
         {
             var query = GetAllBook();
 
-            if (id.HasValue)
-            {
-                query = query.Where(a => a.BookCategories.Any(b => b.CategoryId == id));
-            }
+            //if (id.HasValue)
+            //{
+            //    query = query.Where(a => a.BookCategories.Any(b => b.CategoryId == id));
+            //}
             var books = query.ToList();
 
             return Ok(_mapper.Map<List<BookModel>>(books));

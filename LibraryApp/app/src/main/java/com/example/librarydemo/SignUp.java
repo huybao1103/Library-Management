@@ -80,6 +80,7 @@ public class SignUp extends Activity {
                                             gmail.setText("");
                                             password1.setText("");
                                             password2.setText("");
+
                                         }else{
                                             Toast.makeText(SignUp.this, "Đăng Ký Thất Bại ^.^", Toast.LENGTH_SHORT).show();
                                             account.setText("");

@@ -17,6 +17,9 @@ import { MessageType } from 'src/app/enums/toast-message.enum';
 import { error } from 'jquery';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FilterMatchMode } from 'primeng/api';
+import { RoleModulePermission } from 'src/app/models/role-permission.model';
+import { SessionService } from 'src/app/services/session.service';
+import { ModuleEnum } from 'src/app/enums/module-enum';
 
 @Component({
   selector: 'app-library-card-detail',
@@ -62,6 +65,7 @@ export class LibraryCardDetailComponent implements OnInit{
   statuses: BorrowHistoryStatus[] = [];
   borrowDateSort: Date | undefined;
   endDateSort: Date | undefined;
+  libarycardDetailPermission: RoleModulePermission | undefined;
 
   constructor(
     private modal: NgbActiveModal,
@@ -72,14 +76,20 @@ export class LibraryCardDetailComponent implements OnInit{
     private confirmDialogService: ConfirmDialogService,
     private route: ActivatedRoute,
     private router: Router,
+    private sessionService : SessionService,
   ) {
   }
 
   ngOnInit(): void {
+    this.getPermission();
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
     if (this.id) {
       this.getLibraryCardById(this.id);  
     }
+  }
+
+  getPermission() {
+    this.libarycardDetailPermission = this.sessionService.getModulePermission(ModuleEnum.LibraryCardDetail);
   }
 
   applyFilterGlobal($event: any, stringVal: any) {
@@ -150,13 +160,17 @@ export class LibraryCardDetailComponent implements OnInit{
   }
 
   edit(status: LibraryCardStatus) {
-    if(status === LibraryCardStatus.Inactive)
-      this.toastSerivce.show(MessageType.error, "This library card is inactivated, please change the status to active first.")
+    if(status === LibraryCardStatus.Inactive || status === LibraryCardStatus.Expired)
+      this.toastSerivce.show(MessageType.error, "This library card is inactivated or expired, please change the status to active first.")
     else
       this.router.navigate([{ outlets: { modal: ['library-card-detail', 'new-record', this.id] } }]);
   }
 
   editLibraryCard() {
     this.router.navigate([{ outlets: { modal: ['library-card', 'edit', this.id] } }]);
+  }
+
+  deleteBorrowHistory(borrowhistory: IEditRecordInfo) {
+    
   }
 }
