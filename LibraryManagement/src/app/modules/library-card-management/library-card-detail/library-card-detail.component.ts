@@ -84,7 +84,7 @@ export class LibraryCardDetailComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(!this.sessionService.getModulePermission(ModuleEnum.LibraryCardBorrowHistory)?.access)
+    if(this.sessionService.getCurrentAccount()?.role.name !== 'Reader' && !this.sessionService.getModulePermission(ModuleEnum.LibraryCardBorrowHistory)?.access)
         this.router.navigate(['library-card'])
     else {
       this.getPermission();

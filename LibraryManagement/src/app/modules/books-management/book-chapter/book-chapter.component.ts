@@ -48,14 +48,19 @@ export class BookChapterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if(!this.sessionService.getModulePermission(ModuleEnum.BookChapter)?.access)
-        this.route.navigate(['book'])
+    console.log(this.sessionService.getCurrentAccount())
+    if(this.sessionService.getCurrentAccount()?.role.name !== 'Reader' && !this.sessionService.getModulePermission(ModuleEnum.BookChapter)?.access) {
+
+      this.route.navigate(['book'])
+    }
     else {
-      this.bookId = this.activatedRoute.snapshot.paramMap.get('id');
+      console.log('here')
+      
+    }
+    this.bookId = this.activatedRoute.snapshot.paramMap.get('id');
       this.bookChapterService.setCurrentBookId(this.bookId);
       this.getPermission(); 
       this.getBook();
-    }
   }
 
   getPermission() {
