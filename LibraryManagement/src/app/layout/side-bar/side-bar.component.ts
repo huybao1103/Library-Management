@@ -111,7 +111,7 @@ export class SideBarComponent implements OnInit {
               return this.emptyItem;
             });
   
-            if(loggedInAccount?.role.name === "Reader") {
+            if(loggedInAccount?.role.name === "Reader" && this.router.url.includes("book-search")) {
               this.router.navigate(["book-search"])
             }
           }
