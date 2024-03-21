@@ -125,5 +125,10 @@ export class BookCartService {
   getRemainingNumber() {
     return this.remaining - this.bookCart.length
   }
+
+  clearCart() {
+    this.bookCart = [];
+    this.updateLocalStorage();
+  }
 }
 

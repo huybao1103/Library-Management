@@ -47,6 +47,7 @@ namespace LibraryAPI.InitData
             GetPublisherFromJSON();
             GetBookPublisherFromJSON();
             await AddDB();
+            ChangeIdentifyId();
         }
 
         private static async Task<int> AddDB()
@@ -57,8 +58,8 @@ namespace LibraryAPI.InitData
             await _context.Publishers.AddRangeAsync(publisher);
             await _context.BookCategories.AddRangeAsync(bookCategory);
             await _context.BookAuthors.AddRangeAsync(bookAuthor);
-            await _context.BookChapters.AddRangeAsync(bookChapter);
             await _context.BookPublishers.AddRangeAsync(bookPublisher);
+            await _context.BookChapters.AddRangeAsync(bookChapter);
             return await _context.SaveChangesAsync();
         }
 
@@ -197,6 +198,22 @@ namespace LibraryAPI.InitData
             }
 
             bookPublisher = JsonConvert.DeserializeObject<List<BookPublisher>>(jsonData);
+        }
+        private static async void ChangeIdentifyId()
+        {
+            var book = _context.Books.ToList();
+            foreach (Book item in book)
+            { 
+                var bookChapter = item.BookChapters.ToList();
+
+                for (int i = 0; i < item.BookChapters.Count; i++)
+                {
+                    string abbreviated = StringHelper.GetAbbreviatedString(item.Name);
+                    abbreviated += $"-{i}";
+                    bookChapter[i].IdentifyId = abbreviated;
+                }
+                _context.SaveChanges();
+            }
         }
     }
 }

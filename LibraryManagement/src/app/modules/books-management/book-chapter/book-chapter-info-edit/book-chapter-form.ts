@@ -1,3 +1,4 @@
+import { Validators } from '@angular/forms';
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { BookChapterStatus } from "src/app/enums/book-chapter-status";
 import { KeyFilterType } from "src/app/enums/p-key-filter.type";
@@ -25,31 +26,26 @@ export function BookChapterDetailFields(): FormlyFieldConfig[] {
             templateOptions: {
               label: 'Identify ID',
               required: true,
-            }
+              disabled: true,
+            },
           },
           {
             className: 'col-6',
+            key: 'quantity',
+            type: FORMLY_INPUT.name,
+            templateOptions: {
+              label: 'Quantity',
+              required: true,
+              keyFilter: KeyFilterType.int
+            },
+          },
+          {
+            className: 'col-12',
             key: 'description',
             type: FORMLY_INPUT.name,
             templateOptions: {
               label: 'Description',
-              required: true,
             }
-          },
-          {
-            className: 'col-6',
-            key: 'status',
-            type: FORMLY_SELECT.name,
-            templateOptions: {
-              label: 'Status',
-              required: true,
-              options: [
-                {label: BookChapterStatus[BookChapterStatus.Free], value: BookChapterStatus.Free},
-                {label: BookChapterStatus[BookChapterStatus.Borrowed], value: BookChapterStatus.Borrowed},
-                {label: BookChapterStatus[BookChapterStatus.Destroyed], value: BookChapterStatus.Destroyed},
-                {label: BookChapterStatus[BookChapterStatus.Lost], value: BookChapterStatus.Lost},
-              ]
-            },
           },
         ]
       }

@@ -15,6 +15,7 @@ export interface IBorrowHistoryInfo {
     libraryCard?: ILibraryCardInfo;
     bookId?: string;
     book?: IBook;
+    lostOrDestroyedDate?: string;
 }
 
 export interface IEditRecordInfo {

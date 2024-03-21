@@ -142,6 +142,13 @@ export class HttpService {
     )
   }
 
+  getPlainTextWithCustomURL(query: IQueryData) {
+    return this.http.get(
+      `api/${query.url}`,
+      { responseType: 'text'}
+    )
+  }
+
   getDataFromResponse<T>(result$: Observable<HttpResponse<T>>, needReLoad?: boolean, query?: IQueryData) {
     return result$.pipe(
       tap(() => {needReLoad ? this.getAll<T>(query!) : ''}),

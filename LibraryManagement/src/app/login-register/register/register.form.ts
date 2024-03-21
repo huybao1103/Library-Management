@@ -65,9 +65,9 @@ export function RegisterFields(): FormlyFieldConfig[] {
             validators: {
               password: {
                 expression: (c: AbstractControl) => {
-                    return c.value ? c.value.endsWith('@st.huflit.edu.vn') : false;
+                    return c.value ? c.value.length >= 8 : false;
                 },
-                message: (error: any, field: FormlyFieldConfig) => 'Email must be your student email.',
+                message: (error: any, field: FormlyFieldConfig) => 'Password must be at least 8 characters.',
               }
             }
           },

@@ -60,7 +60,7 @@
         <div class="row" style="text-align: center;">
             <h3 class="page-title mx-3 text-global">DASHBOARD</h3>
             <div class="col-6" style="text-align: center;">
-                <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+                <p-chart type="bar" [data]="data" [options]="options" (onDataSelect)="dataSelect($event)"></p-chart>
             </div>
             <div class="col-6" style="text-align: center;">
                 <p-chart type="doughnut" [data]="data2" [options]="options2"></p-chart>

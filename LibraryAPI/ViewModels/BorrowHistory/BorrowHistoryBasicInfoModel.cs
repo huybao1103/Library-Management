@@ -1,9 +1,8 @@
-﻿using LibraryAPI.ViewModels.Book;
-using LibraryAPI.ViewModels.LibraryCard;
+﻿using LibraryAPI.ViewModels.LibraryCard;
 
 namespace LibraryAPI.ViewModels.BorrowHistory
 {
-    public class BorrowHistoryModel
+    public class BorrowHistoryBasicInfoModel
     {
         public Guid? Id { get; set; }
 
@@ -19,8 +18,6 @@ namespace LibraryAPI.ViewModels.BorrowHistory
         public string? BookName { get; set; }
         public int? Chapter { get; set; }
         public DateTime? LostOrDestroyedDate { get; set; }
-
-        public virtual BookChapterModel? BookChapter { get; set; }
-        public virtual LibraryCardBasicInfoModel? LibraryCard { get; set; }
+        public LibraryCardBasicInfoModel? LibraryCard { get; set; }
     }
 }

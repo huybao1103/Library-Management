@@ -9,15 +9,13 @@ public partial class BookChapter
 
     public string? IdentifyId { get; set; }
 
-    public int? Status { get; set; }
-
     public string? Description { get; set; }
 
     public Guid? BookId { get; set; }
 
     public int? Chapter { get; set; }
 
-    public DateTime? LostOrDestroyedDate { get; set; }
+    public int? Quantity { get; set; }
 
     public virtual Book? Book { get; set; }
 

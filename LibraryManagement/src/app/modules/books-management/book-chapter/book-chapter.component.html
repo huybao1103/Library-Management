@@ -88,7 +88,7 @@
                     <th pSortableColumn="chapter">Chapter <p-sortIcon field="chapter"></p-sortIcon></th>
                     <th *ngIf="!isStudent" pSortableColumn="identifyId">ID <p-sortIcon field="identifyId"></p-sortIcon></th>
                     <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
-                    <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                    <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
                     <th pSortableColumn="action" style="min-width:7rem; text-align: center;">Action</th>
                 </tr>
                 <tr>
@@ -103,7 +103,7 @@
                         <p-columnFilter type="text" field="description"></p-columnFilter>
                     </th>
                     <th>
-                        <p-columnFilter type="text" field="status"></p-columnFilter>
+                        <p-columnFilter type="text" field="quantity"></p-columnFilter>
                     </th>
                     <th></th>
                 </tr>
@@ -116,7 +116,7 @@
                     <td>{{ bookchapter.chapter }}</td>
                     <td *ngIf="!isStudent">{{ bookchapter.identifyId }}</td>
                     <td>{{ bookchapter.description }}</td>
-                    <td>{{ BookChapterStatus[bookchapter.status] }}</td>
+                    <td>{{ bookchapter.quantity }}</td>
                     <td style="text-align: center;">
                         <button *ngIf="bookDetailPermission?.edit" (click)="edit(bookchapter.id || '')" pButton pRipple
                             icon="la la-pencil" class="p-button-rounded btn-primary" style="margin-right: 5px;"
@@ -130,7 +130,7 @@
                         >
                         </button>
 
-                        <button *ngIf="isStudent && bookchapter.status === BookChapterStatus.Free"
+                        <button *ngIf="isStudent && bookchapter.quantity > 0"
                             pButton pRipple icon="bi bi-cart-check-fill" class="p-button-rounded btn-primary"
                             (click)="addToCart(bookchapter.id || '', book.name, bookchapter.chapter, book.bookImages || [] )"
                         >

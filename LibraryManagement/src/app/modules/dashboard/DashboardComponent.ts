@@ -1,3 +1,4 @@
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from './service/dashboard-service';
 import { IBookChapter } from 'src/app/models/bookchapter.model';
@@ -7,6 +8,10 @@ import { IBook } from 'src/app/models/book.model';
 import { IAuthor } from 'src/app/models/author.model';
 import { IPublisher } from 'src/app/models/publisher.model';
 import { IAccountInfo } from 'src/app/models/account.model';
+import { BorrowHistoryStatus } from 'src/app/enums/borrow-history-status';
+import { IBorrowHistoryInfo } from 'src/app/models/borrow-history.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ShowDetailComponent } from './show-detail/show-detail.component';
 
 
 @Component({
@@ -35,7 +40,8 @@ export class DashboardComponent implements OnInit {
     totalReaders: number = 0;
 
     constructor(
-        private dashboardService: DashboardService
+        private dashboardService: DashboardService,
+        private modalService: NgbModal,
     ) {
     }
     
@@ -48,13 +54,6 @@ export class DashboardComponent implements OnInit {
                 if(res)
                     this.readers = res;
                     this.totalReaders = this.readers.length;
-                }
-            })
-        this.dashboardService.getBooks().subscribe({
-            next: (res) => {
-                if(res)
-                    this.books = res;
-                    this.totalBooks = this.books.length;
                 }
             })
         this.dashboardService.getAuthors().subscribe({
@@ -75,50 +74,55 @@ export class DashboardComponent implements OnInit {
             next: (res) => {
                 if (res)
                 this.statictis = res;
-                this.totalBookchapter.push(
-                    this.statictis.filter((s) => {
-                        if (s.chapter) {
-                            return s.chapter;
-                        }
-                        return null;
-                    }).length
-                );
-                this.totalBookFree.push(
-                    this.statictis.filter((s) => {
-                        if (s.status === BookChapterStatus.Free) {
-                            return s.status === BookChapterStatus.Free ? s : null;
-                        }
-                        return null;
-                    }).length
-                );
-                this.totalBookBorrowed.push(
-                    this.statictis.filter((s) => {
-                        if (s.status === BookChapterStatus.Borrowed) {
-                            return s.status === BookChapterStatus.Borrowed ? s : null;
-                        }
-                        return null;
-                    }).length
-                );
-                console.log(this.statictis)
+
+                // Lấy tổng số sách
+                let total = 0;
+                this.statictis.forEach(s => s.quantity ? total += s.quantity : 0);
+                this.totalBookchapter.push(total);
+                this.totalBooks = total;
+                
+                // Lấy só sách đang Free = tổng - khác free
+                let notFree = 0;
+                this.statictis.forEach(s => 
+                    s.borrowHistories?.forEach(br => 
+                        br.status === BorrowHistoryStatus.Active || br.status === BorrowHistoryStatus.Expired
+                        ? notFree += 1
+                        : 0
+                ));
+                this.totalBookFree.push(total - notFree);
+
+                
+                this.totalBookBorrowed.push(notFree);
+                
                 for (let month = 1; month <= 12; month++) {
                     this.monthArr.push(
                         this.statictis.filter((s) => {
-                            if (s.lostOrDestroyedDate) {
-                                return new Date(s.lostOrDestroyedDate).getMonth() + 1 === month && s.status === BookChapterStatus.Destroyed ? s : null;
+                            if (s.borrowHistories?.length && s.borrowHistories.length > 0) {
+                                return s.borrowHistories.filter(br => {
+                                    if(br.lostOrDestroyedDate) {
+                                        return new Date(br.lostOrDestroyedDate).getMonth() + 1 === month && br.status === BorrowHistoryStatus.Destroyed ? s : null
+                                    }
+                                    return null;
+                                }).length
                             }
                             return null;
                         }).length
                     );
                     this.monthArrLost.push(
                         this.statictis.filter((s) => {
-                            if (s.lostOrDestroyedDate) {
-                                return new Date(s.lostOrDestroyedDate).getMonth() + 1 === month && s.status === BookChapterStatus.Lost ? s : null;
+                            if (s.borrowHistories?.length) {
+                                return s.borrowHistories.filter(br => {
+                                    if(br.lostOrDestroyedDate) {
+                                        return new Date(br.lostOrDestroyedDate).getMonth() + 1 === month && br.status === BorrowHistoryStatus.Lost ? s : null
+                                    }
+                                    return null;
+                                }).length
                             }
                             return null;
                         }).length
                     );
                 }
-                console.log("borrowed"+ this.statictis);
+                console.log("borrowed"+ this.monthArr);
                 this.loadData();
             }
         });
@@ -203,5 +207,43 @@ export class DashboardComponent implements OnInit {
                 }
             }
         };
+    }
+
+    value: any[] = [];
+    dataSelect($event: any) {
+        this.value = [];
+        const status = $event.element.datasetIndex === 0 ? BorrowHistoryStatus.Destroyed : BorrowHistoryStatus.Lost;
+        // let value;
+        // this.statictis.forEach(bc => {
+        //     if(bc.borrowHistories?.length) {
+        //         value.push
+        //     }
+        // })
+
+        this.statictis.forEach(bc => {
+            if(bc.borrowHistories?.length) {
+                bc.borrowHistories.forEach(br => {
+                    if(br.lostOrDestroyedDate && new Date(br.lostOrDestroyedDate).getMonth() === $event.element.index  && br.status === status) {
+                        const get = {
+                            bookName: bc.book?.name,
+                            chapter: bc.chapter,
+                            quantity: bc.quantity,
+                            lostOrDestroyedDate: br.lostOrDestroyedDate,
+                            studentId: br.libraryCard?.studentId
+                        }
+                        this.value.push(get);
+                    }
+                })
+            }
+        })
+        
+        const modalRef = this.modalService.open(ShowDetailComponent, {
+            size: 'xl',
+            centered: true,
+            backdrop: 'static'
+        })
+        
+        modalRef.componentInstance.value = this.value;
+        modalRef.componentInstance.title = $event.element.datasetIndex === 0 ? `Destroyed book in ${$event.element.index + 1}` : `Lost book in ${$event.element.index + 1}`;
     }
 }

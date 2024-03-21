@@ -58,7 +58,7 @@ namespace LibraryAPI.Controllers
             foreach(var item in borrowHistory)
             {
                 var bookChapter = await _context.BookChapters.FirstOrDefaultAsync(i => i.Id == item.BookChapterId);
-                bookChapter.Status = isPreorder ? (int?)BookChapterStatusEnum.WaitingForTake : (int?)BookChapterStatusEnum.Borrowed;
+                bookChapter.Quantity -= 1;
                 await _context.SaveChangesAsync();
             }
             
@@ -86,24 +86,21 @@ namespace LibraryAPI.Controllers
             {
                 case (int?)BorrowHistoryStatus.Inactive:
                 case (int?)BorrowHistoryStatus.Returned:
-                    bookChapter.Status = (int?)BookChapterStatusEnum.Free;
+                    bookChapter.Quantity += 1;
                     break;
 
                 case (int?)BorrowHistoryStatus.Expired:
-                case (int?)BorrowHistoryStatus.Active:
-                    bookChapter.Status = (int?)BookChapterStatusEnum.Borrowed;
-                    break;
-
-                case (int?)BorrowHistoryStatus.Lost:
-                    bookChapter.Status = (int?)BookChapterStatusEnum.Lost;
-                    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
-
                     libraryCard.Status = (int?)LibraryCardStatus.Inactive;
                     break;
 
+                case (int?)BorrowHistoryStatus.Active:
+                    if(bookChapter.Quantity > 0)
+                        bookChapter.Quantity -= 1;
+                    break;
+
                 case (int?)BorrowHistoryStatus.Destroyed:
-                    bookChapter.Status = (int?)BookChapterStatusEnum.Destroyed;
-                    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
+                case (int?)BorrowHistoryStatus.Lost:
+                    borrowHistory.LostOrDestroyedDate = DateTime.UtcNow;
 
                     libraryCard.Status = (int?)LibraryCardStatus.Inactive;
                     break;

@@ -17,12 +17,11 @@ GO
 
 CREATE TABLE [BookChapter] (
   [id] uniqueidentifier NOT NULL DEFAULT newid() PRIMARY KEY,
-  [identifyId] varchar(10),
-  [status] int,
+  [identifyId] nvarchar(max),
   [description] nvarchar(max),
   [bookId] uniqueidentifier NULL,
   [chapter] int,
-  [lostOrDestroyedDate] date NULL,
+  [quantity] int
 )
 GO
 
@@ -114,6 +113,7 @@ CREATE TABLE [BorrowHistory] (
   [status] int,
   [bookChapterId] uniqueidentifier NULL,
   [libraryCardId] uniqueidentifier NULL,
+  [lostOrDestroyedDate] date NULL,
 )
 GO
 

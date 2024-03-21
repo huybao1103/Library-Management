@@ -93,6 +93,7 @@ export class BookCartComponent implements IDialogType {
     ).subscribe({
       next: () => {
         this._toastService.show(MessageType.success, "Borrow Requested Successfully");
+        this.bookCartService.clearCart();
         this.close();
       },
       error: (err: HttpErrorResponse) => {

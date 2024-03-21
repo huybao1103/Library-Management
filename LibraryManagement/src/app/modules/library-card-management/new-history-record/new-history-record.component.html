@@ -10,7 +10,7 @@
             <form [formGroup]="form" (submit)="addRecord()">
                 <formly-form [model]="data" [fields]="fields" [options]="options" [form]="form"></formly-form>
                 <div style="text-align: center;">
-                    <button class="btn btn-primary submit-btn " type="submit">
+                    <button class="btn btn-primary submit-btn " type="submit" [disabled]="form.invalid">
                         <i class="fa fa-plus"></i>
                         Add Record
                     </button>

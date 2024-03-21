@@ -1,4 +1,5 @@
 import { IBook } from "./book.model";
+import { IBorrowHistoryInfo } from "./borrow-history.model";
 
 export interface IBookChapter {
     id?: string;
@@ -7,6 +8,7 @@ export interface IBookChapter {
     description?: string;
     bookId?: string;
     chapter?: string;
-    book?: IBook
-    lostOrDestroyedDate?: string;
+    book?: IBook;
+    quantity?: number
+    borrowHistories?: IBorrowHistoryInfo[];
 }

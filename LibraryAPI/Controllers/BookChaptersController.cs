@@ -62,18 +62,18 @@ namespace LibraryAPI.Controllers
                 bookChapter = _context.BookChapters.First(chap => chap.Id == bookChapterModel.Id);
                 bookChapter = _mapper.Map(bookChapterModel, bookChapter);
 
-                if (bookChapter.Status == (int)BookChapterStatusEnum.Destroyed || bookChapter.Status == (int)BookChapterStatusEnum.Lost)
-                {
-                    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
-                }
+                //if (bookChapter.Status == (int)BookChapterStatusEnum.Destroyed || bookChapter.Status == (int)BookChapterStatusEnum.Lost)
+                //{
+                //    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
+                //}
             }
             else
             {
                 bookChapter = _mapper.Map<BookChapter>(bookChapterModel);
-                if (bookChapter.Status == (int)BookChapterStatusEnum.Destroyed || bookChapter.Status == (int)BookChapterStatusEnum.Lost)
-                {
-                    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
-                }
+                //if (bookChapter.Status == (int)BookChapterStatusEnum.Destroyed || bookChapter.Status == (int)BookChapterStatusEnum.Lost)
+                //{
+                //    bookChapter.LostOrDestroyedDate = DateTime.UtcNow;
+                //}
                 _context.BookChapters.Add(bookChapter);
             }
             await _context.SaveChangesAsync();
@@ -127,7 +127,7 @@ namespace LibraryAPI.Controllers
                 .Where
                 (
                     x => x.BookId == bookId
-                    && x.Status == (int)BookChapterStatusEnum.Free
+                    && x.Quantity > 0
                 )
                 .ToListAsync(); // Get book list
 
@@ -160,7 +160,7 @@ namespace LibraryAPI.Controllers
             {
                 BookChapter bookChapter = allBookChapter.FirstOrDefault(chapter => chapter.Id == id);
                 if (
-                    bookChapter.Status != (int)BookChapterStatusEnum.Free
+                    bookChapter.Quantity <= 0
                 ) {
                     chapterIdToBeRemove.Add(id);
                 }
@@ -184,14 +184,10 @@ namespace LibraryAPI.Controllers
             {
                 throw new CustomApiException(500, "Book Chapter number must not be null.", "Book Chapter number must not be null");
             }
-            if (!bookChapter.Status.HasValue)
-            {
-                throw new CustomApiException(500, "Book Chapter status must not be null.", "Book Chapter status must not be null");
-            }
-            if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.Id != bookChapter.Id && a.IdentifyId == bookChapter.IdentifyId))
-            {
-                throw new CustomApiException(500, "This book chapter Identify ID is existed.", "This book chapter Identify ID is existed.");
-            }
+            //if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.Id != bookChapter.Id && a.IdentifyId == bookChapter.IdentifyId))
+            //{
+            //    throw new CustomApiException(500, "This book chapter Identify ID is existed.", "This book chapter Identify ID is existed.");
+            //}
             if (_context.BookChapters.Any(a => a.BookId == bookChapter.BookId && a.Id != bookChapter.Id && a.Chapter == bookChapter.Chapter))
             {
                 throw new CustomApiException(500, "This book chapter number is existed.", "This book chapter number is existed.");

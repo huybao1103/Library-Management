@@ -32,16 +32,16 @@ export class RegisterComponent implements OnInit {
     private toastService: ToastService,
     private router: Router
   ) {}
-
-  data: any = {
-    password: '',
-    re_password: ''
-  }
-
   
   ngOnInit(): void {
     this.fields = RegisterFields();
   }
+
+  data: any = {
+    password: '',
+    re_password: '',
+  }
+
 
   register() {
     if(this.data.password !== this.data.re_password) {

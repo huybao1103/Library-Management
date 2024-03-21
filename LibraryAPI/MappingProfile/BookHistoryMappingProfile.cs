@@ -21,6 +21,7 @@ namespace LibraryAPI.MappingProfile
             CreateMap<BorrowHistoryModel, BorrowHistory>();
 
             CreateMap<EditHistoryInfoRequest, BorrowHistory>();
+            CreateMap<BorrowHistory, BorrowHistoryBasicInfoModel>();
         }
     }
 }

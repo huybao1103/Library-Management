@@ -80,4 +80,8 @@ export class BookChapterService {
       this.bookchapter$.next([...old]);
     }
   }
+
+  GetIdentifyId(bookId: string) {
+    return this.httpService.getPlainTextWithCustomURL({ controller: 'BookChapters', url: `BookChapters/get-book-chapter-identifyId/${bookId}` });
+  }
 }

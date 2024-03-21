@@ -13,7 +13,7 @@ public partial class Employee
 
     public DateTime? BirthDate { get; set; }
 
-    public Guid? AccountId { get; set; }
-
     public DateTime? JoinDate { get; set; }
+
+    public Guid? AccountId { get; set; }
 }

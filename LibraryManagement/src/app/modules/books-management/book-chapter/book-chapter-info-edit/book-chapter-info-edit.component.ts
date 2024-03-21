@@ -12,6 +12,7 @@ import { BookChapterDetailFields } from './book-chapter-form';
 import { BookChapterService } from '../service/book-chapter.service';
 import { MessageType } from 'src/app/enums/toast-message.enum';
 import { HttpErrorResponse } from '@angular/common/http';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-book-chapter-info-edit',
@@ -32,13 +33,15 @@ export class BookChapterInfoEditComponent {
     formState: {
       optionList: {
         // author: this.getBookOption()
-      }
+      },
+      identifyId: ''
     }
   };
   
   data: IBookChapter = {
   }
   
+  chapterId: string = '';
 
   constructor(
     private modal: NgbActiveModal,
@@ -53,11 +56,12 @@ export class BookChapterInfoEditComponent {
   dialogInit(para: {id: string}): void {
     this.title = "Add Chapter";
     if (para.id) {
+      this.chapterId = para.id;
       this.title = "Edit Chapter Information";
       this.getBookChapterById(para.id);
     } else {
       this.bookId = this.bookChatperService.getCurrentBookID();
-      this.fields = BookChapterDetailFields();
+      this.GetIdentifyId();
     }
   }
   
@@ -68,8 +72,9 @@ export class BookChapterInfoEditComponent {
   getBookChapterById(id: string) {
     this.bookChatperService.getBookChapterByBookId(id).subscribe({
       next: (res) => {
-        if(res)
+        if(res) {
           this.data = res;
+        }
 
         this.fields = BookChapterDetailFields();
       }
@@ -115,5 +120,19 @@ export class BookChapterInfoEditComponent {
         this.toastService.show(MessageType.error, err.error?.detail);
       }
     })    
+  }
+
+  private GetIdentifyId() {
+    this.bookChatperService.GetIdentifyId(this.bookId)
+      .pipe(first())
+      .subscribe({
+        next: resp => {
+          this.data = {
+            ...this.data,
+            identifyId: resp ? resp : ''
+          }
+          this.fields = BookChapterDetailFields();
+        }
+      })
   }
 }
